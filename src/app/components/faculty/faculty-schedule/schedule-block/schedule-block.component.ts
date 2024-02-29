@@ -2,6 +2,8 @@ import { Component, Input, SimpleChanges } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { ScheduleFacultyFetcherService } from '../../../../services/faculty/schedule-faculty-fetcher.service';
 import { schedule } from '../../../../services/admin/schedule';
+import { Router } from '@angular/router';
+import { error } from 'node:console';
 
 
 @Component({
@@ -14,24 +16,39 @@ import { schedule } from '../../../../services/admin/schedule';
 export class ScheduleBlockComponent {
   @Input() week: number = new Date().getDate();
   schedules: schedule[] = [];
+  filteredSchedule: schedule[] = [];
   weeks: string[] = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
-  constructor(private schedule:ScheduleFacultyFetcherService){
+  constructor(private schedule:ScheduleFacultyFetcherService, private router:Router){
     this.getSchedule();
   }
 
   ngOnChanges(changes: SimpleChanges){
-    this.getSchedule();
-    
+    this.filteredSchedule = [];
+    this.filterSchedule();
   }
   
   getSchedule(){
     //Fetches the schedule data based on passed selected date
-    this.schedule.fetchSchedDay(this.week).subscribe((response: schedule[]) => {
-      this.schedules = response;
+    this.schedule.fetchSchedDay(this.week).subscribe((next: schedule[]) => {
+      console.log(next);
+      this.schedules = next;
+    }, (error) => {
+      if(error.status == 403){
+        this.router.navigate(['/']);
+      };
     });
-
   }
+
+  filterSchedule(){
+    for(let i = 0; i < this.schedules.length; i++){
+      if(this.schedules[i].week == this.week){
+        this.filteredSchedule.push(this.schedules[i]);
+      }
+    }
+    console.log(this.filteredSchedule);
+  }
+
 
   tConvert (time: any) {
     // Check correct time format and split into components

@@ -20,6 +20,10 @@ export class SidebarComponent {
     this.isFaculty = this.accountPath === "faculty";
   }
 
+  ngOnInit(){
+    console.log("I am at the navbar");
+  }
+
   onSelect(index: number){
     this.selectedBar = index + "";
     console.log(this.selectedBar);
