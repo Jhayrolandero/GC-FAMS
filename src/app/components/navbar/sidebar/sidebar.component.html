@@ -1,26 +1,113 @@
 <aside class="fixed top-0 left-0 w-[250px]">
-  <div class="h-screen bg-gradient-to-b from-greenBar from-0% via-blue via-[180px] to-blue to-100% rounded-r-[25px]">
-      <div class=" pt-4 pb-10 flex justify-center items-center">
-          <img src="../../../assets/img/Logo_mockup 1.png" class="w-[60%]">
-      </div>
-      <div class="faculty-side">
-          <ul *ngIf="!isFaculty">
-              <app-nav (click)="onSelect(0)" [selectedBar]="selectedBar" [index]="'0'" [title]="'Admin Profile'" [source]="'Person.png'"></app-nav>
-              <app-nav (click)="onSelect(1)" [selectedBar]="selectedBar" [index]="'1'" [title]="'Program Analytics'" [source]="'Signal.png'"></app-nav>
-              <app-nav (click)="onSelect(2)" [selectedBar]="selectedBar" [index]="'2'" [title]="'Faculty Members'" [source]="'Users.png'"></app-nav>
-              <app-nav (click)="onSelect(3)" [selectedBar]="selectedBar" [index]="'3'" [title]="'Faculty Schedules'" [source]="'Vector.png'"></app-nav>
-              <app-nav (click)="onSelect(4)" [selectedBar]="selectedBar" [index]="'4'" [title]="'Program Projects'" [source]="'Mortarboard.png'"></app-nav>
-              <app-nav (click)="onSelect(5)" [selectedBar]="selectedBar" [index]="'5'" [title]="'Community Extensions'" [source]="'Users.png'"></app-nav>
-              <app-nav (click)="onSelect(6)" [selectedBar]="selectedBar" [index]="'6'" [title]="'Evaluation Analytics'" [source]="'ScatterPlot.png'"></app-nav>
-          </ul>
-          <ul *ngIf="isFaculty">
-            <app-nav (click)="onSelect(7)" [selectedBar]="selectedBar" [index]="'7'" [title]="'Profile'" [source]="'Person.png'"></app-nav>
-            <app-nav (click)="onSelect(8)" [selectedBar]="selectedBar" [index]="'8'" [title]="'Analytics'" [source]="'Signal.png'"></app-nav>
-            <app-nav (click)="onSelect(9)" [selectedBar]="selectedBar" [index]="'9'" [title]="'Schedule'" [source]="'Vector.png'"></app-nav>
-            <app-nav (click)="onSelect(10)" [selectedBar]="selectedBar" [index]="'10'" [title]="'Projects'" [source]="'ProjectManagement.png'"></app-nav>
-            <app-nav (click)="onSelect(13)" [selectedBar]="selectedBar" [index]="'13'" [title]="'Community Extensions'" [source]="'Users.png'"></app-nav>
-            <app-nav (click)="onSelect(14)" [selectedBar]="selectedBar" [index]="'14'" [title]="'Evaluation'" [source]="'ScatterPlot.png'"></app-nav>
-        </ul>
-      </div>
+  <div
+    class="h-screen bg-gradient-to-b from-greenBar from-0% via-blue via-[180px] to-blue to-100% rounded-r-[25px]"
+  >
+    <div class="pt-4 pb-10 flex justify-center items-center">
+      <img src="../../../assets/img/Logo_mockup 1.png" class="w-[60%]" />
+    </div>
+    <div class="faculty-side">
+      <ul *ngIf="!isFaculty">
+        <app-nav
+          (click)="onSelect(0)"
+          [selectedBar]="selectedBar"
+          [index]="'0'"
+          [title]="'Admin Profile'"
+          [source]="'Person.png'"
+        ></app-nav>
+        <app-nav
+          (click)="onSelect(1)"
+          [selectedBar]="selectedBar"
+          [index]="'1'"
+          [title]="'Program Analytics'"
+          [source]="'Signal.png'"
+        ></app-nav>
+        <app-nav
+          (click)="onSelect(2)"
+          [selectedBar]="selectedBar"
+          [index]="'2'"
+          [title]="'Faculty Members'"
+          [source]="'Users.png'"
+        ></app-nav>
+        <app-nav
+          (click)="onSelect(3)"
+          [selectedBar]="selectedBar"
+          [index]="'3'"
+          [title]="'Faculty Schedules'"
+          [source]="'Vector.png'"
+        ></app-nav>
+        <app-nav
+          (click)="onSelect(4)"
+          [selectedBar]="selectedBar"
+          [index]="'4'"
+          [title]="'Program Projects'"
+          [source]="'Mortarboard.png'"
+        ></app-nav>
+        <app-nav
+          (click)="onSelect(5)"
+          [selectedBar]="selectedBar"
+          [index]="'5'"
+          [title]="'Community Extensions'"
+          [source]="'Users.png'"
+        ></app-nav>
+        <app-nav
+          (click)="onSelect(6)"
+          [selectedBar]="selectedBar"
+          [index]="'6'"
+          [title]="'Evaluation Analytics'"
+          [source]="'ScatterPlot.png'"
+        ></app-nav>
+        <app-nav
+          (click)="onSelect(7)"
+          [selectedBar]="selectedBar"
+          [index]="'7'"
+          [title]="'Manage Faculty'"
+          [source]="'ScatterPlot.png'"
+        ></app-nav>
+      </ul>
+      <ul *ngIf="isFaculty">
+        <app-nav
+          (click)="onSelect(7)"
+          [selectedBar]="selectedBar"
+          [index]="'7'"
+          [title]="'Profile'"
+          [source]="'Person.png'"
+        ></app-nav>
+        <app-nav
+          (click)="onSelect(8)"
+          [selectedBar]="selectedBar"
+          [index]="'8'"
+          [title]="'Analytics'"
+          [source]="'Signal.png'"
+        ></app-nav>
+        <app-nav
+          (click)="onSelect(9)"
+          [selectedBar]="selectedBar"
+          [index]="'9'"
+          [title]="'Schedule'"
+          [source]="'Vector.png'"
+        ></app-nav>
+        <app-nav
+          (click)="onSelect(10)"
+          [selectedBar]="selectedBar"
+          [index]="'10'"
+          [title]="'Projects'"
+          [source]="'ProjectManagement.png'"
+        ></app-nav>
+        <app-nav
+          (click)="onSelect(13)"
+          [selectedBar]="selectedBar"
+          [index]="'13'"
+          [title]="'Community Extensions'"
+          [source]="'Users.png'"
+        ></app-nav>
+        <app-nav
+          (click)="onSelect(14)"
+          [selectedBar]="selectedBar"
+          [index]="'14'"
+          [title]="'Evaluation'"
+          [source]="'ScatterPlot.png'"
+        ></app-nav>
+      </ul>
+    </div>
   </div>
 </aside>
