@@ -42,43 +42,58 @@
         <h4 class="border-b-2 border-black font-bold text-[24px]">
           DEPARTMENT
         </h4>
+        <div class="grid grid-cols-3 gap-2 pt-4">
+          <app-gc-box
+            [collegeAbbv]="'BSCS'"
+            [collegeTitle]="'Bachelor of Science in Computer Science'"
+            [bgColor]="'#FF7A00'"
+            [imgPath]="'../../../../assets/college-logo/ccs.png'"
+          ></app-gc-box>
+          <app-gc-box
+            [collegeAbbv]="'BSIT'"
+            [collegeTitle]="'Bachelor of Science in Information Technology'"
+            [bgColor]="'#FF7A00'"
+            [imgPath]="'../../../../assets/college-logo/ccs.png'"
+          ></app-gc-box>
+          <app-gc-box
+            [collegeAbbv]="'BSEMC'"
+            [collegeTitle]="
+              'Bachelor of Science in Entertainment and Multimedia Computing'
+            "
+            [bgColor]="'#FF7A00'"
+            [imgPath]="'../../../../assets/college-logo/ccs.png'"
+          ></app-gc-box>
+        </div>
       </div>
       <div class="flex-1">
         <h4 class="border-b-2 border-black font-bold text-[24px]">POSITION</h4>
+        <div class="flex gap-2 pt-4">
+          <app-gc-box
+            [collegeAbbv]="'BSCS'"
+            [collegeTitle]="'Bachelor of Science in Computer Science'"
+            [bgColor]="'#FF7A00'"
+            [imgPath]="'../../../../assets/college-logo/ccs.png'"
+          ></app-gc-box>
+          <app-gc-box
+            [collegeAbbv]="'BSIT'"
+            [collegeTitle]="'Bachelor of Science in Information Technology'"
+            [bgColor]="'#FF7A00'"
+            [imgPath]="'../../../../assets/college-logo/ccs.png'"
+          ></app-gc-box>
+          <app-gc-box
+            [collegeAbbv]="'BSEMC'"
+            [collegeTitle]="
+              'Bachelor of Science in Entertainment and Multimedia Computing'
+            "
+            [bgColor]="'#FF7A00'"
+            [imgPath]="'../../../../assets/college-logo/ccs.png'"
+          ></app-gc-box>
+        </div>
       </div>
     </div>
     <h4 class="border-b-2 border-black font-bold text-[24px]">
       PERSONAL INFORMATION
     </h4>
-    <form action="" class="flex flex-col gap-4">
-      <div class="flex justify-center items-center gap-4">
-        <img
-          src="../../../assets/profiles/batman.jpg"
-          alt=""
-          class="aspect-square min-w-[100px]"
-        />
-        <input type="text" placeholder="EMAIL" class="flex-1" />
-        <input type="text" placeholder="PHONE NUMBER" class="flex-1" />
-        <input type="text" placeholder="BIRTHDATE" class="flex-1" />
-      </div>
-      <div class="flex justify-center items-center gap-4">
-        <input type="text" placeholder="LASTNAME" class="flex-1" />
-        <input type="text" placeholder="FIRSTNAME" class="flex-1" />
-        <input type="text" placeholder="MIDDLENAME" class="flex-1" />
-        <input type="text" placeholder="EXT. NAME" class="flex-1" />
-      </div>
-      <div class="flex justify-center items-center gap-4">
-        <input type="text" placeholder="REGION" class="flex-1" />
-        <input type="text" placeholder="PROVINCE" class="flex-1" />
-        <input type="text" placeholder="CITY/MUNICIPALITY" class="flex-1" />
-        <input type="text" placeholder="BARANGAY" class="flex-1" />
-      </div>
-      <div class="flex justify-center items-center gap-4">
-        <input type="text" placeholder="GENDER" class="flex-1" />
-        <input type="text" placeholder="CITY/LANGUAGE" class="flex-1" />
-        <input type="text" placeholder="NATIONALITY" class="flex-1" />
-      </div>
-      <input type="submit" />
-    </form>
+    <app-personal-info-form></app-personal-info-form>
   </div>
 </div>
