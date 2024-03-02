@@ -9,6 +9,9 @@ import { AnalyticsComponent } from './faculty/analytics/analytics.component';
 import { ScheduleComponent } from './faculty/schedule/schedule.component';
 import { CommunityExtensionsComponent } from './faculty/community-extensions/community-extensions.component';
 import { ProfileComponent } from './faculty/profile/profile.component';
+import { FacultyScheduleComponent } from './admin/faculty-schedule/faculty-schedule.component';
+import { ManageFacultyComponent } from './admin/manage-faculty/manage-faculty.component';
+
 export const routes: Routes = [
   {path: '', redirectTo: '/login', pathMatch: 'full'},
   {path: 'faculty', redirectTo: '/faculty/profile', pathMatch: 'full'},
@@ -29,10 +32,11 @@ export const routes: Routes = [
     {path: 'admin-profile', component: ProgramAnalyticsComponent},
     {path: 'program-analytics', component: ProgramAnalyticsComponent},
     {path: 'faculty-members', component: FacultyMembersComponent},
-    {path: 'faculty-schedules', component: ProgramAnalyticsComponent},
+    {path: 'faculty-schedules', component: FacultyScheduleComponent},
     {path: 'program-projects', component: ProgramAnalyticsComponent},
     {path: 'community-extensions', component: ProgramAnalyticsComponent},
     {path: 'evaluation-analytics', component: ProgramAnalyticsComponent},
+    {path: 'manage-faculty', component: ManageFacultyComponent},
   ]},
   {path: '**', component: PagenotfoundComponent}
 ];

@@ -7,11 +7,14 @@ import { PaginationComponent } from '../../components/pagination/pagination.comp
 import { facultyMemberResource } from '../../services/admin/facultyMemberResource';
 import { FacultySectionComponent } from './faculty-section/faculty-section.component';
 import { CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
+import { ModalComponent } from '../../components/modal/modal.component';
+import { CvComponent } from '../../components/cv/cv.component';
+
 
 @Component({
   selector: 'app-faculty-members',
   standalone: true,
-  imports: [FacultyBoxComponent, NgFor, PaginationComponent, FacultySectionComponent, CanvasJSAngularChartsModule],
+  imports: [FacultyBoxComponent, NgFor, PaginationComponent, FacultySectionComponent, CanvasJSAngularChartsModule, CvComponent, ModalComponent],
   providers: [FacultymembersService],
   templateUrl: './faculty-members.component.html',
   styleUrl: './faculty-members.component.css'
