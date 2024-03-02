@@ -1,4 +1,10 @@
-<div class="bg-white flex flex-col px-4 py-2 rounded-[24px]">
+<!-- <form action="" [formGroup]="personalInfo" (ngSubmit)="onSubmit()"> -->
+<form
+  action=""
+  class="bg-white flex flex-col px-4 py-2 rounded-[24px]"
+  [formGroup]="facultyInfo"
+  (ngSubmit)="onSubmit()"
+>
   <h1>Faculty Management</h1>
   <div
     class="bg-[#F0F0F0] px-[16px] py-[24px] rounded-[16px] flex flex-col gap-4"
@@ -11,89 +17,254 @@
         [collegeTitle]="'College of Computer Studies'"
         [bgColor]="'#FF7A00'"
         [imgPath]="'../../../../assets/college-logo/ccs.png'"
+        (setRole)="setCollege($event)"
+        [radioGroup]="'college'"
       ></app-gc-box>
       <app-gc-box
         [collegeAbbv]="'CEAS'"
         [collegeTitle]="'College of Education, Arts and Sciences'"
         [bgColor]="'#0077CC'"
         [imgPath]="'../../../../assets/college-logo/ceas.png'"
+        (setRole)="setCollege($event)"
+        [radioGroup]="'college'"
       ></app-gc-box>
       <app-gc-box
         [collegeAbbv]="'CBA'"
         [collegeTitle]="'College of Business and Accountancy'"
         [bgColor]="'#FFDF00'"
         [imgPath]="'../../../../assets/college-logo/cba.png'"
+        (setRole)="setCollege($event)"
+        [radioGroup]="'college'"
       ></app-gc-box>
       <app-gc-box
         [collegeAbbv]="'CHTM'"
         [collegeTitle]="'College of Hospitality and Tourism Management'"
         [bgColor]="'#FF0082'"
         [imgPath]="'../../../../assets/college-logo/chtm.png'"
+        (setRole)="setCollege($event)"
+        [radioGroup]="'college'"
       ></app-gc-box>
       <app-gc-box
         [collegeAbbv]="'CAHS'"
         [collegeTitle]="'College of Allied Health Studies'"
         [bgColor]="'#FF0000'"
         [imgPath]="'../../../../assets/college-logo/cahs.png'"
+        (setRole)="setCollege($event)"
+        [radioGroup]="'college'"
       ></app-gc-box>
     </div>
     <div class="flex flex-row gap-4">
       <div class="flex-1">
         <h4 class="border-b-2 border-black font-bold text-[24px]">
-          DEPARTMENT
+          EMPLOYMENT
         </h4>
-        <div class="grid grid-cols-3 gap-2 pt-4">
+        <div class="flex-1 flex gap-2 pt-4">
           <app-gc-box
-            [collegeAbbv]="'BSCS'"
-            [collegeTitle]="'Bachelor of Science in Computer Science'"
+            [collegeAbbv]="'PART-TIME'"
+            [collegeTitle]="'PART-TIME'"
             [bgColor]="'#FF7A00'"
             [imgPath]="'../../../../assets/college-logo/ccs.png'"
+            (setRole)="setCollege($event)"
+            [radioGroup]="'course'"
           ></app-gc-box>
           <app-gc-box
-            [collegeAbbv]="'BSIT'"
-            [collegeTitle]="'Bachelor of Science in Information Technology'"
+            [collegeAbbv]="'FULL-TIME'"
             [bgColor]="'#FF7A00'"
             [imgPath]="'../../../../assets/college-logo/ccs.png'"
-          ></app-gc-box>
-          <app-gc-box
-            [collegeAbbv]="'BSEMC'"
-            [collegeTitle]="
-              'Bachelor of Science in Entertainment and Multimedia Computing'
-            "
-            [bgColor]="'#FF7A00'"
-            [imgPath]="'../../../../assets/college-logo/ccs.png'"
+            (setRole)="setCollege($event)"
+            [radioGroup]="'course'"
           ></app-gc-box>
         </div>
       </div>
       <div class="flex-1">
         <h4 class="border-b-2 border-black font-bold text-[24px]">POSITION</h4>
-        <div class="flex gap-2 pt-4">
+        <div class="flex-1 flex gap-2 pt-4">
           <app-gc-box
             [collegeAbbv]="'BSCS'"
             [collegeTitle]="'Bachelor of Science in Computer Science'"
             [bgColor]="'#FF7A00'"
             [imgPath]="'../../../../assets/college-logo/ccs.png'"
+            (setRole)="setCollege($event)"
+            [radioGroup]="'course'"
           ></app-gc-box>
           <app-gc-box
-            [collegeAbbv]="'BSIT'"
-            [collegeTitle]="'Bachelor of Science in Information Technology'"
+            [collegeAbbv]="'BSCS'"
+            [collegeTitle]="'Bachelor of Science in Computer Science'"
             [bgColor]="'#FF7A00'"
             [imgPath]="'../../../../assets/college-logo/ccs.png'"
+            (setRole)="setCollege($event)"
+            [radioGroup]="'course'"
           ></app-gc-box>
           <app-gc-box
-            [collegeAbbv]="'BSEMC'"
-            [collegeTitle]="
-              'Bachelor of Science in Entertainment and Multimedia Computing'
-            "
+            [collegeAbbv]="'BSCS'"
+            [collegeTitle]="'Bachelor of Science in Computer Science'"
             [bgColor]="'#FF7A00'"
             [imgPath]="'../../../../assets/college-logo/ccs.png'"
+            (setRole)="setCollege($event)"
+            [radioGroup]="'course'"
           ></app-gc-box>
         </div>
       </div>
     </div>
+    <h4 class="border-b-2 border-black font-bold text-[24px]">COURSE</h4>
+    <div class="grid grid-cols-3 gap-2 pt-4">
+      <app-gc-box
+        [collegeAbbv]="'BSCS'"
+        [collegeTitle]="'Bachelor of Science in Computer Science'"
+        [bgColor]="'#FF7A00'"
+        [imgPath]="'../../../../assets/college-logo/ccs.png'"
+        (setRole)="setCollege($event)"
+        [radioGroup]="'course'"
+      ></app-gc-box>
+      <app-gc-box
+        [collegeAbbv]="'BSIT'"
+        [collegeTitle]="'Bachelor of Science in Information Technology'"
+        [bgColor]="'#FF7A00'"
+        [imgPath]="'../../../../assets/college-logo/ccs.png'"
+        (setRole)="setCollege($event)"
+        [radioGroup]="'course'"
+      ></app-gc-box>
+      <app-gc-box
+        [collegeAbbv]="'BSEMC'"
+        [collegeTitle]="
+          'Bachelor of Science in Entertainment and Multimedia Computing'
+        "
+        [bgColor]="'#FF7A00'"
+        [imgPath]="'../../../../assets/college-logo/ccs.png'"
+        (setRole)="setCollege($event)"
+        [radioGroup]="'course'"
+      ></app-gc-box>
+    </div>
     <h4 class="border-b-2 border-black font-bold text-[24px]">
       PERSONAL INFORMATION
     </h4>
-    <app-personal-info-form></app-personal-info-form>
+    <div class="flex flex-col gap-4">
+      <div class="flex justify-center items-center gap-4">
+        <div class="flex flex-col flex-1">
+          <label for="">Email</label>
+          <input
+            type="text"
+            class="flex-1 bg-white px-2 py-1 rounded-[8px]"
+            formControlName="email"
+          />
+        </div>
+        <div class="flex flex-col flex-1">
+          <label for="">PHONE NUMBER</label>
+          <input
+            type="text"
+            class="flex-1 bg-white px-2 py-1 rounded-[8px]"
+            formControlName="phonenumber"
+          />
+        </div>
+        <div class="flex flex-col flex-1">
+          <label for="">BIRTHDATE</label>
+          <input
+            type="text"
+            class="flex-1 bg-white px-2 py-1 rounded-[8px]"
+            formControlName="birthdate"
+          />
+        </div>
+      </div>
+      <div class="flex justify-center items-center gap-4">
+        <div class="flex flex-col flex-1">
+          <label for="">LASTNAME</label>
+          <input
+            type="text"
+            class="flex-1 bg-white px-2 py-1 rounded-[8px]"
+            formControlName="lastname"
+          />
+        </div>
+        <div class="flex flex-col flex-1">
+          <label for="">FIRSTNAME</label>
+          <input
+            type="text"
+            class="flex-1 bg-white px-2 py-1 rounded-[8px]"
+            formControlName="firstname"
+          />
+        </div>
+        <div class="flex flex-col flex-1">
+          <label for="">MIDDLENAME</label>
+          <input
+            type="text"
+            class="flex-1 bg-white px-2 py-1 rounded-[8px]"
+            formControlName="middlename"
+          />
+        </div>
+        <div class="flex flex-col flex-1">
+          <label for="">EXT. NAME</label>
+          <input
+            type="text"
+            class="flex-1 bg-white px-2 py-1 rounded-[8px]"
+            formControlName="extname"
+          />
+        </div>
+      </div>
+      <div class="flex justify-center items-center gap-4">
+        <div class="flex flex-col flex-1">
+          <label for="">REGION</label>
+          <input
+            type="text"
+            class="flex-1 bg-white px-2 py-1 rounded-[8px]"
+            formControlName="region"
+          />
+        </div>
+        <div class="flex flex-col flex-1">
+          <label for="">PROVINCE</label>
+          <input
+            type="text"
+            class="flex-1 bg-white px-2 py-1 rounded-[8px]"
+            formControlName="province"
+          />
+        </div>
+        <div class="flex flex-col flex-1">
+          <label for="">CITY/MUNICIPALITY</label>
+          <input
+            type="text"
+            class="flex-1 bg-white px-2 py-1 rounded-[8px]"
+            formControlName="city"
+          />
+        </div>
+        <div class="flex flex-col flex-1">
+          <label for="">BARANGAY</label>
+          <input
+            type="text"
+            class="flex-1 bg-white px-2 py-1 rounded-[8px]"
+            formControlName="barangay"
+          />
+        </div>
+      </div>
+      <div class="flex justify-center items-start gap-4">
+        <img
+          src="../../../assets/profiles/batman.jpg"
+          alt=""
+          class="aspect-square min-w-[80px]"
+        />
+        <div class="flex flex-col flex-1">
+          <label for="">GENDER</label>
+          <input
+            type="text"
+            class="flex-1 bg-white px-2 py-1 rounded-[8px]"
+            formControlName="gender"
+          />
+        </div>
+        <div class="flex flex-col flex-1">
+          <label for="">LANGUAGE</label>
+          <input
+            type="text"
+            class="flex-1 bg-white px-2 py-1 rounded-[8px]"
+            formControlName="language"
+          />
+        </div>
+        <div class="flex flex-col flex-1">
+          <label for="">NATIONALITY</label>
+          <input
+            type="text"
+            class="flex-1 bg-white px-2 py-1 rounded-[8px]"
+            formControlName="nationality"
+          />
+        </div>
+      </div>
+    </div>
   </div>
-</div>
+  <input type="submit" />
+</form>

@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-
+import { Component, Output } from '@angular/core';
+import { EventEmitter } from '@angular/core';
 @Component({
   selector: 'app-personal-info-form',
   standalone: true,
@@ -9,4 +9,5 @@ import { Component } from '@angular/core';
 })
 export class PersonalInfoFormComponent {
 
+  @Output() personalInfo = new EventEmitter<string>();
 }

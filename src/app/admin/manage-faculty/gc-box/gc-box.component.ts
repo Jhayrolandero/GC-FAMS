@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-gc-box',
@@ -14,4 +14,12 @@ export class GcBoxComponent {
   @Input('collegeTitle') collegeTitle: string = ''
   @Input('imgPath') imgPath: string = ''
   @Input('bgColor') bgColor: string = ''
+  @Input('id') id: number = 0
+  @Input('radioGroup') radioGroup:string = ''
+
+  @Output() setRole = new EventEmitter()
+
+  setFacultyRole(value: string) {
+    this.setRole.emit(value);
+  }
 }
