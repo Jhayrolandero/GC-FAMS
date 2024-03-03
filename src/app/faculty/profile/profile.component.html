@@ -2,11 +2,27 @@
   *ngIf="facultyProfile != undefined" class="min-h-screen p-5 max-w-screen-fourk ml-[250px] flex flex-col gap-3 text-blue"
 >
     <div class="w-100 bg-white rounded-[25px] overflow-hidden shadow-lg">
-        <div class="w-100 h-[130px] bg-red-200 overflow-hidden"><img class="w-full" [src]="coverLink"></div>
-        <div class="rounded-full bg-greenBar w-[150px] h-[150px] absolute ml-7 top-[135px] overflow-hidden border-8 border-white"><img [src]="profileLink"></div>
+        <div class="w-100 h-[150px] bg-red-200 overflow-hidden"><img class="w-full" [src]="facultyProfile.cover_image"></div>
+        <div class="rounded-full bg-greenBar w-[150px] h-[150px] absolute ml-7 top-[135px] overflow-hidden border-8 border-white"><img [src]="facultyProfile.profile_image"></div>
         <div class="flex justify-between">
-          <p class="text-[2rem] font-Poppins font-semibold ml-7 mt-[80px] mb-2">{{ facultyProfile.first_name }} {{ facultyProfile.last_name }}</p>
-          <div class="rounded-[25px] bg-blue w-[50%] mx-5 my-3 shadow-lg">asdf</div>
+          <p class="text-[2rem] font-Poppins font-semibold ml-7 mt-[55px] mb-2">{{ facultyProfile.first_name }} {{ facultyProfile.last_name }}</p>
+          <div class="rounded-[25px] bg-blue w-[50%] mx-5 my-3 shadow-lg px-7 flex items-center">
+
+            <div class="w-[60%]">
+              <div class="flex flex-row font-Roboto font-bold text-white text-[0.85rem] justify-between">
+                <p>Class Code: 177013</p>
+                <p>M 7:00 AM - 11:00 AM</p>
+                <p>Room 407</p>
+              </div>
+              <div>
+                <p class="font-Roboto font-bold text-white text-[2rem]">Discrete Structures</p>
+              </div>
+            </div>
+
+            <div class="w-[40%]">
+              <p class="text-white font-Roboto font-bold text-[1.8rem] opacity-50 float-end">Next Class</p>
+            </div>
+          </div>
         </div>
     </div>
 

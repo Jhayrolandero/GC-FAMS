@@ -1,6 +1,4 @@
 import { Component } from '@angular/core';
-import { ProfileFacultyFetcherService } from '../../services/faculty/profile-faculty-fetcher.service';
-import { ScheduleFacultyFetcherService } from '../../services/faculty/schedule-faculty-fetcher.service';
 import { Profile } from '../../services/Interfaces/profile';
 import { schedule } from '../../services/admin/schedule';
 import { Router } from '@angular/router';
@@ -9,7 +7,7 @@ import { mainPort } from '../../app.component';
 import { FacultyEducationComponent } from '../../components/faculty/faculty-education/faculty-education.component';
 import { FacultyCertificationsComponent } from '../../components/faculty/faculty-certifications/faculty-certifications.component';
 import { FacultyExpertiseComponent } from '../../components/faculty/faculty-expertise/faculty-expertise.component';
-import { profile } from 'console';
+import { FacultyFetcherService } from '../../services/faculty/faculty-fetcher.service';
 
 @Component({
   selector: 'app-profile',
@@ -21,22 +19,20 @@ import { profile } from 'console';
 export class ProfileComponent {
   facultyProfile!: Profile;
   schedules: schedule[] = [];
-  profileLink = "";
-  coverLink = "";
   educToggle = true;
   certToggle = true;
   expToggle = true;
 
-  constructor(private schedule:ScheduleFacultyFetcherService, private profileFetcher: ProfileFacultyFetcherService, private router: Router){ 
+  constructor(private facultyService: FacultyFetcherService, private router: Router){ 
     this.getProfile();
     this.getSchedule();
   }
 
   getProfile(){
-    this.profileFetcher.fetchProfile().subscribe((next) => {
+    this.facultyService.fetchProfile().subscribe((next) => {
       this.facultyProfile = next;
-      this.profileLink = mainPort + this.facultyProfile.profile_image;
-      this.coverLink = mainPort + this.facultyProfile.cover_image;
+      this.facultyProfile.profile_image = mainPort + this.facultyProfile.profile_image;
+      this.facultyProfile.cover_image = mainPort + this.facultyProfile.cover_image;
     }, (error) => {
       if(error.status == 403){
         console.log(error);
@@ -47,7 +43,7 @@ export class ProfileComponent {
 
   getSchedule(){
     //Fetches the schedule data based on passed selected date
-    this.schedule.fetchSchedDay().subscribe((next: schedule[]) => {
+    this.facultyService.fetchSchedDay().subscribe((next: schedule[]) => {
       this.schedules = next;
     }, (error) => {
       if(error.status == 403){

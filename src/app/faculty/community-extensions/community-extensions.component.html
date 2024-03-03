@@ -1,5 +1,5 @@
 <div
-  class="min-h-screen p-5 max-w-screen-fourk ml-[250px] flex flex-col gap-3 text-blue"
+ class="min-h-screen p-5 max-w-screen-fourk ml-[250px] flex flex-col gap-3 text-blue"
 >
   <div class="bg-white shadow-lg bg-opacity-70 w-full rounded-[25px] flex justify-between items-center px-5 ">
     <h1 class="font-Poppins font-semibold text-[2.5rem] py-2">Community Extensions</h1>
@@ -13,37 +13,31 @@
   </h1>
   <hr class="h-[2px] bg-black" />
 
-  <!-- Object this -->
+  
   <div
-    class="bg-white shadow-lg p-4 w-full rounded-[25px] flex flex-row overflow-hidden"
+  *ngIf="commexs[0] != undefined" class="bg-white shadow-lg w-full rounded-[25px] flex flex-row overflow-hidden hover:scale-[101%] hover:duration-300 duration-300"
   >
     <div class="bg-red-400 w-[25%] h-[280px]">
-      <img src="../../../assets/comm-ex/commex.png" class="w-full h-full" />
+      <img [src]="commexs[0].commex_header_img" class="h-full object-cover" />
     </div>
     <div class="ml-4 mt-4 w-[75%] pr-6">
       <h1 class="font-Poppins font-semibold text-[1.5rem]">
-        iLoveYouVirus: CodeRED
+        {{ commexs[0].commex_title}}
       </h1>
       <div class="flex flex-row opacity-70 mb-3">
         <img
           src="../../../assets/faculty-dashboard/BlueVector.png"
-          class="w-[20px] h-[20px] mr-[5px]"
+          class="w-[20px] h-full mr-[5px]"
         />
-        <h2 class="font-Poppins font-semibold text-[1rem]">February 14,2024</h2>
+        <h2 class="font-Poppins font-semibold text-[1rem]">{{ commexs[0].commex_date}}</h2>
       </div>
       <p>
-        What a day! Operation iLoveYouVirus:CodeRED was a major success! Thanks
-        to everyone's effort, the harmless and love-inducing virus spread to a
-        lot of people! Thanks to this virus, infected people got that extra bit
-        of courage to express their heartfelt thoughts to people they hold dear.
-        Love was really in the air! Our digital freedom wall got filled to the
-        brim! Many notes expressing their love not just for their significant
-        others but also to their friends, peers, and those they treat as family
-        were posted. This proves that Valentine's Day is not only a day
-        dedicated to romantic love but also platonic love.
+        {{ commexs[0].commex_details}}
       </p>
     </div>
   </div>
+
+
   <!-- Other -->
   <h1 class="font-Poppins font-semibold text-[1.5rem] py-2">
     Other Community Extensions
@@ -52,25 +46,28 @@
 
   <app-other-commex>
     <div
-      *ngFor="let commex of commexs"
-      class="bg-white rounded-xl shadow-lg p-3 flex flex-col gap-2 transition-all hover:scale-105 hover:shadow-xl break-inside-avoid mb-2"
+      *ngFor="let commex of commexs; let i = index"
+      class="bg-white rounded-xl shadow-lg p-3 flex flex-col gap-2 duration-300 hover:scale-[102%] hover:shadow-xl hover:duration-300 break-inside-avoid mb-2"
     >
-      <img src="../../../assets/comm-ex/commex.png" alt="" />
-      <div>
-        <h4 class="text-xl font-bold">{{ commex.commexTitle }}</h4>
-        <img
-          src="../../../assets/faculty-dashboard/BlueVector.png"
-          class="w-[20px] h-[20px] mr-[5px] inline-block"
-        />
-        <span>{{ commex.commexDate }}</span>
-      </div>
+      <div *ngIf="i != 0">
+        <img [src]="commex.commex_header_img" alt="" />
+        <div>
+          <h4 class="text-xl font-bold">{{ commex.commex_title }}</h4>
+          <img
+            src="../../../assets/faculty-dashboard/BlueVector.png"
+            class="w-[20px] h-[20px] mr-[5px] inline-block"
+          />
+          <span>{{ commex.commex_date }}</span>
+        </div>
+  
+        <p>
+          {{ commex.commex_details | slice : 0 : getRndInteger() }}
+        </p>
+        <button class="bg-blue text-white font-bold p-2 rounded-lg">
+          Read More
+        </button>
 
-      <p>
-        {{ commex.commexContent | slice : 0 : getRndInteger() }}
-      </p>
-      <button class="bg-blue text-white font-bold p-2 rounded-lg">
-        Read More
-      </button>
+      </div>
     </div>
   </app-other-commex>
 </div>
