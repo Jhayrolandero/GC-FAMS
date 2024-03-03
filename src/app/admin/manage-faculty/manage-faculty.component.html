@@ -1,4 +1,10 @@
-<div class="bg-white flex flex-col px-4 py-2 rounded-[24px]">
+<!-- <form action="" [formGroup]="personalInfo" (ngSubmit)="onSubmit()"> -->
+<form
+  action=""
+  class="bg-white flex flex-col px-4 py-2 rounded-[24px]"
+  [formGroup]="facultyInfo"
+  (ngSubmit)="onSubmit()"
+>
   <h1>Faculty Management</h1>
   <div
     class="bg-[#F0F0F0] px-[16px] py-[24px] rounded-[16px] flex flex-col gap-4"
@@ -7,78 +13,225 @@
     <h4 class="border-b-2 border-black font-bold text-[24px]">COLLEGE</h4>
     <div class="grid grid-cols-5 gap-2 items-stretch">
       <app-gc-box
-        [collegeAbbv]="'CCS'"
-        [collegeTitle]="'College of Computer Studies'"
-        [bgColor]="'#FF7A00'"
-        [imgPath]="'../../../../assets/college-logo/ccs.png'"
-      ></app-gc-box>
-      <app-gc-box
-        [collegeAbbv]="'CEAS'"
-        [collegeTitle]="'College of Education, Arts and Sciences'"
-        [bgColor]="'#0077CC'"
-        [imgPath]="'../../../../assets/college-logo/ceas.png'"
-      ></app-gc-box>
-      <app-gc-box
-        [collegeAbbv]="'CBA'"
-        [collegeTitle]="'College of Business and Accountancy'"
-        [bgColor]="'#FFDF00'"
-        [imgPath]="'../../../../assets/college-logo/cba.png'"
-      ></app-gc-box>
-      <app-gc-box
-        [collegeAbbv]="'CHTM'"
-        [collegeTitle]="'College of Hospitality and Tourism Management'"
-        [bgColor]="'#FF0082'"
-        [imgPath]="'../../../../assets/college-logo/chtm.png'"
-      ></app-gc-box>
-      <app-gc-box
-        [collegeAbbv]="'CAHS'"
-        [collegeTitle]="'College of Allied Health Studies'"
-        [bgColor]="'#FF0000'"
-        [imgPath]="'../../../../assets/college-logo/cahs.png'"
+        *ngFor="let college of colleges"
+        [id]="college.college_ID"
+        [collegeAbbv]="college.college_abbv"
+        [Title]="college.college_name"
+        [bgColor]="college.bgColor"
+        [imgPath]="college.imgPath"
+        (setRole)="setCollege($event)"
+        [radioGroup]="'college'"
       ></app-gc-box>
     </div>
-    <div class="flex flex-row gap-4">
-      <div class="flex-1">
+    <div class="flex-1 flex flex-row gap-4">
+      <div class="flex-1 flex flex-col">
         <h4 class="border-b-2 border-black font-bold text-[24px]">
-          DEPARTMENT
+          EMPLOYMENT
         </h4>
+        <div class="grid grid-cols-2 gap-2 pt-4">
+          <app-gc-box
+            *ngFor="let employment of employmentStatus"
+            [collegeAbbv]="employment.employmentType"
+            [id]="employment.empStatus"
+            [imgPath]="'../../../../assets/college-logo/ccs.png'"
+            (setRole)="setEmployment($event)"
+            [radioGroup]="'employment_status'"
+          ></app-gc-box>
+        </div>
       </div>
-      <div class="flex-1">
+      <div class="flex-1 flex flex-col">
         <h4 class="border-b-2 border-black font-bold text-[24px]">POSITION</h4>
+        <div class="flex flex-row gap-2 pt-4">
+          <app-gc-box
+            *ngFor="let position of positions"
+            [collegeAbbv]="position"
+            [imgPath]="'../../../../assets/college-logo/ccs.png'"
+            (setRole)="setPosition($event)"
+            [radioGroup]="'position'"
+            class="flex-1"
+            [disabled]="disabledBox"
+            [id]="position"
+          ></app-gc-box>
+        </div>
       </div>
+    </div>
+    <h4 class="border-b-2 border-black font-bold text-[24px]">PROGRAM</h4>
+    <div class="flex gap-2 pt-4">
+      <app-gc-box
+        *ngFor="let program of filterPrograms()"
+        [collegeAbbv]="program.program_abbv"
+        [Title]="program.program_name"
+        [bgColor]="program.bgColor"
+        [imgPath]="program.imgPath"
+        (setRole)="setProgram($event)"
+        [radioGroup]="'program'"
+        class="flex-1"
+        [id]="program.program_id"
+      ></app-gc-box>
     </div>
     <h4 class="border-b-2 border-black font-bold text-[24px]">
       PERSONAL INFORMATION
     </h4>
-    <form action="" class="flex flex-col gap-4">
+    <div class="flex flex-col gap-4">
       <div class="flex justify-center items-center gap-4">
+        <div class="flex flex-col flex-1">
+          <label for="">Email</label>
+          <input
+            type="text"
+            class="flex-1 bg-white px-2 py-1 rounded-[8px]"
+            formControlName="email"
+            required
+          />
+        </div>
+        <div class="flex flex-col flex-1">
+          <label for="">PHONE NUMBER</label>
+          <input
+            type="text"
+            class="flex-1 bg-white px-2 py-1 rounded-[8px]"
+            formControlName="phone_number"
+            required
+          />
+        </div>
+        <div class="flex flex-col flex-1">
+          <label for="">BIRTHDATE</label>
+          <input
+            type="text"
+            class="flex-1 bg-white px-2 py-1 rounded-[8px]"
+            formControlName="birthdate"
+            required
+          />
+        </div>
+      </div>
+      <div class="flex justify-center items-center gap-4">
+        <div class="flex flex-col flex-1">
+          <label for="">LASTNAME</label>
+          <input
+            type="text"
+            class="flex-1 bg-white px-2 py-1 rounded-[8px]"
+            formControlName="last_name"
+            required
+          />
+        </div>
+        <div class="flex flex-col flex-1">
+          <label for="">FIRSTNAME</label>
+          <input
+            type="text"
+            class="flex-1 bg-white px-2 py-1 rounded-[8px]"
+            formControlName="first_name"
+            required
+          />
+        </div>
+        <div class="flex flex-col flex-1">
+          <label for="">MIDDLENAME</label>
+          <input
+            type="text"
+            class="flex-1 bg-white px-2 py-1 rounded-[8px]"
+            formControlName="middle_name"
+            required
+          />
+        </div>
+        <div class="flex flex-col flex-1">
+          <label for="">EXT. NAME</label>
+          <input
+            type="text"
+            class="flex-1 bg-white px-2 py-1 rounded-[8px]"
+            formControlName="ext_name"
+            required
+          />
+        </div>
+      </div>
+      <div class="flex justify-center items-center gap-4">
+        <div class="flex flex-col flex-1">
+          <label for="">REGION</label>
+          <input
+            type="text"
+            class="flex-1 bg-white px-2 py-1 rounded-[8px]"
+            formControlName="region"
+            required
+          />
+        </div>
+        <div class="flex flex-col flex-1">
+          <label for="">PROVINCE</label>
+          <input
+            type="text"
+            class="flex-1 bg-white px-2 py-1 rounded-[8px]"
+            formControlName="province"
+            required
+          />
+        </div>
+        <div class="flex flex-col flex-1">
+          <label for="">CITY/MUNICIPALITY</label>
+          <input
+            type="text"
+            class="flex-1 bg-white px-2 py-1 rounded-[8px]"
+            formControlName="city"
+            required
+          />
+        </div>
+        <div class="flex flex-col flex-1">
+          <label for="">BARANGAY</label>
+          <input
+            type="text"
+            class="flex-1 bg-white px-2 py-1 rounded-[8px]"
+            formControlName="barangay"
+            required
+          />
+        </div>
+      </div>
+
+      <div class="flex justify-center items-start gap-4">
         <img
           src="../../../assets/profiles/batman.jpg"
           alt=""
-          class="aspect-square min-w-[100px]"
+          class="aspect-square min-w-[80px]"
         />
-        <input type="text" placeholder="EMAIL" class="flex-1" />
-        <input type="text" placeholder="PHONE NUMBER" class="flex-1" />
-        <input type="text" placeholder="BIRTHDATE" class="flex-1" />
+        <div class="flex flex-col flex-1">
+          <label for="">SEX</label>
+          <input
+            type="text"
+            class="flex-1 bg-white px-2 py-1 rounded-[8px]"
+            formControlName="sex"
+            required
+          />
+        </div>
+        <div class="flex flex-col flex-1">
+          <label for="">LANGUAGE</label>
+          <input
+            type="text"
+            class="flex-1 bg-white px-2 py-1 rounded-[8px]"
+            formControlName="language"
+            required
+          />
+        </div>
+        <div class="flex flex-col flex-1">
+          <label for="">CITIZENSHIP</label>
+          <input
+            type="text"
+            class="flex-1 bg-white px-2 py-1 rounded-[8px]"
+            formControlName="citizenship"
+            required
+          />
+        </div>
+        <div class="flex flex-col flex-1">
+          <label for="">AGE</label>
+          <input
+            type="text"
+            class="flex-1 bg-white px-2 py-1 rounded-[8px]"
+            formControlName="age"
+            required
+          />
+        </div>
+        <div class="flex flex-col flex-1">
+          <label for="">CIVIL STATUS</label>
+          <input
+            type="text"
+            class="flex-1 bg-white px-2 py-1 rounded-[8px]"
+            formControlName="civil_status"
+            required
+          />
+        </div>
       </div>
-      <div class="flex justify-center items-center gap-4">
-        <input type="text" placeholder="LASTNAME" class="flex-1" />
-        <input type="text" placeholder="FIRSTNAME" class="flex-1" />
-        <input type="text" placeholder="MIDDLENAME" class="flex-1" />
-        <input type="text" placeholder="EXT. NAME" class="flex-1" />
-      </div>
-      <div class="flex justify-center items-center gap-4">
-        <input type="text" placeholder="REGION" class="flex-1" />
-        <input type="text" placeholder="PROVINCE" class="flex-1" />
-        <input type="text" placeholder="CITY/MUNICIPALITY" class="flex-1" />
-        <input type="text" placeholder="BARANGAY" class="flex-1" />
-      </div>
-      <div class="flex justify-center items-center gap-4">
-        <input type="text" placeholder="GENDER" class="flex-1" />
-        <input type="text" placeholder="CITY/LANGUAGE" class="flex-1" />
-        <input type="text" placeholder="NATIONALITY" class="flex-1" />
-      </div>
-      <input type="submit" />
-    </form>
+    </div>
   </div>
-</div>
+  <input type="submit" />
+</form>
