@@ -7,13 +7,19 @@ import { NgFor } from '@angular/common';
 
 export interface college {
   map(arg0: (item: any) => any): any;
-  'college_id': number;
+  'college_ID': number;
   'college_name': string;
   'college_abbv': string;
   'bgColor': string;
   'imgPath': string;
 
 }
+
+export interface employment {
+  'employmentType': string;
+  'empStatus': number
+}
+
 
 @Component({
   selector: 'app-manage-faculty',
@@ -26,6 +32,17 @@ export interface college {
 
 
 export class ManageFacultyComponent implements OnInit {
+
+
+  disabledBox: boolean = false;
+employmentStatus:employment[] = [
+  {'employmentType': 'Part-Time', 'empStatus': 0},
+  {'employmentType': 'Full-Time', 'empStatus': 1},
+]
+
+positions: string[] = [
+  "Dean", "Coordinator", "Instructor"
+]
 
 facultyInfo = new FormGroup({
     email: new FormControl(''),
@@ -42,34 +59,38 @@ facultyInfo = new FormGroup({
     gender: new FormControl(''),
     language: new FormControl(''),
     nationality: new FormControl(''),
-    college: new FormControl(''),
-    course: new FormControl(''),
+    program: new FormControl(''),
     position: new FormControl(''),
-    employment: new FormControl(''),
+    employment: new FormControl(-1),
   });
 
-  setCollege(value: string): void {
-    this.facultyInfo.patchValue({
-      college: value
-    });
+  college: number = -1;
+  setCollege(value: number): void {
+    this.college = value
   }
 
   setPosition(value: string): void {
     this.facultyInfo.patchValue({
-      college: value
+      position: value
     });
   }
 
-  setCourse(value: string): void {
+  setProgram(value: string): void {
     this.facultyInfo.patchValue({
-      course: value
+      program: value
     })
   }
 
-  setEmployment(value: string): void {
+  setEmployment(value: number): void {
     this.facultyInfo.patchValue({
       employment: value
     })
+
+    if(value != 1) {
+      this.disabledBox = true;
+    } else {
+      this.disabledBox = false;
+    }
   }
 
   onSubmit() {

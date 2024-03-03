@@ -2,21 +2,29 @@
   type="radio"
   id="{{ collegeAbbv }}"
   name="{{ radioGroup }}"
-  value="{{ collegeAbbv }}"
+  value="{{ id }}"
   #role
   (click)="setFacultyRole(role.value)"
   class="hidden peer"
+  [disabled]="disabled"
 />
 <label
   for="{{ collegeAbbv }}"
   [ngClass]="{
-      'bg-[#FF7A00]/[0.5] border-[#FF7A00] from-[#FF7A00] to-[white]': bgColor === '#FF7A00',
-      'bg-[#0077CC]/[0.5] border-[#0077CC] from-[#0077CC] to-[white]': bgColor === '#0077CC',
-      'bg-[#FFDF00]/[0.5] border-[#FFDF00] from-[#FFDF00] to-[white]': bgColor === '#FFDF00',
-      'bg-[#FF0082]/[0.5] border-[#FF0082] from-[#FF0082] to-[white]': bgColor === '#FF0082',
-      'bg-[#FF0000]/[0.5] border-[#FF0000] from-[#FF0000] to-[white]': bgColor === '#FF0000',
+    'bg-[#FF7A00]/[0.5] border-[#FF7A00] from-[#FF7A00] to-[white]':
+      collegeAbbv === 'CCS',
+    'bg-[#0077CC]/[0.5] border-[#0077CC] from-[#0077CC] to-[white]':
+      collegeAbbv === 'CEAS',
+    'bg-[#FFDF00]/[0.5] border-[#FFDF00] from-[#FFDF00] to-[white]':
+      collegeAbbv === 'CBA',
+    'bg-[#FF0082]/[0.5] border-[#FF0082] from-[#FF0082] to-[white]':
+      collegeAbbv === 'CHTM',
+    'bg-[#FF0000]/[0.5] border-[#FF0000] from-[#FF0000] to-[white]':
+      collegeAbbv === 'CAHS',
+    'bg-[#084484] from-[#084484] to-[white]': !collegeTitle && !disabled,
+    'bg-[#333333]': disabled
   }"
-  class="flex-1 cursor-pointer border-2 rounded-[8px] text-white px-4 py-6 relative flex flex-col justify-center items-start h-full transition-all duration-75 hover:bg-gradient-to-t hover:scale-105 peer-checked:scale-105 peer-checked:bg-gradient-to-t"
+  class="flex-1 cursor-pointer border-2 rounded-[8px] text-white px-4 py-8 relative flex flex-col justify-center items-start h-full transition-all duration-75 hover:bg-gradient-to-t hover:scale-105 peer-checked:scale-105 peer-checked:bg-gradient-to-t"
 >
   <h6 class="text-[24px] font-bold">{{ collegeAbbv }}</h6>
   <P class="text-[16px] font-bold z-10">{{ collegeTitle }}</P>

@@ -11,11 +11,13 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 export class GcBoxComponent {
 
   @Input('collegeAbbv') collegeAbbv: string = ''
-  @Input('collegeTitle') collegeTitle: string = ''
+  @Input('Title') collegeTitle: string = ''
   @Input('imgPath') imgPath: string = ''
   @Input('bgColor') bgColor: string = ''
-  @Input('id') id: number = 0
+  @Input('id') id?: number = 0
   @Input('radioGroup') radioGroup:string = ''
+  @Input('disabled') disabled:boolean = false
+
 
   @Output() setRole = new EventEmitter()
 

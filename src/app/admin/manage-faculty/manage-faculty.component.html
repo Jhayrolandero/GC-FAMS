@@ -14,72 +14,51 @@
     <div class="grid grid-cols-5 gap-2 items-stretch">
       <app-gc-box
         *ngFor="let college of colleges"
+        [id]="college.college_ID"
         [collegeAbbv]="college.college_abbv"
-        [collegeTitle]="college.college_name"
-        [bgColor]="college.bgColor"
+        [Title]="college.college_name"
         [imgPath]="college.imgPath"
         (setRole)="setCollege($event)"
         [radioGroup]="'college'"
       ></app-gc-box>
     </div>
     <div class="flex-1 flex flex-row gap-4">
-      <div class="flex-1">
+      <div class="flex-1 flex flex-col">
         <h4 class="border-b-2 border-black font-bold text-[24px]">
           EMPLOYMENT
         </h4>
         <div class="grid grid-cols-2 gap-2 pt-4">
           <app-gc-box
-            [collegeAbbv]="'PART-TIME'"
-            [collegeTitle]="'PART-TIME'"
-            [bgColor]="'#FF7A00'"
+            *ngFor="let employment of employmentStatus"
+            [collegeAbbv]="employment.employmentType"
+            [id]="employment.empStatus"
             [imgPath]="'../../../../assets/college-logo/ccs.png'"
-            (setRole)="setCollege($event)"
-            [radioGroup]="'course'"
-          ></app-gc-box>
-          <app-gc-box
-            [collegeAbbv]="'FULL-TIME'"
-            [bgColor]="'#FF7A00'"
-            [imgPath]="'../../../../assets/college-logo/ccs.png'"
-            (setRole)="setCollege($event)"
-            [radioGroup]="'course'"
+            (setRole)="setEmployment($event)"
+            [radioGroup]="'employment'"
           ></app-gc-box>
         </div>
       </div>
-      <div class="flex-1">
+      <div class="flex-1 flex flex-col">
         <h4 class="border-b-2 border-black font-bold text-[24px]">POSITION</h4>
-        <div class="flex-1 flex gap-2 pt-4">
+        <div class="flex flex-row gap-2 pt-4">
           <app-gc-box
-            [collegeAbbv]="'BSCS'"
-            [collegeTitle]="'Bachelor of Science in Computer Science'"
+            *ngFor="let position of positions"
+            [collegeAbbv]="position"
             [bgColor]="'#FF7A00'"
             [imgPath]="'../../../../assets/college-logo/ccs.png'"
-            (setRole)="setCollege($event)"
-            [radioGroup]="'course'"
-          ></app-gc-box>
-          <app-gc-box
-            [collegeAbbv]="'BSCS'"
-            [collegeTitle]="'Bachelor of Science in Computer Science'"
-            [bgColor]="'#FF7A00'"
-            [imgPath]="'../../../../assets/college-logo/ccs.png'"
-            (setRole)="setCollege($event)"
-            [radioGroup]="'course'"
-          ></app-gc-box>
-          <app-gc-box
-            [collegeAbbv]="'BSCS'"
-            [collegeTitle]="'Bachelor of Science in Computer Science'"
-            [bgColor]="'#FF7A00'"
-            [imgPath]="'../../../../assets/college-logo/ccs.png'"
-            (setRole)="setCollege($event)"
-            [radioGroup]="'course'"
+            (setRole)="setPosition($event)"
+            [radioGroup]="'position'"
+            class="flex-1"
+            [disabled]="disabledBox"
           ></app-gc-box>
         </div>
       </div>
     </div>
-    <h4 class="border-b-2 border-black font-bold text-[24px]">COURSE</h4>
+    <h4 class="border-b-2 border-black font-bold text-[24px]">PROGRAM</h4>
     <div class="grid grid-cols-3 gap-2 pt-4">
       <app-gc-box
         [collegeAbbv]="'BSCS'"
-        [collegeTitle]="'Bachelor of Science in Computer Science'"
+        [Title]="'Bachelor of Science in Computer Science'"
         [bgColor]="'#FF7A00'"
         [imgPath]="'../../../../assets/college-logo/ccs.png'"
         (setRole)="setCollege($event)"
@@ -87,7 +66,7 @@
       ></app-gc-box>
       <app-gc-box
         [collegeAbbv]="'BSIT'"
-        [collegeTitle]="'Bachelor of Science in Information Technology'"
+        [Title]="'Bachelor of Science in Information Technology'"
         [bgColor]="'#FF7A00'"
         [imgPath]="'../../../../assets/college-logo/ccs.png'"
         (setRole)="setCollege($event)"
@@ -95,7 +74,7 @@
       ></app-gc-box>
       <app-gc-box
         [collegeAbbv]="'BSEMC'"
-        [collegeTitle]="
+        [Title]="
           'Bachelor of Science in Entertainment and Multimedia Computing'
         "
         [bgColor]="'#FF7A00'"
