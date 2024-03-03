@@ -54,51 +54,57 @@ positions: string[] = [
 ]
 
 facultyInfo = new FormGroup({
-    email: new FormControl(''),
-    phonenumber: new FormControl(''),
-    birthdate: new FormControl(''),
-    lastname: new FormControl(''),
-    firstname: new FormControl(''),
-    middlename: new FormControl(''),
-    extname: new FormControl(''),
-    region: new FormControl(''),
-    province: new FormControl(''),
-    city: new FormControl(''),
-    barangay: new FormControl(''),
-    gender: new FormControl(''),
-    language: new FormControl(''),
-    nationality: new FormControl(''),
-    program: new FormControl(''),
-    position: new FormControl(''),
-    employment: new FormControl(-1),
+  college_ID: new FormControl(-1),
+  teaching_position: new FormControl(''),
+  first_name: new FormControl(''),
+  last_name: new FormControl(''),
+  birthdate: new FormControl(''),
+  age: new FormControl(),
+  citizenship: new FormControl(''),
+  civil_status: new FormControl(''),
+  sex: new FormControl(''),
+  email: new FormControl(''),
+  employment_status: new FormControl(-1),
+  phone_number: new FormControl(''),
+  middle_name: new FormControl(''),
+  ext_name: new FormControl(''),
+  region: new FormControl(''),
+  province: new FormControl(''),
+  language: new FormControl(''),
+  city: new FormControl(''),
+  barangay: new FormControl(''),
   });
+  // program: new FormControl(''),
 
   selectedCollege: number = -1;
   setCollege(value: number): void {
+    this.facultyInfo.patchValue({
+      college_ID: value
+    });
     this.selectedCollege = value
   }
 
   setPosition(value: string): void {
     this.facultyInfo.patchValue({
-      position: value
+      teaching_position: value
     });
   }
 
   setProgram(value: string): void {
-    this.facultyInfo.patchValue({
-      program: value
-    })
+    // this.facultyInfo.patchValue({
+    //   program: value
+    // })
   }
 
   setEmployment(value: number): void {
     this.facultyInfo.patchValue({
-      employment: value
+      employment_status: value
     })
 
     if(value != 1) {
       this.disabledBox = true;
       this.facultyInfo.patchValue({
-        position: 'instructor'
+        teaching_position: 'instructor'
       })
     } else {
       this.disabledBox = false;
@@ -107,7 +113,10 @@ facultyInfo = new FormGroup({
 
   onSubmit() {
     // TODO: Use EventEmitter with form value
-    console.log(this.facultyInfo.value);
+    this.College.addFaculty(this.facultyInfo.value).subscribe(
+      msg => console.log(msg)
+    )
+
   }
   colleges: college[] = [];
   programs: program[] = [];

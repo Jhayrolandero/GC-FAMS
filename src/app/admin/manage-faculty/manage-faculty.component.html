@@ -35,7 +35,7 @@
             [id]="employment.empStatus"
             [imgPath]="'../../../../assets/college-logo/ccs.png'"
             (setRole)="setEmployment($event)"
-            [radioGroup]="'employment'"
+            [radioGroup]="'employment_status'"
           ></app-gc-box>
         </div>
       </div>
@@ -80,6 +80,7 @@
             type="text"
             class="flex-1 bg-white px-2 py-1 rounded-[8px]"
             formControlName="email"
+            required
           />
         </div>
         <div class="flex flex-col flex-1">
@@ -87,7 +88,8 @@
           <input
             type="text"
             class="flex-1 bg-white px-2 py-1 rounded-[8px]"
-            formControlName="phonenumber"
+            formControlName="phone_number"
+            required
           />
         </div>
         <div class="flex flex-col flex-1">
@@ -96,6 +98,7 @@
             type="text"
             class="flex-1 bg-white px-2 py-1 rounded-[8px]"
             formControlName="birthdate"
+            required
           />
         </div>
       </div>
@@ -105,7 +108,8 @@
           <input
             type="text"
             class="flex-1 bg-white px-2 py-1 rounded-[8px]"
-            formControlName="lastname"
+            formControlName="last_name"
+            required
           />
         </div>
         <div class="flex flex-col flex-1">
@@ -113,7 +117,8 @@
           <input
             type="text"
             class="flex-1 bg-white px-2 py-1 rounded-[8px]"
-            formControlName="firstname"
+            formControlName="first_name"
+            required
           />
         </div>
         <div class="flex flex-col flex-1">
@@ -121,7 +126,8 @@
           <input
             type="text"
             class="flex-1 bg-white px-2 py-1 rounded-[8px]"
-            formControlName="middlename"
+            formControlName="middle_name"
+            required
           />
         </div>
         <div class="flex flex-col flex-1">
@@ -129,7 +135,8 @@
           <input
             type="text"
             class="flex-1 bg-white px-2 py-1 rounded-[8px]"
-            formControlName="extname"
+            formControlName="ext_name"
+            required
           />
         </div>
       </div>
@@ -140,6 +147,7 @@
             type="text"
             class="flex-1 bg-white px-2 py-1 rounded-[8px]"
             formControlName="region"
+            required
           />
         </div>
         <div class="flex flex-col flex-1">
@@ -148,6 +156,7 @@
             type="text"
             class="flex-1 bg-white px-2 py-1 rounded-[8px]"
             formControlName="province"
+            required
           />
         </div>
         <div class="flex flex-col flex-1">
@@ -156,6 +165,7 @@
             type="text"
             class="flex-1 bg-white px-2 py-1 rounded-[8px]"
             formControlName="city"
+            required
           />
         </div>
         <div class="flex flex-col flex-1">
@@ -164,9 +174,11 @@
             type="text"
             class="flex-1 bg-white px-2 py-1 rounded-[8px]"
             formControlName="barangay"
+            required
           />
         </div>
       </div>
+
       <div class="flex justify-center items-start gap-4">
         <img
           src="../../../assets/profiles/batman.jpg"
@@ -174,11 +186,12 @@
           class="aspect-square min-w-[80px]"
         />
         <div class="flex flex-col flex-1">
-          <label for="">GENDER</label>
+          <label for="">SEX</label>
           <input
             type="text"
             class="flex-1 bg-white px-2 py-1 rounded-[8px]"
-            formControlName="gender"
+            formControlName="sex"
+            required
           />
         </div>
         <div class="flex flex-col flex-1">
@@ -187,14 +200,34 @@
             type="text"
             class="flex-1 bg-white px-2 py-1 rounded-[8px]"
             formControlName="language"
+            required
           />
         </div>
         <div class="flex flex-col flex-1">
-          <label for="">NATIONALITY</label>
+          <label for="">CITIZENSHIP</label>
           <input
             type="text"
             class="flex-1 bg-white px-2 py-1 rounded-[8px]"
-            formControlName="nationality"
+            formControlName="citizenship"
+            required
+          />
+        </div>
+        <div class="flex flex-col flex-1">
+          <label for="">AGE</label>
+          <input
+            type="text"
+            class="flex-1 bg-white px-2 py-1 rounded-[8px]"
+            formControlName="age"
+            required
+          />
+        </div>
+        <div class="flex flex-col flex-1">
+          <label for="">CIVIL STATUS</label>
+          <input
+            type="text"
+            class="flex-1 bg-white px-2 py-1 rounded-[8px]"
+            formControlName="civil_status"
+            required
           />
         </div>
       </div>
