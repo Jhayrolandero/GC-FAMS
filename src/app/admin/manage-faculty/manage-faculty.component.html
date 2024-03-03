@@ -13,52 +13,21 @@
     <h4 class="border-b-2 border-black font-bold text-[24px]">COLLEGE</h4>
     <div class="grid grid-cols-5 gap-2 items-stretch">
       <app-gc-box
-        [collegeAbbv]="'CCS'"
-        [collegeTitle]="'College of Computer Studies'"
-        [bgColor]="'#FF7A00'"
-        [imgPath]="'../../../../assets/college-logo/ccs.png'"
-        (setRole)="setCollege($event)"
-        [radioGroup]="'college'"
-      ></app-gc-box>
-      <app-gc-box
-        [collegeAbbv]="'CEAS'"
-        [collegeTitle]="'College of Education, Arts and Sciences'"
-        [bgColor]="'#0077CC'"
-        [imgPath]="'../../../../assets/college-logo/ceas.png'"
-        (setRole)="setCollege($event)"
-        [radioGroup]="'college'"
-      ></app-gc-box>
-      <app-gc-box
-        [collegeAbbv]="'CBA'"
-        [collegeTitle]="'College of Business and Accountancy'"
-        [bgColor]="'#FFDF00'"
-        [imgPath]="'../../../../assets/college-logo/cba.png'"
-        (setRole)="setCollege($event)"
-        [radioGroup]="'college'"
-      ></app-gc-box>
-      <app-gc-box
-        [collegeAbbv]="'CHTM'"
-        [collegeTitle]="'College of Hospitality and Tourism Management'"
-        [bgColor]="'#FF0082'"
-        [imgPath]="'../../../../assets/college-logo/chtm.png'"
-        (setRole)="setCollege($event)"
-        [radioGroup]="'college'"
-      ></app-gc-box>
-      <app-gc-box
-        [collegeAbbv]="'CAHS'"
-        [collegeTitle]="'College of Allied Health Studies'"
-        [bgColor]="'#FF0000'"
-        [imgPath]="'../../../../assets/college-logo/cahs.png'"
+        *ngFor="let college of colleges"
+        [collegeAbbv]="college.college_abbv"
+        [collegeTitle]="college.college_name"
+        [bgColor]="college.bgColor"
+        [imgPath]="college.imgPath"
         (setRole)="setCollege($event)"
         [radioGroup]="'college'"
       ></app-gc-box>
     </div>
-    <div class="flex flex-row gap-4">
+    <div class="flex-1 flex flex-row gap-4">
       <div class="flex-1">
         <h4 class="border-b-2 border-black font-bold text-[24px]">
           EMPLOYMENT
         </h4>
-        <div class="flex-1 flex gap-2 pt-4">
+        <div class="grid grid-cols-2 gap-2 pt-4">
           <app-gc-box
             [collegeAbbv]="'PART-TIME'"
             [collegeTitle]="'PART-TIME'"
