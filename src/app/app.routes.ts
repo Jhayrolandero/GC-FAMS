@@ -8,20 +8,27 @@ import { PagenotfoundComponent } from './components/pagenotfound/pagenotfound.co
 import { AnalyticsComponent } from './faculty/analytics/analytics.component';
 import { ScheduleComponent } from './faculty/schedule/schedule.component';
 import { CommunityExtensionsComponent } from './faculty/community-extensions/community-extensions.component';
+import { ProfileComponent } from './faculty/profile/profile.component';
 import { FacultyScheduleComponent } from './admin/faculty-schedule/faculty-schedule.component';
 import { ManageFacultyComponent } from './admin/manage-faculty/manage-faculty.component';
+import { EvaluationComponent } from './faculty/evaluation/evaluation.component';
+import { ProjectsComponent } from './faculty/projects/projects.component';
+
 export const routes: Routes = [
   {path: '', redirectTo: '/login', pathMatch: 'full'},
+  {path: 'faculty', redirectTo: '/faculty/profile', pathMatch: 'full'},
+  {path: 'admin', redirectTo: '/admin/admin-profile', pathMatch: 'full'},
+  
   {path: 'login', component: LoginComponent},
   {path: 'faculty', component: FacultyComponent, children: [
-    {path: 'profile', component: AnalyticsComponent},
+    {path: 'profile', component: ProfileComponent},
     {path: 'analytics', component: AnalyticsComponent},
     {path: 'schedule', component: ScheduleComponent},
-    {path: 'projects', component: AnalyticsComponent},
+    {path: 'projects', component: ProjectsComponent},
     {path: 'graduate-studies', component: AnalyticsComponent},
     {path: 'certifications', component: AnalyticsComponent},
     {path: 'community-extensions', component: CommunityExtensionsComponent},
-    {path: 'evaluation', component: AnalyticsComponent},
+    {path: 'evaluation', component: EvaluationComponent},
   ]},
   {path: 'admin', component: AdminComponent, children: [
     {path: 'admin-profile', component: ProgramAnalyticsComponent},

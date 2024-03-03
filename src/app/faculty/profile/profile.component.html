@@ -1,1 +1,110 @@
-<p>profile works!</p>
+<div
+  *ngIf="facultyProfile != undefined" class="min-h-screen p-5 max-w-screen-fourk ml-[250px] flex flex-col gap-3 text-blue"
+>
+    <div class="w-100 bg-white rounded-[25px] overflow-hidden shadow-lg">
+        <div class="w-100 h-[150px] bg-red-200 overflow-hidden"><img class="w-full" [src]="facultyProfile.cover_image"></div>
+        <div class="rounded-full bg-greenBar w-[150px] h-[150px] absolute ml-7 top-[135px] overflow-hidden border-8 border-white"><img [src]="facultyProfile.profile_image"></div>
+        <div class="flex justify-between">
+          <p class="text-[2rem] font-Poppins font-semibold ml-7 mt-[55px] mb-2">{{ facultyProfile.first_name }} {{ facultyProfile.last_name }}</p>
+          <div class="rounded-[25px] bg-blue w-[50%] mx-5 my-3 shadow-lg px-7 flex items-center">
+
+            <div class="w-[60%]">
+              <div class="flex flex-row font-Roboto font-bold text-white text-[0.85rem] justify-between">
+                <p>Class Code: 177013</p>
+                <p>M 7:00 AM - 11:00 AM</p>
+                <p>Room 407</p>
+              </div>
+              <div>
+                <p class="font-Roboto font-bold text-white text-[2rem]">Discrete Structures</p>
+              </div>
+            </div>
+
+            <div class="w-[40%]">
+              <p class="text-white font-Roboto font-bold text-[1.8rem] opacity-50 float-end">Next Class</p>
+            </div>
+          </div>
+        </div>
+    </div>
+
+    <div class="w-100 flex flex-row">
+      <div class="w-full mr-2">
+
+        <div class="mb-4 w-full bg-white rounded-[25px] overflow-hidden shadow-lg">
+          <div class="bg-blue py-1 flex flex-row items-center pl-5">
+            <svg (click)="toggle('ed')" width="23" height="23" viewBox="0 0 39 40" fill="none" xmlns="http://www.w3.org/2000/svg" [ngClass]="{'rotate-[270deg]': educToggle != true}">
+              <path d="M32.37 15.0437L21.775 25.6387C20.5238 26.89 18.4763 26.89 17.225 25.6387L6.63 15.0437" stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+  
+            <p class="text-white text-[1.5rem] font-Poppins font-semibold ml-2 select-none">Educational Attainment</p>
+          </div>
+          <app-faculty-education *ngIf="educToggle == true" ></app-faculty-education>
+        </div>
+
+        <div class="mb-4 w-full bg-white rounded-[25px] overflow-hidden shadow-lg">
+          <div class="bg-blue py-1 flex flex-row items-center pl-5">
+            <svg (click)="toggle('cr')"  width="23" height="23" viewBox="0 0 39 40" fill="none" xmlns="http://www.w3.org/2000/svg" [ngClass]="{'rotate-[270deg]': certToggle != true}">
+              <path d="M32.37 15.0437L21.775 25.6387C20.5238 26.89 18.4763 26.89 17.225 25.6387L6.63 15.0437" stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+  
+            <p class="text-white text-[1.5rem] font-Poppins font-semibold ml-2 select-none">Certifications</p>
+          </div>
+          <app-faculty-education  *ngIf="certToggle == true" ></app-faculty-education>
+        </div>
+
+        <div class="mb-4 w-full bg-white rounded-[25px] overflow-hidden shadow-lg">
+          <div class="bg-blue py-1 flex flex-row items-center pl-5">
+            <svg (click)="toggle('ex')"  width="23" height="23" viewBox="0 0 39 40" fill="none" xmlns="http://www.w3.org/2000/svg" [ngClass]="{'rotate-[270deg]': expToggle != true}">
+              <path d="M32.37 15.0437L21.775 25.6387C20.5238 26.89 18.4763 26.89 17.225 25.6387L6.63 15.0437" stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+  
+            <p class="text-white text-[1.5rem] font-Poppins font-semibold ml-2 select-none">Expertise</p>
+          </div>
+          <app-faculty-education *ngIf="expToggle == true" ></app-faculty-education>
+        </div>
+      </div>
+
+      <div class="w-[450px] ml-2">
+        <div class="w-full bg-white rounded-[25px] overflow-hidden shadow-lg">
+          <div *ngIf="facultyProfile.college_ID == 1" class="bg-blue h-[170px] py-1 flex flex-row items-center pl-5 overflow-hidden">
+            <div class="flex flex-col grow-0 absolute">
+              <p class="text-white text-[2.2rem] font-Poppins font-semibold ml-2">CCS</p>
+              <p class="text-white text-[1rem] font-Poppins font-medium ml-2">College of<br>Computer Science</p>
+            </div>
+            <div class="w-[190px] h-[190px] rounded-full relative left-[180px] top-[28px] grow-0"><img src="../../../assets/college-logo-big/CCS.png"></div>
+          </div>
+          <div class="mx-8 mt-4">
+            <p class="font-Poppins font-semibold text-[1.5rem] my-5">Contact</p>
+            <hr class="h-[3px] bg-mainGray">
+            <p class="font-Roboto font-regular text-black my-5">{{ facultyProfile.email }}</p>
+          </div>
+
+          <div class="mx-8 mt-8">
+            <p class="font-Poppins font-semibold text-[1.5rem]">Personal</p>
+            <hr class="h-[3px] bg-mainGray">
+            <div class="flex flex-row">
+              <div class="mr-6 font-Roboto font-bold text-black [&_p]:my-5">
+                <p >Birthdate</p>
+                <p >Age</p>
+                <p >Citizenship</p>
+                <p >Civil Status</p>
+                <p >Sex</p>
+              </div>
+              <div class="font-Roboto font-regular text-black [&_p]:my-5">
+                <p >{{ facultyProfile.birthdate }}</p>
+                <p >{{ facultyProfile.age }}</p>
+                <p >{{ facultyProfile.citizenship }}</p>
+                <p >{{ facultyProfile.civil_status }}</p>
+                <p >{{ facultyProfile.sex }}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="mx-8 mt-4">
+            <p class="font-Poppins font-semibold text-[1.5rem]">QR Code</p>
+            <hr class="h-[3px] bg-mainGray">
+            <p>{{ facultyProfile.email }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
