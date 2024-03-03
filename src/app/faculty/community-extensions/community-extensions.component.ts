@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommunityExtensionService } from '../../services/faculty/community-extension.service';
-import { CommunityExtension } from '../../services/faculty/community-extension';
+import { CommunityExtension } from '../../services/Interfaces/community-extension';
 import { OtherCommexComponent } from './other-commex/other-commex.component';
 import { NgFor, SlicePipe } from '@angular/common';
 @Component({

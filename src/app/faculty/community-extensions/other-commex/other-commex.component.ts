@@ -1,6 +1,6 @@
 import { NgFor } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { CommunityExtension } from '../../../services/faculty/community-extension';
+import { CommunityExtension } from '../../../services/Interfaces/community-extension';
 @Component({
   selector: 'app-other-commex',
   standalone: true,
