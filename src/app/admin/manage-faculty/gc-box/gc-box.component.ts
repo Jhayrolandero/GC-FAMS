@@ -14,7 +14,7 @@ export class GcBoxComponent {
   @Input('Title') collegeTitle: string = ''
   @Input('imgPath') imgPath: string = ''
   @Input('bgColor') bgColor: string = ''
-  @Input('id') id?: number = 0
+  @Input('id') id?: number | string = 0
   @Input('radioGroup') radioGroup:string = ''
   @Input('disabled') disabled:boolean = false
 

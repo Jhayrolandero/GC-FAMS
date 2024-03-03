@@ -12,7 +12,16 @@ export interface college {
   'college_abbv': string;
   'bgColor': string;
   'imgPath': string;
+}
 
+export interface program {
+  map(arg0: (item: any) => any): any;
+  'program_id': number;
+  'college_id': number;
+  'program_name': string;
+  'program_abbv': string;
+  'bgColor': string;
+  'imgPath': string;
 }
 
 export interface employment {
@@ -64,9 +73,9 @@ facultyInfo = new FormGroup({
     employment: new FormControl(-1),
   });
 
-  college: number = -1;
+  selectedCollege: number = -1;
   setCollege(value: number): void {
-    this.college = value
+    this.selectedCollege = value
   }
 
   setPosition(value: string): void {
@@ -88,6 +97,9 @@ facultyInfo = new FormGroup({
 
     if(value != 1) {
       this.disabledBox = true;
+      this.facultyInfo.patchValue({
+        position: 'instructor'
+      })
     } else {
       this.disabledBox = false;
     }
@@ -98,10 +110,23 @@ facultyInfo = new FormGroup({
     console.log(this.facultyInfo.value);
   }
   colleges: college[] = [];
+  programs: program[] = [];
+
+  filterPrograms(): program[] {
+
+    let programs: program[] = []
+    this.programs.map(program => {
+      if(this.selectedCollege > 0 && this.selectedCollege == program.college_id) {
+        programs.push(program)
+      }
+    })
+    return programs
+  }
 
   constructor(private College: CollegeService) {}
   ngOnInit(): void {
     this.fetchCollege()
+    this.fetchProgram()
   }
 
   fetchCollege():void {
@@ -109,11 +134,17 @@ facultyInfo = new FormGroup({
       colleges => {
         this.colleges = this.modifyData(colleges)
 
-        console.log(this.colleges)
       }
     )
   }
 
+  fetchProgram(): void {
+    this.College.fetchProgram().subscribe(
+      programs => {
+        this.programs = this.modifyData1(programs)
+      }
+    )
+  }
 
 
   abbvCollege(college: string): string {
@@ -168,7 +199,56 @@ facultyInfo = new FormGroup({
           };
       }
     });
+
   }
 
+  modifyData1(data: program): any {
+    // Example: Add a new property to each item
+    return data.map((item: program) => {
+
+      switch(item.college_id) {
+        case  1 :
+          return {
+            ...item,
+            program_abbv: this.abbvCollege(item.program_name),
+            bgColor: '#FF7A00',
+            imgPath: '../../../../assets/college-logo/ccs.png'
+            };
+          case  2:
+            return {
+              ...item,
+              program_abbv: this.abbvCollege(item.program_name),
+              bgColor: '#FFDF00',
+              imgPath: '../../../../assets/college-logo/cba.png'
+            };
+          case  4:
+            return {
+              ...item,
+              program_abbv: this.abbvCollege(item.program_name),
+              bgColor: '#0077CC',
+              imgPath: '../../../../assets/college-logo/ceas.png'
+            };
+          case  3:
+            return {
+              ...item,
+              program_abbv: this.abbvCollege(item.program_name),
+              bgColor: '#FF0000',
+              imgPath: '../../../../assets/college-logo/cahs.png'
+            };
+          case  5:
+            return {
+              ...item,
+              program_abbv: this.abbvCollege(item.program_name),
+              bgColor: '#FF0082',
+              imgPath: '../../../../assets/college-logo/chtm.png'
+            };
+        default:
+          return {
+            ...item,
+            newProperty: 'default'
+          };
+      }
+    });
+  }
 
 }

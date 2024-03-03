@@ -17,6 +17,7 @@
         [id]="college.college_ID"
         [collegeAbbv]="college.college_abbv"
         [Title]="college.college_name"
+        [bgColor]="college.bgColor"
         [imgPath]="college.imgPath"
         (setRole)="setCollege($event)"
         [radioGroup]="'college'"
@@ -44,43 +45,28 @@
           <app-gc-box
             *ngFor="let position of positions"
             [collegeAbbv]="position"
-            [bgColor]="'#FF7A00'"
             [imgPath]="'../../../../assets/college-logo/ccs.png'"
             (setRole)="setPosition($event)"
             [radioGroup]="'position'"
             class="flex-1"
             [disabled]="disabledBox"
+            [id]="position"
           ></app-gc-box>
         </div>
       </div>
     </div>
     <h4 class="border-b-2 border-black font-bold text-[24px]">PROGRAM</h4>
-    <div class="grid grid-cols-3 gap-2 pt-4">
+    <div class="flex gap-2 pt-4">
       <app-gc-box
-        [collegeAbbv]="'BSCS'"
-        [Title]="'Bachelor of Science in Computer Science'"
-        [bgColor]="'#FF7A00'"
-        [imgPath]="'../../../../assets/college-logo/ccs.png'"
-        (setRole)="setCollege($event)"
-        [radioGroup]="'course'"
-      ></app-gc-box>
-      <app-gc-box
-        [collegeAbbv]="'BSIT'"
-        [Title]="'Bachelor of Science in Information Technology'"
-        [bgColor]="'#FF7A00'"
-        [imgPath]="'../../../../assets/college-logo/ccs.png'"
-        (setRole)="setCollege($event)"
-        [radioGroup]="'course'"
-      ></app-gc-box>
-      <app-gc-box
-        [collegeAbbv]="'BSEMC'"
-        [Title]="
-          'Bachelor of Science in Entertainment and Multimedia Computing'
-        "
-        [bgColor]="'#FF7A00'"
-        [imgPath]="'../../../../assets/college-logo/ccs.png'"
-        (setRole)="setCollege($event)"
-        [radioGroup]="'course'"
+        *ngFor="let program of filterPrograms()"
+        [collegeAbbv]="program.program_abbv"
+        [Title]="program.program_name"
+        [bgColor]="program.bgColor"
+        [imgPath]="program.imgPath"
+        (setRole)="setProgram($event)"
+        [radioGroup]="'program'"
+        class="flex-1"
+        [id]="program.program_id"
       ></app-gc-box>
     </div>
     <h4 class="border-b-2 border-black font-bold text-[24px]">

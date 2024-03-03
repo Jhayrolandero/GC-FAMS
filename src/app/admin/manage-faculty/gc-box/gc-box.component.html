@@ -12,15 +12,15 @@
   for="{{ collegeAbbv }}"
   [ngClass]="{
     'bg-[#FF7A00]/[0.5] border-[#FF7A00] from-[#FF7A00] to-[white]':
-      collegeAbbv === 'CCS',
+      bgColor === '#FF7A00',
     'bg-[#0077CC]/[0.5] border-[#0077CC] from-[#0077CC] to-[white]':
-      collegeAbbv === 'CEAS',
+      bgColor === '#0077CC',
     'bg-[#FFDF00]/[0.5] border-[#FFDF00] from-[#FFDF00] to-[white]':
-      collegeAbbv === 'CBA',
+      bgColor === '#FFDF00',
     'bg-[#FF0082]/[0.5] border-[#FF0082] from-[#FF0082] to-[white]':
-      collegeAbbv === 'CHTM',
+      bgColor === '#FF0082',
     'bg-[#FF0000]/[0.5] border-[#FF0000] from-[#FF0000] to-[white]':
-      collegeAbbv === 'CAHS',
+      bgColor === '#FF0000',
     'bg-[#084484] from-[#084484] to-[white]': !collegeTitle && !disabled,
     'bg-[#333333]': disabled
   }"
