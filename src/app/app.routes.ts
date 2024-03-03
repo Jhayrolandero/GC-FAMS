@@ -11,6 +11,8 @@ import { CommunityExtensionsComponent } from './faculty/community-extensions/com
 import { ProfileComponent } from './faculty/profile/profile.component';
 import { FacultyScheduleComponent } from './admin/faculty-schedule/faculty-schedule.component';
 import { ManageFacultyComponent } from './admin/manage-faculty/manage-faculty.component';
+import { EvaluationComponent } from './faculty/evaluation/evaluation.component';
+import { ProjectsComponent } from './faculty/projects/projects.component';
 
 export const routes: Routes = [
   {path: '', redirectTo: '/login', pathMatch: 'full'},
@@ -22,11 +24,11 @@ export const routes: Routes = [
     {path: 'profile', component: ProfileComponent},
     {path: 'analytics', component: AnalyticsComponent},
     {path: 'schedule', component: ScheduleComponent},
-    {path: 'projects', component: AnalyticsComponent},
+    {path: 'projects', component: ProjectsComponent},
     {path: 'graduate-studies', component: AnalyticsComponent},
     {path: 'certifications', component: AnalyticsComponent},
     {path: 'community-extensions', component: CommunityExtensionsComponent},
-    {path: 'evaluation', component: AnalyticsComponent},
+    {path: 'evaluation', component: EvaluationComponent},
   ]},
   {path: 'admin', component: AdminComponent, children: [
     {path: 'admin-profile', component: ProgramAnalyticsComponent},

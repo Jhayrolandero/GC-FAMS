@@ -13,4 +13,6 @@ export interface Profile {
     email: string,
     employment_status: boolean,
     address: string
+    profile_image: Blob,
+    cover_image: Blob
 }

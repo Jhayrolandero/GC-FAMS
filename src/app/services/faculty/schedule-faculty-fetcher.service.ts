@@ -19,7 +19,7 @@ export class ScheduleFacultyFetcherService {
     return this.http.get<schedule[]>(this.url);
   }
 
-  fetchSchedDay(week: number){
+  fetchSchedDay(){
     let took = new HttpHeaders().set("Authorization", "Bearer " + this.auth.getToken());
     return this.http.get<schedule[]>(this.url, {headers:took});
   }

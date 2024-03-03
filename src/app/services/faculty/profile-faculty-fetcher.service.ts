@@ -14,6 +14,6 @@ export class ProfileFacultyFetcherService {
 
   fetchProfile(){
     let took = new HttpHeaders().set("Authorization", "Bearer " + this.auth.getToken());
-    return this.http.get<Profile[]>(this.url, {headers:took});
+    return this.http.get<Profile>(this.url, {headers:took});
   }
 }

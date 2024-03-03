@@ -30,7 +30,7 @@ export class ScheduleBlockComponent {
   
   getSchedule(){
     //Fetches the schedule data based on passed selected date
-    this.schedule.fetchSchedDay(this.week).subscribe((next: schedule[]) => {
+    this.schedule.fetchSchedDay().subscribe((next: schedule[]) => {
       console.log(next);
       this.schedules = next;
     }, (error) => {
