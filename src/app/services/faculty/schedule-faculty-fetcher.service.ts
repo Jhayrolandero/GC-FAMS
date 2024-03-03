@@ -8,7 +8,7 @@ import { RequestOptions } from 'https';
   providedIn: 'root'
 })
 export class ScheduleFacultyFetcherService {
-  url ='http://localhost:8080/GC-FaMS-API/API/';
+  url ='http://localhost:8080/GC-FaMS-API/API/getschedules/fetchFaculty';
   // tokenVal = document.cookie;
 
 
@@ -20,6 +20,6 @@ export class ScheduleFacultyFetcherService {
 
   fetchSchedDay(week: number){
     let took = new HttpHeaders().set("Authorization", "Bearer " + this.auth.getToken());
-    return this.http.get<schedule[]>(this.url + "getschedules/" + "1/" + week, {headers:took});
+    return this.http.get<schedule[]>(this.url, {headers:took});
   }
 }
