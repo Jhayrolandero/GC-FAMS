@@ -29,8 +29,7 @@ export class LoginComponent {
   	//Login form object
 	loginForm = new FormGroup({
 		email: new FormControl(''),
-		password: new FormControl(''),
-		privExpected: new FormControl(false)
+		password: new FormControl('')
 	})
 
 	constructor(){}
