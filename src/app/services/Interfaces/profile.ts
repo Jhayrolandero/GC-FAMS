@@ -12,7 +12,14 @@ export interface Profile {
     sex: string,
     email: string,
     employment_status: boolean,
-    address: string
+    phone_number: string,
+    middle_name: string,
+    ext_name: string,
+    region: string,
+    province: string,
+    language: string,
+    city: string,
+    barangay: string,
     profile_image: string,
     cover_image: string
 }

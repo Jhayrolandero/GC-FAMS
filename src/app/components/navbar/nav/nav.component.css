@@ -5,11 +5,13 @@ li {
 }
 
 li a {
-  height: 55px;
+  padding-left: 4px;
+  height: 3.5em;
   width: 100%;
   display: flex;
   align-items: center;
   font-family: Poppins;
+  font-size: 0.9em;
   font-weight: 400;
   color: #F0F0F0;
 }

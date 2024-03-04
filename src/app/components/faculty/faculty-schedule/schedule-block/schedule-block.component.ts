@@ -1,6 +1,6 @@
 import { Component, Input, SimpleChanges } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
-import { schedule } from '../../../../services/admin/schedule';
+import { Schedule } from '../../../../services/admin/schedule';
 import { Router } from '@angular/router';
 import { error } from 'node:console';
 import { FacultyFetcherService } from '../../../../services/faculty/faculty-fetcher.service';
@@ -15,8 +15,8 @@ import { FacultyFetcherService } from '../../../../services/faculty/faculty-fetc
 })
 export class ScheduleBlockComponent {
   @Input() week: number = new Date().getDate();
-  schedules: schedule[] = [];
-  filteredSchedule: schedule[] = [];
+  schedules: Schedule[] = [];
+  filteredSchedule: Schedule[] = [];
   weeks: string[] = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
   constructor(private facultyService:FacultyFetcherService, private router:Router){
@@ -30,7 +30,7 @@ export class ScheduleBlockComponent {
   
   getSchedule(){
     //Fetches the schedule data based on passed selected date
-    this.facultyService.fetchSchedDay().subscribe((next: schedule[]) => {
+    this.facultyService.fetchSchedDay().subscribe((next: Schedule[]) => {
       console.log(next);
       this.schedules = next;
     }, (error) => {

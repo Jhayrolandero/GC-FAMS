@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Profile } from '../../services/Interfaces/profile';
-import { schedule } from '../../services/admin/schedule';
+import { Schedule } from '../../services/admin/schedule';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { mainPort } from '../../app.component';
@@ -18,7 +18,7 @@ import { FacultyFetcherService } from '../../services/faculty/faculty-fetcher.se
 })
 export class ProfileComponent {
   facultyProfile!: Profile;
-  schedules: schedule[] = [];
+  schedules: Schedule[] = [];
   educToggle = true;
   certToggle = true;
   expToggle = true;
@@ -33,6 +33,7 @@ export class ProfileComponent {
       this.facultyProfile = next;
       this.facultyProfile.profile_image = mainPort + this.facultyProfile.profile_image;
       this.facultyProfile.cover_image = mainPort + this.facultyProfile.cover_image;
+      console.log(next);
     }, (error) => {
       if(error.status == 403){
         console.log(error);
@@ -43,7 +44,7 @@ export class ProfileComponent {
 
   getSchedule(){
     //Fetches the schedule data based on passed selected date
-    this.facultyService.fetchSchedDay().subscribe((next: schedule[]) => {
+    this.facultyService.fetchSchedDay().subscribe((next: Schedule[]) => {
       this.schedules = next;
     }, (error) => {
       if(error.status == 403){

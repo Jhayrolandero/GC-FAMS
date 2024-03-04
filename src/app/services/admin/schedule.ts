@@ -1,4 +1,4 @@
-export interface schedule {
+export interface Schedule {
   class_code: number;
   faculty_ID: number;
   course_code: string;

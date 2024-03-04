@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
+import { mainPort } from '../../app.component';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class CollegeService {
   facultyURI: string = "http://localhost/GC-FaMS-API/API/faculty"
 
   fetchCollege(): Observable<any> {
-    return this.http.get<any>("http://localhost/GC-FaMS-API/API/college");
+    return this.http.get<any>(mainPort + "/GC-FaMS-API/API/college");
   }
 
   fetchProgram($params? :string): Observable<any> {

@@ -1,6 +1,6 @@
 import { NgFor, NgIf } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { schedule } from '../../../services/admin/schedule';
+import { Schedule } from '../../../services/admin/schedule';
 
 @Component({
   selector: 'app-schedule-section',
@@ -11,5 +11,5 @@ import { schedule } from '../../../services/admin/schedule';
 })
 export class ScheduleSectionComponent {
 
-  @Input('schedules') schedules: schedule[] = [];
+  @Input('schedules') schedules: Schedule[] = [];
 }

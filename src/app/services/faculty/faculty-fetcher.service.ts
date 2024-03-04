@@ -4,7 +4,7 @@ import { AuthService } from '../auth.service';
 import { CommunityExtension } from '../Interfaces/community-extension';
 import { mainPort } from '../../app.component';
 import { Profile } from '../Interfaces/profile';
-import { schedule } from '../admin/schedule';
+import { Schedule } from '../admin/schedule';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +23,7 @@ export class FacultyFetcherService {
   }
 
   fetchSchedDay(){
-    return this.http.get<schedule[]>(mainPort + '/GC-FaMS-API/API/getschedules/fetchFaculty', {headers:this.getHeader()});
+    return this.http.get<Schedule[]>(mainPort + '/GC-FaMS-API/API/getschedules/fetchFaculty', {headers:this.getHeader()});
   }
 
   fetchProfile(){
