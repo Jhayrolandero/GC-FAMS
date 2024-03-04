@@ -38,13 +38,15 @@ export class LoginComponent {
 		this.validForm = true;
 		//Main http post request, uses JwtToken interface, and stringified loginForm
 		this.http.post<JwtToken>(this.url, this.loginForm.getRawValue()).subscribe((response) => {
+
 		//Success, wrong loginparams, and query error issue.
 		if(response.code == 200){
-			console.log("Login Authenticated.")
 			document.cookie = "token=" + response.token;
+			//Router for faculty privilege
 			if(response.privilege == 0){
 			this.router.navigate(['/faculty']);
 			}
+			//Router for admin privilege
 			else if(response.privilege == 1){
 			this.router.navigate(['/admin']);
 			}
@@ -60,5 +62,10 @@ export class LoginComponent {
 			this.validForm = false;
 		}
 		})
+	}
+
+	showPass(){
+		var pass = document.getElementById("password");
+
 	}
 }
