@@ -23,7 +23,7 @@ export interface program {
   'bgColor': string;
   'imgPath': string;
 }
-
+ 
 export interface employment {
   'employmentType': string;
   'empStatus': number
@@ -138,22 +138,38 @@ facultyInfo = new FormGroup({
     this.fetchProgram()
   }
 
-  fetchCollege():void {
+  fetchCollege(): void {
     this.College.fetchCollege().subscribe(
-      colleges => {
-        this.colleges = this.modifyData(colleges)
-
-      }
+      {
+        next: colleges => this.colleges = this.modifyData(colleges),
+        error: err => console.log(err)
+     }
     )
   }
-
   fetchProgram(): void {
     this.College.fetchProgram().subscribe(
-      programs => {
-        this.programs = this.modifyData1(programs)
-      }
+      {
+        next: programs => this.programs = this.modifyData1(programs),
+        error: (err: Error) => console.log(err.message)
+     }
     )
   }
+  // fetchCollege():void {
+  //   this.College.fetchCollege().subscribe(
+  //     colleges => {
+  //       this.colleges = this.modifyData(colleges)
+
+  //     }
+  //   )
+  // }
+
+  // fetchProgram(): void {
+  //   this.College.fetchProgram().subscribe(
+  //     programs => {
+  //       this.programs = this.modifyData1(programs)
+  //     }
+  //   )
+  // }
 
 
   abbvCollege(college: string): string {
