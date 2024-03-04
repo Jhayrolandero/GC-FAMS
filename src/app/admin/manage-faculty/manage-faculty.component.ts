@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { GcBoxComponent } from './gc-box/gc-box.component';
 import { PersonalInfoFormComponent } from './personal-info-form/personal-info-form.component';
 import { CollegeService } from '../../services/admin/college.service';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { NgFor } from '@angular/common';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { NgClass, NgFor, NgIf } from '@angular/common';
+import { MessageService } from '../../services/message.service';
 
 export interface college {
   map(arg0: (item: any) => any): any;
@@ -23,7 +24,7 @@ export interface program {
   'bgColor': string;
   'imgPath': string;
 }
- 
+
 export interface employment {
   'employmentType': string;
   'empStatus': number
@@ -33,8 +34,8 @@ export interface employment {
 @Component({
   selector: 'app-manage-faculty',
   standalone: true,
-  imports: [GcBoxComponent, PersonalInfoFormComponent, ReactiveFormsModule, NgFor],
-  providers: [CollegeService],
+  imports: [GcBoxComponent, PersonalInfoFormComponent, ReactiveFormsModule, NgFor, NgClass, NgIf],
+  providers: [CollegeService, MessageService],
   templateUrl: './manage-faculty.component.html',
   styleUrl: './manage-faculty.component.css'
 })
@@ -42,6 +43,7 @@ export interface employment {
 
 export class ManageFacultyComponent implements OnInit {
 
+  constructor(private College: CollegeService, private MessageService: MessageService) {}
 
   disabledBox: boolean = false;
 employmentStatus:employment[] = [
@@ -56,16 +58,16 @@ positions: string[] = [
 facultyInfo = new FormGroup({
   college_ID: new FormControl(-1),
   teaching_position: new FormControl(''),
-  first_name: new FormControl(''),
+  first_name: new FormControl<string>('', Validators.required),
   last_name: new FormControl(''),
   birthdate: new FormControl(''),
-  age: new FormControl(),
+  age: new FormControl(''),
   citizenship: new FormControl(''),
   civil_status: new FormControl(''),
   sex: new FormControl(''),
   email: new FormControl(''),
   employment_status: new FormControl(-1),
-  phone_number: new FormControl(''),
+  phone_number: new FormControl(2, Validators.min(3)),
   middle_name: new FormControl(''),
   ext_name: new FormControl(''),
   region: new FormControl(''),
@@ -75,6 +77,10 @@ facultyInfo = new FormGroup({
   barangay: new FormControl(''),
   });
   // program: new FormControl(''),
+
+  get phoneNumber() {
+    return this.facultyInfo.get('phone_number')
+  }
 
   selectedCollege: number = -1;
   setCollege(value: number): void {
@@ -88,12 +94,6 @@ facultyInfo = new FormGroup({
     this.facultyInfo.patchValue({
       teaching_position: value
     });
-  }
-
-  setProgram(value: string): void {
-    // this.facultyInfo.patchValue({
-    //   program: value
-    // })
   }
 
   setEmployment(value: number): void {
@@ -111,11 +111,18 @@ facultyInfo = new FormGroup({
     }
   }
 
+  validateForm(): void {
+
+  }
   onSubmit() {
+    this.facultyInfo.get('first_name').errors.required
     // TODO: Use EventEmitter with form value
-    this.College.addFaculty(this.facultyInfo.value).subscribe(
-      msg => console.log(msg)
-    )
+    // this.College.addFaculty(this.facultyInfo.value).subscribe(
+    //   msg => console.log(msg)
+    // )
+    // console.log(this.facultyInfo.value.phone_number.errors)
+    // console.log(this.facultyInfo.valid)
+    console.log(this.facultyInfo.errors)
 
   }
   colleges: college[] = [];
@@ -132,7 +139,6 @@ facultyInfo = new FormGroup({
     return programs
   }
 
-  constructor(private College: CollegeService) {}
   ngOnInit(): void {
     this.fetchCollege()
     this.fetchProgram()
@@ -154,23 +160,6 @@ facultyInfo = new FormGroup({
      }
     )
   }
-  // fetchCollege():void {
-  //   this.College.fetchCollege().subscribe(
-  //     colleges => {
-  //       this.colleges = this.modifyData(colleges)
-
-  //     }
-  //   )
-  // }
-
-  // fetchProgram(): void {
-  //   this.College.fetchProgram().subscribe(
-  //     programs => {
-  //       this.programs = this.modifyData1(programs)
-  //     }
-  //   )
-  // }
-
 
   abbvCollege(college: string): string {
     const abbv = college.match(/[A-Z]/g) || [];

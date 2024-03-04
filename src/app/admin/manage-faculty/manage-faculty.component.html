@@ -1,17 +1,14 @@
 <!-- <form action="" [formGroup]="personalInfo" (ngSubmit)="onSubmit()"> -->
-<form
-  action=""
-  class="bg-white flex flex-col px-4 py-2 rounded-[24px]"
-  [formGroup]="facultyInfo"
-  (ngSubmit)="onSubmit()"
->
+<div class="bg-white flex flex-col gap-2 px-4 py-2 rounded-[24px]">
   <h1>Faculty Management</h1>
-  <div
-    class="bg-[#F0F0F0] px-[16px] py-[24px] rounded-[16px] flex flex-col gap-4"
+  <form
+    class="bg-[#F0F0F0] px-[16px] py-[24px] rounded-[16px] flex flex-col flex-wrap gap-4"
+    [formGroup]="facultyInfo"
+    (ngSubmit)="onSubmit()"
     id="contents"
   >
     <h4 class="border-b-2 border-black font-bold text-[24px]">COLLEGE</h4>
-    <div class="grid grid-cols-5 gap-2 items-stretch">
+    <div class="flex flex-row flex-wrap gap-2">
       <app-gc-box
         *ngFor="let college of colleges"
         [id]="college.college_ID"
@@ -21,6 +18,7 @@
         [imgPath]="college.imgPath"
         (setRole)="setCollege($event)"
         [radioGroup]="'college'"
+        class="flex-1"
       ></app-gc-box>
     </div>
     <div class="flex-1 flex flex-row gap-4">
@@ -28,7 +26,7 @@
         <h4 class="border-b-2 border-black font-bold text-[24px]">
           EMPLOYMENT
         </h4>
-        <div class="grid grid-cols-2 gap-2 pt-4">
+        <div class="flex gap-2 pt-4">
           <app-gc-box
             *ngFor="let employment of employmentStatus"
             [collegeAbbv]="employment.employmentType"
@@ -36,6 +34,7 @@
             [imgPath]="'../../../../assets/college-logo/ccs.png'"
             (setRole)="setEmployment($event)"
             [radioGroup]="'employment_status'"
+            class="flex-1"
           ></app-gc-box>
         </div>
       </div>
@@ -55,27 +54,13 @@
         </div>
       </div>
     </div>
-    <h4 class="border-b-2 border-black font-bold text-[24px]">PROGRAM</h4>
-    <div class="flex gap-2 pt-4">
-      <app-gc-box
-        *ngFor="let program of filterPrograms()"
-        [collegeAbbv]="program.program_abbv"
-        [Title]="program.program_name"
-        [bgColor]="program.bgColor"
-        [imgPath]="program.imgPath"
-        (setRole)="setProgram($event)"
-        [radioGroup]="'program'"
-        class="flex-1"
-        [id]="program.program_id"
-      ></app-gc-box>
-    </div>
     <h4 class="border-b-2 border-black font-bold text-[24px]">
       PERSONAL INFORMATION
     </h4>
     <div class="flex flex-col gap-4">
       <div class="flex justify-center items-center gap-4">
         <div class="flex flex-col flex-1">
-          <label for="">Email</label>
+          <label for="">EMAIL</label>
           <input
             type="text"
             class="flex-1 bg-white px-2 py-1 rounded-[8px]"
@@ -95,7 +80,7 @@
         <div class="flex flex-col flex-1">
           <label for="">BIRTHDATE</label>
           <input
-            type="text"
+            type="datetime-local"
             class="flex-1 bg-white px-2 py-1 rounded-[8px]"
             formControlName="birthdate"
             required
@@ -142,40 +127,56 @@
       </div>
       <div class="flex justify-center items-center gap-4">
         <div class="flex flex-col flex-1">
-          <label for="">REGION</label>
-          <input
-            type="text"
-            class="flex-1 bg-white px-2 py-1 rounded-[8px]"
+          <label for="region">REGION</label>
+          <select
+            name="region"
+            id=""
             formControlName="region"
-            required
-          />
+            class="flex-1 bg-white px-2 py-1 rounded-[8px]"
+          >
+            <option value="REGION I">REGION I</option>
+            <option value="REGION II">REGION II</option>
+            <option value="REGION III">REGION III</option>
+          </select>
         </div>
         <div class="flex flex-col flex-1">
-          <label for="">PROVINCE</label>
-          <input
-            type="text"
-            class="flex-1 bg-white px-2 py-1 rounded-[8px]"
+          <label for="province">PROVINCE</label>
+          <select
+            name="province"
+            id=""
             formControlName="province"
-            required
-          />
+            class="flex-1 bg-white px-2 py-1 rounded-[8px]"
+          >
+            <option value="ZAMBALES">ZAMBALES</option>
+            <option value="TARLAC">TARLAC</option>
+            <option value="AURORA">AURORA</option>
+          </select>
         </div>
         <div class="flex flex-col flex-1">
-          <label for="">CITY/MUNICIPALITY</label>
-          <input
-            type="text"
-            class="flex-1 bg-white px-2 py-1 rounded-[8px]"
+          <label for="city">CITY/MUNICIPALITY</label>
+          <select
+            name="city"
+            id=""
             formControlName="city"
-            required
-          />
+            class="flex-1 bg-white px-2 py-1 rounded-[8px]"
+          >
+            <option value="OLONGAPO CITY">OLONGAPO CITY</option>
+            <option value="MASINLOC">MASINLOC</option>
+            <option value="SAN ANTONIO">SAN ANTONIO</option>
+          </select>
         </div>
         <div class="flex flex-col flex-1">
-          <label for="">BARANGAY</label>
-          <input
-            type="text"
-            class="flex-1 bg-white px-2 py-1 rounded-[8px]"
+          <label for="barangay">BARANGAY</label>
+          <select
+            name="barangay"
+            id=""
             formControlName="barangay"
-            required
-          />
+            class="flex-1 bg-white px-2 py-1 rounded-[8px]"
+          >
+            <option value="ASINAN">ASINAN</option>
+            <option value="BANICAIN">BANICAIN</option>
+            <option value="BARRETO">BARRETO</option>
+          </select>
         </div>
       </div>
 
@@ -186,13 +187,16 @@
           class="aspect-square min-w-[80px]"
         /> -->
         <div class="flex flex-col flex-1">
-          <label for="">SEX</label>
-          <input
-            type="text"
-            class="flex-1 bg-white px-2 py-1 rounded-[8px]"
+          <label for="sex">SEX</label>
+          <select
+            name="sex"
+            id=""
             formControlName="sex"
-            required
-          />
+            class="flex-1 bg-white px-2 py-1 rounded-[8px]"
+          >
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
         </div>
         <div class="flex flex-col flex-1">
           <label for="">LANGUAGE</label>
@@ -222,16 +226,31 @@
           />
         </div>
         <div class="flex flex-col flex-1">
-          <label for="">CIVIL STATUS</label>
-          <input
-            type="text"
-            class="flex-1 bg-white px-2 py-1 rounded-[8px]"
+          <label for="civil_status">CIVIL STATUS</label>
+          <select
+            name="civil_status"
+            id=""
             formControlName="civil_status"
-            required
-          />
+            class="flex-1 bg-white px-2 py-1 rounded-[8px]"
+          >
+            <option value="single">Single</option>
+            <option value="married">Married</option>
+            <option value="windowed">Windowed</option>
+            <option value="separated">Separated</option>
+          </select>
         </div>
       </div>
     </div>
-  </div>
-  <input type="submit" />
-</form>
+    <div class="flex justify-end">
+      <input
+        [ngClass]="{
+          'cursor-pointer bg-[#074287]': facultyInfo.valid,
+          'bg-gray-500 ': !facultyInfo.valid
+        }"
+        type="submit"
+        class="px-2 py-1 rounded-[8px] text-white font-bold"
+        value="ADD FACULTY"
+      />
+    </div>
+  </form>
+</div>

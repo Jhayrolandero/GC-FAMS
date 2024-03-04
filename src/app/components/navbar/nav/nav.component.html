@@ -1,16 +1,37 @@
 <li>
   <a
-  [class.selected] = "barIndex === selectedBar"
-  [routerLink]="urlTitle"
-  routerLinkActive="active"
-  ariaCurrentWhenActive="page"
-  (mouseenter)="changeImage()"
-  (mouseleave)="revertImage()"
-    >
-    <img [src]="'../../../assets/faculty-dashboard/' + imgSource" class="dash-image w-[20px] h-[20px] mx-2 md:aspect-square">
+    [class.selected]="barIndex === selectedBar"
+    [routerLink]="urlTitle"
+    routerLinkActive="active"
+    ariaCurrentWhenActive="page"
+    (mouseenter)="changeImage()"
+    (mouseleave)="revertImage()"
+    class="flex items-center font-semibold text-[#f0f0f0] laptop:text-lg laptopL:text-xl py-4"
+  >
+    <img
+      [src]="'../../../assets/faculty-dashboard/' + imgSource"
+      class="dash-image w-[20px] h-[20px] mx-2 md:aspect-square"
+    />
     {{ navTitle }}
   </a>
 </li>
+<!--
+  li {
+  position: relative;
+  width: 100%;
+  display: block;
+}
 
+li a {
+  height: 55px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  font-family: Poppins;
+  font-weight: 400;
+  color: #f0f0f0;
+  font-size: 1em;
+}
+ -->
 
 <!-- class="block px-4 py-4 text-white font-Montserrat font-semibold hover:bg-white hover:text-blue hover:relative hover:left-4 transition-all duration-0 hover:before:content-[''] hover:before:w-8 hover:before:h-5 hover:before:absolute hover:before:bg-blue hover:before:-top-5 hover:before:right-4 hover:before:rounded-br-full hover:after:content-[''] hover:after:w-8 hover:after:h-5 hover:after:absolute hover:after:bg-blue hover:after:-bottom-5 hover:after:right-4 hover:after:rounded-tr-full hover:after:shadow-xl hover:after:white" -->
