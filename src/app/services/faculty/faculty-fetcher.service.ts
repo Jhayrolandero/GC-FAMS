@@ -5,6 +5,7 @@ import { CommunityExtension } from '../Interfaces/community-extension';
 import { mainPort } from '../../app.component';
 import { Profile } from '../Interfaces/profile';
 import { Schedule } from '../admin/schedule';
+import { Resume } from '../Interfaces/resume';
 
 @Injectable({
   providedIn: 'root'
@@ -28,5 +29,9 @@ export class FacultyFetcherService {
 
   fetchProfile(){
     return this.http.get<Profile>(mainPort + '/GC-FaMS-API/API/getprofile/fetchProfile', {headers:this.getHeader()});
+  }
+
+  fetchResume(){
+    return this.http.get<Resume>(mainPort + '/GC-FaMS-API/API/getresume/fetchResume', {headers:this.getHeader()});
   }
 }

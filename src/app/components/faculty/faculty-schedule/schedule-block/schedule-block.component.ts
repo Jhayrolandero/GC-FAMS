@@ -31,7 +31,6 @@ export class ScheduleBlockComponent {
   getSchedule(){
     //Fetches the schedule data based on passed selected date
     this.facultyService.fetchSchedDay().subscribe((next: Schedule[]) => {
-      console.log(next);
       this.schedules = next;
     }, (error) => {
       if(error.status == 403){

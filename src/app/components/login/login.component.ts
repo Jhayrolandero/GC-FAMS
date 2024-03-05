@@ -38,7 +38,7 @@ export class LoginComponent {
 		this.validForm = true;
 		//Main http post request, uses JwtToken interface, and stringified loginForm
 		this.http.post<JwtToken>(this.url, this.loginForm.getRawValue()).subscribe((response) => {
-
+			console.log(response);
 		//Success, wrong loginparams, and query error issue.
 		if(response.code == 200){
 			document.cookie = "token=" + response.token;
