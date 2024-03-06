@@ -97,6 +97,8 @@
             required
           />
         </div>
+        <div *ngIf="    this.facultyInfo.get('first_name').errors.required
+        "></div>
         <div class="flex flex-col flex-1">
           <label for="">FIRSTNAME</label>
           <input
