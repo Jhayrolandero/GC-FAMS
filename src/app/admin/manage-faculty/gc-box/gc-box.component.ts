@@ -11,9 +11,9 @@ import { College } from '../../../services/Interfaces/college';
 })
 export class GcBoxComponent {
   @Input()college?: College;
+  @Input() selectedCollege?: number;
   @Input('radioGroup') radioGroup:string = ''
   @Input('disabled') disabled:boolean = false
-
 
   @Output() setRole = new EventEmitter()
 

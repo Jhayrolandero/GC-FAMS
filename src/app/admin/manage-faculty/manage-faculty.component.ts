@@ -32,7 +32,6 @@ export interface employment {
 
 
 export class ManageFacultyComponent implements OnInit {
-
 selectedCollege: number = -1;
 disabledBox: boolean = false;
 employmentStatus:employment[] = [
@@ -64,7 +63,7 @@ facultyInfo = new FormGroup({
   language: new FormControl(''),
   city: new FormControl(''),
   barangay: new FormControl(''),
-  });
+});
   // program: new FormControl(''),
 
   setCollege(value: number): void {

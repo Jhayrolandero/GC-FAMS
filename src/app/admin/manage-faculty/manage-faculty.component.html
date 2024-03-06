@@ -17,6 +17,7 @@
       <app-gc-box
         *ngFor="let college of colleges"
         [college]="college"
+        [selectedCollege]="selectedCollege"
         (setRole)="setCollege($event)"
         [radioGroup]="'college'"
       ></app-gc-box>

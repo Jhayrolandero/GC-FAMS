@@ -6,6 +6,7 @@ import { mainPort } from '../../app.component';
 import { Profile } from '../Interfaces/profile';
 import { Schedule } from '../admin/schedule';
 import { Resume } from '../Interfaces/resume';
+import { Evaluation } from '../Interfaces/evaluation';
 
 @Injectable({
   providedIn: 'root'
@@ -33,5 +34,9 @@ export class FacultyFetcherService {
 
   fetchResume(){
     return this.http.get<Resume>(mainPort + '/GC-FaMS-API/API/getresume/fetchResume', {headers:this.getHeader()});
+  }
+
+  fetchEvaluation(){
+    return this.http.get<Evaluation[]>(mainPort + '/GC-FaMS-API/API/getevaluation/fetchEvaluation', {headers:this.getHeader()});
   }
 }
