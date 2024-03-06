@@ -1,36 +1,29 @@
 <input
-  type="radio"
-  id="{{ collegeAbbv }}"
-  name="{{ radioGroup }}"
-  value="{{ id }}"
-  #role
-  (click)="setFacultyRole(role.value)"
-  class="hidden peer"
-  [disabled]="disabled"
+type="radio"
+id="{{college?.college_abbrev}}"
+name="{{ radioGroup }}"
+value="{{ college?.college_ID }}"
+#role
+(click)="setFacultyRole(role.value)"
+class="hidden peer"
+[disabled]="disabled"
 />
 <label
-  for="{{ collegeAbbv }}"
-  [ngClass]="{
-    'bg-[#FF7A00]/[0.5] border-[#FF7A00] from-[#FF7A00] to-[white]':
-      bgColor === '#FF7A00',
-    'bg-[#0077CC]/[0.5] border-[#0077CC] from-[#0077CC] to-[white]':
-      bgColor === '#0077CC',
-    'bg-[#FFDF00]/[0.5] border-[#FFDF00] from-[#FFDF00] to-[white]':
-      bgColor === '#FFDF00',
-    'bg-[#FF0082]/[0.5] border-[#FF0082] from-[#FF0082] to-[white]':
-      bgColor === '#FF0082',
-    'bg-[#FF0000]/[0.5] border-[#FF0000] from-[#FF0000] to-[white]':
-      bgColor === '#FF0000',
-    'bg-[#084484] from-[#084484] to-[white]': !collegeTitle && !disabled,
-    'bg-[#333333]': disabled
-  }"
-  class="flex-1 cursor-pointer border-2 rounded-[8px] text-white px-4 py-8 relative flex flex-col justify-center items-start h-full transition-all duration-75 hover:bg-gradient-to-t hover:scale-105 peer-checked:scale-105 peer-checked:bg-gradient-to-t"
+for="{{college?.college_abbrev}}"
+class="text-blue"
 >
-  <h6 class="text-[24px] font-bold">{{ collegeAbbv }}</h6>
-  <P class="text-[16px] font-bold z-10">{{ collegeTitle }}</P>
-  <img
-    src="{{ imgPath }}"
-    alt=""
-    class="min-h-[100px] aspect-square absolute right-0 top-1/2 transform -translate-y-1/2 z-0 opacity-50"
-  />
+  <div class="mainBox bg-white rounded-[15px] h-[100px] flex items-center shadow-md hover:scale-[101%] hover:bg-blue hover:text-white hover:duration-300 duration-300 select-none"
+  >
+    <div class="flex flex-row items-center py-5">
+      <div class="pl-4 pr-6 z-50">
+        <h6 class="text-[28px] font-bold font-Poppins">{{ college?.college_abbrev }}</h6>
+        <p class="text-[13px] font-bold font-Poppins z-10">{{ college?.college_name }}</p>
+      </div>
+      <img
+        [src]="'../../../../assets/college-logo-big/'+college?.college_abbrev+'.png'"
+        alt=""
+        class="h-[90px] aspect-square absolute translate-x-[120px] opacity-50"
+      />
+    </div>  
+  </div>
 </label>

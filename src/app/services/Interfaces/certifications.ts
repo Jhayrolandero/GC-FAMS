@@ -1,2 +1,9 @@
 export interface Certifications {
+    faculty_ID: number,
+    cert_ID: number,
+    accomplished_date: Date,
+    cert_name: string,
+    cert_abbrev?: string,
+    cert_details: string,
+    cert_corporation: string
 }

@@ -11,11 +11,11 @@ import { FacultyFetcherService } from '../../services/faculty/faculty-fetcher.se
 import { Resume } from '../../services/Interfaces/resume';
 
 @Component({
-  selector: 'app-profile',
-  standalone: true,
-  imports: [CommonModule, FacultyEducationComponent],
-  templateUrl: './profile.component.html',
-  styleUrl: './profile.component.css'
+    selector: 'app-profile',
+    standalone: true,
+    templateUrl: './profile.component.html',
+    styleUrl: './profile.component.css',
+    imports: [CommonModule, FacultyEducationComponent, FacultyCertificationsComponent]
 })
 export class ProfileComponent {
   facultyProfile!: Profile;
@@ -58,7 +58,7 @@ export class ProfileComponent {
   getResume(){
     this.facultyService.fetchResume().subscribe((next: Resume) => {
       this.resume = next;
-      console.log(this.resume.educAttainment);
+      console.log(this.resume);
     }, (error) => {
       if(error.status == 403){
         this.router.navigate(['/']);

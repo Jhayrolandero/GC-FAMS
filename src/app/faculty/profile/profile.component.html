@@ -152,7 +152,7 @@
   
             <p class="text-white text-[1.5rem] font-Poppins font-semibold ml-2 select-none">Certifications</p>
           </div>
-          <app-faculty-education  *ngIf="certToggle == true" ></app-faculty-education>
+          <app-faculty-certifications  *ngIf="certToggle == true" [certifications]="resume.certifications"></app-faculty-certifications>
         </div>
 
         <div class="mb-4 w-full bg-white rounded-[25px] overflow-hidden shadow-lg">

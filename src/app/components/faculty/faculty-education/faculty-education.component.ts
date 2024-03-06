@@ -15,7 +15,4 @@ import { mainPort } from '../../../app.component';
 export class FacultyEducationComponent {
   @Input() educAttainment!: EducationalAttainment[];
   tempPort = mainPort;
-
-  ngOnChange(){
-  }
 }
