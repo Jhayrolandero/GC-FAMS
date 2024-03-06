@@ -5,6 +5,8 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { NgFor } from '@angular/common';
 import { AdminFetcherServiceService } from '../../services/admin/admin-fetcher-service.service';
 import { College } from '../../services/Interfaces/college';
+import { EmployeeTypeComponent } from './employee-type/employee-type.component';
+import { EmployeePositionComponent } from './employee-position/employee-position.component';
 
 export interface program {
   map(arg0: (item: any) => any): any;
@@ -16,7 +18,7 @@ export interface program {
   'imgPath': string;
 }
 
-export interface employment {
+export interface Employment {
   'employmentType': string;
   'empStatus': number
 }
@@ -25,7 +27,7 @@ export interface employment {
 @Component({
   selector: 'app-manage-faculty',
   standalone: true,
-  imports: [GcBoxComponent, PersonalInfoFormComponent, ReactiveFormsModule, NgFor],
+  imports: [GcBoxComponent, PersonalInfoFormComponent, ReactiveFormsModule, NgFor, EmployeeTypeComponent, EmployeePositionComponent],
   templateUrl: './manage-faculty.component.html',
   styleUrl: './manage-faculty.component.css'
 })
@@ -33,8 +35,10 @@ export interface employment {
 
 export class ManageFacultyComponent implements OnInit {
 selectedCollege: number = -1;
+selectedEmployeeType: number = -1;
+selectedEmployeePosition: string = '';
 disabledBox: boolean = false;
-employmentStatus:employment[] = [
+employmentStatus:Employment[] = [
   {'employmentType': 'Part-Time', 'empStatus': 0},
   {'employmentType': 'Full-Time', 'empStatus': 1},
 ]
@@ -78,6 +82,8 @@ facultyInfo = new FormGroup({
     this.facultyInfo.patchValue({
       teaching_position: value
     });
+    this.selectedEmployeePosition = value;
+    console.log("Currently selected position is:" + this.selectedEmployeePosition);
   }
 
   setProgram(value: string): void {
@@ -90,6 +96,8 @@ facultyInfo = new FormGroup({
     this.facultyInfo.patchValue({
       employment_status: value
     })
+    this.selectedEmployeeType = value;
+    console.log("Selected employee type is: " + this.selectedEmployeeType);
 
     if(value != 1) {
       this.disabledBox = true;

@@ -28,33 +28,29 @@
           EMPLOYMENT
         </h4>
         <div class="grid grid-cols-2 gap-2 pt-4">
-          <!-- <app-gc-box
+          <app-employee-type
             *ngFor="let employment of employmentStatus"
-            [collegeAbbv]="employment.employmentType"
-            [id]="employment.empStatus"
-            [imgPath]="'../../../../assets/college-logo/ccs.png'"
+            [employment]="employment"
+            [selectedEmployeeType]="selectedEmployeeType"
             (setRole)="setEmployment($event)"
             [radioGroup]="'employment_status'"
-          ></app-gc-box> -->
+          ></app-employee-type>
         </div>
       </div>
-      <div class="flex-1 flex flex-col">
+      <div class="flex-1 flex flex-col w-full">
         <h4 class="border-b-2 border-black font-Poppins font-bold text-[2rem]">POSITION</h4>
-        <div class="flex flex-row gap-2 pt-4">
-          <!-- <app-gc-box
+        <div class="flex flex-row gap-2 pt-4 w-full">
+          <app-employee-position
             *ngFor="let position of positions"
-            [collegeAbbv]="position"
-            [imgPath]="'../../../../assets/college-logo/ccs.png'"
+            [position]="position"
+            [selectedEmployeePosition]="selectedEmployeePosition"
             (setRole)="setPosition($event)"
-            [radioGroup]="'position'"
-            class="flex-1"
-            [disabled]="disabledBox"
-            [id]="position"
-          ></app-gc-box> -->
+            [radioGroup]="'employment_position'"
+          ></app-employee-position>
         </div>
       </div>
     </div>
-    <h4 class="border-b-2 border-black font-Poppins font-bold text-[2rem]">PROGRAM</h4>
+    <!-- <h4 class="border-b-2 border-black font-Poppins font-bold text-[2rem]">PROGRAM</h4>
     <div class="flex gap-2 pt-4">
       <app-gc-box
         *ngFor="let program of filterPrograms()"
@@ -63,164 +59,170 @@
         class="flex-1"
         [id]="program.program_id"
       ></app-gc-box>
-    </div>
+    </div> -->
     <h4 class="border-b-2 border-black font-Poppins font-bold text-[2rem]">
       PERSONAL INFORMATION
     </h4>
+    <div class="w-full bg-red-300 rounded-full">        
+      <img
+      src="../../../assets/profiles/batman.jpg"
+      alt=""
+      class="aspect-square min-w-[10px] rounded-full"
+    /></div>
     <div class="flex flex-col gap-4">
       <div class="flex justify-center items-center gap-4">
         <div class="flex flex-col flex-1">
-          <label for="">Email</label>
+          <label class="formTextFormat" for="">Email</label>
           <input
             type="text"
-            class="flex-1 bg-white px-2 py-1 rounded-[8px]"
+            class="formTemplate"
             formControlName="email"
             required
           />
         </div>
         <div class="flex flex-col flex-1">
-          <label for="">PHONE NUMBER</label>
+          <label class="formTextFormat" for="">PHONE NUMBER</label>
           <input
             type="text"
-            class="flex-1 bg-white px-2 py-1 rounded-[8px]"
+            class="formTemplate"
             formControlName="phone_number"
             required
           />
         </div>
         <div class="flex flex-col flex-1">
-          <label for="">BIRTHDATE</label>
+          <label class="formTextFormat" for="">BIRTHDATE</label>
           <input
             type="text"
-            class="flex-1 bg-white px-2 py-1 rounded-[8px]"
+            class="formTemplate"
             formControlName="birthdate"
             required
           />
         </div>
       </div>
+
+
       <div class="flex justify-center items-center gap-4">
         <div class="flex flex-col flex-1">
-          <label for="">LASTNAME</label>
+          <label class="formTextFormat" for="">LASTNAME</label>
           <input
             type="text"
-            class="flex-1 bg-white px-2 py-1 rounded-[8px]"
+            class="formTemplate"
             formControlName="last_name"
             required
           />
         </div>
         <div class="flex flex-col flex-1">
-          <label for="">FIRSTNAME</label>
+          <label class="formTextFormat" for="">FIRSTNAME</label>
           <input
             type="text"
-            class="flex-1 bg-white px-2 py-1 rounded-[8px]"
+            class="formTemplate"
             formControlName="first_name"
             required
           />
         </div>
         <div class="flex flex-col flex-1">
-          <label for="">MIDDLENAME</label>
+          <label class="formTextFormat" for="">MIDDLENAME</label>
           <input
             type="text"
-            class="flex-1 bg-white px-2 py-1 rounded-[8px]"
+            class="formTemplate"
             formControlName="middle_name"
             required
           />
         </div>
         <div class="flex flex-col flex-1">
-          <label for="">EXT. NAME</label>
+          <label class="formTextFormat" for="">EXT. NAME</label>
           <input
             type="text"
-            class="flex-1 bg-white px-2 py-1 rounded-[8px]"
+            class="formTemplate"
             formControlName="ext_name"
             required
           />
         </div>
       </div>
+
+
       <div class="flex justify-center items-center gap-4">
         <div class="flex flex-col flex-1">
-          <label for="">REGION</label>
+          <label class="formTextFormat" for="">REGION</label>
           <input
             type="text"
-            class="flex-1 bg-white px-2 py-1 rounded-[8px]"
+            class="formTemplate"
             formControlName="region"
             required
           />
         </div>
         <div class="flex flex-col flex-1">
-          <label for="">PROVINCE</label>
+          <label class="formTextFormat" for="">PROVINCE</label>
           <input
             type="text"
-            class="flex-1 bg-white px-2 py-1 rounded-[8px]"
+            class="formTemplate"
             formControlName="province"
             required
           />
         </div>
         <div class="flex flex-col flex-1">
-          <label for="">CITY/MUNICIPALITY</label>
+          <label class="formTextFormat" for="">CITY/MUNICIPALITY</label>
           <input
             type="text"
-            class="flex-1 bg-white px-2 py-1 rounded-[8px]"
+            class="formTemplate"
             formControlName="city"
             required
           />
         </div>
         <div class="flex flex-col flex-1">
-          <label for="">BARANGAY</label>
+          <label class="formTextFormat" for="">BARANGAY</label>
           <input
             type="text"
-            class="flex-1 bg-white px-2 py-1 rounded-[8px]"
+            class="formTemplate"
             formControlName="barangay"
             required
           />
         </div>
       </div>
 
+
       <div class="flex justify-center items-start gap-4">
-        <img
-          src="../../../assets/profiles/batman.jpg"
-          alt=""
-          class="aspect-square min-w-[80px]"
-        />
         <div class="flex flex-col flex-1">
-          <label for="">SEX</label>
+          <label class="formTextFormat" for="">SEX</label>
           <input
             type="text"
-            class="flex-1 bg-white px-2 py-1 rounded-[8px]"
+            class="formTemplate"
             formControlName="sex"
             required
           />
         </div>
         <div class="flex flex-col flex-1">
-          <label for="">LANGUAGE</label>
+          <label class="formTextFormat" for="">LANGUAGE</label>
           <input
             type="text"
-            class="flex-1 bg-white px-2 py-1 rounded-[8px]"
+            class="formTemplate"
             formControlName="language"
             required
           />
         </div>
         <div class="flex flex-col flex-1">
-          <label for="">CITIZENSHIP</label>
+          <label class="formTextFormat" for="">CITIZENSHIP</label>
           <input
             type="text"
-            class="flex-1 bg-white px-2 py-1 rounded-[8px]"
+            class="formTemplate"
             formControlName="citizenship"
             required
           />
         </div>
         <div class="flex flex-col flex-1">
-          <label for="">AGE</label>
+          <label class="formTextFormat" for="">AGE</label>
           <input
             type="text"
-            class="flex-1 bg-white px-2 py-1 rounded-[8px]"
+            class="formTemplate"
             formControlName="age"
             required
           />
         </div>
         <div class="flex flex-col flex-1">
-          <label for="">CIVIL STATUS</label>
+          <label class="formTextFormat" for="">CIVIL STATUS</label>
           <input
             type="text"
-            class="flex-1 bg-white px-2 py-1 rounded-[8px]"
+            class="formTemplate"
             formControlName="civil_status"
             required
           />

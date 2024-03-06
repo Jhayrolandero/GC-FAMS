@@ -1,0 +1,15 @@
+.formTemplate{
+    background-color: #F8F8F8;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.253);
+    border-radius: 10px;
+    padding-left: 10px;
+    height: 34px;
+}
+
+.formTextFormat{
+    font-family: Poppins;
+    font-size: 1.0rem;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: black;
+}

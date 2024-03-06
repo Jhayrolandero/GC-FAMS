@@ -1,18 +1,23 @@
 <input
 type="radio"
-id="{{college?.college_abbrev}}"
+id="{{ employment?.employmentType }}"
 name="{{ radioGroup }}"
-value="{{ college?.college_ID }}"
+value="{{ employment?.empStatus }}"
 #role
-(click)="setFacultyRole(role.value)"
+(click)="setEmployeeType(role.value)"
 class="hidden peer"
 [disabled]="disabled"
 />
 <label
-for="{{college?.college_abbrev}}"
+for="{{ employment?.employmentType }}"
 class="text-blue"
 >
-  <div class="mainBox rounded-[15px] h-[100px] flex items-center shadow-md hover:scale-[101%] hover:duration-300 duration-300 select-none"
+  <div class="flex justify-center items-center h-[50px] w-full shadow-lg rounded-full hover:scale-[101%] hover:duration-300 duration:300"
+            [ngClass]="{'bg-blue text-white': selectedEmployeeType == employment?.empStatus}"
+  >
+    <p class="font-Poppins font-semibold text-[1.5rem]">{{ employment?.employmentType }}</p>
+  </div>
+  <!-- <div class="mainBox rounded-[15px] h-[100px] flex items-center shadow-md hover:scale-[101%] hover:duration-300 duration-300 select-none"
   [ngClass]="{'bg-blue text-white': selectedCollege == college?.college_ID}"
   >
     <div class="flex flex-row items-center py-5">
@@ -26,5 +31,5 @@ class="text-blue"
         class="h-[90px] aspect-square absolute translate-x-[120px] opacity-50"
       />
     </div>  
-  </div>
+  </div> -->
 </label>
