@@ -34,6 +34,7 @@
             [selectedEmployeeType]="selectedEmployeeType"
             (setRole)="setEmployment($event)"
             [radioGroup]="'employment_status'"
+            class="select-none"
           ></app-employee-type>
         </div>
       </div>
@@ -46,6 +47,7 @@
             [selectedEmployeePosition]="selectedEmployeePosition"
             (setRole)="setPosition($event)"
             [radioGroup]="'employment_position'"
+            class="select-none"
           ></app-employee-position>
         </div>
       </div>
@@ -63,12 +65,26 @@
     <h4 class="border-b-2 border-black font-Poppins font-bold text-[2rem]">
       PERSONAL INFORMATION
     </h4>
-    <div class="w-full bg-red-300 rounded-full">        
+    <div class="flex flex-row w-full bg-formGrey rounded-full shadow-lg">        
       <img
       src="../../../assets/profiles/batman.jpg"
       alt=""
       class="aspect-square min-w-[10px] rounded-full"
-    /></div>
+      />
+
+      <div class="w-full flex justify-center items-center">
+        <svg width="30" height="31" viewBox="0 0 30 31" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g clip-path="url(#clip0_984_350)">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M11.25 6.75C11.25 6.08696 11.5134 5.45107 11.9822 4.98223C12.4511 4.51339 13.087 4.25 13.75 4.25H16.25C16.913 4.25 17.5489 4.51339 18.0178 4.98223C18.4866 5.45107 18.75 6.08696 18.75 6.75V11.75H23.75C24.413 11.75 25.0489 12.0134 25.5178 12.4822C25.9866 12.9511 26.25 13.587 26.25 14.25V16.75C26.25 17.413 25.9866 18.0489 25.5178 18.5178C25.0489 18.9866 24.413 19.25 23.75 19.25H18.75V24.25C18.75 24.913 18.4866 25.5489 18.0178 26.0178C17.5489 26.4866 16.913 26.75 16.25 26.75H13.75C13.087 26.75 12.4511 26.4866 11.9822 26.0178C11.5134 25.5489 11.25 24.913 11.25 24.25V19.25H6.25C5.58696 19.25 4.95107 18.9866 4.48223 18.5178C4.01339 18.0489 3.75 17.413 3.75 16.75V14.25C3.75 13.587 4.01339 12.9511 4.48223 12.4822C4.95107 12.0134 5.58696 11.75 6.25 11.75H11.25V6.75Z" fill="#BCBCBC"/>
+          </g>
+          <defs>
+          <clipPath id="clip0_984_350">
+          <rect width="30" height="30" fill="white" transform="translate(0 0.5)"/>
+          </clipPath>
+          </defs>
+        </svg>
+      </div>
+    </div>
     <div class="flex flex-col gap-4">
       <div class="flex justify-center items-center gap-4">
         <div class="flex flex-col flex-1">
@@ -228,7 +244,14 @@
           />
         </div>
       </div>
+
+      <div class="w-full flex justify-end gap-4">
+        <input id="addFact" type="submit" value="Add Faculty"
+                class="w-[130px] h-[40px] rounded-full bg-blue text-white font-Poppins font-semibold shadow-lg hover:scale-[101%] hover:duration-300 duration-300"/>
+
+      </div>
     </div>
   </div>
-  <input type="submit" />
+   
+
 </form>
