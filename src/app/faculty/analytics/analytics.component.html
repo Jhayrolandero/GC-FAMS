@@ -1,69 +1,141 @@
-<div
-  class="min-h-screen p-5 max-w-screen-fourk ml-[250px] flex flex-col gap-3 text-blue"
->
-    <div class="bg-white shadow-lg bg-opacity-70 w-full h-[500px] rounded-[25px] flex flex-row items-center">
-        <div class="bg-white shadow w-[20%] h-[90%] rounded-[25px] overflow-hidden m-[15px] mr-1 flex flex-col items-center hover:shadow-xl hover:duration-300 duration-300">
-            <div class="h-[50%] w-full flex justify-center relative">
-              <img src="../../../assets/profiles/luffy.png" class="h-[100%] ">
-              <div class="absolute w-full h-full hover:inset-0 bg-gradient-to-t from-gray-900 to-transparent opacity-50 hover:opacity-80 duration-300"></div>
-            </div>
-            <div class="h-[50%] w-[100%]">
-                <h1 class="font-Poppins font-bold text-[1.6rem] text-center">Monkey D. Luffy</h1>
-                <div class="flex flex-col space-y-3 ">
-                    <div class="flex flex-row items-center"><img class="px-2" src="../../../assets/faculty-view-icons/envelope.png"><p class="font-Roboto font-extralight">sungodnika&#64;gmail.com</p></div>
-                    <div class="flex flex-row items-center"><img class="px-2" src="../../../assets/faculty-view-icons/graduation.png"><p class="font-Roboto font-extralight">Bachelor of Science in Computer Science</p></div>
-                    <div class="flex flex-row items-center"><img class="px-2" src="../../../assets/faculty-view-icons/contacts.png"><p class="font-Roboto font-extralight">21 Units Currently Handled</p></div>
-                </div>
-            </div>
-
-        </div>
-        <div class="bg-white shadow w-[80%] h-[90%] rounded-[25px] m-[20px] ml-1 hover:shadow-xl hover:duration-300 duration-300">
-          <div class="px-4">
-            <h1 class="font-Poppins font-semibold text-[2.5rem] py-2">Milestone Calendar</h1>
-
-            <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown" class="w-[200px] text-slate-500 border-solid border-2 border-slate-500 focus:ring-4 focus:outline-none focus:ring-blue-300 font-Roboto font-light text-[1.2rem] rounded-full justify-between text-sm px-5 py-2 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">1 Year(s)<svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-                </svg>
-            </button>
-                
-            <!-- Dropdown menu -->
-            <div id="dropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 border-solid border-2 border-back">
-                <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
-                  <li>
-                    <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Dashboard</a>
-                  </li>
-                  <li>
-                    <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Settings</a>
-                  </li>
-                  <li>
-                    <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Earnings</a>
-                  </li>
-                  <li>
-                    <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Sign out</a>
-                  </li>
-                </ul>
-            </div>
-
-            <app-faculty-milestone-calendar></app-faculty-milestone-calendar>
-
-            <h4 class="font-Poppins font-semibold text-[1.4rem] py-2">Milestone History</h4>
-            <app-faculty-milestone-history></app-faculty-milestone-history>
+<div class="p-5 flex flex-col gap-3 text-blue">
+  <div
+    class="bg-white shadow-lg bg-opacity-70 w-full h-[500px] rounded-[25px] flex flex-row items-center"
+  >
+    <div
+      class="bg-white shadow w-[20%] h-[90%] rounded-[25px] overflow-hidden m-[15px] mr-1 flex flex-col items-center hover:shadow-xl hover:duration-300 duration-300"
+    >
+      <div class="h-[50%] w-full flex justify-center relative">
+        <img src="../../../assets/profiles/luffy.png" class="h-[100%]" />
+        <div
+          class="absolute w-full h-full hover:inset-0 bg-gradient-to-t from-gray-900 to-transparent opacity-50 hover:opacity-80 duration-300"
+        ></div>
+      </div>
+      <div class="h-[50%] w-[100%]">
+        <h1 class="font-Poppins font-bold text-[1.6rem] text-center">
+          Monkey D. Luffy
+        </h1>
+        <div class="flex flex-col space-y-3">
+          <div class="flex flex-row items-center">
+            <img
+              class="px-2"
+              src="../../../assets/faculty-view-icons/envelope.png"
+            />
+            <p class="font-Roboto font-extralight">sungodnika&#64;gmail.com</p>
           </div>
-                
+          <div class="flex flex-row items-center">
+            <img
+              class="px-2"
+              src="../../../assets/faculty-view-icons/graduation.png"
+            />
+            <p class="font-Roboto font-extralight">
+              Bachelor of Science in Computer Science
+            </p>
+          </div>
+          <div class="flex flex-row items-center">
+            <img
+              class="px-2"
+              src="../../../assets/faculty-view-icons/contacts.png"
+            />
+            <p class="font-Roboto font-extralight">
+              21 Units Currently Handled
+            </p>
+          </div>
         </div>
+      </div>
     </div>
-    <div class="w-full h-full rounded-[25px] flex flex-row py-2">
-        <div class="bg-white shadow-xl w-full h-[400px] rounded-[25px] mr-[10px]">
+    <div
+      class="bg-white shadow w-[80%] h-[90%] rounded-[25px] m-[20px] ml-1 hover:shadow-xl hover:duration-300 duration-300"
+    >
+      <div class="px-4">
+        <h1 class="font-Poppins font-semibold text-[2.5rem] py-2">
+          Milestone Calendar
+        </h1>
 
+        <button
+          id="dropdownDefaultButton"
+          data-dropdown-toggle="dropdown"
+          class="w-[200px] text-slate-500 border-solid border-2 border-slate-500 focus:ring-4 focus:outline-none focus:ring-blue-300 font-Roboto font-light text-[1.2rem] rounded-full justify-between text-sm px-5 py-2 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          type="button"
+        >
+          1 Year(s)<svg
+            class="w-2.5 h-2.5 ms-3"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 10 6"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="m1 1 4 4 4-4"
+            />
+          </svg>
+        </button>
+
+        <!-- Dropdown menu -->
+        <div
+          id="dropdown"
+          class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 border-solid border-2 border-back"
+        >
+          <ul
+            class="py-2 text-sm text-gray-700 dark:text-gray-200"
+            aria-labelledby="dropdownDefaultButton"
+          >
+            <li>
+              <a
+                href="#"
+                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                >Dashboard</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                >Settings</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                >Earnings</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                >Sign out</a
+              >
+            </li>
+          </ul>
         </div>
-        <div class="bg-white shadow-xl w-[360px] h-[400px] rounded-[25px] ml-[10px]">
-            
-        </div>
+
+        <app-faculty-milestone-calendar></app-faculty-milestone-calendar>
+
+        <h4 class="font-Poppins font-semibold text-[1.4rem] py-2">
+          Milestone History
+        </h4>
+        <app-faculty-milestone-history></app-faculty-milestone-history>
+      </div>
     </div>
+  </div>
+  <div class="w-full h-full rounded-[25px] flex flex-row py-2">
+    <div
+      class="bg-white shadow-xl w-full h-[400px] rounded-[25px] mr-[10px]"
+    ></div>
+    <div
+      class="bg-white shadow-xl w-[360px] h-[400px] rounded-[25px] ml-[10px]"
+    ></div>
+  </div>
 
-    <div class="w-full h-full rounded-[25px] flex flex-row">
-        <div class="bg-white shadow-xl w-full h-[400px] rounded-[25px] mr-[10px]">
-
-        </div>
-    </div>
+  <div class="w-full h-full rounded-[25px] flex flex-row">
+    <div
+      class="bg-white shadow-xl w-full h-[400px] rounded-[25px] mr-[10px]"
+    ></div>
+  </div>
 </div>

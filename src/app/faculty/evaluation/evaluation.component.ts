@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FacultyFetcherService } from '../../services/faculty/faculty-fetcher.service';
 import { Router } from '@angular/router';
 import { Evaluation } from '../../services/Interfaces/evaluation';
@@ -6,28 +6,30 @@ import { NgxChartsModule, ScaleType } from '@swimlane/ngx-charts';
 import { multi } from './data';
 import { error } from 'node:console';
 import { parse } from 'node:path';
+import { CommonModule, NgFor } from '@angular/common';
 @Component({
   selector: 'app-evaluation',
   standalone: true,
-  imports: [NgxChartsModule],
+  imports: [NgxChartsModule, CommonModule, NgFor],
   templateUrl: './evaluation.component.html',
   styleUrl: './evaluation.component.css'
 })
-export class EvaluationComponent {
+export class EvaluationComponent implements OnInit{
   evaluation: Evaluation[] = [];
   average: number = 0;
-  constructor(private facultyService: FacultyFetcherService, private router: Router){
-    this.getEvaluation();
-    Object.assign(this, { multi });
+  selectedSem: number = 2;
+  evalScoreAverage: number = 0;
+  evalScoreCategory: [number, number,number,number] = [0, 0, 0, 0]
+  selectedEvalSem: any = ''
 
+  constructor(private facultyService: FacultyFetcherService, private router: Router){
+    Object.assign(this, { multi });
   }
 
-  // numbers$.subscribe({
-  //   next: value => console.log('Observable emitted the next value: ' + value),
-  //   error: err => console.error('Observable emitted an error: ' + err),
-  //   complete: () => console.log('Observable emitted the complete notification')
-  // });
+  ngOnInit(): void {
+    this.getEvaluation();
 
+  }
 getEvaluation() {
   this.facultyService.fetchEvaluation().subscribe({
     next: (evalItem: Evaluation[]) => this.evaluation = evalItem,
@@ -52,26 +54,18 @@ getEvaluation() {
       console.log(this.evaluation)
     }
   })
-} 
+}
+// const result = words.filter((word) => word.length > 6);
 
-  // mapEvaluation() : Evaluation {
-  //   this.evaluation.map((evalItem:Evaluation) => 
-      
-      
-  //       ...evalItem,
-  //       "evalAverage": this.averageEvaluation(
-  //         evalItem.param1_score,
-  //         evalItem.param2_score,
-  //         evalItem.param3_score,
-  //         evalItem.param4_score
-        
-      
-  //   )
+  selectEvalSem(id: number): void {
+    let evalItem : Evaluation[] = this.evaluation.filter((evalItem: Evaluation) => evalItem.evaluation_ID == id)
+    this.evalScoreAverage = this.averageEvaluation(evalItem[0].param1_score, evalItem[0].param2_score, evalItem[0].param3_score, evalItem[0].param4_score)
+    this.selectedEvalSem = evalItem[0]
+  }
 
-  // }
 
   averageEvaluation(param1: number, param2: number, param3: number, param4: number): number {
-    return (param1 + param2 + param3 + param4) / 4;
+    return +((+param1 + +param2 + +param3 + +param4) / 4).toFixed(1);
   }
 
   multi: any[] | undefined;
@@ -95,9 +89,6 @@ getEvaluation() {
     domain: ['#5AA454', '#E44D25', '#CFC0BB', '#7aa3e5', '#a8385d', '#aae3f5']
   };
 
-  // constructor() {
-  //   Object.assign(this, { multi });
-  // }
 
   onSelect(data: any): void {
     console.log('Item clicked', JSON.parse(JSON.stringify(data)));

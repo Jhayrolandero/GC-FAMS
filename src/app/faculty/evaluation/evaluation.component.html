@@ -1,6 +1,4 @@
-<div
-  class="min-h-screen p-5 max-w-screen-fourk ml-[250px] flex flex-col gap-3 text-blue"
->
+<div class="p-5 flex flex-col gap-3 text-blue">
   <div
     class="bg-white shadow-lg bg-opacity-70 w-full rounded-[25px] flex justify-between items-center px-5"
   >
@@ -17,6 +15,17 @@
   <div
     class="bg-white shadow-lg bg-opacity-70 w-full rounded-[25px] flex flex-col justify-between items-center"
   >
+    <div class="flex flex-row gap-2">
+      <p
+        *ngFor="let evalItem of evaluation"
+        class="hover:font-bold transition-all cursor-pointer"
+        (click)="selectEvalSem(evalItem.evaluation_ID)"
+      >
+        {{ evalItem.semester }}@if( evalItem.semester == 1){st}@else if
+        (evalItem.semester == 2) {nd}, A.Y. {{ evalItem.evaluation_year }} -
+        {{ +evalItem.evaluation_year + 1 }}
+      </p>
+    </div>
     <div class="w-full flex flex-row p-4 pb-2">
       <div class="bg-white w-[450px] rounded-[25px] shadow-lg mr-2 py-4">
         <p class="font-Poppins font-semibold text-[1.4rem] mb-2 text-center">
@@ -25,7 +34,7 @@
         <p
           class="font-Poppins font-bold text-center text-[5rem] leading-[5rem]"
         >
-          4.3
+          {{ evalScoreAverage }}
         </p>
         <p
           class="text-greenBar font-Poppins font-bold text-[1.3rem] text-center"
@@ -39,7 +48,7 @@
         </p>
       </div>
       <div class="bg-white rounded-[25px] w-full shadow-lg ml-2 py-4 px-8">
-        <div class="flex justify-between">
+        <div class="flex justify-between" *ngFor="let evalItem of evaluation">
           <p class="font-Poppins font-semibold text-blue text-[1.2rem]">
             Subject Skills
           </p>
@@ -47,36 +56,7 @@
             4.7
           </p>
         </div>
-        <div class="bg-greenBar w-full rounded-full h-[10px] my-1"></div>
 
-        <div class="flex justify-between">
-          <p class="font-Poppins font-semibold text-blue text-[1.2rem]">
-            Subject Skills
-          </p>
-          <p class="font-Poppins font-semibold text-blue text-[1.2rem] mr-5">
-            4.7
-          </p>
-        </div>
-        <div class="bg-greenBar w-full rounded-full h-[10px] my-1"></div>
-
-        <div class="flex justify-between">
-          <p class="font-Poppins font-semibold text-blue text-[1.2rem]">
-            Subject Skills
-          </p>
-          <p class="font-Poppins font-semibold text-blue text-[1.2rem] mr-5">
-            4.7
-          </p>
-        </div>
-        <div class="bg-greenBar w-full rounded-full h-[10px] my-1"></div>
-
-        <div class="flex justify-between">
-          <p class="font-Poppins font-semibold text-blue text-[1.2rem]">
-            Subject Skills
-          </p>
-          <p class="font-Poppins font-semibold text-blue text-[1.2rem] mr-5">
-            4.7
-          </p>
-        </div>
         <div class="bg-greenBar w-full rounded-full h-[10px] my-1"></div>
       </div>
     </div>
@@ -85,7 +65,7 @@
         class="bg-white w-full rounded-[25px] shadow-lg p-6 gap-4 flex flex-col"
       >
         <p class="font-Poppins font-semibold text-[2rem]">
-          Evaluation Timeline {{ average }}
+          Evaluation Timeline
         </p>
         <div
           class="px-4 py-2 flex flex-col justify-center items-center h-[250px]"
