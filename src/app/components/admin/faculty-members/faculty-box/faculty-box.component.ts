@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FacultymembersService } from '../../../../services/admin/facultymembers.service';
 import { NgClass, NgFor, NgIf } from '@angular/common';
-import { schedule } from '../../../../services/admin/schedule';
+import { Schedule } from '../../../../services/admin/schedule';
 import { DateSelectComponent } from '../../date-select/date-select.component';
 import { NgOptimizedImage } from '@angular/common';
 import { FacultyMember } from '../../../../services/admin/facultymembers';
@@ -21,7 +21,7 @@ export class FacultyBoxComponent{
 
   isVisible: boolean = false;
   day: string = 'day=Monday';
-  schedules: schedule[] = [];
+  schedules: Schedule[] = [];
 
   setDay(day: string) {
     this.day = day;

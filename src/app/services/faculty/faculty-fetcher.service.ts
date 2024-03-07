@@ -4,7 +4,9 @@ import { AuthService } from '../auth.service';
 import { CommunityExtension } from '../Interfaces/community-extension';
 import { mainPort } from '../../app.component';
 import { Profile } from '../Interfaces/profile';
-import { schedule } from '../admin/schedule';
+import { Schedule } from '../admin/schedule';
+import { Resume } from '../Interfaces/resume';
+import { Evaluation } from '../Interfaces/evaluation';
 
 @Injectable({
   providedIn: 'root'
@@ -23,10 +25,18 @@ export class FacultyFetcherService {
   }
 
   fetchSchedDay(){
-    return this.http.get<schedule[]>(mainPort + '/GC-FaMS-API/API/getschedules/fetchFaculty', {headers:this.getHeader()});
+    return this.http.get<Schedule[]>(mainPort + '/GC-FaMS-API/API/getschedules/fetchFaculty', {headers:this.getHeader()});
   }
 
   fetchProfile(){
     return this.http.get<Profile>(mainPort + '/GC-FaMS-API/API/getprofile/fetchProfile', {headers:this.getHeader()});
+  }
+
+  fetchResume(){
+    return this.http.get<Resume>(mainPort + '/GC-FaMS-API/API/getresume/fetchResume', {headers:this.getHeader()});
+  }
+
+  fetchEvaluation(){
+    return this.http.get<Evaluation[]>(mainPort + '/GC-FaMS-API/API/getevaluation/fetchEvaluation', {headers:this.getHeader()});
   }
 }

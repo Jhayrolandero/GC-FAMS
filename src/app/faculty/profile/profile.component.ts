@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Profile } from '../../services/Interfaces/profile';
-import { schedule } from '../../services/admin/schedule';
+import { Schedule } from '../../services/admin/schedule';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { mainPort } from '../../app.component';
@@ -8,17 +8,19 @@ import { FacultyEducationComponent } from '../../components/faculty/faculty-educ
 import { FacultyCertificationsComponent } from '../../components/faculty/faculty-certifications/faculty-certifications.component';
 import { FacultyExpertiseComponent } from '../../components/faculty/faculty-expertise/faculty-expertise.component';
 import { FacultyFetcherService } from '../../services/faculty/faculty-fetcher.service';
+import { Resume } from '../../services/Interfaces/resume';
 
 @Component({
-  selector: 'app-profile',
-  standalone: true,
-  imports: [CommonModule, FacultyEducationComponent],
-  templateUrl: './profile.component.html',
-  styleUrl: './profile.component.css'
+    selector: 'app-profile',
+    standalone: true,
+    templateUrl: './profile.component.html',
+    styleUrl: './profile.component.css',
+    imports: [CommonModule, FacultyEducationComponent, FacultyCertificationsComponent]
 })
 export class ProfileComponent {
   facultyProfile!: Profile;
-  schedules: schedule[] = [];
+  schedules: Schedule[] = [];
+  resume!: Resume;
   educToggle = true;
   certToggle = true;
   expToggle = true;
@@ -26,6 +28,7 @@ export class ProfileComponent {
   constructor(private facultyService: FacultyFetcherService, private router: Router){ 
     this.getProfile();
     this.getSchedule();
+    this.getResume();
   }
 
   getProfile(){
@@ -43,8 +46,19 @@ export class ProfileComponent {
 
   getSchedule(){
     //Fetches the schedule data based on passed selected date
-    this.facultyService.fetchSchedDay().subscribe((next: schedule[]) => {
+    this.facultyService.fetchSchedDay().subscribe((next: Schedule[]) => {
       this.schedules = next;
+    }, (error) => {
+      if(error.status == 403){
+        this.router.navigate(['/']);
+      };
+    });
+  }
+
+  getResume(){
+    this.facultyService.fetchResume().subscribe((next: Resume) => {
+      this.resume = next;
+      console.log(this.resume);
     }, (error) => {
       if(error.status == 403){
         this.router.navigate(['/']);

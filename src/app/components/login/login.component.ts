@@ -20,7 +20,7 @@ export class LoginComponent {
   privSwitch!: boolean;
   validForm = true;
 
-  url = 'http://localhost:8080/GC-FaMS-API/API/login';
+  url = 'http://localhost/GC-FaMS-API/API/login';
   fb = inject(FormBuilder);
   http = inject(HttpClient);
   authService = inject(AuthService);
@@ -29,8 +29,7 @@ export class LoginComponent {
   	//Login form object
 	loginForm = new FormGroup({
 		email: new FormControl(''),
-		password: new FormControl(''),
-		privExpected: new FormControl(false)
+		password: new FormControl('')
 	})
 
 	constructor(){}
@@ -39,13 +38,15 @@ export class LoginComponent {
 		this.validForm = true;
 		//Main http post request, uses JwtToken interface, and stringified loginForm
 		this.http.post<JwtToken>(this.url, this.loginForm.getRawValue()).subscribe((response) => {
+			console.log(response);
 		//Success, wrong loginparams, and query error issue.
 		if(response.code == 200){
-			console.log("Login Authenticated.")
 			document.cookie = "token=" + response.token;
+			//Router for faculty privilege
 			if(response.privilege == 0){
 			this.router.navigate(['/faculty']);
 			}
+			//Router for admin privilege
 			else if(response.privilege == 1){
 			this.router.navigate(['/admin']);
 			}
@@ -61,5 +62,10 @@ export class LoginComponent {
 			this.validForm = false;
 		}
 		})
+	}
+
+	showPass(){
+		var pass = document.getElementById("password");
+
 	}
 }
