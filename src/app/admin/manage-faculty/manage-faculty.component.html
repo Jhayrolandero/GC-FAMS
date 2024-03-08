@@ -45,6 +45,7 @@
             *ngFor="let position of positions"
             [position]="position"
             [selectedEmployeePosition]="selectedEmployeePosition"
+            [selectedEmployeeType]="selectedEmployeeType"
             (setRole)="setPosition($event)"
             [radioGroup]="'employment_position'"
             class="select-none"

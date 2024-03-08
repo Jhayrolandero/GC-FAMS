@@ -20,7 +20,6 @@ export class EvaluationComponent {
   getEvaluation(){
     this.facultyService.fetchEvaluation().subscribe((next: Evaluation[]) => {
       this.evaluation = next;
-      console.log(this.evaluation);
     }, (error) => {
       if(error.status == 403){
         console.log(error);

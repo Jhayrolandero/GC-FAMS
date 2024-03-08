@@ -7,7 +7,7 @@ import { College } from '../Interfaces/college';
 @Injectable({
   providedIn: 'root'
 })
-export class AdminFetcherServiceService {
+export class AdminFetcherService {
   constructor(private http: HttpClient, private auth: AuthService) { }
 
   //Fetches cookie tokem
@@ -19,5 +19,4 @@ export class AdminFetcherServiceService {
   fetchCollege(){
     return this.http.get<College[]>(mainPort + '/GC-FaMS-API/API/fetchCollege', {headers:this.getHeader()});
   }
-
 }

@@ -2,7 +2,7 @@
   *ngIf="facultyProfile != undefined" class="min-h-screen p-5 max-w-screen-fourk ml-[250px] flex flex-col gap-3 text-blue"
 >
     <div class="w-100 bg-white rounded-[25px] overflow-hidden shadow-lg">
-        <div class="w-100 h-[150px] bg-red-200 overflow-hidden"><img class="w-full" [src]="facultyProfile.cover_image"></div>
+        <div class="w-100 h-[150px] bg-red-200 overflow-hidden"><img class="w-full" [ngSrc]="facultyProfile.cover_image"></div>
         <div class="rounded-full bg-greenBar w-[150px] h-[150px] absolute ml-7 top-[135px] overflow-hidden border-[5px] border-white"><img [src]="facultyProfile.profile_image"></div>
         <div class="flex justify-between">
           <p class="text-[2rem] font-Poppins font-semibold ml-7 mt-[55px] mb-2">{{ facultyProfile.first_name }} {{ facultyProfile.last_name }}</p>
@@ -161,9 +161,20 @@
               <path d="M32.37 15.0437L21.775 25.6387C20.5238 26.89 18.4763 26.89 17.225 25.6387L6.63 15.0437" stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
   
-            <p class="text-white text-[1.5rem] font-Poppins font-semibold ml-2 select-none">Expertise</p>
+            <p class="text-white text-[1.5rem] font-Poppins font-semibold ml-2 select-none">Experience</p>
           </div>
-          <app-faculty-education *ngIf="expToggle == true" ></app-faculty-education>
+          <app-faculty-experience *ngIf="expToggle == true" [experiences]="resume.industryExp" ></app-faculty-experience>
+        </div>
+
+        <div class="mb-4 w-full bg-white rounded-[25px] overflow-hidden shadow-lg">
+          <div class="bg-blue py-1 flex flex-row items-center pl-5">
+            <svg (click)="toggle('ex')"  width="23" height="23" viewBox="0 0 39 40" fill="none" xmlns="http://www.w3.org/2000/svg" [ngClass]="{'rotate-[270deg]': expToggle != true}">
+              <path d="M32.37 15.0437L21.775 25.6387C20.5238 26.89 18.4763 26.89 17.225 25.6387L6.63 15.0437" stroke="white" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+  
+            <p class="text-white text-[1.5rem] font-Poppins font-semibold ml-2 select-none">Projects</p>
+          </div>
+          <app-faculty-experience *ngIf="expToggle == true" [experiences]="resume.industryExp" ></app-faculty-experience>
         </div>
       </div>
 

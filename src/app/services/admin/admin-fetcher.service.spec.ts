@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { CollegeService } from './college.service';
+import { AdminFetcherService } from './admin-fetcher.service';
 
-describe('CollegeService', () => {
-  let service: CollegeService;
+describe('AdminFetcherService', () => {
+  let service: AdminFetcherService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(CollegeService);
+    service = TestBed.inject(AdminFetcherService);
   });
 
   it('should be created', () => {

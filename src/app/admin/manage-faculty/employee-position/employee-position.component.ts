@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'app-employee-position',
@@ -11,13 +11,14 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 export class EmployeePositionComponent {
   @Input()position?: string;
   @Input()selectedEmployeePosition?: string;
+  @Input()selectedEmployeeType?: number;
   @Input('radioGroup') radioGroup:string = ''
-  @Input('disabled') disabled:boolean = false
+  @Input('disabled') disabled:boolean = false;
 
   @Output() setRole = new EventEmitter()
 
+
   setEmployeePosition(value: string) {
     this.setRole.emit(value);
-    console.log("Currently Clicked: " + value);
   }
 }

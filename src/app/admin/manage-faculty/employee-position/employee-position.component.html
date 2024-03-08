@@ -6,7 +6,7 @@ value="{{ position }}"
 #role
 (click)="setEmployeePosition(role.value)"
 class="hidden peer"
-[disabled]="disabled"
+[disabled]="selectedEmployeeType == 0"
 />
 <label
 for="{{ position }}"

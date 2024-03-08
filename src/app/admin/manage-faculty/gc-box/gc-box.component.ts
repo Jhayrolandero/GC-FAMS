@@ -19,6 +19,5 @@ export class GcBoxComponent {
 
   setFacultyRole(value: string) {
     this.setRole.emit(value);
-    console.log("emitted: " + value);
   }
 }
