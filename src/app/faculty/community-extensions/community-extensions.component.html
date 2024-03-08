@@ -50,7 +50,7 @@
       class="bg-white rounded-xl shadow-lg p-3 flex flex-col gap-2 duration-300 hover:scale-[102%] hover:shadow-xl hover:duration-300 break-inside-avoid mb-2"
     >
       <div *ngIf="i != 0">
-        <img [src]="commex.commex_header_img" alt="" />
+        <img [src]="tempPort + '/GC-FaMS-API/Image_Assets/CommunityExtensions/' + commex.commex_ID + '/COMMEX_HEADER.png'" alt="" />
         <div>
           <h4 class="text-xl font-bold">{{ commex.commex_title }}</h4>
           <img
@@ -61,7 +61,7 @@
         </div>
   
         <p>
-          {{ commex.commex_details | slice : 0 : getRndInteger() }}
+          {{ commex.commex_details }}
         </p>
         <button class="bg-blue text-white font-bold p-2 rounded-lg">
           Read More

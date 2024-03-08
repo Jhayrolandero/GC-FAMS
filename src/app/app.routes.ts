@@ -13,6 +13,7 @@ import { FacultyScheduleComponent } from './admin/faculty-schedule/faculty-sched
 import { ManageFacultyComponent } from './admin/manage-faculty/manage-faculty.component';
 import { EvaluationComponent } from './faculty/evaluation/evaluation.component';
 import { ProjectsComponent } from './faculty/projects/projects.component';
+import { CvComponent } from './components/cv/cv.component';
 
 export const routes: Routes = [
   {path: '', redirectTo: '/login', pathMatch: 'full'},
@@ -40,5 +41,6 @@ export const routes: Routes = [
     {path: 'evaluation-analytics', component: ProgramAnalyticsComponent},
     {path: 'manage-faculty', component: ManageFacultyComponent},
   ]},
+  {path: 'cv', component: CvComponent},
   {path: '**', component: PagenotfoundComponent}
 ];
