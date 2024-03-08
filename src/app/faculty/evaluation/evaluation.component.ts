@@ -3,10 +3,19 @@ import { FacultyFetcherService } from '../../services/faculty/faculty-fetcher.se
 import { Router } from '@angular/router';
 import { Evaluation } from '../../services/Interfaces/evaluation';
 import { NgxChartsModule, ScaleType } from '@swimlane/ngx-charts';
-import { multi } from './data';
 import { error } from 'node:console';
 import { parse } from 'node:path';
 import { CommonModule, NgFor } from '@angular/common';
+
+type Series = {
+  'name': string,
+  'value': number
+}
+export interface evalScoreHistory {
+  'name': string,
+  'series': Series[]
+
+}
 @Component({
   selector: 'app-evaluation',
   standalone: true,
@@ -21,15 +30,36 @@ export class EvaluationComponent implements OnInit{
   evalScoreAverage: number = 0;
   evalScoreCategory: [number, number,number,number] = [0, 0, 0, 0]
   selectedEvalSem: any = ''
+  evalHistory: evalScoreHistory[] = []
 
   constructor(private facultyService: FacultyFetcherService, private router: Router){
-    Object.assign(this, { multi });
+    // Object.assign(this, { multi });
   }
 
   ngOnInit(): void {
     this.getEvaluation();
 
   }
+
+
+  setEvalHistory(): evalScoreHistory[] {
+    return [{
+      "name": "Evalution Score",
+      "series": this.setSeries()
+    }]
+  }
+
+  setSeries(): Series[] {
+    return this.evaluation.map((evalItem: Evaluation) => ({
+        name: `${evalItem.semester}${evalItem.semester== 1 ? 'st' : 'nd'}, A.Y. ${evalItem.evaluation_year} - ${+evalItem.evaluation_year + 1}`,
+        value: this.averageEvaluation(
+            evalItem.param1_score,
+            evalItem.param2_score,
+            evalItem.param3_score,
+            evalItem.param4_score
+        )
+    }));
+}
 getEvaluation() {
   this.facultyService.fetchEvaluation().subscribe({
     next: (evalItem: Evaluation[]) => this.evaluation = evalItem,
@@ -51,7 +81,11 @@ getEvaluation() {
           )
         }
       })
+
+      this.evalHistory = this.setEvalHistory()
       console.log(this.evaluation)
+      console.log(this.evalHistory)
+
     }
   })
 }

@@ -48,7 +48,7 @@
         </p>
       </div>
       <div class="bg-white rounded-[25px] w-full shadow-lg ml-2 py-4 px-8">
-        <div class="flex justify-between" *ngFor="let evalItem of evaluation">
+        <div class="flex justify-between">
           <p class="font-Poppins font-semibold text-blue text-[1.2rem]">
             Subject Skills
           </p>
@@ -80,7 +80,7 @@
             [xAxisLabel]="xAxisLabel"
             [yAxisLabel]="yAxisLabel"
             [timeline]="timeline"
-            [results]="multi"
+            [results]="evalHistory"
             (select)="onSelect($event)"
             (activate)="onActivate($event)"
             (deactivate)="onDeactivate($event)"
