@@ -11,6 +11,13 @@ type Series = {
   'name': string,
   'value': number
 }
+
+type ScoreCategory = {
+
+    category: string,
+    score: number
+
+}
 export interface evalScoreHistory {
   'name': string,
   'series': Series[]
@@ -26,22 +33,59 @@ export interface evalScoreHistory {
 export class EvaluationComponent implements OnInit{
   evaluation: Evaluation[] = [];
   average: number = 0;
-  selectedSem: number = 2;
+  selectedSem: number = 0;
   evalScoreAverage: number = 0;
-  evalScoreCategory: [number, number,number,number] = [0, 0, 0, 0]
-  selectedEvalSem: any = ''
+  evalScoreCategory: [ScoreCategory, ScoreCategory ,ScoreCategory, ScoreCategory] = [
+    {category: "", score: 0},
+    {category: "", score: 0},
+    {category: "", score: 0},
+    {category: "", score: 0}
+  ]
+  selectedEvalSem: Evaluation = {
+    evaluation_ID: 0,
+    faculty_ID: 0,
+    semester: 0,
+    evaluation_year: 0,
+    param1_score: 0,
+    param2_score: 0,
+    param3_score: 0,
+    param4_score: 0,
+    evalAverage: 0
+  }
   evalHistory: evalScoreHistory[] = []
 
-  constructor(private facultyService: FacultyFetcherService, private router: Router){
-    // Object.assign(this, { multi });
-  }
+  constructor(private facultyService: FacultyFetcherService, private router: Router){}
 
   ngOnInit(): void {
     this.getEvaluation();
 
   }
 
+  setEvalScoreCategory(): void {
+    this.evalScoreCategory = [
+      {
+        category: "Category 1",
+        score: this.selectedEvalSem.param1_score,
 
+      },
+      {
+        category: "Category 2",
+        score: this.selectedEvalSem.param2_score,
+
+      },
+      {
+        category: "Category 3",
+        score: this.selectedEvalSem.param3_score,
+
+      },
+      {
+        category: "Category 4",
+        score: this.selectedEvalSem.param4_score,
+
+      }]
+  }
+
+  // Set the evaluation Timeline
   setEvalHistory(): evalScoreHistory[] {
     return [{
       "name": "Evalution Score",
@@ -59,7 +103,9 @@ export class EvaluationComponent implements OnInit{
             evalItem.param4_score
         )
     }));
-}
+  }
+
+// Initial Fetching of faculty evaluation
 getEvaluation() {
   this.facultyService.fetchEvaluation().subscribe({
     next: (evalItem: Evaluation[]) => this.evaluation = evalItem,
@@ -81,20 +127,20 @@ getEvaluation() {
           )
         }
       })
-
       this.evalHistory = this.setEvalHistory()
-      console.log(this.evaluation)
-      console.log(this.evalHistory)
-
+      this.selectedSem = this.evaluation[this.evaluation.length - 1].evaluation_ID
+      this.selectEvalSem(this.selectedSem)
+      this.setEvalScoreCategory()
     }
   })
 }
-// const result = words.filter((word) => word.length > 6);
 
+  // Select a specific evaluation history
   selectEvalSem(id: number): void {
     let evalItem : Evaluation[] = this.evaluation.filter((evalItem: Evaluation) => evalItem.evaluation_ID == id)
     this.evalScoreAverage = this.averageEvaluation(evalItem[0].param1_score, evalItem[0].param2_score, evalItem[0].param3_score, evalItem[0].param4_score)
     this.selectedEvalSem = evalItem[0]
+    this.setEvalScoreCategory()
   }
 
 
@@ -102,7 +148,6 @@ getEvaluation() {
     return +((+param1 + +param2 + +param3 + +param4) / 4).toFixed(1);
   }
 
-  multi: any[] | undefined;
   view: [] = [];
 
   // options

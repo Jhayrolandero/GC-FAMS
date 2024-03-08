@@ -39,25 +39,29 @@
         <p
           class="text-greenBar font-Poppins font-bold text-[1.3rem] text-center"
         >
-          As of 2nd Semester
+          As of {{ selectedEvalSem.semester }}@if(selectedEvalSem.semester ==
+          1){st}@else if (selectedEvalSem.semester == 2) {nd} Semester
         </p>
         <p
           class="text-greenBar font-Poppins font-light text-[1rem] text-center"
         >
-          A.Y. 2023-2024
+          A.Y. {{ selectedEvalSem.evaluation_year }}-{{
+            +selectedEvalSem.evaluation_year + 1
+          }}
         </p>
       </div>
       <div class="bg-white rounded-[25px] w-full shadow-lg ml-2 py-4 px-8">
-        <div class="flex justify-between">
-          <p class="font-Poppins font-semibold text-blue text-[1.2rem]">
-            Subject Skills
-          </p>
-          <p class="font-Poppins font-semibold text-blue text-[1.2rem] mr-5">
-            4.7
-          </p>
+        <div *ngFor="let evalItem of evalScoreCategory">
+          <div class="flex justify-between">
+            <p class="font-Poppins font-semibold text-blue text-[1.2rem]">
+              {{ evalItem.category }}
+            </p>
+            <p class="font-Poppins font-semibold text-blue text-[1.2rem] mr-5">
+              {{ evalItem.score }}
+            </p>
+          </div>
+          <div class="bg-greenBar w-full rounded-full h-[10px] my-1"></div>
         </div>
-
-        <div class="bg-greenBar w-full rounded-full h-[10px] my-1"></div>
       </div>
     </div>
     <div class="w-full p-4 pt-2">
