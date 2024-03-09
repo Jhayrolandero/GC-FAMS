@@ -1,0 +1,11 @@
+<div *ngIf="formType != ''" class="formBgColor w-screen h-screen top-0 left-0 z-9999 fixed flex justify-center items-center">
+    <div *ngIf="formType == 'educ'" class="w-[200px] h-[200px] bg-greenBar opacity-100">
+        <button (click)="emptyType('')">{{ formType }}</button>
+    </div>
+    <div *ngIf="formType == 'cert'" class="w-[200px] h-[200px] bg-blue opacity-100">
+        <button (click)="emptyType('')">{{ formType }}</button>
+    </div>
+    <div *ngIf="formType == 'exp'" class="w-[200px] h-[200px] bg-slate-500 opacity-100">
+        <button (click)="emptyType('')">{{ formType }}</button>
+    </div>
+</div>

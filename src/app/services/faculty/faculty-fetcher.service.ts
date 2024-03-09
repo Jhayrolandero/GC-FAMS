@@ -7,6 +7,7 @@ import { Profile } from '../Interfaces/profile';
 import { Schedule } from '../admin/schedule';
 import { Resume } from '../Interfaces/resume';
 import { Evaluation } from '../Interfaces/evaluation';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,8 @@ import { Evaluation } from '../Interfaces/evaluation';
 export class FacultyFetcherService {
 
   constructor(private http: HttpClient, private auth: AuthService) { }
+
+  
 
   //Fetches cookie tokem
   getHeader(){

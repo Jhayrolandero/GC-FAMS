@@ -3,7 +3,7 @@ import { GcBoxComponent } from './gc-box/gc-box.component';
 import { PersonalInfoFormComponent } from './personal-info-form/personal-info-form.component';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule, NgFor } from '@angular/common';
-import { AdminFetcherServiceService } from '../../services/admin/admin-fetcher-service.service';
+import { AdminFetcherService } from '../../services/admin/admin-fetcher.service';
 import { College } from '../../services/Interfaces/college';
 import { EmployeeTypeComponent } from './employee-type/employee-type.component';
 import { EmployeePositionComponent } from './employee-position/employee-position.component';
@@ -38,7 +38,7 @@ isLoading: boolean = true
 selectedCollege: number = -1;
 selectedEmployeeType: number = -1;
 selectedEmployeePosition: string = '';
-disabledBox: boolean = false;
+// disabledBox: boolean = false;
 employmentStatus:Employment[] = [
   {'employmentType': 'Part-Time', 'empStatus': 0},
   {'employmentType': 'Full-Time', 'empStatus': 1},
@@ -47,6 +47,9 @@ employmentStatus:Employment[] = [
 positions: string[] = [
   "Dean", "Coordinator", "Instructor"
 ]
+
+colleges: College[] = [];
+programs: program[] = [];
 
 facultyInfo = new FormGroup({
   college_ID: new FormControl(-1),
@@ -79,12 +82,10 @@ facultyInfo = new FormGroup({
     console.log(this.selectedCollege);
   }
 
-  setPosition(value: string): void {
-    this.facultyInfo.patchValue({
-      teaching_position: value
-    });
-    this.selectedEmployeePosition = value;
-    console.log("Currently selected position is:" + this.selectedEmployeePosition);
+  setProgram(value: string): void {
+    // this.facultyInfo.patchValue({
+    //   program: value
+    // })
   }
 
   setEmployment(value: number): void {
@@ -95,14 +96,35 @@ facultyInfo = new FormGroup({
     console.log("Selected employee type is: " + this.selectedEmployeeType);
 
     if(value != 1) {
-      this.disabledBox = true;
+      this.selectedEmployeePosition = '';
+      // this.disabledBox = true;
       this.facultyInfo.patchValue({
         teaching_position: 'instructor'
       })
     } else {
-      this.disabledBox = false;
+      // this.disabledBox = false;
     }
   }
+
+  setPosition(value: string): void {
+    this.facultyInfo.patchValue({
+      teaching_position: value
+    });
+    this.selectedEmployeePosition = value;
+
+    if(this.selectedEmployeePosition != ''){
+      this.selectedEmployeeType = 1;
+    }
+    console.log("Currently selected position is:" + this.selectedEmployeePosition);
+  }
+
+  // setProgram(value: string): void {
+  //   this.facultyInfo.patchValue({
+  //     program: value
+  //   })
+  // }
+
+
 
   validateForm(): void {
 
@@ -114,22 +136,22 @@ facultyInfo = new FormGroup({
     //   msg => console.log(msg)
     // )
 
-  }
-  colleges: College[] = [];
-  programs: program[] = [];
+    console.log(this.facultyInfo.value);
 
-  filterPrograms(): program[] {
-
-    let programs: program[] = []
-    this.programs.map(program => {
-      if(this.selectedCollege > 0 && this.selectedCollege == program.college_id) {
-        programs.push(program)
-      }
-    })
-    return programs
   }
 
-  constructor(private adminService: AdminFetcherServiceService) {}
+
+  // filterPrograms(): program[] {
+  //   let programs: program[] = []
+  //   this.programs.map(program => {
+  //     if(this.selectedCollege > 0 && this.selectedCollege == program.college_id) {
+  //       programs.push(program)
+  //     }
+  //   })
+  //   return programs
+  // }
+
+  constructor(private adminService: AdminFetcherService) {}
   ngOnInit(): void {
     this.getCollege()
     this.fetchProgram()
@@ -158,10 +180,10 @@ facultyInfo = new FormGroup({
     // )
   }
 
-  abbvCollege(college: string): string {
-    const abbv = college.match(/[A-Z]/g) || [];
-    return abbv.join("");
-  }
+  // abbvCollege(college: string): string {
+  //   const abbv = college.match(/[A-Z]/g) || [];
+  //   return abbv.join("");
+  // }
 
   // modifyData(data: college): any {
   //   // Example: Add a new property to each item

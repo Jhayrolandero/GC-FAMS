@@ -2,13 +2,18 @@ import { Component } from '@angular/core';
 import { Profile } from '../../services/Interfaces/profile';
 import { Schedule } from '../../services/admin/schedule';
 import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { mainPort } from '../../app.component';
-import { FacultyEducationComponent } from '../../components/faculty/faculty-education/faculty-education.component';
-import { FacultyCertificationsComponent } from '../../components/faculty/faculty-certifications/faculty-certifications.component';
-import { FacultyExpertiseComponent } from '../../components/faculty/faculty-expertise/faculty-expertise.component';
+import { FacultyEducationComponent } from '../../components/faculty/faculty-profile/faculty-education/faculty-education.component';
+import { FacultyCertificationsComponent } from '../../components/faculty/faculty-profile/faculty-certifications/faculty-certifications.component';
+import { FacultyExpertiseComponent } from '../../components/faculty/faculty-profile/faculty-expertise/faculty-expertise.component';
+import { FacultyExperienceComponent } from '../../components/faculty/faculty-profile/faculty-experience/faculty-experience.component';
 import { FacultyFetcherService } from '../../services/faculty/faculty-fetcher.service';
 import { Resume } from '../../services/Interfaces/resume';
+import { HttpClient } from '@angular/common/http';
+import { AddFormsComponent } from '../../components/faculty/add-forms/add-forms.component';
+
+
 import { LoadingScreenComponent } from '../../components/loading-screen/loading-screen.component';
 
 @Component({
@@ -16,7 +21,7 @@ import { LoadingScreenComponent } from '../../components/loading-screen/loading-
     standalone: true,
     templateUrl: './profile.component.html',
     styleUrl: './profile.component.css',
-    imports: [CommonModule, FacultyEducationComponent, FacultyCertificationsComponent, LoadingScreenComponent]
+    imports: [LoadingScreenComponent, NgOptimizedImage, CommonModule, FacultyEducationComponent, FacultyCertificationsComponent, FacultyExperienceComponent, FacultyExpertiseComponent, AddFormsComponent]
 })
 export class ProfileComponent {
   isLoading: boolean = true
@@ -26,25 +31,18 @@ export class ProfileComponent {
   educToggle = true;
   certToggle = true;
   expToggle = true;
+  formType = '';
 
-  constructor(private facultyService: FacultyFetcherService, private router: Router){
+  constructor(private facultyService: FacultyFetcherService, private router: Router, private http: HttpClient){ 
     this.getProfile();
     this.getSchedule();
     this.getResume();
   }
 
-  // getProfile(){
-  //   this.facultyService.fetchProfile().subscribe((next) => {
-  //     this.facultyProfile = next;
-  //     this.facultyProfile.profile_image = mainPort + this.facultyProfile.profile_image;
-  //     this.facultyProfile.cover_image = mainPort + this.facultyProfile.cover_image;
-  //   }, (error) => {
-  //     if(error.status == 403){
-  //       console.log(error);
-  //       this.router.navigate(['/']);
-  //     }
-  //   });
-  // }
+  emptyForm(value: string){
+    this.formType = value;
+  }
+
   getProfile(){
     this.facultyService.fetchProfile().subscribe({
     next: (next) => this.facultyProfile = next,
@@ -62,25 +60,30 @@ export class ProfileComponent {
 
   getSchedule(){
     //Fetches the schedule data based on passed selected date
-    this.facultyService.fetchSchedDay().subscribe((next: Schedule[]) => {
-      this.schedules = next;
-    }, (error) => {
-      if(error.status == 403){
-        this.router.navigate(['/']);
-      };
+    this.facultyService.fetchSchedDay().subscribe({
+      next: value => this.schedules = value,
+      error: err => {if(err.status == 403){this.router.navigate(['/']);}}
     });
   }
 
   getResume(){
-    this.facultyService.fetchResume().subscribe((next: Resume) => {
-      this.resume = next;
-      console.log(this.resume);
-    }, (error) => {
-      if(error.status == 403){
-        this.router.navigate(['/']);
-      };
+    this.facultyService.fetchResume().subscribe({
+      next: value => {this.resume = value;console.log(value);},
+      error: err => {if(err.status == 403){this.router.navigate(['/']);}}
     });
   }
+
+  showAdd(comp: string){
+    switch (comp) {
+      case "educ":
+        
+        break;
+    
+      default:
+        break;
+    }
+  }
+
 
   toggle(drop: string){
     switch (drop) {

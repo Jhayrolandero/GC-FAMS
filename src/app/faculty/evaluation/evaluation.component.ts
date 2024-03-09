@@ -7,6 +7,7 @@ import { error } from 'node:console';
 import { parse } from 'node:path';
 import { CommonModule, NgFor } from '@angular/common';
 import { LoadingScreenComponent } from '../../components/loading-screen/loading-screen.component';
+
 type Series = {
   'name': string,
   'value': number
@@ -107,37 +108,37 @@ export class EvaluationComponent implements OnInit{
     }));
   }
 
-// Initial Fetching of faculty evaluation
-getEvaluation() {
-  this.facultyService.fetchEvaluation().subscribe({
-    next: (evalItem: Evaluation[]) => this.evaluation = evalItem,
-    error: error => {
-      if (error.status == 403) {
-        console.log(error);
-        this.router.navigate(['/']);
-      }
-    },
-    complete: () => {
-      this.evaluation = this.evaluation.map((evalItem) => {
-        return {
-          ...evalItem,
-          "evalAverage": this.averageEvaluation(
-                    +evalItem.param1_score,
-                    +evalItem.param2_score,
-                    +evalItem.param3_score,
-            +evalItem.param4_score
-          )
+  // Initial Fetching of faculty evaluation
+  getEvaluation() {
+    this.facultyService.fetchEvaluation().subscribe({
+      next: (evalItem: Evaluation[]) => this.evaluation = evalItem,
+      error: error => {
+        if (error.status == 403) {
+          console.log(error);
+          this.router.navigate(['/']);
         }
-      })
-      console.log(this.evaluation)
-      this.evalHistory = this.setEvalHistory()
-      this.selectedSem = this.evaluation[this.evaluation.length - 1].evaluation_ID
-      this.selectEvalSem(this.selectedSem)
-      this.setEvalScoreCategory()
-      this.isLoading = false
-    }
-  })
-}
+      },
+      complete: () => {
+        this.evaluation = this.evaluation.map((evalItem) => {
+          return {
+            ...evalItem,
+            "evalAverage": this.averageEvaluation(
+                      +evalItem.param1_score,
+                      +evalItem.param2_score,
+                      +evalItem.param3_score,
+              +evalItem.param4_score
+            )
+          }
+        })
+        console.log(this.evaluation)
+        this.evalHistory = this.setEvalHistory()
+        this.selectedSem = this.evaluation[this.evaluation.length - 1].evaluation_ID
+        this.selectEvalSem(this.selectedSem)
+        this.setEvalScoreCategory()
+        this.isLoading = false
+      }
+    })
+  }
 
   // Select a specific evaluation history
   selectEvalSem(id: number): void {

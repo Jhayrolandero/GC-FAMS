@@ -1,9 +1,8 @@
-<div *ngFor="let educ of educAttainment" class="bg-white items-center pt-4">
+<div *ngFor="let exp of experiences" class="bg-white items-center pt-4">
     <div class="flex flex-row">
-        <div class="rounded-full bg-slate-200 w-[100px] h-[100px] mr-3 ml-10"><img [src]="tempPort + educ.school_image"></div>
-        <div class="select-none  w-full mr-10">
+        <div class="select-none  w-full mx-10">
             <div class="flex flex-row justify-between">
-                <p class="font-Roboto font-medium text-blue text-[1.6rem]">{{ educ.educ_title }}</p>
+                <p class="font-Roboto font-medium text-blue text-[1.6rem]">{{ exp.experience_title }}</p>
                 <div class="flex flex-row items-center">
                     <svg width="25" height="25" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M3.95833 29.0417H6.51146L24.025 11.5281L21.4719 8.975L3.95833 26.4885V29.0417ZM0.375 32.625V25.0104L24.025 1.40521C24.3833 1.07674 24.7793 0.822917 25.2129 0.64375C25.6465 0.464584 26.1015 0.375 26.5781 0.375C27.0559 0.375 27.5188 0.464584 27.9667 0.64375C28.4146 0.822917 28.8028 1.09167 29.1313 1.45L31.5948 3.95833C31.9531 4.28681 32.2147 4.675 32.3795 5.12292C32.5444 5.57083 32.6262 6.01875 32.625 6.46667C32.625 6.94444 32.5432 7.40013 32.3795 7.83371C32.2159 8.26729 31.9543 8.66265 31.5948 9.01979L7.98958 32.625H0.375ZM22.726 10.274L21.4719 8.975L24.025 11.5281L22.726 10.274Z" fill="#BCBCBC"/>
@@ -13,8 +12,8 @@
                     </svg>
                 </div>
             </div>
-            <p class="font-Roboto font-medium text-black text-[1.3rem]">{{ educ.school_name + "  (" + educ.name_abbreviation +")" }}</p>
-            <p class="ml-5 font-Roboto font-regular text-black text-[1.2rem]">{{ educ.educ_details }}</p>
+            <p class="font-Roboto font-medium text-black text-[1.3rem]">{{ exp.experience_place }}</p>
+            <p class="ml-5 font-Roboto font-regular text-black text-[1.2rem]">{{ exp.experience_details }}</p>
         </div>
     </div>
     <hr class="h-[3px] my-4 mx-10 bg-black opacity-50">

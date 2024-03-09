@@ -8,5 +8,5 @@ import { ModalComponent } from '../modal/modal.component';
   styleUrl: './cv.component.css'
 })
 export class CvComponent {
-
+  
 }

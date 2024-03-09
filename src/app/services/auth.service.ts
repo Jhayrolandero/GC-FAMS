@@ -12,4 +12,9 @@ export class AuthService{
     getToken(){
         return this.cookieService.get('token');
     }
+
+    flushToken(){
+        console.log("Deleted all tokens");
+        this.cookieService.deleteAll();
+    }
 }

@@ -1,0 +1,37 @@
+@media print {
+    body {-webkit-print-color-adjust: exact;}
+    }
+
+.paper{
+    /* width: 2480px;
+    height: 3508px; */
+    width: 8.3in;
+    height: 11.7in;
+    background-color: rgb(209, 209, 209);
+}
+
+.navProfileRect{
+    background-color: #FFAB48;
+    width: 8.3in;
+    height: 1.4in;
+}
+
+.sideProfileRect{
+    background-color: #18181A;
+    height: 11.7in;
+    width: 2.8in;
+    margin-left: 0.15in;
+}
+
+.segmentTitle{
+    font-family: Inter;
+    font-weight: 700;
+    font-size: 0.23in;
+    letter-spacing: 0.040in;
+}
+
+.segmentLine{
+    background-color: rgb(0, 0, 0);
+    width: 100%;
+    height: 0.04in;
+}

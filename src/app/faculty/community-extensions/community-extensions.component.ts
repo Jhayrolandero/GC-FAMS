@@ -13,6 +13,7 @@ import { LoadingScreenComponent } from '../../components/loading-screen/loading-
   styleUrl: './community-extensions.component.css'
 })
 export class CommunityExtensionsComponent{
+  tempPort = mainPort;
   isLoading: boolean = true;
   commexs: CommunityExtension[] = [];
   min: number = 100;
@@ -53,9 +54,5 @@ export class CommunityExtensionsComponent{
       return new Date(b.commex_date).valueOf() - new Date(a.commex_date).valueOf();
     })
     console.log(this.commexs);
-  }
-
-  getRndInteger(): number {
-    return Math.floor(Math.random() * (this.max - this.min + 1) ) + this.min;
   }
 }
