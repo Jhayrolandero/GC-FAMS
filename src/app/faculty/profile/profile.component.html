@@ -3,6 +3,9 @@
   *ngIf="facultyProfile != undefined && !isLoading"
   class="p-5 flex flex-col gap-3 text-blue"
 >
+  <div class="absolute z-50">
+    <app-add-forms (setType)="emptyForm('')" [formType]="formType"></app-add-forms>
+  </div>
   <div class="w-100 bg-white rounded-[25px] overflow-hidden shadow-lg">
     <div class="w-100 h-[150px] bg-red-200 overflow-hidden">
       <img class="w-full" [src]="facultyProfile.cover_image" />
@@ -109,135 +112,6 @@
           </div>
         </div>
       </div>
-
-      <!-- <div class="w-full ml-2">
-          <div class="w-full bg-white rounded-[25px] overflow-hidden shadow-lg">
-            <div *ngIf="facultyProfile.college_ID == 1" class="bg-blue h-[170px] py-1 flex flex-row items-center pl-5 overflow-hidden">
-              <div class="flex flex-col grow-0 absolute">
-                <p class="text-white text-[2.2rem] font-Poppins font-semibold ml-2">CCS</p>
-                <p class="text-white text-[1rem] font-Poppins font-medium ml-2">College of<br>Computer Science</p>
-              </div>
-              <div class="w-[190px] h-[190px] rounded-full relative left-[180px] top-[28px] grow-0"><img src="../../../assets/college-logo-big/CCS.png"></div>
-            </div>
-            <div class="mx-8 mt-4">
-              <p class="font-Poppins font-semibold text-[1.5rem] my-5">Contact</p>
-              <hr class="h-[3px] bg-mainGray">
-              <p class="font-Roboto font-regular text-black my-5">{{ facultyProfile.email }}</p>
-            </div>
-
-            <div class="mx-8 mt-8">
-              <p class="font-Poppins font-semibold text-[1.5rem]">Personal</p>
-              <hr class="h-[3px] bg-mainGray">
-              <div class="flex flex-row">
-                <div class="font-Roboto font-bold mr-10 text-black [&_p]:my-2">
-                  <p >Birthdate</p>
-                  <p >Age</p>
-                  <p >Citizenship</p>
-                  <p >Civil Status</p>
-                  <p >Sex</p>
-                </div>
-                <div class="font-Roboto font-regular text-black [&_p]:my-2">
-                  <p >{{ facultyProfile.birthdate }}</p>
-                  <p >{{ facultyProfile.age }}</p>
-                  <p >{{ facultyProfile.citizenship }}</p>
-                  <p >{{ facultyProfile.civil_status }}</p>
-                  <p >{{ facultyProfile.sex }}</p>
-                </div>
-              </div>
-            </div>
-  
-            <div class="mr-5">
-              <p class="font-Poppins font-semibold text-[1.6rem]">Contact</p>
-              <hr class="h-[2px] bg-mainGray">
-              <p class="font-Roboto font-regular text-black my-2 text-[1.0rem]">{{ facultyProfile.email }}</p>
-              <p class="font-Roboto font-regular text-black my-2 text-[1.0rem]">09684949573</p>
-              <p class="font-Roboto font-regular text-black my-2 text-[1.0rem]">{{ facultyProfile.email }}</p>
-              <p class="font-Roboto font-regular text-black my-2 text-[1.0rem]">{{ facultyProfile.email }}</p>
-            </div>
-          </div>
-        </div>
-  
-        <div class="shadow-lg w-[350px] bg-white ml-2 rounded-[25px] overflow-hidden">
-          <div class="w-full bg-blue h-[40px] flex items-center justify-center">
-            <p class="text-white text-[1.6rem] font-Poppins font-semibold">Generate CV</p>
-          </div>
-          <div class="flex justify-center h-[80%]"><img src=".././../../assets/img/qrCode.png"></div>
-
-            <div class="mx-8 mt-4">
-              <p class="font-Poppins font-semibold text-[1.5rem]">QR Code</p>
-              <hr class="h-[3px] bg-mainGray">
-              <p>{{ facultyProfile.email }}</p>
-            </div>
-          </div>
-        </div> -->
-
-      <div
-        class="mb-4 w-full bg-white rounded-[25px] overflow-hidden shadow-lg"
-      >
-        <div
-          (click)="toggle('ed')"
-          class="bg-blue py-1 flex flex-row items-center justify-between pl-5 hover:opacity-95 hover:duration-300 duration-300"
-        >
-          <div class="flex flex-row items-center">
-            <svg
-              width="10"
-              height="10"
-              viewBox="0 0 39 40"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              [ngClass]="{ 'rotate-[270deg]': educToggle != true }"
-            >
-              <path
-                d="M32.37 15.0437L21.775 25.6387C20.5238 26.89 18.4763 26.89 17.225 25.6387L6.63 15.0437"
-                stroke="white"
-                stroke-width="1.0"
-                stroke-miterlimit="10"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-            <p
-              class="text-white text-[1.5rem] font-Poppins font-semibold ml-2 select-none"
-            >
-              Educational Attainment
-            </p>
-          </div>
-          <div
-            class="w-[80px] h-[28px] rounded-[25px] bg-white mr-5 hover:shadow-lg hover:scale-[102%] hover:duration-300 duration:300 flex justify-center items-center"
-          >
-            <svg
-              width="30"
-              height="31"
-              viewBox="0 0 30 31"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <g clip-path="url(#clip0_984_350)">
-                <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                  d="M11.25 6.75C11.25 6.08696 11.5134 5.45107 11.9822 4.98223C12.4511 4.51339 13.087 4.25 13.75 4.25H16.25C16.913 4.25 17.5489 4.51339 18.0178 4.98223C18.4866 5.45107 18.75 6.08696 18.75 6.75V11.75H23.75C24.413 11.75 25.0489 12.0134 25.5178 12.4822C25.9866 12.9511 26.25 13.587 26.25 14.25V16.75C26.25 17.413 25.9866 18.0489 25.5178 18.5178C25.0489 18.9866 24.413 19.25 23.75 19.25H18.75V24.25C18.75 24.913 18.4866 25.5489 18.0178 26.0178C17.5489 26.4866 16.913 26.75 16.25 26.75H13.75C13.087 26.75 12.4511 26.4866 11.9822 26.0178C11.5134 25.5489 11.25 24.913 11.25 24.25V19.25H6.25C5.58696 19.25 4.95107 18.9866 4.48223 18.5178C4.01339 18.0489 3.75 17.413 3.75 16.75V14.25C3.75 13.587 4.01339 12.9511 4.48223 12.4822C4.95107 12.0134 5.58696 11.75 6.25 11.75H11.25V6.75Z"
-                  fill="#BCBCBC"
-                />
-              </g>
-              <defs>
-                <clipPath id="clip0_984_350">
-                  <rect
-                    width="30"
-                    height="30"
-                    fill="white"
-                    transform="translate(0 0.5)"
-                  />
-                </clipPath>
-              </defs>
-            </svg>
-          </div>
-        </div>
-        <app-faculty-education
-          *ngIf="educToggle == true"
-          [educAttainment]="resume.educAttainment"
-        ></app-faculty-education>
-      </div>
   
       <div class="mb-4 w-full bg-white rounded-[25px] overflow-hidden shadow-lg">
         <div class="bg-blue py-1 flex flex-row items-center justify-between pl-5 hover:opacity-95 hover:duration-300 duration-300">
@@ -336,76 +210,5 @@
         <app-faculty-experience *ngIf="expToggle == true" [experiences]="resume.industryExp" ></app-faculty-experience>
       </div>
     </div>
-  
-  
-
-      <div
-        class="mb-4 w-full bg-white rounded-[25px] overflow-hidden shadow-lg"
-      >
-        <div class="bg-blue py-1 flex flex-row items-center pl-5">
-          <svg
-            (click)="toggle('cr')"
-            width="23"
-            height="23"
-            viewBox="0 0 39 40"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            [ngClass]="{ 'rotate-[270deg]': certToggle != true }"
-          >
-            <path
-              d="M32.37 15.0437L21.775 25.6387C20.5238 26.89 18.4763 26.89 17.225 25.6387L6.63 15.0437"
-              stroke="white"
-              stroke-width="1.5"
-              stroke-miterlimit="10"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
-
-          <p
-            class="text-white text-[1.5rem] font-Poppins font-semibold ml-2 select-none"
-          >
-            Certifications
-          </p>
-        </div>
-        <app-faculty-certifications
-          *ngIf="certToggle == true"
-          [certifications]="resume.certifications"
-        ></app-faculty-certifications>
-      </div>
-
-      <div
-        class="mb-4 w-full bg-white rounded-[25px] overflow-hidden shadow-lg"
-      >
-        <div class="bg-blue py-1 flex flex-row items-center pl-5">
-          <svg
-            (click)="toggle('ex')"
-            width="23"
-            height="23"
-            viewBox="0 0 39 40"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            [ngClass]="{ 'rotate-[270deg]': expToggle != true }"
-          >
-            <path
-              d="M32.37 15.0437L21.775 25.6387C20.5238 26.89 18.4763 26.89 17.225 25.6387L6.63 15.0437"
-              stroke="white"
-              stroke-width="1.5"
-              stroke-miterlimit="10"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
-
-          <p
-            class="text-white text-[1.5rem] font-Poppins font-semibold ml-2 select-none"
-          >
-            Expertise
-          </p>
-        </div>
-        <app-faculty-education
-          *ngIf="expToggle == true"
-        ></app-faculty-education>
-      </div>
-    </div>
   </div>
+</div>
