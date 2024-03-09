@@ -1,4 +1,6 @@
-<div class="p-5 flex flex-col gap-3 text-blue">
+<app-loading-screen *ngIf="isLoading"></app-loading-screen>
+
+<div class="p-5 flex flex-col gap-3 text-blue" *ngIf="!isLoading">
   <div
     class="bg-white shadow-lg bg-opacity-70 w-full rounded-[25px] flex justify-between items-center px-5"
   >
