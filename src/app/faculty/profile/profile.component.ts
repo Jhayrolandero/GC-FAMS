@@ -14,15 +14,17 @@ import { HttpClient } from '@angular/common/http';
 import { AddFormsComponent } from '../../components/faculty/add-forms/add-forms.component';
 
 
+import { LoadingScreenComponent } from '../../components/loading-screen/loading-screen.component';
 
 @Component({
     selector: 'app-profile',
     standalone: true,
     templateUrl: './profile.component.html',
     styleUrl: './profile.component.css',
-    imports: [NgOptimizedImage, CommonModule, FacultyEducationComponent, FacultyCertificationsComponent, FacultyExperienceComponent, FacultyExpertiseComponent, AddFormsComponent]
+    imports: [LoadingScreenComponent, NgOptimizedImage, CommonModule, FacultyEducationComponent, FacultyCertificationsComponent, FacultyExperienceComponent, FacultyExpertiseComponent, AddFormsComponent]
 })
 export class ProfileComponent {
+  isLoading: boolean = true
   facultyProfile!: Profile;
   schedules: Schedule[] = [];
   resume!: Resume;
@@ -42,16 +44,17 @@ export class ProfileComponent {
   }
 
   getProfile(){
-    this.facultyService.fetchProfile().subscribe((next) => {
-      this.facultyProfile = next;
+    this.facultyService.fetchProfile().subscribe({
+    next: (next) => this.facultyProfile = next,
+    error: (error) => {
+      console.log(error);
+      this.router.navigate(['/']);
+    },
+    complete: () => {
       this.facultyProfile.profile_image = mainPort + this.facultyProfile.profile_image;
       this.facultyProfile.cover_image = mainPort + this.facultyProfile.cover_image;
-      console.log(this.facultyProfile);
-    }, (error) => {
-      if(error.status == 403){
-        console.log(error);
-        this.router.navigate(['/']);
-      }
+      this.isLoading = false
+    }
     });
   }
 
@@ -87,7 +90,7 @@ export class ProfileComponent {
       case 'ed':
         this.educToggle = !this.educToggle;
         break;
-      
+
       case 'cr':
         this.certToggle = !this.certToggle;
         break;
@@ -95,7 +98,7 @@ export class ProfileComponent {
       case 'ex':
         this.expToggle = !this.expToggle;
         break;
-    
+
       default:
         break;
     }

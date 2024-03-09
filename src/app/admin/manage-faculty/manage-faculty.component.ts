@@ -8,7 +8,6 @@ import { College } from '../../services/Interfaces/college';
 import { EmployeeTypeComponent } from './employee-type/employee-type.component';
 import { EmployeePositionComponent } from './employee-position/employee-position.component';
 import { LoadingScreenComponent } from '../../components/loading-screen/loading-screen.component';
-
 export interface program {
   map(arg0: (item: any) => any): any;
   'program_id': number;
