@@ -9,15 +9,17 @@ import { FacultyCertificationsComponent } from '../../components/faculty/faculty
 import { FacultyExpertiseComponent } from '../../components/faculty/faculty-expertise/faculty-expertise.component';
 import { FacultyFetcherService } from '../../services/faculty/faculty-fetcher.service';
 import { Resume } from '../../services/Interfaces/resume';
+import { LoadingScreenComponent } from '../../components/loading-screen/loading-screen.component';
 
 @Component({
     selector: 'app-profile',
     standalone: true,
     templateUrl: './profile.component.html',
     styleUrl: './profile.component.css',
-    imports: [CommonModule, FacultyEducationComponent, FacultyCertificationsComponent]
+    imports: [CommonModule, FacultyEducationComponent, FacultyCertificationsComponent, LoadingScreenComponent]
 })
 export class ProfileComponent {
+  isLoading: boolean = true
   facultyProfile!: Profile;
   schedules: Schedule[] = [];
   resume!: Resume;
@@ -25,22 +27,36 @@ export class ProfileComponent {
   certToggle = true;
   expToggle = true;
 
-  constructor(private facultyService: FacultyFetcherService, private router: Router){ 
+  constructor(private facultyService: FacultyFetcherService, private router: Router){
     this.getProfile();
     this.getSchedule();
     this.getResume();
   }
 
+  // getProfile(){
+  //   this.facultyService.fetchProfile().subscribe((next) => {
+  //     this.facultyProfile = next;
+  //     this.facultyProfile.profile_image = mainPort + this.facultyProfile.profile_image;
+  //     this.facultyProfile.cover_image = mainPort + this.facultyProfile.cover_image;
+  //   }, (error) => {
+  //     if(error.status == 403){
+  //       console.log(error);
+  //       this.router.navigate(['/']);
+  //     }
+  //   });
+  // }
   getProfile(){
-    this.facultyService.fetchProfile().subscribe((next) => {
-      this.facultyProfile = next;
+    this.facultyService.fetchProfile().subscribe({
+    next: (next) => this.facultyProfile = next,
+    error: (error) => {
+      console.log(error);
+      this.router.navigate(['/']);
+    },
+    complete: () => {
       this.facultyProfile.profile_image = mainPort + this.facultyProfile.profile_image;
       this.facultyProfile.cover_image = mainPort + this.facultyProfile.cover_image;
-    }, (error) => {
-      if(error.status == 403){
-        console.log(error);
-        this.router.navigate(['/']);
-      }
+      this.isLoading = false
+    }
     });
   }
 
@@ -71,7 +87,7 @@ export class ProfileComponent {
       case 'ed':
         this.educToggle = !this.educToggle;
         break;
-      
+
       case 'cr':
         this.certToggle = !this.certToggle;
         break;
@@ -79,7 +95,7 @@ export class ProfileComponent {
       case 'ex':
         this.expToggle = !this.expToggle;
         break;
-    
+
       default:
         break;
     }

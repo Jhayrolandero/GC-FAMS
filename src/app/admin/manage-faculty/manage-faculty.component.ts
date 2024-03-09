@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { GcBoxComponent } from './gc-box/gc-box.component';
 import { PersonalInfoFormComponent } from './personal-info-form/personal-info-form.component';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { NgFor } from '@angular/common';
+import { CommonModule, NgFor } from '@angular/common';
 import { AdminFetcherServiceService } from '../../services/admin/admin-fetcher-service.service';
 import { College } from '../../services/Interfaces/college';
 import { EmployeeTypeComponent } from './employee-type/employee-type.component';
 import { EmployeePositionComponent } from './employee-position/employee-position.component';
-
+import { LoadingScreenComponent } from '../../components/loading-screen/loading-screen.component';
 export interface program {
   map(arg0: (item: any) => any): any;
   'program_id': number;
@@ -27,13 +27,14 @@ export interface Employment {
 @Component({
   selector: 'app-manage-faculty',
   standalone: true,
-  imports: [GcBoxComponent, PersonalInfoFormComponent, ReactiveFormsModule, NgFor, EmployeeTypeComponent, EmployeePositionComponent],
+  imports: [GcBoxComponent, PersonalInfoFormComponent, ReactiveFormsModule, NgFor, EmployeeTypeComponent, EmployeePositionComponent, LoadingScreenComponent, CommonModule],
   templateUrl: './manage-faculty.component.html',
   styleUrl: './manage-faculty.component.css'
 })
 
 
 export class ManageFacultyComponent implements OnInit {
+isLoading: boolean = true
 selectedCollege: number = -1;
 selectedEmployeeType: number = -1;
 selectedEmployeePosition: string = '';
@@ -134,11 +135,19 @@ facultyInfo = new FormGroup({
     this.fetchProgram()
   }
 
+  // getCollege():void {
+  //   this.adminService.fetchCollege().subscribe((next) => {
+  //     this.colleges = next;
+  //     console.log(this.colleges);
+  //     }
+  //   )
+  // }
   getCollege():void {
-    this.adminService.fetchCollege().subscribe((next) => {
-      this.colleges = next;
-      console.log(this.colleges);
-      }
+    this.adminService.fetchCollege().subscribe({
+      next: (next) => this.colleges = next,
+      error: (error) => console.log(error),
+      complete: () => this.isLoading = false
+    }
     )
   }
   fetchProgram(): void {

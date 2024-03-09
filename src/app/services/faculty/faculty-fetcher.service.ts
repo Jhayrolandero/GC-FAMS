@@ -12,6 +12,7 @@ import { Evaluation } from '../Interfaces/evaluation';
   providedIn: 'root'
 })
 export class FacultyFetcherService {
+
   constructor(private http: HttpClient, private auth: AuthService) { }
 
   //Fetches cookie tokem
@@ -39,4 +40,5 @@ export class FacultyFetcherService {
   fetchEvaluation(){
     return this.http.get<Evaluation[]>(mainPort + '/GC-FaMS-API/API/getevaluation/fetchEvaluation', {headers:this.getHeader()});
   }
+
 }

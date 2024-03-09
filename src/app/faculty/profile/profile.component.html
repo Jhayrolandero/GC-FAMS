@@ -1,5 +1,6 @@
+<app-loading-screen *ngIf="isLoading"></app-loading-screen>
 <div
-  *ngIf="facultyProfile != undefined"
+  *ngIf="facultyProfile != undefined && !isLoading"
   class="p-5 flex flex-col gap-3 text-blue"
 >
   <div class="w-100 bg-white rounded-[25px] overflow-hidden shadow-lg">
