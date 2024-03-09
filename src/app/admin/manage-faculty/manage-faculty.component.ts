@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { GcBoxComponent } from './gc-box/gc-box.component';
 import { PersonalInfoFormComponent } from './personal-info-form/personal-info-form.component';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgFor } from '@angular/common';
 import { College } from '../../services/Interfaces/college';
 import { EmployeeTypeComponent } from './employee-type/employee-type.component';
@@ -53,16 +53,16 @@ programs: program[] = [];
 facultyInfo = new FormGroup({
   college_ID: new FormControl(-1),
   teaching_position: new FormControl(''),
-  first_name: new FormControl(''),
+  first_name: new FormControl<string>('', Validators.required),
   last_name: new FormControl(''),
   birthdate: new FormControl(''),
-  age: new FormControl(),
+  age: new FormControl(''),
   citizenship: new FormControl(''),
   civil_status: new FormControl(''),
   sex: new FormControl(''),
   email: new FormControl(''),
   employment_status: new FormControl(-1),
-  phone_number: new FormControl(''),
+  phone_number: new FormControl(2, Validators.min(3)),
   middle_name: new FormControl(''),
   ext_name: new FormControl(''),
   region: new FormControl(''),
@@ -79,6 +79,12 @@ facultyInfo = new FormGroup({
     });
     this.selectedCollege = value
     console.log(this.selectedCollege);
+  }
+
+  setProgram(value: string): void {
+    // this.facultyInfo.patchValue({
+    //   program: value
+    // })
   }
 
   setEmployment(value: number): void {
@@ -119,7 +125,11 @@ facultyInfo = new FormGroup({
 
 
 
+  validateForm(): void {
+
+  }
   onSubmit() {
+    // this.facultyInfo.get('first_name').errors.required
     // TODO: Use EventEmitter with form value
     // this.College.addFaculty(this.facultyInfo.value).subscribe(
     //   msg => console.log(msg)
@@ -153,7 +163,6 @@ facultyInfo = new FormGroup({
       }
     )
   }
-
   fetchProgram(): void {
     // this.College.fetchProgram().subscribe(
     //   programs => {
@@ -161,7 +170,6 @@ facultyInfo = new FormGroup({
     //   }
     // )
   }
-
 
   // abbvCollege(college: string): string {
   //   const abbv = college.match(/[A-Z]/g) || [];

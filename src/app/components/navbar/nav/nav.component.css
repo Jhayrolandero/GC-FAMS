@@ -1,8 +1,8 @@
-li {
+/* li {
   position: relative;
   width: 100%;
   display: block;
-}
+} */
 
 li a {
   padding-left: 4px;
@@ -13,24 +13,16 @@ li a {
   font-family: Poppins;
   font-size: 0.9em;
   font-weight: 400;
-  color: #F0F0F0;
+  color: #f0f0f0;
+  font-size: 1em;
 }
-
-li a:hover {
-  background-color: #F0F0F0;
-  border-left: 8px solid #1e7242;
+*/ li a:hover,
+li a.selected {
+  background-color: #f0f0f0;
+  border-left: 4px solid #1e7242;
   color: #074287;
   transition: all 0.1s;
 }
-
-li a.selected {
-  background-color: #F0F0F0;
-  border-left: 8px solid #1e7242;
-  color: #074287;
-  transition: all 0.2s;
-}
-
-
 
 /* a:hover::before {
   box-shadow: 10px 4px white;

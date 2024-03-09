@@ -1,10 +1,16 @@
-<div
- class="min-h-screen p-5 max-w-screen-fourk ml-[250px] flex flex-col gap-3 text-blue"
->
-  <div class="bg-white shadow-lg bg-opacity-70 w-full rounded-[25px] flex justify-between items-center px-5 ">
-    <h1 class="font-Poppins font-semibold text-[2.5rem] py-2">Community Extensions</h1>
+<div class="p-5 flex flex-col gap-3 text-blue">
+  <div
+    class="bg-white shadow-lg bg-opacity-70 w-full rounded-[25px] flex justify-between items-center px-5"
+  >
+    <h1 class="font-Poppins font-semibold text-[2.5rem] py-2">
+      Community Extensions
+    </h1>
     <div class="flex flex-row space-x-4">
-        <button class="bg-gradient-to-r from-blue to-greenBar text-white font-Poppins font-semibold px-11 py-2 rounded-full shadow-xl hover:scale-[102%] hover:duration-300 duration-300">+Add</button>
+      <button
+        class="bg-gradient-to-r from-blue to-greenBar text-white font-Poppins font-semibold px-11 py-2 rounded-full shadow-xl hover:scale-[102%] hover:duration-300 duration-300"
+      >
+        +Add
+      </button>
     </div>
   </div>
 
@@ -13,30 +19,31 @@
   </h1>
   <hr class="h-[2px] bg-black" />
 
-  
   <div
-  *ngIf="commexs[0] != undefined" class="bg-white shadow-lg w-full rounded-[25px] flex flex-row overflow-hidden hover:scale-[101%] hover:duration-300 duration-300"
+    *ngIf="commexs[0] != undefined"
+    class="bg-white shadow-lg w-full rounded-[25px] flex flex-row overflow-hidden hover:scale-[101%] hover:duration-300 duration-300"
   >
     <div class="bg-red-400 w-[25%] h-[280px]">
       <img [src]="commexs[0].commex_header_img" class="h-full object-cover" />
     </div>
     <div class="ml-4 mt-4 w-[75%] pr-6">
       <h1 class="font-Poppins font-semibold text-[1.5rem]">
-        {{ commexs[0].commex_title}}
+        {{ commexs[0].commex_title }}
       </h1>
       <div class="flex flex-row opacity-70 mb-3">
         <img
           src="../../../assets/faculty-dashboard/BlueVector.png"
           class="w-[20px] h-full mr-[5px]"
         />
-        <h2 class="font-Poppins font-semibold text-[1rem]">{{ commexs[0].commex_date}}</h2>
+        <h2 class="font-Poppins font-semibold text-[1rem]">
+          {{ commexs[0].commex_date }}
+        </h2>
       </div>
       <p>
-        {{ commexs[0].commex_details}}
+        {{ commexs[0].commex_details }}
       </p>
     </div>
   </div>
-
 
   <!-- Other -->
   <h1 class="font-Poppins font-semibold text-[1.5rem] py-2">
@@ -59,14 +66,13 @@
           />
           <span>{{ commex.commex_date }}</span>
         </div>
-  
+
         <p>
           {{ commex.commex_details }}
         </p>
         <button class="bg-blue text-white font-bold p-2 rounded-lg">
           Read More
         </button>
-
       </div>
     </div>
   </app-other-commex>

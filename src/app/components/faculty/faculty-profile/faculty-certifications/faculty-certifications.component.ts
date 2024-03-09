@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { mainPort } from '../../../app.component';
-import { Certifications } from '../../../services/Interfaces/certifications';
+import { mainPort } from '../../../../app.component';
+import { Certifications } from '../../../../services/Interfaces/certifications';
 import { CommonModule } from '@angular/common';
 
 @Component({

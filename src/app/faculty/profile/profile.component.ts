@@ -4,13 +4,15 @@ import { Schedule } from '../../services/admin/schedule';
 import { Router } from '@angular/router';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { mainPort } from '../../app.component';
-import { FacultyEducationComponent } from '../../components/faculty/faculty-education/faculty-education.component';
-import { FacultyCertificationsComponent } from '../../components/faculty/faculty-certifications/faculty-certifications.component';
-import { FacultyExpertiseComponent } from '../../components/faculty/faculty-expertise/faculty-expertise.component';
-import { FacultyExperienceComponent } from '../../components/faculty/faculty-experience/faculty-experience.component';
+import { FacultyEducationComponent } from '../../components/faculty/faculty-profile/faculty-education/faculty-education.component';
+import { FacultyCertificationsComponent } from '../../components/faculty/faculty-profile/faculty-certifications/faculty-certifications.component';
+import { FacultyExpertiseComponent } from '../../components/faculty/faculty-profile/faculty-expertise/faculty-expertise.component';
+import { FacultyExperienceComponent } from '../../components/faculty/faculty-profile/faculty-experience/faculty-experience.component';
 import { FacultyFetcherService } from '../../services/faculty/faculty-fetcher.service';
 import { Resume } from '../../services/Interfaces/resume';
 import { HttpClient } from '@angular/common/http';
+import { AddFormsComponent } from '../../components/faculty/add-forms/add-forms.component';
+
 
 
 @Component({
@@ -18,7 +20,7 @@ import { HttpClient } from '@angular/common/http';
     standalone: true,
     templateUrl: './profile.component.html',
     styleUrl: './profile.component.css',
-    imports: [NgOptimizedImage, CommonModule, FacultyEducationComponent, FacultyCertificationsComponent, FacultyExperienceComponent, FacultyExpertiseComponent]
+    imports: [NgOptimizedImage, CommonModule, FacultyEducationComponent, FacultyCertificationsComponent, FacultyExperienceComponent, FacultyExpertiseComponent, AddFormsComponent]
 })
 export class ProfileComponent {
   facultyProfile!: Profile;
@@ -27,11 +29,16 @@ export class ProfileComponent {
   educToggle = true;
   certToggle = true;
   expToggle = true;
+  formType = '';
 
   constructor(private facultyService: FacultyFetcherService, private router: Router, private http: HttpClient){ 
     this.getProfile();
     this.getSchedule();
     this.getResume();
+  }
+
+  emptyForm(value: string){
+    this.formType = value;
   }
 
   getProfile(){
@@ -61,6 +68,17 @@ export class ProfileComponent {
       next: value => {this.resume = value;console.log(value);},
       error: err => {if(err.status == 403){this.router.navigate(['/']);}}
     });
+  }
+
+  showAdd(comp: string){
+    switch (comp) {
+      case "educ":
+        
+        break;
+    
+      default:
+        break;
+    }
   }
 
 

@@ -1,4 +1,4 @@
-<aside class="fixed top-0 left-0 w-[150px]">
+<aside class="min-w-min w-full max-w-max">
   <div
     class="h-screen bg-gradient-to-b from-greenBar from-0% via-blue via-[180px] to-blue to-100% rounded-r-[25px]"
   >
@@ -85,13 +85,6 @@
           [index]="'9'"
           [title]="'Schedule'"
           [source]="'Vector.png'"
-        ></app-nav>
-        <app-nav
-          (click)="onSelect(10)"
-          [selectedBar]="selectedBar"
-          [index]="'10'"
-          [title]="'Projects'"
-          [source]="'ProjectManagement.png'"
         ></app-nav>
         <app-nav
           (click)="onSelect(13)"

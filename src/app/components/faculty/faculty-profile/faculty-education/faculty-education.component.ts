@@ -1,9 +1,8 @@
 import { Component, Input } from '@angular/core';
-import { EducationalAttainment } from '../../../services/Interfaces/educational-attainment';
-import { FacultyFetcherService } from '../../../services/faculty/faculty-fetcher.service';
+import { EducationalAttainment } from '../../../../services/Interfaces/educational-attainment';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { mainPort } from '../../../app.component';
+import { mainPort } from '../../../../app.component';
 
 @Component({
   selector: 'app-faculty-education',
@@ -14,5 +13,6 @@ import { mainPort } from '../../../app.component';
 })
 export class FacultyEducationComponent {
   @Input() educAttainment!: EducationalAttainment[];
+  @Input() addEducToggle: boolean = false;
   tempPort = mainPort;
 }
