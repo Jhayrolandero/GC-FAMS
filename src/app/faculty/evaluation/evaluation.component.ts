@@ -6,6 +6,7 @@ import { NgxChartsModule, ScaleType } from '@swimlane/ngx-charts';
 import { error } from 'node:console';
 import { parse } from 'node:path';
 import { CommonModule, NgFor } from '@angular/common';
+import { LoadingScreenComponent } from '../../components/loading-screen/loading-screen.component';
 
 type Series = {
   'name': string,
@@ -26,11 +27,13 @@ export interface evalScoreHistory {
 @Component({
   selector: 'app-evaluation',
   standalone: true,
-  imports: [NgxChartsModule, CommonModule, NgFor],
+  imports: [NgxChartsModule, CommonModule, NgFor, LoadingScreenComponent],
   templateUrl: './evaluation.component.html',
   styleUrl: './evaluation.component.css'
 })
 export class EvaluationComponent implements OnInit{
+
+  isLoading: boolean = true;
   evaluation: Evaluation[] = [];
   average: number = 0;
   selectedSem: number = 0;
@@ -127,10 +130,12 @@ export class EvaluationComponent implements OnInit{
             )
           }
         })
+        console.log(this.evaluation)
         this.evalHistory = this.setEvalHistory()
         this.selectedSem = this.evaluation[this.evaluation.length - 1].evaluation_ID
         this.selectEvalSem(this.selectedSem)
         this.setEvalScoreCategory()
+        this.isLoading = false
       }
     })
   }
@@ -142,7 +147,6 @@ export class EvaluationComponent implements OnInit{
     this.selectedEvalSem = evalItem[0]
     this.setEvalScoreCategory()
   }
-
 
   averageEvaluation(param1: number, param2: number, param3: number, param4: number): number {
     return +((+param1 + +param2 + +param3 + +param4) / 4).toFixed(1);

@@ -1,19 +1,10 @@
-<!-- <app-topnav></app-topnav>
-<app-sidebar></app-sidebar>
-<app-sidebar></app-sidebar>
-<div
-  class="min-h-screen bg-white2 p-5 max-w-screen-fourk ml-60 flex flex-col gap-3 text-blue font-Poppins"
->
-  <router-outlet></router-outlet>
-</div> -->
-
 <div class="flex justify-center max-w-screen-fourk">
-  <div class="h-screen sticky top-0 laptop:w-[220px] laptopL:w-[250px]">
+  <div class="h-screen sticky top-0 w-[10%] min-w-min">
     <app-sidebar></app-sidebar>
   </div>
-  <div class="flex-1 flex flex-col">
+  <div class="flex-1 flex flex-col w-[90%]">
     <app-topnav></app-topnav>
-    <div class="px-4 py-6">
+    <div class="flex-1">
       <router-outlet></router-outlet>
     </div>
   </div>

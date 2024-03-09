@@ -13,6 +13,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class FacultyFetcherService {
+
   constructor(private http: HttpClient, private auth: AuthService) { }
 
   
@@ -42,4 +43,5 @@ export class FacultyFetcherService {
   fetchEvaluation(){
     return this.http.get<Evaluation[]>(mainPort + '/GC-FaMS-API/API/getevaluation/fetchEvaluation', {headers:this.getHeader()});
   }
+
 }
