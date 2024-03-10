@@ -7,6 +7,7 @@ import { error } from 'node:console';
 import { parse } from 'node:path';
 import { CommonModule, NgFor } from '@angular/common';
 import { LoadingScreenComponent } from '../../components/loading-screen/loading-screen.component';
+import { EvaluationService } from '../../services/evaluation.service';
 
 type Series = {
   'name': string,
@@ -14,11 +15,11 @@ type Series = {
 }
 
 type ScoreCategory = {
+    name: string,
+    value: number
+    bgColor?: string
+  }
 
-    category: string,
-    score: number
-
-}
 export interface evalScoreHistory {
   'name': string,
   'series': Series[]
@@ -35,14 +36,11 @@ export class EvaluationComponent implements OnInit{
 
   isLoading: boolean = true;
   evaluation: Evaluation[] = [];
-  average: number = 0;
-  selectedSem: number = 0;
-  evalScoreAverage: number = 0;
-  evalScoreCategory: [ScoreCategory, ScoreCategory ,ScoreCategory, ScoreCategory] = [
-    {category: "", score: 0},
-    {category: "", score: 0},
-    {category: "", score: 0},
-    {category: "", score: 0}
+  evalScoreCategory: ScoreCategory[] = [
+    {name: "", value: 0, bgColor: ''},
+    {name: "", value: 0, bgColor: ''},
+    {name: "", value: 0, bgColor: ''},
+    {name: "", value: 0, bgColor: ''}
   ]
   selectedEvalSem: Evaluation = {
     evaluation_ID: 0,
@@ -57,55 +55,14 @@ export class EvaluationComponent implements OnInit{
   }
   evalHistory: evalScoreHistory[] = []
 
-  constructor(private facultyService: FacultyFetcherService, private router: Router){}
+  constructor(
+    private facultyService: FacultyFetcherService,
+    private router: Router,
+    private evaluationService: EvaluationService){}
 
   ngOnInit(): void {
     this.getEvaluation();
 
-  }
-
-  setEvalScoreCategory(): void {
-    this.evalScoreCategory = [
-      {
-        category: "Category 1",
-        score: this.selectedEvalSem.param1_score,
-
-      },
-      {
-        category: "Category 2",
-        score: this.selectedEvalSem.param2_score,
-
-      },
-      {
-        category: "Category 3",
-        score: this.selectedEvalSem.param3_score,
-
-      },
-      {
-        category: "Category 4",
-        score: this.selectedEvalSem.param4_score,
-
-      }]
-  }
-
-  // Set the evaluation Timeline
-  setEvalHistory(): evalScoreHistory[] {
-    return [{
-      "name": "Evalution Score",
-      "series": this.setSeries()
-    }]
-  }
-
-  setSeries(): Series[] {
-    return this.evaluation.map((evalItem: Evaluation) => ({
-        name: `${evalItem.semester}${evalItem.semester== 1 ? 'st' : 'nd'}, A.Y. ${evalItem.evaluation_year} - ${+evalItem.evaluation_year + 1}`,
-        value: this.averageEvaluation(
-            evalItem.param1_score,
-            evalItem.param2_score,
-            evalItem.param3_score,
-            evalItem.param4_score
-        )
-    }));
   }
 
   // Initial Fetching of faculty evaluation
@@ -122,34 +79,32 @@ export class EvaluationComponent implements OnInit{
         this.evaluation = this.evaluation.map((evalItem) => {
           return {
             ...evalItem,
-            "evalAverage": this.averageEvaluation(
+            "evalAverage": this.evaluationService.averageEvaluation(
                       +evalItem.param1_score,
                       +evalItem.param2_score,
                       +evalItem.param3_score,
-              +evalItem.param4_score
+                      +evalItem.param4_score
             )
           }
         })
-        console.log(this.evaluation)
-        this.evalHistory = this.setEvalHistory()
-        this.selectedSem = this.evaluation[this.evaluation.length - 1].evaluation_ID
-        this.selectEvalSem(this.selectedSem)
-        this.setEvalScoreCategory()
+        this.evalHistory = this.evaluationService.setEvalHistory(this.evaluation)
+        this.selectedEvalSem = this.evaluation[this.evaluation.length - 1]
+        this.selectEvalSem()
         this.isLoading = false
       }
     })
   }
 
   // Select a specific evaluation history
-  selectEvalSem(id: number): void {
-    let evalItem : Evaluation[] = this.evaluation.filter((evalItem: Evaluation) => evalItem.evaluation_ID == id)
-    this.evalScoreAverage = this.averageEvaluation(evalItem[0].param1_score, evalItem[0].param2_score, evalItem[0].param3_score, evalItem[0].param4_score)
-    this.selectedEvalSem = evalItem[0]
-    this.setEvalScoreCategory()
-  }
+  selectEvalSem(id?: number): void {
+    if(id) {
+      let evalItem : Evaluation[] = this.evaluation.filter((evalItem: Evaluation) => evalItem.evaluation_ID == id)
+      this.selectedEvalSem = evalItem[0]
+      this.evalScoreCategory = this.evaluationService.setEvalScoreCategory(this.selectedEvalSem)
 
-  averageEvaluation(param1: number, param2: number, param3: number, param4: number): number {
-    return +((+param1 + +param2 + +param3 + +param4) / 4).toFixed(1);
+    } else {
+      this.evalScoreCategory = this.evaluationService.setEvalScoreCategory(this.selectedEvalSem)
+    }
   }
 
   view: [] = [];

@@ -1,8 +1,8 @@
 import { Component, Input, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NavComponent } from '../nav/nav.component';
-
+import { AuthService } from '../../../services/auth.service';
 @Component({
   selector: 'app-sidebar',
   standalone: true,
@@ -15,7 +15,7 @@ export class SidebarComponent {
   selectedBar: string = '1';
   accountPath: string;
 
-  constructor(private route: ActivatedRoute){
+  constructor(private route: ActivatedRoute, private auth: AuthService, private router: Router ){
     this.accountPath = this.route.snapshot.url[0].path;
     this.isFaculty = this.accountPath === "faculty";
   }
@@ -27,5 +27,11 @@ export class SidebarComponent {
   onSelect(index: number){
     this.selectedBar = index + "";
     console.log(this.selectedBar);
+  }
+
+
+  logout(){
+    this.auth.flushToken();
+    this.router.navigate(['/']);
   }
 }

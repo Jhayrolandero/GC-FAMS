@@ -129,14 +129,13 @@
       </div>
     </div>
   </div>
-  <!-- HEREIS THE PIE CHART -->
   <div class="w-full h-full rounded-[25px] flex flex-row py-4 gap-6">
     <div
       class="bg-white shadow-xl w-full rounded-[25px] grid grid-cols-3 px-4 py-2"
     >
       <div class="col-span-2">
         <h4 class="text-[40px] font-semibold leading-[1]">Evaluation Graph</h4>
-        <app-pie-chart [data]="single"></app-pie-chart>
+        <app-pie-chart [data]="evalScoreCategory"></app-pie-chart>
       </div>
       <div
         class="border-s-2 border-black flex flex-col justify-center items-center gap-4 px-6"
@@ -144,26 +143,26 @@
         <h4 class="text-[40px] font-semibold m-0 leading-[1]">
           Evaluation Score
         </h4>
-        <p class="text-[128px] m-0 font-bold leading-[1.6]">4.50</p>
-        <div class="flex gap-4 w-full justify-evenly">
-          <span class="h-full bg-[#fbd650] w-[24px]">.</span>
-          <p>Teaching Strategy</p>
-          <p>4.50</p>
-        </div>
-        <div class="flex gap-4 w-full justify-evenly">
-          <span class="h-full bg-[#65c280] w-[24px]">.</span>
-          <p>Teaching Strategy</p>
-          <p>4.50</p>
-        </div>
-        <div class="flex gap-4 w-full justify-evenly">
-          <span class="h-full bg-[#1f7cb5] w-[24px]">.</span>
-          <p>Teaching Strategy</p>
-          <p>4.50</p>
-        </div>
-        <div class="flex gap-4 w-full justify-evenly">
-          <span class="h-full bg-[#ef6540] w-[24px]">.</span>
-          <p>Teaching Strategy</p>
-          <p>4.50</p>
+        <p class="text-[128px] m-0 font-bold leading-[1]">
+          {{ selectedSem.evalAverage }}
+        </p>
+        <small class="text-[16px] text-[#1E7242] font-semibold">
+          As of {{ selectedSem.semester }}@if(selectedSem.semester == 1){st}
+          @else if (selectedSem.semester == 2) {nd} A.Y.
+          {{ selectedSem.evaluation_year }}-{{
+            +selectedSem.evaluation_year + 1
+          }}</small
+        >
+        <div
+          class="flex gap-4 w-full justify-evenly"
+          *ngFor="let evalItem of evalScoreCategory"
+        >
+          <span
+            [ngStyle]="{ 'background-color': evalItem.bgColor }"
+            class="h-full aspect-square"
+          ></span>
+          <p class="text-[16px] font-semibold">{{ evalItem.name }}</p>
+          <p class="text-[24px] font-semibold">{{ evalItem.value }}</p>
         </div>
       </div>
     </div>
@@ -196,10 +195,4 @@
       </div>
     </div>
   </div>
-
-  <!-- <div class="w-full h-full rounded-[25px] flex flex-row">
-    <div
-      class="bg-white shadow-xl w-full h-[400px] rounded-[25px] mr-[10px]"
-    ></div>
-  </div> -->
 </div>

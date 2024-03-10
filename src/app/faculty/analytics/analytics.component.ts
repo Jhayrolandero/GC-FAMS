@@ -12,7 +12,15 @@ import { mainPort } from '../../app.component';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { LoadingScreenComponent } from '../../components/loading-screen/loading-screen.component';
 import { forkJoin } from 'rxjs';
+import { EvaluationService } from '../../services/evaluation.service';
 import { error } from 'console';
+
+type ScoreCategory = {
+  name: string,
+  value: number,
+  bgColor?: string;
+}
+
 @Component({
   selector: 'app-analytics',
   standalone: true,
@@ -24,20 +32,40 @@ import { error } from 'console';
     LoadingScreenComponent,
     CommonModule
   ],
+  providers: [EvaluationService],
   templateUrl: './analytics.component.html',
   styleUrl: './analytics.component.css'
 })
 export class AnalyticsComponent implements OnInit{
 
-  constructor(private facultyService: FacultyFetcherService, private router: Router){}
+  constructor(
+    private facultyService: FacultyFetcherService,
+    private router: Router,
+    private evaluationService: EvaluationService
+    ){}
 
   isLoading: boolean = true;
+  selectedSem: Evaluation = {
+    evaluation_ID: 0,
+    faculty_ID: 0,
+    semester: 0,
+    evaluation_year: 0,
+    param1_score: 0,
+    param2_score: 0,
+    param3_score: 0,
+    param4_score: 0,
+    evalAverage: 0
+  }
   facultyProfile!: Profile;
   evaluation: Evaluation[] = []
-  single: any[] = []
+  evalScoreCategory: ScoreCategory[] = [
+    {name: "", value: 0, bgColor: ""},
+    {name: "", value: 0, bgColor: ""},
+    {name: "", value: 0, bgColor: ""},
+    {name: "", value: 0, bgColor: ""}
+  ]
 
   ngOnInit(): void {
-    this.single = [...single]
     this.getEvaluationAndProfile()
   }
 
@@ -57,11 +85,26 @@ export class AnalyticsComponent implements OnInit{
       complete: () => {
         this.facultyProfile.profile_image = mainPort + this.facultyProfile.profile_image;
         this.facultyProfile.cover_image = mainPort + this.facultyProfile.cover_image;
-        console.log(this.facultyProfile)
 
+        this.evaluation = this.evaluation.map((evalItem) => {
+          return {
+            ...evalItem,
+            "evalAverage": this.evaluationService.averageEvaluation(
+                      +evalItem.param1_score,
+                      +evalItem.param2_score,
+                      +evalItem.param3_score,
+                      +evalItem.param4_score
+            )
+          }
+        })
+        this.selectedSem = this.evaluation[this.evaluation.length - 1]
+        this.setEvalScore()
         this.isLoading = false
       }
     })
   }
 
+  setEvalScore() {
+    this.evalScoreCategory = this.evaluationService.selectEvalSem(this.selectedSem.evaluation_ID, this.evaluation)
+  }
 }
