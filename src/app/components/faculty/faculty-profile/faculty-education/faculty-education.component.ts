@@ -18,10 +18,12 @@ export class FacultyEducationComponent {
   @Output() setEducEdit = new EventEmitter<EducationalAttainment>();
   @Output() setType = new EventEmitter<string>();
 
+  //Send selected resume info on form component
   sendValueParams(value: EducationalAttainment) {
     this.setEducEdit.emit(value);
   }
 
+  //Change form type.
   changeType(value: string) {
     console.log("empt");
     this.setType.emit(value);

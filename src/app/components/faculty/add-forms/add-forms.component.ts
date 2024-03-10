@@ -18,7 +18,7 @@ export class AddFormsComponent {
 
   constructor(private facultyService: FacultyPostService){}
 
-    //Login form object
+  //Educational Attainment formgroup/ form object
 	educForm = new FormGroup({
 		educ_title: new FormControl(''),
     educ_details: new FormControl(''),
@@ -27,23 +27,23 @@ export class AddFormsComponent {
     year_end: new FormControl(''),
 	})
 
+  //Sets form type, can show, or close current form.
   emptyType(value: string) {
-    console.log("empt");
     this.setType.emit(value);
   }
 
-  addRes(type: string){
-    this.facultyService.addRes(this.educForm, type).subscribe({
+  //Dynamic Create, Edit, and Delete function call for faculty post service.
+  addRes(form: FormGroup, type: string){
+    this.facultyService.addRes(form, type).subscribe({
       next: value => {console.log(value);
                       this.emptyType('');},
       error: err => console.log(err),
     });
   }
 
-  deleteRes(type: string){
-    console.log("Attempting to delete..." + this.educValue);
+  deleteRes(id:number, type: string){
     if(this.educValue){
-      this.facultyService.deleteRes(this.educValue.educattainment_ID, type).subscribe({
+      this.facultyService.deleteRes(id, type).subscribe({
         next: value => {console.log(value);
                        this.emptyType('');},
         error: err => console.log(err),
