@@ -1,6 +1,8 @@
 export interface Profile {
     faculty_ID: number,
     college_ID: number,
+    college_name: string,
+    college_abbrev:string,
     teaching_position: string,
     isAdmin: boolean,
     first_name: string,

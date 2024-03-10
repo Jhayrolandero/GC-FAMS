@@ -6,6 +6,7 @@ import { EducationalAttainment } from '../../../services/Interfaces/educational-
 import { Certifications } from '../../../services/Interfaces/certifications';
 import { IndustryExperience } from '../../../services/Interfaces/industry-experience';
 import { Project } from '../../../services/Interfaces/project';
+import { Expertise } from '../../../services/Interfaces/expertise';
 
 @Component({
   selector: 'app-add-forms',
@@ -19,6 +20,7 @@ export class AddFormsComponent {
   @Input() educValue?: EducationalAttainment;
   @Input() certValue?: Certifications;
   @Input() expValue?: IndustryExperience;
+  @Input() specValue?: Expertise;
   @Input() projValue?: Project;
   @Output() setType = new EventEmitter<string>();
 
@@ -46,6 +48,11 @@ export class AddFormsComponent {
     cert_details: new FormControl(''),
     cert_corporation: new FormControl(''),
 		accomplished_date: new FormControl(''),
+	})
+
+  specForm = new FormGroup({
+		expertise_name: new FormControl(''),
+    expertise_confidence: new FormControl('')
 	})
 
   projForm = new FormGroup({
@@ -81,6 +88,17 @@ export class AddFormsComponent {
         else{
           console.log("Updating Cert to Resume");
           this.editRes(this.certForm, 'editCert', this.certValue.cert_ID);
+        }
+        break;
+
+      case 'spec':
+        if(this.specValue == undefined){
+          console.log("Adding Spec to Resume");
+          this.addRes(this.specForm, 'addSpec');
+        }
+        else{
+          console.log("Updating Spec to Resume");
+          this.editRes(this.specForm, 'editSpec', this.specValue.expertise_ID);
         }
         break;
     
