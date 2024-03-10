@@ -77,7 +77,7 @@
               </h4>
               <hr class="text-white" />
               <p class="m-0 mt-1 text-[14px] font-Inter font-bold">{{cert.cert_corporation}}</p>
-              <p class="m-0 text-[12px] font-Inter">{{cert.accomplished_date}}</p>
+              <p class="m-0 text-[12px] font-Inter">{{ cert.accomplished_date | date:'yyyy' }}</p>
             </div>
           </div>
         </div>
@@ -111,7 +111,7 @@
           <div *ngFor="let educ of resume!.educAttainment" class="">
             <p class="m-0 font-Inter font-bold">{{educ.educ_title}}</p>
             <p class="m-0">{{educ.educ_school}}</p>
-            <p class="m-0 italic">{{educ.year_start}} {{educ.year_end}}</p>
+            <p class="m-0 italic">{{educ.year_start | date:'MMM - y'}}  {{educ.year_end | date:'MMM - y'}}</p>
           </div>
         </div>
       </div>
@@ -124,7 +124,7 @@
           <div *ngFor="let exp of resume!.industryExp" class="">
             <h4 class="m-0 font-Inter font-bold">{{exp.experience_title}}</h4>
             <p class="m-0">{{exp.experience_place}}</p>
-            <p class="m-0 italic">{{exp.experience_from}} {{exp.experience_to}}</p>
+            <p class="m-0 italic">{{exp.experience_from | date:'MMM - y'}} {{exp.experience_to | date:'MMM - y'}}</p>
             <ul class="ml-5">
               <li>{{exp.experience_details}}</li>
             </ul>
@@ -136,11 +136,8 @@
           COURSES HANDLED
         </h1>
         <hr class="segmentLine" />
-        <div class="ps-[0.5in] flex flex-col gap-2 pe-10">
-          <p class="m-0 font-bold">Human and Computer Interaction</p>
-          <p class="m-0 font-bold">Discrete Structures</p>
-          <p class="m-0 font-bold">Introduction to Computing</p>
-          <p class="m-0 font-bold">Networking</p>
+        <div *ngFor="let sched of filteredSchedules"  class="ps-[0.5in] flex flex-col gap-2 pe-10">
+          <p class="m-0 font-bold">{{sched}}</p>
         </div>
       </div>
       <div>
@@ -149,7 +146,7 @@
         <div class="ps-[0.5in] flex flex-col gap-4 pe-10">
           <div *ngFor="let proj of resume!.projects">
             <h4 class="m-0 font-Inter font-bold">{{proj.project_name}}</h4>
-            <p class="m-0 italic">{{proj.project_date}}</p>
+            <p class="m-0 italic">{{proj.project_date | date:'MMM - y'}}</p>
             <ul class="ml-5">
               <li>{{proj.project_detail}}</li>
             </ul>

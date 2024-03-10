@@ -28,6 +28,9 @@ export class CvComponent {
   resume?: Resume;
   college?: string;
   schedules?: Schedule[];
+  filteredSchedules = new Set();
+
+
 
   constructor(private facultyService: FacultyFetcherService, private router: Router){
     this.getProfile();
@@ -36,9 +39,9 @@ export class CvComponent {
   }
 
   //OPEN PRINT SCREEN AFTER RENDER, TURN THIS OFF FOR DEV PURPOSES
-  ngAfterViewInit(){
-    window.print();
-  }
+  // ngAfterViewInit(){
+  //   window.print();
+  // }
 
   getProfile(){
     this.facultyService.fetchProfile().subscribe({
@@ -59,17 +62,27 @@ export class CvComponent {
     //Fetches the schedule data based on passed selected date
     this.facultyService.fetchSchedDay().subscribe({
       next: value => {this.schedules = value;
-                      console.log(this.schedules);},
+                      this.filterSched();
+                      console.log(this.filteredSchedules);},
       error: err => {if(err.status == 403){this.router.navigate(['/']);}}
     });
   }
 
   getResume(){
     this.facultyService.fetchResume().subscribe({
-      next: value => {this.resume = value;
-                      console.log(this.resume);},
+      next: value => this.resume = value,
       error: err => {console.log(err);if(err.status == 403){this.router.navigate(['/']);}}
     });
   }
+
+  filterSched(){
+    this.schedules?.forEach(schedule =>{
+      if(!this.filteredSchedules.has(schedule.course_name)){
+        this.filteredSchedules.add(schedule.course_name);
+      }
+    })
+  }
+
+
 }
 
