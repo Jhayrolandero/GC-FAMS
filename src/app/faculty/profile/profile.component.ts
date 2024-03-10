@@ -14,13 +14,17 @@ import { HttpClient } from '@angular/common/http';
 import { AddFormsComponent } from '../../components/faculty/add-forms/add-forms.component';
 import { LoadingScreenComponent } from '../../components/loading-screen/loading-screen.component';
 import { EducationalAttainment } from '../../services/Interfaces/educational-attainment';
+import { Certifications } from '../../services/Interfaces/certifications';
+import { IndustryExperience } from '../../services/Interfaces/industry-experience';
+import { FacultyProjectsComponent } from '../../components/faculty/faculty-profile/faculty-projects/faculty-projects.component';
+import { Project } from '../../services/Interfaces/project';
 
 @Component({
     selector: 'app-profile',
     standalone: true,
     templateUrl: './profile.component.html',
     styleUrl: './profile.component.css',
-    imports: [LoadingScreenComponent, NgOptimizedImage, CommonModule, FacultyEducationComponent, FacultyCertificationsComponent, FacultyExperienceComponent, FacultyExpertiseComponent, AddFormsComponent]
+    imports: [LoadingScreenComponent, NgOptimizedImage, CommonModule, FacultyEducationComponent, FacultyCertificationsComponent, FacultyExperienceComponent, FacultyExpertiseComponent, AddFormsComponent, FacultyProjectsComponent]
 })
 export class ProfileComponent {
   isLoading: boolean = true
@@ -29,11 +33,15 @@ export class ProfileComponent {
   resume?: Resume;
   //Edit form preset
   educValue?: EducationalAttainment;
+  certValue?: Certifications;
+  expValue?: IndustryExperience;
+  projValue?: Project;
 
   //Dropdown toggle
   educToggle = true;
   certToggle = true;
   expToggle = true;
+  projToggle = true;
   formType = '';
 
   constructor(private facultyService: FacultyFetcherService, private router: Router, private http: HttpClient){
@@ -44,12 +52,31 @@ export class ProfileComponent {
 
   setForm(value: string){
     this.formType = value;
+
+    //Refreshed passed form value for edit.
     this.educValue = undefined;
+    this.certValue = undefined;
+    this.expValue = undefined;
+    this.projValue = undefined;
+
+    //Refreshes resume get.
     this.getResume();
   }
 
   setEducValueForm(value: EducationalAttainment){
     this.educValue = value;
+  }
+
+  setCertValueForm(value: Certifications){
+    this.certValue = value;
+  }
+
+  setExpValueForm(value: IndustryExperience){
+    this.expValue = value;
+  }
+
+  setProjValueForm(value: Project){
+    this.projValue = value;
   }
 
   getProfile(){
@@ -79,7 +106,7 @@ export class ProfileComponent {
     this.facultyService.fetchResume().subscribe({
       next: value => {this.resume = value;
                       console.log(this.resume);},
-      error: err => {if(err.status == 403){this.router.navigate(['/']);}}
+      error: err => {console.log(err);if(err.status == 403){this.router.navigate(['/']);}}
     });
   }
 
@@ -107,6 +134,10 @@ export class ProfileComponent {
 
       case 'ex':
         this.expToggle = !this.expToggle;
+        break;
+
+      case 'pr':
+        this.projToggle = !this.projToggle;
         break;
 
       default:

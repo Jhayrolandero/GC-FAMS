@@ -2,6 +2,7 @@ import { Certifications } from "./certifications";
 import { EducationalAttainment } from "./educational-attainment";
 import { Expertise } from "./expertise";
 import { IndustryExperience } from "./industry-experience";
+import { Project } from "./project";
 
 
 export interface Resume {
@@ -9,4 +10,5 @@ export interface Resume {
     certifications: Certifications[],
     industryExp: IndustryExperience[],
     expertise: Expertise[]
+    projects: Project[]
 }
