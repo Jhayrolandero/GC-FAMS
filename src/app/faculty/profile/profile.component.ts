@@ -44,7 +44,7 @@ export class ProfileComponent {
   projToggle = true;
   formType = '';
 
-  constructor(private facultyService: FacultyFetcherService, private router: Router, private http: HttpClient){ 
+  constructor(private facultyService: FacultyFetcherService, private router: Router, private http: HttpClient){
     this.getProfile();
     this.getSchedule();
     this.getResume();
@@ -113,9 +113,9 @@ export class ProfileComponent {
   showAdd(comp: string){
     switch (comp) {
       case "educ":
-        
+
         break;
-    
+
       default:
         break;
     }

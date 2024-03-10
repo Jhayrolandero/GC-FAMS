@@ -1,0 +1,12 @@
+.pie-label {
+  font-size: 16px !important;
+  font-weight: bold;
+}
+
+.tooltip-caret.position-top {
+  border-top-color: white;
+  box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.2);
+}
+.advance-pie-legend {
+  fill: rgba(7, 66, 135, 255) !important;
+}

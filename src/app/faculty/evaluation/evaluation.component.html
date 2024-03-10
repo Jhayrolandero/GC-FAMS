@@ -36,7 +36,7 @@
         <p
           class="font-Poppins font-bold text-center text-[5rem] leading-[5rem]"
         >
-          {{ evalScoreAverage }}
+          {{ selectedEvalSem.evalAverage }}
         </p>
         <p
           class="text-greenBar font-Poppins font-bold text-[1.3rem] text-center"
@@ -56,10 +56,10 @@
         <div *ngFor="let evalItem of evalScoreCategory">
           <div class="flex justify-between">
             <p class="font-Poppins font-semibold text-blue text-[1.2rem]">
-              {{ evalItem.category }}
+              {{ evalItem.name }}
             </p>
             <p class="font-Poppins font-semibold text-blue text-[1.2rem] mr-5">
-              {{ evalItem.score }}
+              {{ evalItem.value }}
             </p>
           </div>
           <div class="bg-greenBar w-full rounded-full h-[10px] my-1"></div>
