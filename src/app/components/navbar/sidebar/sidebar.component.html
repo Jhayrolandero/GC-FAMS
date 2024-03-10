@@ -1,11 +1,11 @@
 <aside class="min-w-min w-full max-w-max">
   <div
-    class="h-screen bg-gradient-to-b from-greenBar from-0% via-blue via-[180px] to-blue to-100% rounded-r-[25px]"
+    class="flex flex-col h-screen bg-gradient-to-b from-greenBar from-0% via-blue via-[180px] to-blue to-100% rounded-r-[25px] pb-6"
   >
     <div class="pt-4 pb-10 flex justify-center items-center">
       <img src="../../../assets/img/Logo_mockup 1.png" class="w-[60%]" />
     </div>
-    <div class="faculty-side">
+    <div class="faculty-side flex-1">
       <ul *ngIf="!isFaculty">
         <app-nav
           (click)="onSelect(0)"
@@ -102,5 +102,9 @@
         ></app-nav>
       </ul>
     </div>
+    <i
+      (click)="logout()"
+      class="fa-solid fa-right-from-bracket text-white w-full text-center text-[48px] cursor-pointer"
+    ></i>
   </div>
 </aside>
