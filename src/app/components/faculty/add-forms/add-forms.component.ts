@@ -5,6 +5,7 @@ import { FacultyPostService } from '../../../services/faculty/faculty-post.servi
 import { EducationalAttainment } from '../../../services/Interfaces/educational-attainment';
 import { Certifications } from '../../../services/Interfaces/certifications';
 import { IndustryExperience } from '../../../services/Interfaces/industry-experience';
+import { Project } from '../../../services/Interfaces/project';
 
 @Component({
   selector: 'app-add-forms',
@@ -18,6 +19,7 @@ export class AddFormsComponent {
   @Input() educValue?: EducationalAttainment;
   @Input() certValue?: Certifications;
   @Input() expValue?: IndustryExperience;
+  @Input() projValue?: Project;
   @Output() setType = new EventEmitter<string>();
 
   constructor(private facultyService: FacultyPostService){}
@@ -46,6 +48,13 @@ export class AddFormsComponent {
 		accomplished_date: new FormControl(''),
 	})
 
+  projForm = new FormGroup({
+		project_name: new FormControl(''),
+    project_date: new FormControl(''),
+    project_detail: new FormControl(''),
+		project_link: new FormControl(''),
+	})
+
   //Sets form type, can show, or close current form.
   emptyType(value: string) {
     this.setType.emit(value);
@@ -67,14 +76,36 @@ export class AddFormsComponent {
       case 'cert':
         if(this.certValue == undefined){
           console.log("Adding Cert to Resume");
-          // this.addRes(this.educForm, 'addEduc');
+          this.addRes(this.certForm, 'addCert');
         }
         else{
           console.log("Updating Cert to Resume");
-          // this.editRes(this.educForm, 'editEduc', this.educValue.educattainment_ID);
+          this.editRes(this.certForm, 'editCert', this.certValue.cert_ID);
         }
         break;
     
+      case 'exp':
+        if(this.expValue == undefined){
+          console.log("Adding Experience to Resume");
+          this.addRes(this.expForm, 'addExp');
+        }
+        else{
+          console.log("Updating Experience to Resume");
+          this.editRes(this.expForm, 'editExp', this.expValue.experience_ID);
+        }
+        break;
+
+      case 'proj':
+        if(this.projValue == undefined){
+          console.log("Adding Project to Resume");
+          this.addRes(this.projForm, 'addProj');
+        }
+        else{
+          console.log("Updating Project to Resume");
+          this.editRes(this.projForm, 'editProj', this.projValue.project_ID);
+        }
+        break;
+
       default:
         break;
     }
@@ -99,15 +130,10 @@ export class AddFormsComponent {
   }
 
   deleteRes(id:number, type: string){
-    if(this.educValue){
-      this.facultyService.deleteRes(id, type).subscribe({
-        next: value => {console.log(value);
-                       this.emptyType('');},
-        error: err => console.log(err),
-      });
-    }
-    else{
-      console.log("This is not supposed to happen!");
-    }
+    this.facultyService.deleteRes(id, type).subscribe({
+      next: value => {console.log(value);
+                      this.emptyType('');},
+      error: err => console.log(err),
+    });
   }
 }

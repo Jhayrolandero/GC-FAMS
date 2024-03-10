@@ -36,4 +36,3 @@ export class FacultyPostService {
       return this.http.delete<JwtToken>(mainPort + '/GC-FaMS-API/API/' + type + "/" + id ,{headers:this.getHeader()});
     }
 }
-
