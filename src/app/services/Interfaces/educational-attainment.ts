@@ -1,9 +1,8 @@
 export interface EducationalAttainment {
-    school_name: string,
-    name_abbreviation: string,
-    school_image: string,
+    educattainment_ID: number,
     educ_title: string,
+    educ_school: string,
     educ_details: string,
-    year_start: number,
-    year_end: number
+    year_start: string,
+    year_end: string
 }

@@ -11,13 +11,13 @@ module.exports = {
         white2: "#F1F1F1",
         lightGreen: "#27AE60",
         formBlue: "#e8f0fe",
-        formGrey: "#F8F8F8",
+        formGrey: "#F8F8F8"
       },
       fontFamily: {
         Montserrat: ["Montserrat"],
         Poppins: ["Poppins"],
         Roboto: ["Roboto"],
-        Inter: ["Inter"],
+        Inter: ["Inter"]
       },
       screens: {
         mobileS: "320px",
@@ -27,7 +27,7 @@ module.exports = {
         laptop: "1024px",
         desktop: "1280px",
         laptopL: "1440px",
-        fourk: "2560px",
+        fourk: "2560px"
       },
     },
   },

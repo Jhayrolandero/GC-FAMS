@@ -12,9 +12,8 @@ import { FacultyFetcherService } from '../../services/faculty/faculty-fetcher.se
 import { Resume } from '../../services/Interfaces/resume';
 import { HttpClient } from '@angular/common/http';
 import { AddFormsComponent } from '../../components/faculty/add-forms/add-forms.component';
-
-
 import { LoadingScreenComponent } from '../../components/loading-screen/loading-screen.component';
+import { EducationalAttainment } from '../../services/Interfaces/educational-attainment';
 
 @Component({
     selector: 'app-profile',
@@ -27,7 +26,11 @@ export class ProfileComponent {
   isLoading: boolean = true
   facultyProfile!: Profile;
   schedules: Schedule[] = [];
-  resume!: Resume;
+  resume?: Resume;
+  //Edit form preset
+  educValue?: EducationalAttainment;
+
+  //Dropdown toggle
   educToggle = true;
   certToggle = true;
   expToggle = true;
@@ -39,8 +42,14 @@ export class ProfileComponent {
     this.getResume();
   }
 
-  emptyForm(value: string){
+  setForm(value: string){
     this.formType = value;
+    this.educValue = undefined;
+    this.getResume();
+  }
+
+  setEducValueForm(value: EducationalAttainment){
+    this.educValue = value;
   }
 
   getProfile(){
@@ -68,7 +77,8 @@ export class ProfileComponent {
 
   getResume(){
     this.facultyService.fetchResume().subscribe({
-      next: value => {this.resume = value;console.log(value);},
+      next: value => {this.resume = value;
+                      console.log(this.resume);},
       error: err => {if(err.status == 403){this.router.navigate(['/']);}}
     });
   }
