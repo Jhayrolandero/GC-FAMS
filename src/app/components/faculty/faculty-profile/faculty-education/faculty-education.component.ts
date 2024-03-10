@@ -13,7 +13,7 @@ import { FormControl, FormGroup } from '@angular/forms';
   styleUrl: './faculty-education.component.css'
 })
 export class FacultyEducationComponent {
-  @Input() educAttainment!: EducationalAttainment[];
+  @Input() educAttainment?: EducationalAttainment[];
   @Input() addEducToggle: boolean = false;
   @Output() setEducEdit = new EventEmitter<EducationalAttainment>();
   @Output() setType = new EventEmitter<string>();

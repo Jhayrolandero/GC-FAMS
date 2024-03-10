@@ -138,7 +138,7 @@
               
           </div>
         </div>
-        <app-faculty-education (setEducEdit)="setEducValueForm($event)" (setType)="setForm($event)" *ngIf="educToggle == true" [educAttainment]="resume.educAttainment"></app-faculty-education>
+        <app-faculty-education (setEducEdit)="setEducValueForm($event)" (setType)="setForm($event)" *ngIf="educToggle == true" [educAttainment]="resume?.educAttainment"></app-faculty-education>
       </div>
   
       <div class="mb-4 w-full bg-white rounded-[25px] overflow-hidden shadow-lg">
@@ -162,7 +162,7 @@
             </svg>
           </div>
         </div>
-        <app-faculty-certifications  *ngIf="certToggle == true" [certifications]="resume.certifications"></app-faculty-certifications>
+        <app-faculty-certifications  *ngIf="certToggle == true" [certifications]="resume?.certifications"></app-faculty-certifications>
       </div>
   
       <div class="mb-4 w-full bg-white rounded-[25px] overflow-hidden shadow-lg">
@@ -186,7 +186,7 @@
             </svg>
           </div>
         </div>
-        <app-faculty-experience *ngIf="expToggle == true" [experiences]="resume.industryExp" ></app-faculty-experience>
+        <app-faculty-experience *ngIf="expToggle == true" [experiences]="resume?.industryExp" ></app-faculty-experience>
       </div>
   
       <div class="mb-4 w-full bg-white rounded-[25px] overflow-hidden shadow-lg">
@@ -210,7 +210,7 @@
             </svg>
           </div>
         </div>
-        <app-faculty-experience *ngIf="expToggle == true" [experiences]="resume.industryExp" ></app-faculty-experience>
+        <app-faculty-experience *ngIf="expToggle == true" [experiences]="resume?.industryExp" ></app-faculty-experience>
       </div>
     </div>
   </div>

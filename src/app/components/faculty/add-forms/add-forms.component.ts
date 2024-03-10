@@ -32,11 +32,25 @@ export class AddFormsComponent {
     this.setType.emit(value);
   }
 
-  addEduc(){
-    console.log(this.educForm);
-    this.facultyService.addEduc(this.educForm).subscribe({
-      next: value => console.log(value),
+  addRes(type: string){
+    this.facultyService.addRes(this.educForm, type).subscribe({
+      next: value => {console.log(value);
+                      this.emptyType('');},
       error: err => console.log(err),
     });
+  }
+
+  deleteRes(type: string){
+    console.log("Attempting to delete..." + this.educValue);
+    if(this.educValue){
+      this.facultyService.deleteRes(this.educValue.educattainment_ID, type).subscribe({
+        next: value => {console.log(value);
+                       this.emptyType('');},
+        error: err => console.log(err),
+      });
+    }
+    else{
+      console.log("This is not supposed to happen!");
+    }
   }
 }

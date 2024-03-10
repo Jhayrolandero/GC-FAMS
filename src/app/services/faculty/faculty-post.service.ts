@@ -24,8 +24,11 @@ export class FacultyPostService {
     }
   
     //All fetch commands for faculty
-    addEduc(educForm: FormGroup){
-      return this.http.post<JwtToken>(mainPort + '/GC-FaMS-API/API/addEduc', educForm.getRawValue() ,{headers:this.getHeader()});
+    addRes(educForm: FormGroup, type: string){
+      return this.http.post<JwtToken>(mainPort + '/GC-FaMS-API/API/' + type, educForm.getRawValue() ,{headers:this.getHeader()});
+    }
+    deleteRes(id: number, type: string){
+      return this.http.delete<JwtToken>(mainPort + '/GC-FaMS-API/API/' + type + "/" + id ,{headers:this.getHeader()});
     }
 }
 

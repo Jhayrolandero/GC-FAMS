@@ -26,7 +26,7 @@ export class ProfileComponent {
   isLoading: boolean = true
   facultyProfile!: Profile;
   schedules: Schedule[] = [];
-  resume!: Resume;
+  resume?: Resume;
   //Edit form preset
   educValue?: EducationalAttainment;
 
@@ -45,6 +45,7 @@ export class ProfileComponent {
   setForm(value: string){
     this.formType = value;
     this.educValue = undefined;
+    this.getResume();
   }
 
   setEducValueForm(value: EducationalAttainment){
