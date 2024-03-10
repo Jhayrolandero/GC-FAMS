@@ -25,7 +25,6 @@ export class FacultyEducationComponent {
 
   //Change form type.
   changeType(value: string) {
-    console.log("empt");
     this.setType.emit(value);
   }
   

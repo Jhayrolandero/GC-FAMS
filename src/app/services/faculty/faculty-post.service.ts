@@ -27,6 +27,11 @@ export class FacultyPostService {
     addRes(educForm: FormGroup, type: string){
       return this.http.post<JwtToken>(mainPort + '/GC-FaMS-API/API/' + type, educForm.getRawValue() ,{headers:this.getHeader()});
     }
+
+    editRes(educForm: FormGroup, type: string, id: number){
+      return this.http.patch<JwtToken>(mainPort + '/GC-FaMS-API/API/' + type + "/" + id, educForm.getRawValue() ,{headers:this.getHeader()});
+    }
+
     deleteRes(id: number, type: string){
       return this.http.delete<JwtToken>(mainPort + '/GC-FaMS-API/API/' + type + "/" + id ,{headers:this.getHeader()});
     }

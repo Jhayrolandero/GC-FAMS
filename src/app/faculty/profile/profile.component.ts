@@ -14,6 +14,8 @@ import { HttpClient } from '@angular/common/http';
 import { AddFormsComponent } from '../../components/faculty/add-forms/add-forms.component';
 import { LoadingScreenComponent } from '../../components/loading-screen/loading-screen.component';
 import { EducationalAttainment } from '../../services/Interfaces/educational-attainment';
+import { Certifications } from '../../services/Interfaces/certifications';
+import { IndustryExperience } from '../../services/Interfaces/industry-experience';
 
 @Component({
     selector: 'app-profile',
@@ -29,6 +31,8 @@ export class ProfileComponent {
   resume?: Resume;
   //Edit form preset
   educValue?: EducationalAttainment;
+  certValue?: Certifications;
+  expValue?: IndustryExperience;
 
   //Dropdown toggle
   educToggle = true;
@@ -50,6 +54,14 @@ export class ProfileComponent {
 
   setEducValueForm(value: EducationalAttainment){
     this.educValue = value;
+  }
+
+  setCertValueForm(value: Certifications){
+    this.certValue = value;
+  }
+
+  setExpValueForm(value: IndustryExperience){
+    this.expValue = value;
   }
 
   getProfile(){

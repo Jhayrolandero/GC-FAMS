@@ -1,0 +1,8 @@
+.showChild{
+    opacity: 0;
+    transition-duration: 0.3s;
+}
+.mainParent:hover .showChild{
+    opacity: 100;
+    transition-duration: 0.3s;
+}

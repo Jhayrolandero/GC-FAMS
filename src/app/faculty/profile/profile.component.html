@@ -6,6 +6,8 @@
   <div class="absolute z-50">
     <app-add-forms (setType)="setForm('')" 
                   [educValue]="educValue" 
+                  [certValue]="certValue"
+                  [expValue]="expValue"
                   [formType]="formType">
     </app-add-forms>
   </div>
@@ -162,7 +164,7 @@
             </svg>
           </div>
         </div>
-        <app-faculty-certifications  *ngIf="certToggle == true" [certifications]="resume?.certifications"></app-faculty-certifications>
+        <app-faculty-certifications (setCertEdit)="setCertValueForm($event)" (setType)="setForm($event)"  *ngIf="certToggle == true" [certifications]="resume?.certifications"></app-faculty-certifications>
       </div>
   
       <div class="mb-4 w-full bg-white rounded-[25px] overflow-hidden shadow-lg">
@@ -186,7 +188,7 @@
             </svg>
           </div>
         </div>
-        <app-faculty-experience *ngIf="expToggle == true" [experiences]="resume?.industryExp" ></app-faculty-experience>
+        <app-faculty-experience (setExpEdit)="setExpValueForm($event)" (setType)="setForm($event)"  *ngIf="expToggle == true" [experiences]="resume?.industryExp" ></app-faculty-experience>
       </div>
   
       <div class="mb-4 w-full bg-white rounded-[25px] overflow-hidden shadow-lg">
