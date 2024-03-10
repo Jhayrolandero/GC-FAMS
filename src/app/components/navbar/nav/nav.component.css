@@ -16,7 +16,7 @@ li a {
   color: #f0f0f0;
   font-size: 1em;
 }
-*/ li a:hover,
+li a:hover,
 li a.selected {
   background-color: #f0f0f0;
   border-left: 4px solid #1e7242;

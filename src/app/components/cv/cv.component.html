@@ -1,4 +1,4 @@
-<div class="flex justify-center items-center h-full font-Inter">
+<div id="cv" class="flex justify-center items-center h-full font-Inter">
   <!-- <div class="paper">
     <div
       class="navProfileRect flex items-center absolute top-0 mt-[0.5in]"
@@ -33,31 +33,33 @@
     </div>
   </div> -->
 
-  <div class="w-[8.3in] h-[11.4in] bg-transparent relative top-0">
+  <div class="w-[8.3in] h-[11.7in] bg-[#fcfcfc] relative top-0">
     <div
-      class="flex flex-col justify-center items-start w-[5.15in] h-[3.4cm] bg-[#FFAB48] ps-[8cm] mb-[40px]"
+      class="flex flex-col justify-center items-start w-[8.3in] h-[1.1in] bg-[#FFAB48] ps-[8cm] mb-[40px] mt-[0.25in]"
     >
-      <h1 class="m-0 text-[32px]">Adolf Schickelgruber</h1>
-      <p class="m-0 tracking-[0.15em] text-[16px]">THE THIRD REICH</p>
+      <h1 class="font-Inter font-bold m-0 text-[0.4in]">{{facultyProfile.first_name}} {{facultyProfile.last_name}}</h1>
+      <p class="m-0 tracking-[0.15em] text-[16px]">{{facultyProfile.college_abbrev}} FACULTY MEMBER</p>
     </div>
     <div
-      class="text-white pt-[32px] bg-[#18181A] w-[7cm] gap-4 bottom-0 absolute -top-3 left-[0.5cm] flex flex-col justify-start items-center"
+      class="text-white pt-[32px] bg-[#18181A] w-[7cm] h-[11.7in] bottom-0 absolute left-[0.5cm] flex flex-col justify-start items-center"
     >
+    <div class="w-[5.62cm] h-[7.26cm]">
       <img
-        src="../../../assets/profiles/3aff706d-c182-4a43-aa67-1b0742853bbf.jpg"
+        [src]="facultyProfile.profile_image"
         alt=""
-        class="w-[5.62cm] h-[7.26cm]"
+        class="w-full h-full block"
       />
+    </div>
       <div class="flex flex-col gap-6 w-full">
         <!-- Contact -->
         <div class="flex justify-start items-start flex-col px-6 gap-4">
-          <div class="flex justify-between gap-4">
+          <div class="flex justify-between gap-4 mt-5">
             <i class="fa-regular fa-envelope-open"></i>
-            <p class="m-0 text-[12px]">kennethbautista&#64;gmail.com</p>
+            <p class="m-0 text-[12px] font-Inter">{{facultyProfile.email}}</p>
           </div>
           <div class="flex justify-between gap-4">
             <i class="fa-solid fa-phone text-white"></i>
-            <p class="m-0 text-[12px]">09685723645</p>
+            <p class="m-0 text-[12px] font-Inter">09685723645</p>
           </div>
         </div>
 
@@ -66,84 +68,50 @@
           <div class="border-s-4 border-white flex gap-1">
             <span class="bg-white w-[12px]">.</span>
             <span class="bg-white w-[6px]">.</span>
-            <h1 class="text-[16px] tracking-[0.15em] m-0">CERTIFICATIONS</h1>
+            <h1 class="text-[16px] tracking-[0.15em] m-0 font-Inter font-bold">CERTIFICATIONS</h1>
           </div>
           <div class="px-6 flex flex-col gap-4">
-            <div>
-              <h4 class="m-0 text-[14px] font-bold">Devnet Certification</h4>
-              <hr class="text-white" />
-              <p class="m-0 text-[12px]">Cisco</p>
-              <p class="m-0 text-[12px]">2022</p>
-            </div>
-            <div>
-              <h4 class="m-0 text-[14px] font-bold">
-                Certified Information Technology Professional
+            <div *ngFor="let cert of resume!.certifications">
+              <h4 class="m-0 text-[16px] font-Inter font-bold">
+                {{cert.cert_name}}
               </h4>
               <hr class="text-white" />
-              <p class="m-0 text-[12px]">ICMA</p>
-              <p class="m-0 text-[12px]">2020</p>
-            </div>
-            <div>
-              <h4 class="m-0 text-[14px] font-bold">
-                Microsoft Certified Educator
-              </h4>
-              <hr class="text-white" />
-              <p class="m-0 text-[12px]">Microsoft</p>
-              <p class="m-0 text-[12px]">2018</p>
+              <p class="m-0 mt-1 text-[14px] font-Inter font-bold">{{cert.cert_corporation}}</p>
+              <p class="m-0 text-[12px] font-Inter">{{cert.accomplished_date}}</p>
             </div>
           </div>
         </div>
 
         <!-- Expertise -->
-        <div class="flex flex-col gap-4">
+        <div class="flex flex-col gap-4 mt-10">
           <div class="border-s-4 border-white flex gap-1">
             <span class="bg-white w-[12px]">.</span>
             <span class="bg-white w-[6px]">.</span>
-            <h1 class="text-[16px] tracking-[0.15em] m-0 font-bold">
+            <h1 class="text-[16px] tracking-[0.15em] m-0 font-Inter font-bold">
               EXPERTISE
             </h1>
           </div>
           <div class="flex justify-start items-start flex-col px-6 gap-4">
-            <div class="flex justify-between gap-4">
+            <div *ngFor="let spec of resume!.expertise" class="flex justify-between items-center gap-4">
               <i class="fa-solid fa-diamond"></i>
-              <p class="m-0 text-[12px]">MICROSOFT OFFICE SUITE</p>
+              <p class="m-0 text-[15px] font-Inter font-bold ">{{spec.expertise_name | uppercase}}</p>
             </div>
-            <div class="flex justify-between gap-4">
-              <i class="fa-solid fa-diamond"></i>
-              <p class="m-0 text-[12px]">PYTHON</p>
-            </div>
-            <div class="flex justify-between gap-4">
-              <i class="fa-solid fa-diamond"></i>
-              <p class="m-0 text-[12px]">JAVA</p>
-            </div>
-            <div class="flex justify-between gap-4">
-              <i class="fa-solid fa-diamond"></i>
-              <p class="m-0 text-[12px]">IT NETWORKING</p>
-            </div>
-            <div class="flex justify-between gap-4">
-              <i class="fa-solid fa-diamond"></i>
-              <p class="m-0 text-[12px]">WEB ADMINISTRATION</p>
-            </div>
+
           </div>
         </div>
       </div>
     </div>
     <div class="ml-[8cm] flex flex-col gap-4">
       <div>
-        <h1 class="text-[24px] font-bold tracking-[0.15em] m-0">
+        <h1 class="text-[24px] font-Inter font-bold tracking-[0.15em] m-0">
           EDUCATIONAL ATTAINMENT
         </h1>
         <hr class="segmentLine" />
         <div class="ps-[0.5in] flex flex-col gap-4 pe-10">
-          <div class="">
-            <h4 class="m-0">Master of Science in Computer Science</h4>
-            <p class="m-0">President Ramon Magsaysay State University</p>
-            <p class="m-0">Jan 2013 - Dec 2014</p>
-          </div>
-          <div>
-            <h4 class="m-0">Bachelor of Science in Computer Science</h4>
-            <p class="m-0">Gordon College</p>
-            <p class="m-0">Jan 2009 - Jan 2013</p>
+          <div *ngFor="let educ of resume!.educAttainment" class="">
+            <p class="m-0 font-Inter font-bold">{{educ.educ_title}}</p>
+            <p class="m-0">{{educ.educ_school}}</p>
+            <p class="m-0 italic">{{educ.year_start}} {{educ.year_end}}</p>
           </div>
         </div>
       </div>
@@ -153,21 +121,12 @@
         </h1>
         <hr class="segmentLine" />
         <div class="ps-[0.5in] flex flex-col gap-4 pe-10">
-          <div class="">
-            <h4 class="m-0">Full-Time Faculty Member</h4>
-            <p class="m-0">Gordon College</p>
-            <p class="m-0">Jan 2009 - Jan 2013</p>
-            <ul class="m-0">
-              <li>Program Coordinator of the College of Computer Studies</li>
-              <li>Won the best Organization Advisor Award of 2024</li>
-            </ul>
-          </div>
-          <div>
-            <h4 class="m-0">Full-Time Faculty Member</h4>
-            <p class="m-0">Gordon College</p>
-            <p class="m-0">Jan 2009 - Jan 2013</p>
-            <ul class="m-0">
-              <li>Studied project planning, coordination, and ethics</li>
+          <div *ngFor="let exp of resume!.industryExp" class="">
+            <h4 class="m-0 font-Inter font-bold">{{exp.experience_title}}</h4>
+            <p class="m-0">{{exp.experience_place}}</p>
+            <p class="m-0 italic">{{exp.experience_from}} {{exp.experience_to}}</p>
+            <ul class="ml-5">
+              <li>{{exp.experience_details}}</li>
             </ul>
           </div>
         </div>
@@ -188,17 +147,11 @@
         <h1 class="text-[24px] font-bold tracking-[0.15em] m-0">PROJECTS</h1>
         <hr class="segmentLine" />
         <div class="ps-[0.5in] flex flex-col gap-4 pe-10">
-          <div>
-            <h4 class="m-0">
-              GC-FaMS: A Faculty Profiling and Development Monitoring Web
-              Application
-            </h4>
-            <p class="m-0">Dec 2014</p>
-            <ul class="m-0">
-              <li>
-                A web application that somethings the boofer and schmops the
-                golger.
-              </li>
+          <div *ngFor="let proj of resume!.projects">
+            <h4 class="m-0 font-Inter font-bold">{{proj.project_name}}</h4>
+            <p class="m-0 italic">{{proj.project_date}}</p>
+            <ul class="ml-5">
+              <li>{{proj.project_detail}}</li>
             </ul>
           </div>
         </div>
