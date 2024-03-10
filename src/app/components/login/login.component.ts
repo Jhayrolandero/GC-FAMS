@@ -20,7 +20,7 @@ export class LoginComponent {
   privSwitch!: boolean;
   validForm = true;
 
-  url = 'http://localhost:8080/GC-FaMS-API/API/login';
+  url = 'http://localhost/GC-FaMS-API/API/login';
   fb = inject(FormBuilder);
   http = inject(HttpClient);
   authService = inject(AuthService);
