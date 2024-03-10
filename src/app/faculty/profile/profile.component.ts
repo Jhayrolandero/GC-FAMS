@@ -12,8 +12,6 @@ import { FacultyFetcherService } from '../../services/faculty/faculty-fetcher.se
 import { Resume } from '../../services/Interfaces/resume';
 import { HttpClient } from '@angular/common/http';
 import { AddFormsComponent } from '../../components/faculty/add-forms/add-forms.component';
-
-
 import { LoadingScreenComponent } from '../../components/loading-screen/loading-screen.component';
 
 @Component({
@@ -68,7 +66,8 @@ export class ProfileComponent {
 
   getResume(){
     this.facultyService.fetchResume().subscribe({
-      next: value => {this.resume = value;console.log(value);},
+      next: value => {this.resume = value;
+                      console.log(this.resume);},
       error: err => {if(err.status == 403){this.router.navigate(['/']);}}
     });
   }

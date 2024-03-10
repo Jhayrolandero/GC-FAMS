@@ -1,7 +1,6 @@
 <div *ngFor="let educ of educAttainment" class="bg-white items-center pt-4">
     <div class="flex flex-row">
-        <div class="rounded-full bg-slate-200 w-[100px] h-[100px] mr-3 ml-10"><img [src]="tempPort + educ.school_image"></div>
-        <div class="select-none  w-full mr-10">
+        <div class="select-none  w-full mx-10">
             <div class="flex flex-row justify-between">
                 <p class="font-Roboto font-medium text-blue text-[1.6rem]">{{ educ.educ_title }}</p>
                 <div class="flex flex-row items-center">
@@ -13,7 +12,7 @@
                     </svg>
                 </div>
             </div>
-            <p class="font-Roboto font-medium text-black text-[1.3rem]">{{ educ.school_name + "  (" + educ.name_abbreviation +")" }}</p>
+            <p class="font-Roboto font-medium text-black text-[1.3rem]">{{ educ.educ_school }}</p>
             <p class="ml-5 font-Roboto font-regular text-black text-[1.2rem]">{{ educ.educ_details }}</p>
         </div>
     </div>

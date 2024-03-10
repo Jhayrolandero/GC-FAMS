@@ -3,6 +3,7 @@ import { EducationalAttainment } from '../../../../services/Interfaces/education
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { mainPort } from '../../../../app.component';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-faculty-education',
@@ -14,5 +15,7 @@ import { mainPort } from '../../../../app.component';
 export class FacultyEducationComponent {
   @Input() educAttainment!: EducationalAttainment[];
   @Input() addEducToggle: boolean = false;
+  
+
   tempPort = mainPort;
 }

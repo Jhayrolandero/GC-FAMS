@@ -9,7 +9,7 @@ import {RouterOutlet } from '@angular/router';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'GC-FAMS';
+  title = 'GC-FaMS';
 }
 //PARA ISAHANG CHANGE NALANG NG LOCALHOST SA LAHAT NG HTTP REQUESTS
-export const mainPort =  "http://localhost";
+export const mainPort =  "http://localhost:8080";
