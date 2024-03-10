@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { EducationalAttainment } from '../../../../services/Interfaces/educational-attainment';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -15,7 +15,19 @@ import { FormControl, FormGroup } from '@angular/forms';
 export class FacultyEducationComponent {
   @Input() educAttainment!: EducationalAttainment[];
   @Input() addEducToggle: boolean = false;
-  
+  @Output() setEducEdit = new EventEmitter<EducationalAttainment>();
+  @Output() setType = new EventEmitter<string>();
 
+  sendValueParams(value: EducationalAttainment) {
+    this.setEducEdit.emit(value);
+  }
+
+  changeType(value: string) {
+    console.log("empt");
+    this.setType.emit(value);
+  }
+  
+  
+  showCrud = false;
   tempPort = mainPort;
 }

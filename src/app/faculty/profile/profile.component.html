@@ -4,7 +4,10 @@
   class="p-5 flex flex-col gap-3 text-blue"
 >
   <div class="absolute z-50">
-    <app-add-forms (setType)="emptyForm('')" [formType]="formType"></app-add-forms>
+    <app-add-forms (setType)="setForm('')" 
+                  [educValue]="educValue" 
+                  [formType]="formType">
+    </app-add-forms>
   </div>
   <div class="w-100 bg-white rounded-[25px] overflow-hidden shadow-lg">
     <div class="w-100 h-[150px] bg-red-200 overflow-hidden">
@@ -135,7 +138,7 @@
               
           </div>
         </div>
-        <app-faculty-education *ngIf="educToggle == true" [educAttainment]="resume.educAttainment"></app-faculty-education>
+        <app-faculty-education (setEducEdit)="setEducValueForm($event)" (setType)="setForm($event)" *ngIf="educToggle == true" [educAttainment]="resume.educAttainment"></app-faculty-education>
       </div>
   
       <div class="mb-4 w-full bg-white rounded-[25px] overflow-hidden shadow-lg">

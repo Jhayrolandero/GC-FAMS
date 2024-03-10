@@ -13,6 +13,7 @@ import { Resume } from '../../services/Interfaces/resume';
 import { HttpClient } from '@angular/common/http';
 import { AddFormsComponent } from '../../components/faculty/add-forms/add-forms.component';
 import { LoadingScreenComponent } from '../../components/loading-screen/loading-screen.component';
+import { EducationalAttainment } from '../../services/Interfaces/educational-attainment';
 
 @Component({
     selector: 'app-profile',
@@ -26,6 +27,10 @@ export class ProfileComponent {
   facultyProfile!: Profile;
   schedules: Schedule[] = [];
   resume!: Resume;
+  //Edit form preset
+  educValue?: EducationalAttainment;
+
+  //Dropdown toggle
   educToggle = true;
   certToggle = true;
   expToggle = true;
@@ -37,8 +42,13 @@ export class ProfileComponent {
     this.getResume();
   }
 
-  emptyForm(value: string){
+  setForm(value: string){
     this.formType = value;
+    this.educValue = undefined;
+  }
+
+  setEducValueForm(value: EducationalAttainment){
+    this.educValue = value;
   }
 
   getProfile(){

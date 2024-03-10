@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FacultyPostService } from '../../../services/faculty/faculty-post.service';
+import { EducationalAttainment } from '../../../services/Interfaces/educational-attainment';
 
 @Component({
   selector: 'app-add-forms',
@@ -12,6 +13,7 @@ import { FacultyPostService } from '../../../services/faculty/faculty-post.servi
 })
 export class AddFormsComponent {
   @Input() formType: string = '';
+  @Input() educValue?: EducationalAttainment;
   @Output() setType = new EventEmitter<string>();
 
   constructor(private facultyService: FacultyPostService){}
