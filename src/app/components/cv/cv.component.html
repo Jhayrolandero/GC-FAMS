@@ -1,38 +1,10 @@
-<div id="cv" class="flex justify-center items-center h-full font-Inter">
-  <!-- <div class="paper">
-    <div
-      class="navProfileRect flex items-center absolute top-0 mt-[0.5in]"
-    ></div>
-    <div class="sideProfileRect flex justify-center absolute top-0">
-      <div class="bg-slate-500 w-[2.1in] h-[2.9in] mt-[0.2in]">
-        <img />
-      </div>
-    </div>
-    <div class="rightProfileBord absolute w-[8.3in]">
-      <p class="segmentTitle">EDUCATIONAL ATTAINMENT</p>
-      <hr class="segmentLine" />
-      <div class="ml-[1in]">
-        <p class="font-Inter font-bold">
-          Master of Science in Computer Science
-        </p>
-        <p class="additionals"></p>
-        <ul>
-          <li>Lorem Ipsum'ed everyone</li>
-          <li>Lorem Ipsum'ed everyone</li>
-        </ul>
-      </div>
-
-      <p class="segmentTitle">INDUSTRY EXPERIENCE</p>
-      <hr class="segmentLine" />
-
-      <p class="segmentTitle">COURSES HANDLED</p>
-      <hr class="segmentLine" />
-
-      <p class="segmentTitle">PROJECTS</p>
-      <hr class="segmentLine" />
-    </div>
-  </div> -->
-
+<div
+  *ngIf="
+    facultyProfile != undefined && resume != undefined && schedules != undefined
+  "
+  id="cv"
+  class="flex justify-center items-center h-full font-Inter"
+>
   <div class="w-[8.3in] h-[11.7in] bg-[#fcfcfc] relative top-0">
     <div
       class="flex flex-col justify-center items-start w-[8.3in] h-[1.1in] bg-[#FFAB48] ps-[8cm] mb-[40px] mt-[0.25in]"
@@ -49,7 +21,12 @@
     >
       <div class="w-[5.62cm] h-[7.26cm]">
         <img
-          [src]="facultyProfile.profile_image"
+          [src]="
+            tempPort +
+            '/GC-FaMS-API/Image_Assets/Faculty_Profile/' +
+            facultyProfile.faculty_ID +
+            '/PROFILE.png'
+          "
           alt=""
           class="w-full h-full object-cover"
         />

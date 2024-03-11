@@ -24,18 +24,19 @@ import { Schedule } from '../../services/admin/schedule';
 
 
 export class CvComponent {
+  tempPort = mainPort;
   facultyProfile!: Profile;
-  resume?: Resume;
+  resume!: Resume;
+  schedules!: Schedule[];
   college?: string;
-  schedules?: Schedule[];
   filteredSchedules = new Set();
 
 
 
   constructor(private facultyService: FacultyFetcherService, private router: Router){
     this.getProfile();
-    this.getResume();
     this.getSchedule();
+    this.getResume();
   }
 
   //OPEN PRINT SCREEN AFTER RENDER, TURN THIS OFF FOR DEV PURPOSES
@@ -45,7 +46,7 @@ export class CvComponent {
 
   getProfile(){
     this.facultyService.fetchProfile().subscribe({
-    next: (next) => {this.facultyProfile = next;console.log(this.facultyProfile)},
+    next: (next) => this.facultyProfile = next,
     error: (error) => {
       console.log(error);
       this.router.navigate(['/']);
@@ -53,7 +54,7 @@ export class CvComponent {
     complete: () => {
       this.facultyProfile.profile_image = mainPort + this.facultyProfile.profile_image;
       this.facultyProfile.cover_image = mainPort + this.facultyProfile.cover_image;
-      console.log(this.facultyProfile);
+      console.log("Profile loaded.");
     }
     });
   }
@@ -62,16 +63,17 @@ export class CvComponent {
     //Fetches the schedule data based on passed selected date
     this.facultyService.fetchSchedDay().subscribe({
       next: value => {this.schedules = value;
-                      this.filterSched();
-                      console.log(this.filteredSchedules);},
-      error: err => {if(err.status == 403){this.router.navigate(['/']);}}
+                      this.filterSched();},
+      error: err => {if(err.status == 403){this.router.navigate(['/']);}},
+      complete: () => console.log("Schedule loaded.")
     });
   }
 
   getResume(){
     this.facultyService.fetchResume().subscribe({
       next: value => this.resume = value,
-      error: err => {console.log(err);if(err.status == 403){this.router.navigate(['/']);}}
+      error: err => {console.log(err);if(err.status == 403){this.router.navigate(['/']);}},
+      complete: () => console.log("ResumeInfo loaded.")
     });
   }
 
