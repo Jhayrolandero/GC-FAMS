@@ -32,7 +32,9 @@ export class LoginComponent {
 		password: new FormControl('')
 	})
 
-	constructor(){}
+	constructor(){
+		this.authService.flushToken();
+	}
 
 	onLogin(): void{
 		this.validForm = true;
