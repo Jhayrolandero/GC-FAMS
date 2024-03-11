@@ -1,0 +1,27 @@
+<div *ngIf="formControlRequired">
+  <p class="bg bg-red-50 text-red-700">
+    <span><i class="fa-solid fa-triangle-exclamation mr-2"></i></span>This field
+    is required
+  </p>
+</div>
+
+<div *ngIf="formControlMinLength">
+  <p class="bg bg-red-50 text-red-700">
+    <span><i class="fa-solid fa-triangle-exclamation mr-2"></i></span>Input is
+    too short
+  </p>
+</div>
+
+<div *ngIf="formControlEmail">
+  <p class="bg bg-red-50 text-red-700">
+    <span><i class="fa-solid fa-triangle-exclamation mr-2"></i></span>Not a
+    valid email
+  </p>
+</div>
+
+<div *ngIf="formControlPattern">
+  <p class="bg bg-red-50 text-red-700">
+    <span><i class="fa-solid fa-triangle-exclamation mr-2"></i></span>Special
+    Characters and Numbers aren't allowed
+  </p>
+</div>
