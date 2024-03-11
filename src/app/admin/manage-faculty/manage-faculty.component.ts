@@ -9,7 +9,8 @@ import { EmployeeTypeComponent } from './employee-type/employee-type.component';
 import { EmployeePositionComponent } from './employee-position/employee-position.component';
 import { LoadingScreenComponent } from '../../components/loading-screen/loading-screen.component';
 import { FormsErrorComponent } from './forms-error/forms-error.component';
-
+import { FacultyPostService } from '../../services/faculty/faculty-post.service';
+import { error } from 'console';
 export interface program {
   map(arg0: (item: any) => any): any;
   'program_id': number;
@@ -44,6 +45,14 @@ export interface Employment {
 
 
 export class ManageFacultyComponent implements OnInit {
+
+  constructor(
+    private adminService: AdminFetcherService,
+    private facultyService: FacultyPostService) {}
+
+  ngOnInit(): void {
+    this.getCollege()
+  }
 isLoading: boolean = true
 selectedCollege: number = -1;
 selectedEmployeeType: number = -1;
@@ -127,16 +136,13 @@ facultyInfo = new FormGroup({
   barangay: new FormControl('', [
     Validators.required,
   ]),
+  profileIMG: new FormControl<File | null>(null)
 });
 
 
 formControl(name: string) {
   return this.facultyInfo.get(name)
 }
-  constructor(private adminService: AdminFetcherService) {}
-  ngOnInit(): void {
-    this.getCollege()
-  }
 
   setCollege(value: number): void {
     this.facultyInfo.patchValue({
@@ -183,8 +189,27 @@ formControl(name: string) {
 
 
   onSubmit() {
+    const formData = new FormData();
+    const profileIMGControl = this.facultyInfo.get('profileIMG');
+    if (profileIMGControl instanceof FormControl && profileIMGControl.value instanceof File) {
+      const file: File = profileIMGControl.value;
+      formData.append('profileIMG', file, file.name);
+    }
 
-    console.log(this.facultyInfo.value);
+    Object.keys(this.facultyInfo.controls).forEach(key => {
+      if (key !== 'profileIMG') {
+        const value = this.facultyInfo.get(key)?.value;
+        if (value) {
+          formData.append(key, value.toString());
+        }
+      }
+    });
+
+    this.facultyService.addFaculty(formData).subscribe({
+      next: (next) => {console.log(next)},
+      error: (error) => {console.log(error)}
+    })
+    console.log(formData);
 
   }
 
@@ -203,6 +228,27 @@ formControl(name: string) {
   column2: string[] = ["last_name", "first_name", "middle_name", "ext_name"]
   column3: string[] = ["region", "province", "city", "barangay"]
   column4: string[] = ["sex", "language", "citizenship", "age", "civil_status"]
+
+  imageFile?: {link: string, file: any, name: string};
+  imageURL: string = "../../../assets/profiles/batman.jpg";
+  PreviewImage(event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+    const file = inputElement.files?.[0]; // Using optional chaining to handle null or undefined
+
+    if (file) {
+        // File Preview
+        const reader = new FileReader();
+        reader.onload = () => {
+            this.imageURL = reader.result as string;
+            this.facultyInfo.patchValue({
+              profileIMG: file
+            })
+            console.log(file)
+            console.log(this.formControl('profileIMG'))
+        };
+        reader.readAsDataURL(file);
+    }
+}
 
 
 }

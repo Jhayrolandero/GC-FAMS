@@ -10,6 +10,7 @@
     </h1>
   </div>
   <form
+    enctype="multipart/form-data"
     action=""
     class="bg-white flex flex-col px-4 py-2 my-2 rounded-[25px]"
     [formGroup]="facultyInfo"
@@ -84,9 +85,9 @@
       </h4>
       <div class="flex flex-row w-full bg-formGrey rounded-full shadow-lg">
         <img
-          src="../../../assets/profiles/batman.jpg"
+          [src]="imageURL"
           alt=""
-          class="aspect-square min-w-[10px] rounded-full"
+          class="aspect-square min-w-[150px] w-[200px] rounded-full"
         />
 
         <div class="w-full flex justify-center items-center">
@@ -122,7 +123,13 @@
                 </defs>
               </svg>
               <p class="font-bold text-gray-300">Profile Upload</p>
-              <input id="dropzone-file" type="file" class="hidden" />
+              <input
+                id="dropzone-file"
+                type="file"
+                class="hidden"
+                (change)="PreviewImage($event)"
+                accept="image/*"
+              />
             </label>
           </div>
         </div>
@@ -155,13 +162,16 @@
           </svg>
         </div> -->
       </div>
+      {{ facultyInfo.invalid }}
       <div class="flex flex-col gap-4">
         <div class="flex justify-center items-center gap-4">
           <div class="flex flex-col flex-1" *ngFor="let col of column1">
             <label class="formTextFormat uppercase" for="">{{ col }}</label>
             <input
               [ngClass]="{
-                'border-b-[4px] border-red-500': formControl(col)!.invalid
+                'border-b-[4px] border-red-500':
+                  formControl(col)!.invalid &&
+                  (formControl(col)?.dirty || formControl(col)?.touched)
               }"
               [type]="
                 col === 'email'
@@ -174,6 +184,10 @@
               [formControlName]="col"
             />
             <app-forms-error
+              *ngIf="
+                formControl(col)?.invalid &&
+                (formControl(col)?.dirty || formControl(col)?.touched)
+              "
               [formControlRequired]="formControl(col)!.errors?.['required']"
               [formControlEmail]="formControl(col)!.errors?.['email']"
               [formControlPattern]="formControl(col)!.errors?.['pattern']"
@@ -186,13 +200,19 @@
             <label class="formTextFormat uppercase" for="">{{ col }}</label>
             <input
               [ngClass]="{
-                'border-b-[4px] border-red-500': formControl(col)!.invalid
+                'border-b-[4px] border-red-500':
+                  formControl(col)!.invalid &&
+                  (formControl(col)?.dirty || formControl(col)?.touched)
               }"
               type="text"
               class="formTemplate"
               [formControlName]="col"
             />
             <app-forms-error
+              *ngIf="
+                formControl(col)?.invalid &&
+                (formControl(col)?.dirty || formControl(col)?.touched)
+              "
               [formControlRequired]="formControl(col)!.errors?.['required']"
               [formControlPattern]="formControl(col)!.errors?.['pattern']"
             ></app-forms-error>
@@ -204,13 +224,19 @@
             <label class="formTextFormat uppercase" for="">{{ col }}</label>
             <input
               [ngClass]="{
-                'border-b-[4px] border-red-500': formControl(col)!.invalid
+                'border-b-[4px] border-red-500':
+                  formControl(col)!.invalid &&
+                  (formControl(col)?.dirty || formControl(col)?.touched)
               }"
               type="text"
               class="formTemplate"
               [formControlName]="col"
             />
             <app-forms-error
+              *ngIf="
+                formControl(col)?.invalid &&
+                (formControl(col)?.dirty || formControl(col)?.touched)
+              "
               [formControlRequired]="formControl(col)!.errors?.['required']"
               [formControlPattern]="formControl(col)!.errors?.['pattern']"
             ></app-forms-error>
@@ -222,13 +248,19 @@
             <label class="formTextFormat uppercase" for="">{{ col }}</label>
             <input
               [ngClass]="{
-                'border-b-[4px] border-red-500': formControl(col)!.invalid
+                'border-b-[4px] border-red-500':
+                  formControl(col)!.invalid &&
+                  (formControl(col)?.dirty || formControl(col)?.touched)
               }"
               type="text"
               class="formTemplate"
               [formControlName]="col"
             />
             <app-forms-error
+              *ngIf="
+                formControl(col)?.invalid &&
+                (formControl(col)?.dirty || formControl(col)?.touched)
+              "
               [formControlRequired]="formControl(col)!.errors?.['required']"
               [formControlPattern]="formControl(col)!.errors?.['pattern']"
             ></app-forms-error>
@@ -237,10 +269,15 @@
 
         <div class="w-full flex justify-end gap-4">
           <input
+            [ngClass]="{
+              'bg-red-700 cursor-not-allowed': facultyInfo.invalid,
+              'bg-blue cursor-pointer': !facultyInfo.invalid
+            }"
+            [disabled]="facultyInfo.invalid"
             id="addFact"
             type="submit"
             value="Add Faculty"
-            class="w-[130px] h-[40px] rounded-full bg-blue text-white font-Poppins font-semibold shadow-lg hover:scale-[101%] hover:duration-300 duration-300"
+            class="w-[130px] h-[40px] rounded-full transition-all text-white font-Poppins font-semibold shadow-lg hover:scale-[101%] hover:duration-300 duration-300"
           />
         </div>
       </div>

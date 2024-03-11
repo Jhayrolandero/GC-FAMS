@@ -10,7 +10,7 @@ import { FormControl } from '@angular/forms';
   styleUrl: './forms-error.component.css'
 })
 export class FormsErrorComponent {
-
+  @Input('formControlName') formControlName!: FormControl;
   @Input('formControlRequired') formControlRequired!: FormControl;
   @Input('formControlMinLength') formControlMinLength!: FormControl;
   @Input('formControlEmail') formControlEmail!: FormControl;

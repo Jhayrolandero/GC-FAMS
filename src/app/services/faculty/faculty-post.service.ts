@@ -22,7 +22,7 @@ export class FacultyPostService {
     getHeader(){
       return  new HttpHeaders().set("Authorization", "Bearer " + this.auth.getToken());
     }
-  
+
     //All fetch commands for faculty
     addRes(educForm: FormGroup, type: string){
       return this.http.post<JwtToken>(mainPort + '/GC-FaMS-API/API/' + type, educForm.getRawValue() ,{headers:this.getHeader()});
@@ -34,5 +34,9 @@ export class FacultyPostService {
 
     deleteRes(id: number, type: string){
       return this.http.delete<JwtToken>(mainPort + '/GC-FaMS-API/API/' + type + "/" + id ,{headers:this.getHeader()});
+    }
+
+    addFaculty(facultyInfo: FormData) {
+      return this.http.post<JwtToken>(mainPort + '/gc-fams-api/API/faculty', facultyInfo, {headers:this.getHeader()})
     }
 }
