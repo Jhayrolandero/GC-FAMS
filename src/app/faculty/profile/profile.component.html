@@ -17,12 +17,12 @@
   </div>
   <div class="w-100 bg-white rounded-[25px] overflow-hidden shadow-lg">
     <div class="w-100 h-[150px] bg-red-200 overflow-hidden">
-      <img class="w-full" [src]="facultyProfile.cover_image" />
+      <img class="w-full" [src]="tempPort + '/GC-FaMS-API/Image_Assets/Faculty_Profile/' + facultyProfile.faculty_ID + '/COVER.png'" />
     </div>
     <div
       class="rounded-full bg-greenBar w-[150px] h-[150px] absolute ml-7 top-[135px] overflow-hidden border-[5px] border-white"
     >
-      <img [src]="facultyProfile.profile_image" />
+      <img [src]="tempPort + '/GC-FaMS-API/Image_Assets/Faculty_Profile/' + facultyProfile.faculty_ID + '/PROFILE.png'" />
     </div>
     <div class="flex justify-between">
       <p class="text-[2rem] font-Poppins font-semibold ml-7 mt-[55px] mb-2">

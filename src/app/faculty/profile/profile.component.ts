@@ -31,6 +31,7 @@ import { Expertise } from '../../services/Interfaces/expertise';
     imports: [LoadingScreenComponent, NgOptimizedImage, CommonModule, FacultyEducationComponent, FacultyCertificationsComponent, FacultyExperienceComponent, FacultyExpertiseComponent, AddFormsComponent, FacultyProjectsComponent, CvComponent]
 })
 export class ProfileComponent {
+  tempPort = mainPort;
   isLoading: boolean = true
   facultyProfile!: Profile;
   resume?: Resume;

@@ -15,6 +15,6 @@ export class AuthService{
 
     flushToken(){
         console.log("Deleted all tokens");
-        this.cookieService.deleteAll();
+        this.cookieService.delete('token', '/');
     }
 }

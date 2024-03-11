@@ -12,9 +12,4 @@ import { Router } from '@angular/router';
 export class TopnavComponent {
   
   constructor(private auth: AuthService, private router: Router){}
-
-  logout(){
-    this.auth.flushToken();
-    this.router.navigate(['/']);
-  }
 }
