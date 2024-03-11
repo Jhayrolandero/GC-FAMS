@@ -156,8 +156,9 @@ export class ProfileComponent {
   }
 
   getCv(){
-    const url = this.router.serializeUrl(this.router.createUrlTree(['cv']));
-    window.open(url, '_blank');
+    // const url = this.router.serializeUrl(this.router.createUrlTree(['cv']));
+    // window.open(url, '_blank');
+    this.router.navigate(['cv']);
   }
 
 

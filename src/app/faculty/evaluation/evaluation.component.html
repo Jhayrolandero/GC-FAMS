@@ -17,10 +17,10 @@
   <div
     class="bg-white shadow-lg bg-opacity-70 w-full rounded-[25px] flex flex-col justify-between items-center"
   >
-    <div class="flex flex-row gap-2 mt-5">
+    <div class="flex flex-row w-full justify-between gap-2 mt-5 px-5">
       <p
         *ngFor="let evalItem of evaluation"
-        class="hover:font-bold transition-all cursor-pointer font-Poppins justify-between mx-3 text-[1.3rem]"
+        class="hover:font-bold transition-all cursor-pointer font-Poppins justify-between mx-3 text-[1rem]"
         (click)="selectEvalSem(evalItem.evaluation_ID)"
       >
         {{ evalItem.semester }}@if( evalItem.semester == 1){st}@else if
@@ -28,8 +28,9 @@
         {{ +evalItem.evaluation_year + 1 }}
       </p>
     </div>
-    <div class="w-full flex flex-row p-4 pb-2">
-      <div class="bg-white w-[450px] rounded-[25px] shadow-lg mr-2 py-4">
+
+    <div class="w-full flex flex-col laptop:flex-row p-4 pb-2 gap-4">
+      <div class="bg-white w-full laptop:w-[450px] rounded-[25px] shadow-lg laptop:mr-2 py-4">
         <p class="font-Poppins font-semibold text-[1.4rem] mb-2 text-center">
           Selected Evaluation Score
         </p>
@@ -52,7 +53,7 @@
           }}
         </p>
       </div>
-      <div class="bg-white rounded-[25px] w-full shadow-lg ml-2 py-4 px-8">
+      <div class="bg-white rounded-[25px] w-full shadow-lg laptop:ml-2 py-4 px-8">
         <div *ngFor="let evalItem of evalScoreCategory">
           <div class="flex justify-between">
             <p class="font-Poppins font-semibold text-blue text-[1.2rem]">
@@ -66,15 +67,16 @@
         </div>
       </div>
     </div>
-    <div class="w-full p-4 pt-2">
+
+    <div class="w-[100%] p-4 pt-2">
       <div
-        class="bg-white w-full rounded-[25px] shadow-lg p-6 gap-4 flex flex-col"
+        class="bg-white w-full rounded-[25px] shadow-lg p-6 gap-4 flex flex-col justify-center"
       >
         <p class="font-Poppins font-semibold text-[2rem]">
           Evaluation Timeline
         </p>
         <div
-          class="px-4 py-2 flex flex-col justify-center items-center h-[250px]"
+          class="w-[90%] px-4 py-2 flex flex-col items-center h-[250px]"
         >
           <ngx-charts-line-chart
             [scheme]="colorScheme"

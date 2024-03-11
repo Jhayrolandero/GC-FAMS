@@ -37,6 +37,7 @@ export class LoginComponent {
 	}
 
 	onLogin(): void{
+		this.authService.flushToken();
 		this.validForm = true;
 		//Main http post request, uses JwtToken interface, and stringified loginForm
 		this.http.post<JwtToken>(this.url, this.loginForm.getRawValue()).subscribe((response) => {
