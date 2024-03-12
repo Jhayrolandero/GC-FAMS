@@ -8,7 +8,10 @@
       class="bg-white shadow w-[20%] h-[90%] rounded-[25px] overflow-hidden m-[15px] mr-1 flex flex-col items-center hover:shadow-xl hover:duration-300 duration-300"
     >
       <div class="h-[50%] w-full flex justify-center relative">
-        <img [src]="facultyProfile.profile_image" />
+        <img
+          [src]="facultyProfile.profile_image"
+          onerror="this.onerror=null; this.src='../../../assets/profiles/user.png'"
+        />
         <div
           class="absolute w-full h-full hover:inset-0 bg-gradient-to-t from-gray-900 to-transparent opacity-50 hover:opacity-80 duration-300"
         ></div>
@@ -134,13 +137,15 @@
       class="bg-white shadow-xl w-full rounded-[25px] grid grid-cols-3 px-4 py-2"
     >
       <div class="col-span-2">
-        <h4 class="text-[2.5rem] font-Poppins font-semibold m-2 leading-[1]">Evaluation Graph</h4>
+        <h4 class="text-[2.5rem] font-Poppins font-semibold m-2 leading-[1]">
+          Evaluation Graph
+        </h4>
         <app-pie-chart [data]="evalScoreCategory"></app-pie-chart>
       </div>
       <div
         class="border-s-2 border-black flex flex-col justify-center items-center gap-4 px-6"
       >
-        <h4 class="text-[2.5rem] font-Poppins m-2 font-semibold m-0 leading-[1]">
+        <h4 class="text-[2.5rem] font-Poppins font-semibold m-0 leading-[1]">
           Evaluation Score
         </h4>
         <p class="text-[128px] m-0 font-bold leading-[1]">

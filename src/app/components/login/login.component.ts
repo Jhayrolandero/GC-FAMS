@@ -6,7 +6,6 @@ import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { JwtToken } from '../../services/jwt-token';
 import { mainPort } from '../../app.component';
-
 @Component({
   selector: 'app-login',
   standalone: true,

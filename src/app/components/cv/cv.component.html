@@ -1,27 +1,42 @@
-<div *ngIf="facultyProfile != undefined && resume != undefined && schedules != undefined" id="cv" class="flex justify-center items-center h-full font-Inter">
+<div
+  *ngIf="
+    facultyProfile != undefined && resume != undefined && schedules != undefined
+  "
+  id="cv"
+  class="flex justify-center items-center h-full font-Inter"
+>
   <div class="w-[8.3in] h-[11.7in] bg-[#fcfcfc] relative top-0">
     <div
       class="flex flex-col justify-center items-start w-[8.3in] h-[1.1in] bg-[#FFAB48] ps-[8cm] mb-[40px] mt-[0.25in]"
     >
-      <h1 class="font-Inter font-bold m-0 text-[0.4in]">{{facultyProfile.first_name}} {{facultyProfile.last_name}}</h1>
-      <p class="m-0 tracking-[0.15em] text-[16px]">{{facultyProfile.college_abbrev}} FACULTY MEMBER</p>
+      <h1 class="font-Inter font-bold m-0 text-[0.4in]">
+        {{ facultyProfile.first_name }} {{ facultyProfile.last_name }}
+      </h1>
+      <p class="m-0 tracking-[0.15em] text-[16px]">
+        {{ facultyProfile.college_abbrev }} FACULTY MEMBER
+      </p>
     </div>
     <div
       class="text-white pt-[32px] bg-[#18181A] w-[7cm] h-[11.7in] bottom-0 absolute left-[0.5cm] flex flex-col justify-start items-center"
     >
-    <div class="w-[5.62cm] h-[7.26cm]">
-      <img
-        [src]="tempPort + '/GC-FaMS-API/Image_Assets/Faculty_Profile/' + facultyProfile.faculty_ID + '/PROFILE.png'"
-        alt=""
-        class="w-full h-full object-cover"
-      />
-    </div>
+      <div class="w-[5.62cm] h-[7.26cm]">
+        <img
+          [src]="
+            tempPort +
+            '/GC-FaMS-API/Image_Assets/Faculty_Profile/' +
+            facultyProfile.faculty_ID +
+            '/PROFILE.png'
+          "
+          alt=""
+          class="w-full h-full object-cover"
+        />
+      </div>
       <div class="flex flex-col gap-6 w-full">
         <!-- Contact -->
         <div class="flex justify-start items-start flex-col px-6 gap-4">
           <div class="flex justify-between gap-4 mt-5">
             <i class="fa-regular fa-envelope-open"></i>
-            <p class="m-0 text-[12px] font-Inter">{{facultyProfile.email}}</p>
+            <p class="m-0 text-[12px] font-Inter">{{ facultyProfile.email }}</p>
           </div>
           <div class="flex justify-between gap-4">
             <i class="fa-solid fa-phone text-white"></i>
@@ -29,93 +44,119 @@
           </div>
         </div>
 
-        <!-- Certifications -->
         <div class="flex flex-col gap-4">
           <div class="border-s-4 border-white flex gap-1">
             <span class="bg-white w-[12px]">.</span>
             <span class="bg-white w-[6px]">.</span>
-            <h1 class="text-[16px] tracking-[0.15em] m-0 font-Inter font-bold">CERTIFICATIONS</h1>
+            <h1 class="text-[16px] tracking-[0.15em] m-0 font-Inter font-bold">
+              CERTIFICATIONS
+            </h1>
           </div>
           <div class="px-6 flex flex-col gap-4">
             <div *ngFor="let cert of resume!.certifications">
               <h4 class="m-0 text-[16px] font-Inter font-bold">
-                {{cert.cert_name}}
+                {{ cert.cert_name }}
               </h4>
               <hr class="text-white" />
-              <p class="m-0 mt-1 text-[14px] font-Inter font-bold">{{cert.cert_corporation}}</p>
-              <p class="m-0 text-[12px] font-Inter">{{ cert.accomplished_date | date:'yyyy' }}</p>
+              <p class="m-0 mt-1 text-[14px] font-Inter font-bold">
+                {{ cert.cert_corporation }}
+              </p>
+              <p class="m-0 text-[12px] font-Inter">
+                {{ cert.accomplished_date | date : "yyyy" }}
+              </p>
             </div>
           </div>
         </div>
 
-        <!-- Expertise -->
-        <div class="flex flex-col gap-4 mt-10">
-          <div class="border-s-4 border-white flex gap-1">
-            <span class="bg-white w-[12px]">.</span>
-            <span class="bg-white w-[6px]">.</span>
-            <h1 class="text-[16px] tracking-[0.15em] m-0 font-Inter font-bold">
-              EXPERTISE
-            </h1>
-          </div>
-          <div class="flex justify-start items-start flex-col px-6 gap-4">
-            <div *ngFor="let spec of resume!.expertise" class="flex justify-between items-center gap-4">
-              <i class="fa-solid fa-diamond"></i>
-              <p class="m-0 text-[15px] font-Inter font-bold ">{{spec.expertise_name | uppercase}}</p>
+        <div class="flex flex-col gap-4">
+          <!-- Expertise -->
+          <div class="flex flex-col gap-4 mt-10">
+            <div class="border-s-4 border-white flex gap-1">
+              <span class="bg-white w-[12px]">.</span>
+              <span class="bg-white w-[6px]">.</span>
+              <h1
+                class="text-[16px] tracking-[0.15em] m-0 font-Inter font-bold"
+              >
+                EXPERTISE
+              </h1>
             </div>
-
+            <div class="flex justify-start items-start flex-col px-6 gap-4">
+              <div
+                *ngFor="let spec of resume!.expertise"
+                class="flex justify-between items-center gap-4"
+              >
+                <i class="fa-solid fa-diamond"></i>
+                <p class="m-0 text-[15px] font-Inter font-bold">
+                  {{ spec.expertise_name | uppercase }}
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="ml-[8cm] flex flex-col gap-4">
-      <div>
-        <h1 class="text-[24px] font-Inter font-bold tracking-[0.15em] m-0">
-          EDUCATIONAL ATTAINMENT
-        </h1>
-        <hr class="segmentLine" />
-        <div class="ps-[0.5in] flex flex-col gap-4 pe-10">
-          <div *ngFor="let educ of resume!.educAttainment" class="">
-            <p class="m-0 font-Inter font-bold">{{educ.educ_title}}</p>
-            <p class="m-0">{{educ.educ_school}}</p>
-            <p class="m-0 italic">{{educ.year_start | date:'MMM - y'}}  {{educ.year_end | date:'MMM - y'}}</p>
+      <div class="ml-[8cm] flex flex-col gap-4">
+        <div>
+          <h1 class="text-[24px] font-Inter font-bold tracking-[0.15em] m-0">
+            EDUCATIONAL ATTAINMENT
+          </h1>
+          <hr class="segmentLine" />
+          <div class="ps-[0.5in] flex flex-col gap-4 pe-10">
+            <div *ngFor="let educ of resume!.educAttainment" class="">
+              <p class="m-0 font-Inter font-bold">{{ educ.educ_title }}</p>
+              <p class="m-0">{{ educ.educ_school }}</p>
+              <p class="m-0 italic">
+                {{ educ.year_start | date : "MMM - y" }}
+                {{ educ.year_end | date : "MMM - y" }}
+              </p>
+            </div>
           </div>
         </div>
-      </div>
-      <div>
-        <h1 class="text-[24px] font-bold tracking-[0.15em] m-0">
-          INDUSTRY EXPERIENCE
-        </h1>
-        <hr class="segmentLine" />
-        <div class="ps-[0.5in] flex flex-col gap-4 pe-10">
-          <div *ngFor="let exp of resume!.industryExp" class="">
-            <h4 class="m-0 font-Inter font-bold">{{exp.experience_title}}</h4>
-            <p class="m-0">{{exp.experience_place}}</p>
-            <p class="m-0 italic">{{exp.experience_from | date:'MMM - y'}} {{exp.experience_to | date:'MMM - y'}}</p>
-            <ul class="ml-5">
-              <li>{{exp.experience_details}}</li>
-            </ul>
+        <div>
+          <h1 class="text-[24px] font-bold tracking-[0.15em] m-0">
+            INDUSTRY EXPERIENCE
+          </h1>
+          <hr class="segmentLine" />
+          <div class="ps-[0.5in] flex flex-col gap-4 pe-10">
+            <div *ngFor="let exp of resume!.industryExp" class="">
+              <h4 class="m-0 font-Inter font-bold">
+                {{ exp.experience_title }}
+              </h4>
+              <p class="m-0">{{ exp.experience_place }}</p>
+              <p class="m-0 italic">
+                {{ exp.experience_from | date : "MMM - y" }}
+                {{ exp.experience_to | date : "MMM - y" }}
+              </p>
+              <ul class="ml-5">
+                <li>{{ exp.experience_details }}</li>
+              </ul>
+            </div>
           </div>
         </div>
-      </div>
-      <div>
-        <h1 class="text-[24px] font-bold tracking-[0.15em] m-0">
-          COURSES HANDLED
-        </h1>
-        <hr class="segmentLine" />
-        <div *ngFor="let sched of filteredSchedules"  class="ps-[0.5in] flex flex-col gap-2 pe-10">
-          <p class="m-0 font-bold">{{sched}}</p>
+        <div>
+          <h1 class="text-[24px] font-bold tracking-[0.15em] m-0">
+            COURSES HANDLED
+          </h1>
+          <hr class="segmentLine" />
+          <div
+            *ngFor="let sched of filteredSchedules"
+            class="ps-[0.5in] flex flex-col gap-2 pe-10"
+          >
+            <p class="m-0 font-bold">{{ sched }}</p>
+          </div>
         </div>
-      </div>
-      <div>
-        <h1 class="text-[24px] font-bold tracking-[0.15em] m-0">PROJECTS</h1>
-        <hr class="segmentLine" />
-        <div class="ps-[0.5in] flex flex-col gap-4 pe-10">
-          <div *ngFor="let proj of resume!.projects">
-            <h4 class="m-0 font-Inter font-bold">{{proj.project_name}}</h4>
-            <p class="m-0 italic">{{proj.project_date | date:'MMM - y'}}</p>
-            <ul class="ml-5">
-              <li>{{proj.project_detail}}</li>
-            </ul>
+        <div>
+          <h1 class="text-[24px] font-bold tracking-[0.15em] m-0">PROJECTS</h1>
+          <hr class="segmentLine" />
+          <div class="ps-[0.5in] flex flex-col gap-4 pe-10">
+            <div *ngFor="let proj of resume!.projects">
+              <h4 class="m-0 font-Inter font-bold">{{ proj.project_name }}</h4>
+              <p class="m-0 italic">
+                {{ proj.project_date | date : "MMM - y" }}
+              </p>
+              <ul class="ml-5">
+                <li>{{ proj.project_detail }}</li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>

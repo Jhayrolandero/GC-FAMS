@@ -9,12 +9,15 @@
     class="flex-initial justify-between items-center rounded-full border-[2px] border-blue flex flex-row gap-2 h-full px-2 py-1 min-w-[150px]"
   >
     <div class="flex-1 h-full flex gap-2 items-center">
+      <span class="loader" *ngIf="isLoading"></span>
       <img
-        src="../../../../assets/profiles/ains.png"
-        alt=""
-        class="h-full rounded-full"
+        *ngIf="!isLoading"
+        [src]="facultyProfile.profile_image"
+        alt="facultyProfile.profile_image"
+        class="h-full rounded-full aspect-square"
+        onerror="this.onerror=null; this.src='../../../assets/profiles/user.png'"
       />
-      <p>Name</p>
+      <p>{{ facultyProfile.first_name }} {{ facultyProfile.last_name }}</p>
     </div>
     <i class="fa-solid fa-chevron-down"></i>
   </div>

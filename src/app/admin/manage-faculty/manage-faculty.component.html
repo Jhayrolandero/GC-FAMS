@@ -10,6 +10,7 @@
     </h1>
   </div>
   <form
+    enctype="multipart/form-data"
     action=""
     class="bg-white flex flex-col px-4 py-2 my-2 rounded-[25px]"
     [formGroup]="facultyInfo"
@@ -17,7 +18,11 @@
   >
     <div class="px-[16px] py-[24px] flex flex-col gap-4" id="contents">
       <h4 class="border-b-2 border-black font-Poppins font-bold text-[2rem]">
-        COLLEGE
+        <span *ngIf="formControl('college_ID')!.errors?.['required']">
+          <i
+            class="fa-solid fa-triangle-exclamation mr-2 text-red-700"
+          ></i> </span
+        >COLLEGE
       </h4>
       <div class="grid grid-cols-5 gap-2 items-stretch">
         <app-gc-box
@@ -34,6 +39,11 @@
           <h4
             class="border-b-2 border-black font-Poppins font-bold text-[2rem]"
           >
+            <span
+              *ngIf="formControl('employment_status')!.errors?.['required']"
+            >
+              <i class="fa-solid fa-triangle-exclamation mr-2 text-red-700"></i>
+            </span>
             EMPLOYMENT
           </h4>
           <div class="grid grid-cols-2 gap-2 pt-4">
@@ -51,6 +61,11 @@
           <h4
             class="border-b-2 border-black font-Poppins font-bold text-[2rem]"
           >
+            <span
+              *ngIf="formControl('teaching_position')!.errors?.['required']"
+            >
+              <i class="fa-solid fa-triangle-exclamation mr-2 text-red-700"></i>
+            </span>
             POSITION
           </h4>
           <div class="flex flex-row gap-2 pt-4 w-full">
@@ -65,218 +80,177 @@
           </div>
         </div>
       </div>
-      <!-- <h4 class="border-b-2 border-black font-Poppins font-bold text-[2rem]">PROGRAM</h4>
-    <div class="flex gap-2 pt-4">
-      <app-gc-box
-        *ngFor="let program of filterPrograms()"
-        (setRole)="setProgram($event)"
-        [radioGroup]="'program'"
-        class="flex-1"
-        [id]="program.program_id"
-      ></app-gc-box>
-    </div> -->
       <h4 class="border-b-2 border-black font-Poppins font-bold text-[2rem]">
         PERSONAL INFORMATION
       </h4>
       <div class="flex flex-row w-full bg-formGrey rounded-full shadow-lg">
         <img
-          src="../../../assets/profiles/batman.jpg"
+          [src]="imageURL"
           alt=""
-          class="aspect-square min-w-[10px] rounded-full"
+          class="aspect-square min-w-[150px] w-[200px] rounded-full"
         />
 
         <div class="w-full flex justify-center items-center">
-          <svg
-            width="30"
-            height="31"
-            viewBox="0 0 30 31"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <g clip-path="url(#clip0_984_350)">
-              <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
-                d="M11.25 6.75C11.25 6.08696 11.5134 5.45107 11.9822 4.98223C12.4511 4.51339 13.087 4.25 13.75 4.25H16.25C16.913 4.25 17.5489 4.51339 18.0178 4.98223C18.4866 5.45107 18.75 6.08696 18.75 6.75V11.75H23.75C24.413 11.75 25.0489 12.0134 25.5178 12.4822C25.9866 12.9511 26.25 13.587 26.25 14.25V16.75C26.25 17.413 25.9866 18.0489 25.5178 18.5178C25.0489 18.9866 24.413 19.25 23.75 19.25H18.75V24.25C18.75 24.913 18.4866 25.5489 18.0178 26.0178C17.5489 26.4866 16.913 26.75 16.25 26.75H13.75C13.087 26.75 12.4511 26.4866 11.9822 26.0178C11.5134 25.5489 11.25 24.913 11.25 24.25V19.25H6.25C5.58696 19.25 4.95107 18.9866 4.48223 18.5178C4.01339 18.0489 3.75 17.413 3.75 16.75V14.25C3.75 13.587 4.01339 12.9511 4.48223 12.4822C4.95107 12.0134 5.58696 11.75 6.25 11.75H11.25V6.75Z"
-                fill="#BCBCBC"
+          <div class="flex-initial flex items-center justify-center">
+            <label
+              for="dropzone-file"
+              class="flex flex-col items-center justify-center w-full cursor-pointer"
+            >
+              <svg
+                width="30"
+                height="31"
+                viewBox="0 0 30 31"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g clip-path="url(#clip0_984_350)">
+                  <path
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M11.25 6.75C11.25 6.08696 11.5134 5.45107 11.9822 4.98223C12.4511 4.51339 13.087 4.25 13.75 4.25H16.25C16.913 4.25 17.5489 4.51339 18.0178 4.98223C18.4866 5.45107 18.75 6.08696 18.75 6.75V11.75H23.75C24.413 11.75 25.0489 12.0134 25.5178 12.4822C25.9866 12.9511 26.25 13.587 26.25 14.25V16.75C26.25 17.413 25.9866 18.0489 25.5178 18.5178C25.0489 18.9866 24.413 19.25 23.75 19.25H18.75V24.25C18.75 24.913 18.4866 25.5489 18.0178 26.0178C17.5489 26.4866 16.913 26.75 16.25 26.75H13.75C13.087 26.75 12.4511 26.4866 11.9822 26.0178C11.5134 25.5489 11.25 24.913 11.25 24.25V19.25H6.25C5.58696 19.25 4.95107 18.9866 4.48223 18.5178C4.01339 18.0489 3.75 17.413 3.75 16.75V14.25C3.75 13.587 4.01339 12.9511 4.48223 12.4822C4.95107 12.0134 5.58696 11.75 6.25 11.75H11.25V6.75Z"
+                    fill="#BCBCBC"
+                  />
+                </g>
+                <defs>
+                  <clipPath id="clip0_984_350">
+                    <rect
+                      width="30"
+                      height="30"
+                      fill="white"
+                      transform="translate(0 0.5)"
+                    />
+                  </clipPath>
+                </defs>
+              </svg>
+              <p class="font-bold text-gray-300">Profile Upload</p>
+              <input
+                id="dropzone-file"
+                type="file"
+                class="hidden"
+                (change)="PreviewImage($event)"
+                accept="image/*"
               />
-            </g>
-            <defs>
-              <clipPath id="clip0_984_350">
-                <rect
-                  width="30"
-                  height="30"
-                  fill="white"
-                  transform="translate(0 0.5)"
-                />
-              </clipPath>
-            </defs>
-          </svg>
+            </label>
+          </div>
         </div>
       </div>
+      {{ facultyInfo.invalid }}
       <div class="flex flex-col gap-4">
         <div class="flex justify-center items-center gap-4">
-          <div class="flex flex-col flex-1">
-            <label class="formTextFormat" for="">Email</label>
+          <div class="flex flex-col flex-1" *ngFor="let col of column1">
+            <label class="formTextFormat uppercase" for="">{{ col }}</label>
             <input
-              type="text"
+              [ngClass]="{
+                'border-b-[4px] border-red-500':
+                  formControl(col)!.invalid &&
+                  (formControl(col)?.dirty || formControl(col)?.touched)
+              }"
+              [type]="
+                col === 'email'
+                  ? 'email'
+                  : col === 'birthdate'
+                  ? 'date'
+                  : 'text'
+              "
               class="formTemplate"
-              formControlName="email"
-              required
+              [formControlName]="col"
             />
-          </div>
-          <div class="flex flex-col flex-1">
-            <label class="formTextFormat" for="">PHONE NUMBER</label>
-            <input
-              type="text"
-              class="formTemplate"
-              formControlName="phone_number"
-              required
-            />
-          </div>
-          <div class="flex flex-col flex-1">
-            <label class="formTextFormat" for="">BIRTHDATE</label>
-            <input
-              type="text"
-              class="formTemplate"
-              formControlName="birthdate"
-              required
-            />
-          </div>
-        </div>
-
-        <div class="flex justify-center items-center gap-4">
-          <div class="flex flex-col flex-1">
-            <label class="formTextFormat" for="">LASTNAME</label>
-            <input
-              type="text"
-              class="formTemplate"
-              formControlName="last_name"
-              required
-            />
-          </div>
-          <div class="flex flex-col flex-1">
-            <label class="formTextFormat" for="">FIRSTNAME</label>
-            <input
-              type="text"
-              class="formTemplate"
-              formControlName="first_name"
-              required
-            />
-          </div>
-          <div class="flex flex-col flex-1">
-            <label class="formTextFormat" for="">MIDDLENAME</label>
-            <input
-              type="text"
-              class="formTemplate"
-              formControlName="middle_name"
-              required
-            />
-          </div>
-          <div class="flex flex-col flex-1">
-            <label class="formTextFormat" for="">EXT. NAME</label>
-            <input
-              type="text"
-              class="formTemplate"
-              formControlName="ext_name"
-              required
-            />
+            <app-forms-error
+              *ngIf="
+                formControl(col)?.invalid &&
+                (formControl(col)?.dirty || formControl(col)?.touched)
+              "
+              [formControlRequired]="formControl(col)!.errors?.['required']"
+              [formControlEmail]="formControl(col)!.errors?.['email']"
+              [formControlPattern]="formControl(col)!.errors?.['pattern']"
+            ></app-forms-error>
           </div>
         </div>
 
         <div class="flex justify-center items-center gap-4">
-          <div class="flex flex-col flex-1">
-            <label class="formTextFormat" for="">REGION</label>
+          <div class="flex flex-col flex-1 gap-2" *ngFor="let col of column2">
+            <label class="formTextFormat uppercase" for="">{{ col }}</label>
             <input
+              [ngClass]="{
+                'border-b-[4px] border-red-500':
+                  formControl(col)!.invalid &&
+                  (formControl(col)?.dirty || formControl(col)?.touched)
+              }"
               type="text"
               class="formTemplate"
-              formControlName="region"
-              required
+              [formControlName]="col"
             />
+            <app-forms-error
+              *ngIf="
+                formControl(col)?.invalid &&
+                (formControl(col)?.dirty || formControl(col)?.touched)
+              "
+              [formControlRequired]="formControl(col)!.errors?.['required']"
+              [formControlPattern]="formControl(col)!.errors?.['pattern']"
+            ></app-forms-error>
           </div>
-          <div class="flex flex-col flex-1">
-            <label class="formTextFormat" for="">PROVINCE</label>
+        </div>
+
+        <div class="flex justify-center items-center gap-4">
+          <div class="flex flex-col flex-1" *ngFor="let col of column3">
+            <label class="formTextFormat uppercase" for="">{{ col }}</label>
             <input
+              [ngClass]="{
+                'border-b-[4px] border-red-500':
+                  formControl(col)!.invalid &&
+                  (formControl(col)?.dirty || formControl(col)?.touched)
+              }"
               type="text"
               class="formTemplate"
-              formControlName="province"
-              required
+              [formControlName]="col"
             />
-          </div>
-          <div class="flex flex-col flex-1">
-            <label class="formTextFormat" for="">CITY/MUNICIPALITY</label>
-            <input
-              type="text"
-              class="formTemplate"
-              formControlName="city"
-              required
-            />
-          </div>
-          <div class="flex flex-col flex-1">
-            <label class="formTextFormat" for="">BARANGAY</label>
-            <input
-              type="text"
-              class="formTemplate"
-              formControlName="barangay"
-              required
-            />
+            <app-forms-error
+              *ngIf="
+                formControl(col)?.invalid &&
+                (formControl(col)?.dirty || formControl(col)?.touched)
+              "
+              [formControlRequired]="formControl(col)!.errors?.['required']"
+              [formControlPattern]="formControl(col)!.errors?.['pattern']"
+            ></app-forms-error>
           </div>
         </div>
 
         <div class="flex justify-center items-start gap-4">
-          <div class="flex flex-col flex-1">
-            <label class="formTextFormat" for="">SEX</label>
+          <div class="flex flex-col flex-1" *ngFor="let col of column4">
+            <label class="formTextFormat uppercase" for="">{{ col }}</label>
             <input
+              [ngClass]="{
+                'border-b-[4px] border-red-500':
+                  formControl(col)!.invalid &&
+                  (formControl(col)?.dirty || formControl(col)?.touched)
+              }"
               type="text"
               class="formTemplate"
-              formControlName="sex"
-              required
+              [formControlName]="col"
             />
-          </div>
-          <div class="flex flex-col flex-1">
-            <label class="formTextFormat" for="">LANGUAGE</label>
-            <input
-              type="text"
-              class="formTemplate"
-              formControlName="language"
-              required
-            />
-          </div>
-          <div class="flex flex-col flex-1">
-            <label class="formTextFormat" for="">CITIZENSHIP</label>
-            <input
-              type="text"
-              class="formTemplate"
-              formControlName="citizenship"
-              required
-            />
-          </div>
-          <div class="flex flex-col flex-1">
-            <label class="formTextFormat" for="">AGE</label>
-            <input
-              type="text"
-              class="formTemplate"
-              formControlName="age"
-              required
-            />
-          </div>
-          <div class="flex flex-col flex-1">
-            <label class="formTextFormat" for="">CIVIL STATUS</label>
-            <input
-              type="text"
-              class="formTemplate"
-              formControlName="civil_status"
-              required
-            />
+            <app-forms-error
+              *ngIf="
+                formControl(col)?.invalid &&
+                (formControl(col)?.dirty || formControl(col)?.touched)
+              "
+              [formControlRequired]="formControl(col)!.errors?.['required']"
+              [formControlPattern]="col !== 'age' ? formControl(col)!.errors?.['pattern'] : null"
+              [formControlNumber]="col == 'age' ? formControl(col)!.errors?.['pattern'] : null"
+            ></app-forms-error>
           </div>
         </div>
 
         <div class="w-full flex justify-end gap-4">
           <input
+            [ngClass]="{
+              'bg-red-700 cursor-not-allowed': facultyInfo.invalid,
+              'bg-blue cursor-pointer': !facultyInfo.invalid
+            }"
+            [disabled]="facultyInfo.invalid"
             id="addFact"
             type="submit"
             value="Add Faculty"
-            class="w-[130px] h-[40px] rounded-full bg-blue text-white font-Poppins font-semibold shadow-lg hover:scale-[101%] hover:duration-300 duration-300"
+            class="w-[130px] h-[40px] rounded-full transition-all text-white font-Poppins font-semibold shadow-lg hover:scale-[101%] hover:duration-300 duration-300"
           />
         </div>
       </div>

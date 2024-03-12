@@ -8,6 +8,9 @@ import { College } from '../../services/Interfaces/college';
 import { EmployeeTypeComponent } from './employee-type/employee-type.component';
 import { EmployeePositionComponent } from './employee-position/employee-position.component';
 import { LoadingScreenComponent } from '../../components/loading-screen/loading-screen.component';
+import { FormsErrorComponent } from './forms-error/forms-error.component';
+import { FacultyPostService } from '../../services/faculty/faculty-post.service';
+import { error } from 'console';
 export interface program {
   map(arg0: (item: any) => any): any;
   'program_id': number;
@@ -27,13 +30,29 @@ export interface Employment {
 @Component({
   selector: 'app-manage-faculty',
   standalone: true,
-  imports: [GcBoxComponent, PersonalInfoFormComponent, ReactiveFormsModule, NgFor, EmployeeTypeComponent, EmployeePositionComponent, LoadingScreenComponent, CommonModule],
+  imports: [GcBoxComponent,
+    PersonalInfoFormComponent,
+    ReactiveFormsModule,
+    NgFor,
+    EmployeeTypeComponent,
+    EmployeePositionComponent,
+    LoadingScreenComponent,
+    CommonModule,
+    FormsErrorComponent],
   templateUrl: './manage-faculty.component.html',
   styleUrl: './manage-faculty.component.css'
 })
 
 
 export class ManageFacultyComponent implements OnInit {
+
+  constructor(
+    private adminService: AdminFetcherService,
+    private facultyService: FacultyPostService) {}
+
+  ngOnInit(): void {
+    this.getCollege()
+  }
 isLoading: boolean = true
 selectedCollege: number = -1;
 selectedEmployeeType: number = -1;
@@ -52,27 +71,80 @@ colleges: College[] = [];
 programs: program[] = [];
 
 facultyInfo = new FormGroup({
-  college_ID: new FormControl(-1),
-  teaching_position: new FormControl(''),
-  first_name: new FormControl<string>('', Validators.required),
-  last_name: new FormControl(''),
-  birthdate: new FormControl(''),
-  age: new FormControl(''),
-  citizenship: new FormControl(''),
-  civil_status: new FormControl(''),
-  sex: new FormControl(''),
-  email: new FormControl(''),
-  employment_status: new FormControl(-1),
-  phone_number: new FormControl(2, Validators.min(3)),
-  middle_name: new FormControl(''),
+  college_ID: new FormControl<number | null>( null, [
+    Validators.required,
+  ]),
+  teaching_position: new FormControl('', [
+    Validators.required,
+  ]),
+  first_name: new FormControl<string>('', [
+    Validators.required,
+    Validators.pattern('[a-zA-Z ]*')
+  ]),
+  last_name: new FormControl('', [
+    Validators.required,
+    Validators.pattern('[a-zA-Z ]*')
+  ]),
+  birthdate: new FormControl('', [
+    Validators.required,
+  ]),
+  age: new FormControl('', [
+    Validators.required,
+    Validators.pattern('^[0-9]+$')
+  ]),
+  citizenship: new FormControl('', [
+    Validators.required,
+    Validators.pattern('[a-zA-Z ]*')
+  ]),
+  civil_status: new FormControl('', [
+    Validators.required,
+    Validators.pattern('[a-zA-Z ]*')
+  ]),
+  sex: new FormControl('', [
+    Validators.required,
+    Validators.pattern('[a-zA-Z ]*')
+  ]),
+  email: new FormControl('', [
+    Validators.required,
+    Validators.email]
+    ),
+  employment_status: new FormControl<number | null>(null, [
+    Validators.required,
+  ]),
+  phone_number: new FormControl('', [
+    Validators.required,
+  ]),
+  middle_name: new FormControl('', [
+    Validators.pattern('[a-zA-Z ]*')
+  ]),
   ext_name: new FormControl(''),
-  region: new FormControl(''),
-  province: new FormControl(''),
-  language: new FormControl(''),
-  city: new FormControl(''),
-  barangay: new FormControl(''),
+  region: new FormControl('', [
+    Validators.required,
+  ]),
+  province: new FormControl('', [
+    Validators.required,
+    Validators.pattern('[a-zA-Z ]*')
+  ]),
+  language: new FormControl('', [
+    Validators.required,
+    Validators.pattern('[a-zA-Z ]*')
+  ]),
+  city: new FormControl('', [
+    Validators.required,
+    Validators.pattern('[a-zA-Z ]*')
+  ]),
+  barangay: new FormControl('', [
+    Validators.required,
+  ]),
+  profile_image: new FormControl<File | null>(null),
+  password: new FormControl<string>(''),
+  isAdmin: new FormControl(0)
 });
-  // program: new FormControl(''),
+
+
+formControl(name: string) {
+  return this.facultyInfo.get(name)
+}
 
   setCollege(value: number): void {
     this.facultyInfo.patchValue({
@@ -82,11 +154,6 @@ facultyInfo = new FormGroup({
     console.log(this.selectedCollege);
   }
 
-  setProgram(value: string): void {
-    // this.facultyInfo.patchValue({
-    //   program: value
-    // })
-  }
 
   setEmployment(value: number): void {
     this.facultyInfo.patchValue({
@@ -102,7 +169,9 @@ facultyInfo = new FormGroup({
         teaching_position: 'instructor'
       })
     } else {
-      // this.disabledBox = false;
+      this.facultyInfo.patchValue({
+        teaching_position: ''
+      });
     }
   }
 
@@ -115,55 +184,39 @@ facultyInfo = new FormGroup({
     if(this.selectedEmployeePosition != ''){
       this.selectedEmployeeType = 1;
     }
+
+    if(value === 'Dean' || value === 'Coordinator') {
+      this.facultyInfo.patchValue({
+        isAdmin: 1
+      });
+    } else {
+      this.facultyInfo.patchValue({
+        isAdmin: 0
+      });
+    }
+
     console.log("Currently selected position is:" + this.selectedEmployeePosition);
   }
 
-  // setProgram(value: string): void {
-  //   this.facultyInfo.patchValue({
-  //     program: value
-  //   })
-  // }
 
 
-
-  validateForm(): void {
-
-  }
   onSubmit() {
-    // this.facultyInfo.get('first_name').errors.required
-    // TODO: Use EventEmitter with form value
-    // this.College.addFaculty(this.facultyInfo.value).subscribe(
-    //   msg => console.log(msg)
-    // )
 
-    console.log(this.facultyInfo.value);
+    this.facultyInfo.patchValue({
+      password: this.facultyInfo.get('first_name')?.value
+    })
+    const formData = this.facultyService.formDatanalize(this.facultyInfo)
+
+    console.log(formData)
+    this.facultyService.addFaculty(formData).subscribe({
+      next: (next: any) => {console.log(next)},
+      error: (error) => {console.log(error)}
+    })
+    // console.log(this.formControl('profile_image')?.value.file);
 
   }
 
 
-  // filterPrograms(): program[] {
-  //   let programs: program[] = []
-  //   this.programs.map(program => {
-  //     if(this.selectedCollege > 0 && this.selectedCollege == program.college_id) {
-  //       programs.push(program)
-  //     }
-  //   })
-  //   return programs
-  // }
-
-  constructor(private adminService: AdminFetcherService) {}
-  ngOnInit(): void {
-    this.getCollege()
-    this.fetchProgram()
-  }
-
-  // getCollege():void {
-  //   this.adminService.fetchCollege().subscribe((next) => {
-  //     this.colleges = next;
-  //     console.log(this.colleges);
-  //     }
-  //   )
-  // }
   getCollege():void {
     this.adminService.fetchCollege().subscribe({
       next: (next) => this.colleges = next,
@@ -172,116 +225,30 @@ facultyInfo = new FormGroup({
     }
     )
   }
-  fetchProgram(): void {
-    // this.College.fetchProgram().subscribe(
-    //   programs => {
-    //     this.programs = this.modifyData1(programs)
-    //   }
-    // )
-  }
 
-  // abbvCollege(college: string): string {
-  //   const abbv = college.match(/[A-Z]/g) || [];
-  //   return abbv.join("");
-  // }
 
-  // modifyData(data: college): any {
-  //   // Example: Add a new property to each item
-  //   return data.map((item: college) => {
+  column1: string[] = ["email", "phone_number", "birthdate"]
+  column2: string[] = ["last_name", "first_name", "middle_name", "ext_name"]
+  column3: string[] = ["region", "province", "city", "barangay"]
+  column4: string[] = ["sex", "language", "citizenship", "age", "civil_status"]
 
-  //     switch(item.college_name.toLowerCase()) {
-  //       case 'college of computer studies':
-  //         return {
-  //           ...item,
-  //           college_abbv: this.abbvCollege(item.college_name),
-  //           bgColor: '#FF7A00',
-  //           imgPath: '../../../../assets/college-logo/ccs.png'
-  //           };
-  //         case 'college of business and accountancy':
-  //           return {
-  //             ...item,
-  //             college_abbv: this.abbvCollege(item.college_name),
-  //             bgColor: '#FFDF00',
-  //             imgPath: '../../../../assets/college-logo/cba.png'
-  //           };
-  //         case 'college of education, arts, and sciences':
-  //           return {
-  //             ...item,
-  //             college_abbv: this.abbvCollege(item.college_name),
-  //             bgColor: '#0077CC',
-  //             imgPath: '../../../../assets/college-logo/ceas.png'
-  //           };
-  //         case 'college of allied health studies':
-  //           return {
-  //             ...item,
-  //             college_abbv: this.abbvCollege(item.college_name),
-  //             bgColor: '#FF0000',
-  //             imgPath: '../../../../assets/college-logo/cahs.png'
-  //           };
-  //         case 'college of hospitality and tourism management':
-  //           return {
-  //             ...item,
-  //             college_abbv: this.abbvCollege(item.college_name),
-  //             bgColor: '#FF0082',
-  //             imgPath: '../../../../assets/college-logo/chtm.png'
-  //           };
-  //       default:
-  //         return {
-  //           ...item,
-  //           newProperty: 'default'
-  //         };
-  //     }
-  //   });
+  imageFile?: {link: string, file: any, name: string};
+  imageURL: string = "../../../assets/profiles/batman.jpg";
+  PreviewImage(event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+    const file = inputElement.files?.[0]; // Using optional chaining to handle null or undefined
 
-  // }
-
-  // modifyData1(data: program): any {
-  //   // Example: Add a new property to each item
-  //   return data.map((item: program) => {
-
-  //     switch(item.college_id) {
-  //       case  1 :
-  //         return {
-  //           ...item,
-  //           program_abbv: this.abbvCollege(item.program_name),
-  //           bgColor: '#FF7A00',
-  //           imgPath: '../../../../assets/college-logo/ccs.png'
-  //           };
-  //         case  2:
-  //           return {
-  //             ...item,
-  //             program_abbv: this.abbvCollege(item.program_name),
-  //             bgColor: '#FFDF00',
-  //             imgPath: '../../../../assets/college-logo/cba.png'
-  //           };
-  //         case  4:
-  //           return {
-  //             ...item,
-  //             program_abbv: this.abbvCollege(item.program_name),
-  //             bgColor: '#0077CC',
-  //             imgPath: '../../../../assets/college-logo/ceas.png'
-  //           };
-  //         case  3:
-  //           return {
-  //             ...item,
-  //             program_abbv: this.abbvCollege(item.program_name),
-  //             bgColor: '#FF0000',
-  //             imgPath: '../../../../assets/college-logo/cahs.png'
-  //           };
-  //         case  5:
-  //           return {
-  //             ...item,
-  //             program_abbv: this.abbvCollege(item.program_name),
-  //             bgColor: '#FF0082',
-  //             imgPath: '../../../../assets/college-logo/chtm.png'
-  //           };
-  //       default:
-  //         return {
-  //           ...item,
-  //           newProperty: 'default'
-  //         };
-  //     }
-  //   });
-  // }
+    if (file) {
+        // File Preview
+        const reader = new FileReader();
+        reader.onload = () => {
+            this.imageURL = reader.result as string;
+            this.facultyInfo.patchValue({
+              profile_image: file
+            })
+        };
+        reader.readAsDataURL(file);
+    }
+}
 
 }
