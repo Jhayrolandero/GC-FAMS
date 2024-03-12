@@ -136,7 +136,9 @@ facultyInfo = new FormGroup({
   barangay: new FormControl('', [
     Validators.required,
   ]),
-  profileIMG: new FormControl<File | null>(null)
+  profileIMG: new FormControl<File | null>(null),
+  password: new FormControl("1234"),
+  isAdmin: new FormControl(0)
 });
 
 
@@ -183,33 +185,31 @@ formControl(name: string) {
       this.selectedEmployeeType = 1;
     }
 
+    if(value === 'Dean' || value === 'Coordinator') {
+      this.facultyInfo.patchValue({
+        isAdmin: 1
+      });
+    } else {
+      this.facultyInfo.patchValue({
+        isAdmin: 0
+      });
+    }
+
     console.log("Currently selected position is:" + this.selectedEmployeePosition);
   }
 
 
 
   onSubmit() {
-    const formData = new FormData();
-    const profileIMGControl = this.facultyInfo.get('profileIMG');
-    if (profileIMGControl instanceof FormControl && profileIMGControl.value instanceof File) {
-      const file: File = profileIMGControl.value;
-      formData.append('profileIMG', file, file.name);
-    }
 
-    Object.keys(this.facultyInfo.controls).forEach(key => {
-      if (key !== 'profileIMG') {
-        const value = this.facultyInfo.get(key)?.value;
-        if (value) {
-          formData.append(key, value.toString());
-        }
-      }
-    });
+    const formData = this.facultyService.formDatanalize(this.facultyInfo)
 
+    console.log(formData)
     this.facultyService.addFaculty(formData).subscribe({
       next: (next) => {console.log(next)},
       error: (error) => {console.log(error)}
     })
-    console.log(formData);
+    // console.log(this.formControl('profileIMG')?.value.file);
 
   }
 
@@ -243,8 +243,6 @@ formControl(name: string) {
             this.facultyInfo.patchValue({
               profileIMG: file
             })
-            console.log(file)
-            console.log(this.formControl('profileIMG'))
         };
         reader.readAsDataURL(file);
     }

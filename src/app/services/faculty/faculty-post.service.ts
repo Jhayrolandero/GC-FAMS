@@ -39,4 +39,15 @@ export class FacultyPostService {
     addFaculty(facultyInfo: FormData) {
       return this.http.post<JwtToken>(mainPort + '/gc-fams-api/API/faculty', facultyInfo, {headers:this.getHeader()})
     }
+
+
+    formDatanalize(FormGroup: FormGroup) : FormData {
+      const formData : FormData = new FormData()
+
+      Object.keys(FormGroup.controls).forEach((key: string) => {
+        formData.append(key, FormGroup.get(key)?.value)
+      });
+
+      return formData
+    }
 }
