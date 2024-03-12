@@ -19,7 +19,7 @@
     <!-- IMAGE AND COVER -->
     <div class="w-full">
       <div class="h-[210px] w-full flex justify-center tablet:block">
-        <div class="rounded-full ml-0 absolute tablet:ml-7 bg-greenBar h-[210px] w-[210px] overflow-hidden border-[5px] border-white">
+        <div class="rounded-full ml-0 absolute tablet:ml-7 bg-greenBar max-h-[210px] max-w-[210px] overflow-hidden border-[5px] border-white">
           <img [src]="tempPort + '/GC-FaMS-API/Image_Assets/Faculty_Profile/' + facultyProfile.faculty_ID + '/PROFILE.png'" />
         </div>
         <div class="w-full h-[180px] overflow-hidden ">
@@ -30,7 +30,7 @@
 
     <div class="flex flex-col justify-center tablet:flex-row tablet:justify-between">
       <div>
-        <p class="text-[2rem] text-center tablet:text-start font-Poppins font-semibold ml-0 tablet:ml-7 mt-1 mb-2">
+        <p class="text-[2.2rem] text-center tablet:text-start font-Poppins font-semibold ml-0 tablet:ml-7 mt-1 mb-2">
           {{ facultyProfile.first_name }} {{ facultyProfile.last_name }}
         </p>
       </div>

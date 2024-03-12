@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { JwtToken } from '../../services/jwt-token';
+import { mainPort } from '../../app.component';
 
 @Component({
   selector: 'app-login',
@@ -20,7 +21,7 @@ export class LoginComponent {
   privSwitch!: boolean;
   validForm = true;
 
-  url = 'http://localhost:8080/GC-FaMS-API/API/login';
+  url = mainPort + '/GC-FaMS-API/API/login';
   fb = inject(FormBuilder);
   http = inject(HttpClient);
   authService = inject(AuthService);
