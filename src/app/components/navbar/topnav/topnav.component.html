@@ -5,7 +5,9 @@
     class="flex-initial justify-between items-center rounded-full border-[2px] border-blue flex flex-row gap-2 h-full px-2 py-1 min-w-[150px]"
   >
     <div class="flex-1 h-full flex gap-2 items-center">
+      <span class="loader" *ngIf="isLoading"></span>
       <img
+        *ngIf="!isLoading"
         [src]="facultyProfile.profile_image"
         alt="facultyProfile.profile_image"
         class="h-full rounded-full aspect-square"

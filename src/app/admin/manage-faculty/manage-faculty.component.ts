@@ -115,7 +115,6 @@ facultyInfo = new FormGroup({
     Validators.required,
   ]),
   middle_name: new FormControl('', [
-    Validators.required,
     Validators.pattern('[a-zA-Z ]*')
   ]),
   ext_name: new FormControl(''),
@@ -138,7 +137,7 @@ facultyInfo = new FormGroup({
     Validators.required,
   ]),
   profile_image: new FormControl<File | null>(null),
-  password: new FormControl("1234"),
+  password: new FormControl<string>(''),
   isAdmin: new FormControl(0)
 });
 
@@ -203,12 +202,14 @@ formControl(name: string) {
 
   onSubmit() {
 
-    console.log(this.facultyInfo.get('profile_image')?.value)
+    this.facultyInfo.patchValue({
+      password: this.facultyInfo.get('first_name')?.value
+    })
     const formData = this.facultyService.formDatanalize(this.facultyInfo)
 
     console.log(formData)
     this.facultyService.addFaculty(formData).subscribe({
-      next: (next) => {console.log(next)},
+      next: (next: any) => {console.log(next)},
       error: (error) => {console.log(error)}
     })
     // console.log(this.formControl('profile_image')?.value.file);
