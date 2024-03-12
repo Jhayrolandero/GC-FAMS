@@ -5,33 +5,26 @@ import { CommonModule, NgFor, SlicePipe } from '@angular/common';
 import { FacultyFetcherService } from '../../services/faculty/faculty-fetcher.service';
 import { mainPort } from '../../app.component';
 import { LoadingScreenComponent } from '../../components/loading-screen/loading-screen.component';
+import { CommexFormComponent } from '../../components/faculty/commex-form/commex-form.component';
+
 @Component({
   selector: 'app-community-extensions',
   standalone: true,
-  imports: [OtherCommexComponent, NgFor, SlicePipe, CommonModule, LoadingScreenComponent],
+  imports: [OtherCommexComponent, NgFor, SlicePipe, CommonModule, LoadingScreenComponent, CommexFormComponent],
   templateUrl: './community-extensions.component.html',
   styleUrl: './community-extensions.component.css'
 })
 export class CommunityExtensionsComponent{
   tempPort = mainPort;
   isLoading: boolean = true;
+  formToggle: boolean = false;
   commexs: CommunityExtension[] = [];
-  min: number = 100;
-  max: number = 250;
+
 
   constructor(private facultyService: FacultyFetcherService){
     this.getCommex();
   }
 
-  // getCommex():void {
-  //   this.facultyService.fetchCommex().subscribe((next) => {
-  //     this.commexs = next;
-  //     this.dateSorter();
-  //     this.commexs.forEach(this.parseImageLink);
-  //   }, (error) => {
-  //     console.log(error);
-  //   });
-  // }
   getCommex():void {
     this.facultyService.fetchCommex().subscribe({
       next: (next) =>  this.commexs = next,

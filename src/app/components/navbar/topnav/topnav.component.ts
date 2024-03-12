@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { AuthService } from '../../../services/auth.service';
 import { Router } from '@angular/router';
 import { FacultyFetcherService } from '../../../services/faculty/faculty-fetcher.service';
@@ -19,7 +19,12 @@ export class TopnavComponent implements OnInit{
   constructor(
     private auth: AuthService,
     private router: Router,
-    private facultyService: FacultyFetcherService){}
+    private facultyService: FacultyFetcherService){
+    }
+
+    triggerToggle(){
+      this.setToggle.emit();
+    }
 
 
     ngOnInit(): void {
@@ -40,4 +45,8 @@ export class TopnavComponent implements OnInit{
       });
     }
 
+  @Output() setToggle = new EventEmitter<string>();
+
 }
+
+

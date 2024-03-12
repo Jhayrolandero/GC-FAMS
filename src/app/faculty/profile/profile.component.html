@@ -1,7 +1,7 @@
 <app-loading-screen *ngIf="isLoading"></app-loading-screen>
 <div
   *ngIf="facultyProfile != undefined && !isLoading"
-  class="p-5 flex flex-col gap-3 text-blue"
+  class="p-5 pr-7 flex flex-col max-w-full flex-initial gap-3 text-blue overflow-x-hidden"
   id="mainPage"
 >
   <div class="absolute z-50">
@@ -16,45 +16,63 @@
     >
     </app-add-forms>
   </div>
-  <div class="w-100 bg-white rounded-[25px] overflow-hidden shadow-lg">
-    <div class="w-100 h-[150px] bg-red-200 overflow-hidden">
-      <img
-        class="w-full"
-        [src]="
-          tempPort +
-          '/GC-FaMS-API/Image_Assets/Faculty_Profile/' +
-          facultyProfile.faculty_ID +
-          '/COVER.png'
-        "
-        onerror="this.onerror=null; this.src='../../../assets/profiles/cover.jpg'"
-      />
+</div>
+<div class="flex justify-between">
+  <p class="text-[2rem] font-Poppins font-semibold ml-7 mt-[55px] mb-2">
+    {{ facultyProfile.first_name }} {{ facultyProfile.last_name }}
+  </p>
+
+  <div
+    class="min-w-mobileL w-full bg-white rounded-[25px] overflow-hidden shadow-lg"
+  >
+    <!-- IMAGE AND COVER -->
+    <div class="w-full">
+      <div class="h-[210px] w-full flex justify-center tablet:block">
+        <div
+          class="rounded-full ml-0 absolute tablet:ml-7 bg-greenBar max-h-[210px] max-w-[210px] overflow-hidden border-[5px] border-white"
+        >
+          <!-- <img
+            [src]="
+              tempPort +
+              '/GC-FaMS-API/Image_Assets/Faculty_Profile/' +
+              facultyProfile.faculty_ID +
+              '/PROFILE.png'
+            "
+          /> -->
+          <img
+            [src]="facultyProfile.profile_image"
+            onerror="this.onerror=null; this.src='../../../assets/profiles/user.png'"
+          />
+        </div>
+        <div class="w-full h-[180px] overflow-hidden">
+          <img
+            class="w-full"
+            [src]="
+              tempPort +
+              '/GC-FaMS-API/Image_Assets/Faculty_Profile/' +
+              facultyProfile.faculty_ID +
+              '/COVER.png'
+            "
+            onerror="this.onerror=null; this.src='../../../assets/profiles/cover.jpg'"
+          />
+        </div>
+      </div>
     </div>
+
     <div
-      class="rounded-full bg-white w-[150px] h-[150px] absolute ml-7 top-[135px] overflow-hidden border-[5px] border-white"
+      class="flex flex-col justify-center tablet:flex-row tablet:justify-between"
     >
-      <!-- <img
-        [src]="
-          tempPort +
-          '/GC-FaMS-API/Image_Assets/Faculty_Profile/' +
-          facultyProfile.faculty_ID +
-          '/PROFILE.png'
-        "
-      /> -->
-      <img
-        class="w-full"
-        [src]="facultyProfile.profile_image"
-        onerror="this.onerror=null; this.src='../../../assets/profiles/user.png'"
-      />
-      <!-- <img class="w-full" src="../../../assets/profiles/user.png" /> -->
-    </div>
-    <div class="flex justify-between">
-      <p class="text-[2rem] font-Poppins font-semibold ml-7 mt-[55px] mb-2">
-        {{ facultyProfile.first_name }} {{ facultyProfile.last_name }}
-      </p>
+      <div>
+        <p
+          class="text-[2.2rem] text-center tablet:text-start font-Poppins font-semibold ml-0 tablet:ml-7 mt-1 mb-2"
+        >
+          {{ facultyProfile.first_name }} {{ facultyProfile.last_name }}
+        </p>
+      </div>
       <div
-        class="rounded-[25px] bg-blue w-[55%] mx-5 my-3 shadow-lg px-7 flex items-center"
+        class="rounded-[15px] bg-blue mx-5 my-3 shadow-lg px-7 flex items-center"
       >
-        <div class="w-[65%]">
+        <div class="w-[85%]">
           <div
             class="flex flex-row font-Roboto font-bold text-white text-[0.85rem] justify-between"
           >
@@ -80,60 +98,58 @@
     </div>
   </div>
 
-  <div class="w-100 flex flex-col">
-    <div class="w-full mr-2">
-      <div class="w-full mb-4 flex flex-row">
-        <div
-          class="shadow-lg py-3 w-full bg-white rounded-[25px] mr-2 flex flex-row items-center"
-        >
-          <div class="w-[270px] ml-10 rounded-full grow-0 flex items-center">
-            <img src="../../../assets/college-logo-big/CCS.png" />
+  <div
+    (click)="getCv()"
+    class="shadow-lg bg-white rounded-[25px] overflow-hidden hover:scale-[101%] hover:text-white hover:bg-blue hover:duration-300 duration-300 select-none flex flex-col justify-center items-center"
+  >
+    <p class="text-[1.5rem] font-Poppins font-semibold">Generate CV</p>
+  </div>
+
+  <div class="flex flex-col tablet:flex-row gap-4">
+    <div
+      class="hidden laptop:flex laptop:w-[200px] p-5 items-center bg-white rounded-[25px] shadow-lg"
+    >
+      <img class="" src="../../../assets/college-logo-big/CCS.png" />
+    </div>
+
+    <div
+      class="bg-white rounded-[25px] shadow-lg w-full flex flex-col tablet:flex-row p-5"
+    >
+      <div class="mr-[50px]">
+        <p class="font-Poppins font-semibold text-[1.6rem]">Personal</p>
+        <hr class="h-[2px] bg-mainGray" />
+        <div class="flex flex-row">
+          <div class="font-Roboto font-bold mr-10 text-black [&_p]:my-2">
+            <p>Birthdate</p>
+            <p>Age</p>
+            <p>Citizenship</p>
+            <p>Civil Status</p>
+            <p>Sex</p>
           </div>
-
-          <div class="w-full flex flex-row">
-            <div class="mx-5 mr-[100px]">
-              <p class="font-Poppins font-semibold text-[1.6rem]">Personal</p>
-              <hr class="h-[2px] bg-mainGray" />
-              <div class="flex flex-row">
-                <div class="font-Roboto font-bold mr-10 text-black [&_p]:my-2">
-                  <p>Birthdate</p>
-                  <p>Age</p>
-                  <p>Citizenship</p>
-                  <p>Civil Status</p>
-                  <p>Sex</p>
-                </div>
-                <div class="font-Roboto font-regular text-black [&_p]:my-2">
-                  <p>{{ facultyProfile.birthdate }}</p>
-                  <p>{{ facultyProfile.age }}</p>
-                  <p>{{ facultyProfile.citizenship }}</p>
-                  <p>{{ facultyProfile.civil_status }}</p>
-                  <p>{{ facultyProfile.sex }}</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="mr-5">
-              <p class="font-Poppins font-semibold text-[1.6rem]">Contact</p>
-              <hr class="h-[2px] bg-mainGray" />
-              <p class="font-Roboto font-regular text-black my-2 text-[1.0rem]">
-                {{ facultyProfile.email }}
-              </p>
-              <p class="font-Roboto font-regular text-black my-2 text-[1.0rem]">
-                09684949573
-              </p>
-            </div>
+          <div class="font-Roboto font-regular text-black [&_p]:my-2">
+            <p>{{ facultyProfile.birthdate }}</p>
+            <p>{{ facultyProfile.age }}</p>
+            <p>{{ facultyProfile.citizenship }}</p>
+            <p>{{ facultyProfile.civil_status }}</p>
+            <p>{{ facultyProfile.sex }}</p>
           </div>
-        </div>
-
-        <div
-          (click)="getCv()"
-          class="shadow-lg w-[350px] bg-white ml-2 rounded-[25px] overflow-hidden hover:scale-[101%] hover:text-white hover:bg-blue hover:duration-300 duration-300 select-none flex justify-center items-center flex-col"
-        >
-          <p class="text-[2.5rem] font-Poppins font-semibold">Generate</p>
-          <p class="text-[6rem] font-Poppins font-semibold">CV</p>
         </div>
       </div>
+      <div class="">
+        <p class="font-Poppins font-semibold text-[1.6rem]">Contact</p>
+        <hr class="h-[2px] bg-mainGray" />
+        <p class="font-Roboto font-regular text-black my-2 text-[1.0rem]">
+          {{ facultyProfile.email }}
+        </p>
+        <p class="font-Roboto font-regular text-black my-2 text-[1.0rem]">
+          09684949573
+        </p>
+      </div>
+    </div>
+  </div>
 
+  <div class="w-full flex flex-col">
+    <div class="w-full mr-2">
       <div
         class="mb-4 w-full bg-white rounded-[25px] overflow-hidden shadow-lg"
       >
@@ -486,3 +502,5 @@
     </div>
   </div>
 </div>
+<!-- </div>
+</div> -->
