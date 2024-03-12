@@ -16,12 +16,6 @@
     >
     </app-add-forms>
   </div>
-</div>
-<div class="flex justify-between">
-  <p class="text-[2rem] font-Poppins font-semibold ml-7 mt-[55px] mb-2">
-    {{ facultyProfile.first_name }} {{ facultyProfile.last_name }}
-  </p>
-
   <div
     class="min-w-mobileL w-full bg-white rounded-[25px] overflow-hidden shadow-lg"
   >
@@ -31,14 +25,6 @@
         <div
           class="rounded-full ml-0 absolute tablet:ml-7 bg-greenBar max-h-[210px] max-w-[210px] overflow-hidden border-[5px] border-white"
         >
-          <!-- <img
-            [src]="
-              tempPort +
-              '/GC-FaMS-API/Image_Assets/Faculty_Profile/' +
-              facultyProfile.faculty_ID +
-              '/PROFILE.png'
-            "
-          /> -->
           <img
             [src]="facultyProfile.profile_image"
             onerror="this.onerror=null; this.src='../../../assets/profiles/user.png'"
@@ -502,5 +488,3 @@
     </div>
   </div>
 </div>
-<!-- </div>
-</div> -->
