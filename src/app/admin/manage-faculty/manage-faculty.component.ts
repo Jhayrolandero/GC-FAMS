@@ -90,6 +90,7 @@ facultyInfo = new FormGroup({
   ]),
   age: new FormControl('', [
     Validators.required,
+    Validators.pattern('^[0-9]+$')
   ]),
   citizenship: new FormControl('', [
     Validators.required,
@@ -136,7 +137,7 @@ facultyInfo = new FormGroup({
   barangay: new FormControl('', [
     Validators.required,
   ]),
-  profileIMG: new FormControl<File | null>(null),
+  profile_image: new FormControl<File | null>(null),
   password: new FormControl("1234"),
   isAdmin: new FormControl(0)
 });
@@ -202,6 +203,7 @@ formControl(name: string) {
 
   onSubmit() {
 
+    console.log(this.facultyInfo.get('profile_image')?.value)
     const formData = this.facultyService.formDatanalize(this.facultyInfo)
 
     console.log(formData)
@@ -209,7 +211,7 @@ formControl(name: string) {
       next: (next) => {console.log(next)},
       error: (error) => {console.log(error)}
     })
-    // console.log(this.formControl('profileIMG')?.value.file);
+    // console.log(this.formControl('profile_image')?.value.file);
 
   }
 
@@ -241,12 +243,11 @@ formControl(name: string) {
         reader.onload = () => {
             this.imageURL = reader.result as string;
             this.facultyInfo.patchValue({
-              profileIMG: file
+              profile_image: file
             })
         };
         reader.readAsDataURL(file);
     }
 }
-
 
 }

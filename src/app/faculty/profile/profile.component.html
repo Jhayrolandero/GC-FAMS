@@ -26,10 +26,11 @@
           facultyProfile.faculty_ID +
           '/COVER.png'
         "
+        onerror="this.onerror=null; this.src='../../../assets/profiles/cover.jpg'"
       />
     </div>
     <div
-      class="rounded-full bg-greenBar w-[150px] h-[150px] absolute ml-7 top-[135px] overflow-hidden border-[5px] border-white"
+      class="rounded-full bg-white w-[150px] h-[150px] absolute ml-7 top-[135px] overflow-hidden border-[5px] border-white"
     >
       <!-- <img
         [src]="
@@ -39,7 +40,12 @@
           '/PROFILE.png'
         "
       /> -->
-      <img class="w-full" [src]="facultyProfile.profile_image" />
+      <img
+        class="w-full"
+        [src]="facultyProfile.profile_image"
+        onerror="this.onerror=null; this.src='../../../assets/profiles/user.png'"
+      />
+      <!-- <img class="w-full" src="../../../assets/profiles/user.png" /> -->
     </div>
     <div class="flex justify-between">
       <p class="text-[2rem] font-Poppins font-semibold ml-7 mt-[55px] mb-2">

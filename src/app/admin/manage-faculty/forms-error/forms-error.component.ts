@@ -15,4 +15,5 @@ export class FormsErrorComponent {
   @Input('formControlMinLength') formControlMinLength!: FormControl;
   @Input('formControlEmail') formControlEmail!: FormControl;
   @Input('formControlPattern') formControlPattern!: FormControl;
+  @Input('formControlNumber') formControlNumber!: FormControl;
 }

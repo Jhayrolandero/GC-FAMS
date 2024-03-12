@@ -6,11 +6,12 @@
   >
     <div class="flex-1 h-full flex gap-2 items-center">
       <img
-        src="../../../../assets/profiles/ains.png"
-        alt=""
-        class="h-full rounded-full"
+        [src]="facultyProfile.profile_image"
+        alt="facultyProfile.profile_image"
+        class="h-full rounded-full aspect-square"
+        onerror="this.onerror=null; this.src='../../../assets/profiles/user.png'"
       />
-      <p>Name</p>
+      <p>{{ facultyProfile.first_name }} {{ facultyProfile.last_name }}</p>
     </div>
     <i class="fa-solid fa-chevron-down"></i>
   </div>
