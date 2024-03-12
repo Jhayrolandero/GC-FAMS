@@ -13,6 +13,10 @@ import { LoadingScreenComponent } from '../components/loading-screen/loading-scr
   styleUrl: './faculty.component.css'
 })
 export class FacultyComponent {
+  sideBarToggle = true;
 
-
+  toggle(){
+    this.sideBarToggle = !this.sideBarToggle;
+    console.log(this.sideBarToggle);
+  }
 }

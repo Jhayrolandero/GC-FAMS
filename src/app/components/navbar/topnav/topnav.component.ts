@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { AuthService } from '../../../services/auth.service';
 import { Router } from '@angular/router';
 
@@ -10,6 +10,11 @@ import { Router } from '@angular/router';
   styleUrl: './topnav.component.css'
 })
 export class TopnavComponent {
-  
+  @Output() setToggle = new EventEmitter<string>();
+
   constructor(private auth: AuthService, private router: Router){}
+
+  triggerToggle(){
+    this.setToggle.emit();
+  }
 }
