@@ -9,7 +9,8 @@ import { Resume } from '../Interfaces/resume';
 import { Evaluation } from '../Interfaces/evaluation';
 import { Observable } from 'rxjs';
 import { FormGroup } from '@angular/forms';
-
+import { Faculty } from '../Interfaces/faculty';
+import { College } from '../Interfaces/college';
 @Injectable({
   providedIn: 'root'
 })
@@ -45,6 +46,11 @@ export class FacultyFetcherService {
     return this.http.get<Evaluation[]>(mainPort + '/GC-FaMS-API/API/getevaluation/fetchEvaluation', {headers:this.getHeader()});
   }
 
+  fetchFaculty() {
+    return this.http.get<Faculty[]>(mainPort + '/GC-FaMS-API/API/faculty', {headers:this.getHeader()});
+  }
 
-
+  fetchCollege() {
+    return this.http.get<College[]>(mainPort + '/GC-FaMS-API/API/fetchCollege', {headers:this.getHeader()});
+  }
 }

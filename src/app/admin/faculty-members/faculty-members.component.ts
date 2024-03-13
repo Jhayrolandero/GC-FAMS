@@ -2,25 +2,47 @@ import { Component, NgModule, OnInit, ViewChild } from '@angular/core';
 import { FacultyBoxComponent } from '../../components/admin/faculty-members/faculty-box/faculty-box.component';
 import { FacultymembersService } from '../../services/admin/facultymembers.service';
 import { FacultyMember } from '../../services/admin/facultymembers';
-import { NgFor } from '@angular/common';
+import { CommonModule, NgFor } from '@angular/common';
 import { PaginationComponent } from '../../components/pagination/pagination.component';
 import { facultyMemberResource } from '../../services/admin/facultyMemberResource';
 import { FacultySectionComponent } from './faculty-section/faculty-section.component';
 import { CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
 import { ModalComponent } from '../../components/modal/modal.component';
 import { CvComponent } from '../../components/cv/cv.component';
-
-
+import { FacultyFetcherService } from '../../services/faculty/faculty-fetcher.service';
+import { Faculty } from '../../services/Interfaces/faculty';
+import { College } from '../../services/Interfaces/college';
+import { mainPort } from '../../app.component';
+import { LoadingScreenComponent } from '../../components/loading-screen/loading-screen.component';
+import { forkJoin } from 'rxjs';
+import { Router } from '@angular/router';
+type response = {
+  code: number,
+  data: Faculty[]
+}
 @Component({
   selector: 'app-faculty-members',
   standalone: true,
-  imports: [FacultyBoxComponent, NgFor, PaginationComponent, FacultySectionComponent, CanvasJSAngularChartsModule, CvComponent, ModalComponent],
+  imports: [FacultyBoxComponent,
+    NgFor,
+    PaginationComponent,
+    FacultySectionComponent,
+    CanvasJSAngularChartsModule,
+    CvComponent,
+    ModalComponent,
+  CommonModule,
+LoadingScreenComponent],
   providers: [FacultymembersService],
   templateUrl: './faculty-members.component.html',
   styleUrl: './faculty-members.component.css'
 })
 
 export class FacultyMembersComponent implements OnInit {
+
+  isLoading: boolean = true
+  ngOnInit(): void {
+    this.getCollegeAndFaculty()
+  }
   chartOptions = {
 
     backgroundColor: 'transparent',
@@ -71,37 +93,46 @@ export class FacultyMembersComponent implements OnInit {
 		]
 	  }]
 	}
-  facultyMembers: any = [];
+  facultyMembers: Faculty[] = [];
+  collegeItems: College[] = [];
   fullTime: number = 0;
   partTime: number = 0;
   fulltimeInclass: number = 0;
   parttimeInclass: number = 0;
-  constructor( private facultyService: FacultymembersService ){
+  constructor(
+    private facultyService: FacultyFetcherService,
+    private router: Router    ){
 
   }
 
-  getFacultyMembers(params?: any): void {
-    // console.log(this.facultyService.getURI(params))
-    this.facultyService.getFacultyMembers(params)
-        .subscribe(facultyMembers => {
-          this.facultyMembers = facultyMembers.data
 
-          this.fullTime = 0
-          this.partTime = 0
-          this.fulltimeInclass = 0
-          this.parttimeInclass = 0
+  getCollegeAndFaculty() {
+    forkJoin({
+      collegeRequest: this.facultyService.fetchCollege(),
+      facultyRequest: this.facultyService.fetchFaculty()
+    }).subscribe({
+      next: (({collegeRequest, facultyRequest}) => {
+        this.collegeItems = collegeRequest
+        this.facultyMembers = facultyRequest
+      }),
+      error: (error) => {
+        console.log(error);
+        this.router.navigate(['/'])
+      },
+      complete: () => {
 
-          this.facultyMembers.map( (members:any) => {
-            if(members.employment === 'Full-Time') this.fullTime++;
-            else if(members.employment === 'Part-Time') this.partTime++;
+        console.log(this.collegeItems)
+    this.facultyMembers = this.facultyMembers.map(facultyMember => {
+      return {
+        ...facultyMember,
+        profile_image: mainPort + facultyMember.profile_image
+      };
+    });
 
-            if(members.status === 'In-Class' && members.employment === 'Full-Time') this.fulltimeInclass++
-            else if(members.status === 'In-Class' && members.employment === 'Part-Time') this.parttimeInclass++
-          })
-        });
+this.isLoading = false
+      }
+    })
   }
 
-  ngOnInit(): void {
-    this.getFacultyMembers();
-  }
+
 }

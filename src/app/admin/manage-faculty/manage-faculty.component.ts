@@ -11,7 +11,9 @@ import { LoadingScreenComponent } from '../../components/loading-screen/loading-
 import { FormsErrorComponent } from './forms-error/forms-error.component';
 import { FacultyPostService } from '../../services/faculty/faculty-post.service';
 import { error } from 'console';
+import { MessageComponent } from '../../components/message/message.component';
 export interface program {
+
   map(arg0: (item: any) => any): any;
   'program_id': number;
   'college_id': number;
@@ -38,7 +40,8 @@ export interface Employment {
     EmployeePositionComponent,
     LoadingScreenComponent,
     CommonModule,
-    FormsErrorComponent],
+    FormsErrorComponent,
+    MessageComponent],
   templateUrl: './manage-faculty.component.html',
   styleUrl: './manage-faculty.component.css'
 })
@@ -50,18 +53,19 @@ export class ManageFacultyComponent implements OnInit {
     private adminService: AdminFetcherService,
     private facultyService: FacultyPostService) {}
 
-  ngOnInit(): void {
-    this.getCollege()
-  }
-isLoading: boolean = true
-selectedCollege: number = -1;
-selectedEmployeeType: number = -1;
-selectedEmployeePosition: string = '';
-// disabledBox: boolean = false;
-employmentStatus:Employment[] = [
-  {'employmentType': 'Part-Time', 'empStatus': 0},
-  {'employmentType': 'Full-Time', 'empStatus': 1},
-]
+    ngOnInit(): void {
+      this.getCollege()
+    }
+    isLoading: boolean = true
+    selectedCollege: number = -1;
+    selectedEmployeeType: number = -1;
+    selectedEmployeePosition: string = '';
+    // disabledBox: boolean = false;
+    employmentStatus:Employment[] = [
+      {'employmentType': 'Part-Time', 'empStatus': 0},
+      {'employmentType': 'Full-Time', 'empStatus': 1},
+    ]
+    messages: {message: string, status: string}[] = []
 
 positions: string[] = [
   "Dean", "Coordinator", "Instructor"
@@ -113,6 +117,7 @@ facultyInfo = new FormGroup({
   ]),
   phone_number: new FormControl('', [
     Validators.required,
+    Validators.pattern('^[0-9]+$')
   ]),
   middle_name: new FormControl('', [
     Validators.pattern('[a-zA-Z ]*')
@@ -199,6 +204,9 @@ formControl(name: string) {
   }
 
 
+  sendMessage(message: string, status: string): {message: string, status: string}  {
+    return {message: message, status: status}
+  }
 
   onSubmit() {
 
@@ -207,13 +215,27 @@ formControl(name: string) {
     })
     const formData = this.facultyService.formDatanalize(this.facultyInfo)
 
-    console.log(formData)
+    this.messages.push(this.sendMessage("Adding Faculty", "pending"))
+    console.log("adding faculty")
     this.facultyService.addFaculty(formData).subscribe({
-      next: (next: any) => {console.log(next)},
-      error: (error) => {console.log(error)}
+      next: (res : any) => {
+        if (res.code == 200) {
+          this.messages.push(this.sendMessage("New Faculty member has been added", "success"))
+          console.log("Added Faculty")
+        } else if (res.code == 406) {
+          this.messages.push(this.sendMessage("Email is already taken!", "error"))
+          console.log("Try another email")
+        } else {
+          this.messages.push(this.sendMessage("An unexpected Error has occurred!", "error"))
+          console.log("An unexpected Error has occurred")
+        }
+        console.log(res)
+      },
+      error: (error) => {
+        this.messages.push(this.sendMessage("An unexpected Error has occurred!", "error"))
+        console.log(error)
+      }
     })
-    // console.log(this.formControl('profile_image')?.value.file);
-
   }
 
 
@@ -233,12 +255,15 @@ formControl(name: string) {
   column4: string[] = ["sex", "language", "citizenship", "age", "civil_status"]
 
   imageFile?: {link: string, file: any, name: string};
-  imageURL: string = "../../../assets/profiles/batman.jpg";
+  imageURL: string = "../../../assets/profiles/user.png";
+
   PreviewImage(event: Event) {
+    const allowedFileType = ["image/png", "image/jpeg"]
     const inputElement = event.target as HTMLInputElement;
     const file = inputElement.files?.[0]; // Using optional chaining to handle null or undefined
 
-    if (file) {
+    // console.log(file.)
+    if (file && allowedFileType.includes(file.type)) {
         // File Preview
         const reader = new FileReader();
         reader.onload = () => {
@@ -248,6 +273,9 @@ formControl(name: string) {
             })
         };
         reader.readAsDataURL(file);
+    } else {
+      this.messages.push(this.sendMessage("File type should be .png or .jpeg/.jpg", "error"))
+      // alert("File type should be .png or .jpeg/.jpg")
     }
 }
 

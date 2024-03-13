@@ -20,7 +20,7 @@ export class PaginationComponent implements OnInit {
   constructor(private facultyService: FacultymembersService) {}
 
   ngOnInit(): void {
-    this.getPagination()
+    // this.getPagination()
   }
 
   getPagination(): void {

@@ -1,1 +1,7 @@
-<div></div>
+<div class="fixed bottom-2 left-2 flex flex-col gap-2 ease-out">
+  <app-message-box
+    *ngFor="let msg of messages; let i = index"
+    [message]="msg"
+    [id]="i"
+  ></app-message-box>
+</div>
