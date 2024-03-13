@@ -1,0 +1,14 @@
+<div
+  class="flex justify-between items-center cursor-pointer min-w-[320px] bg-white px-4 py-2"
+  (click)="deleteMessage()"
+  [id]="'message-' + idx"
+>
+  <p class="text-[16px]">{{ message.message }}</p>
+  @if(message.status.toLowerCase() === 'pending') {
+  <span class="loader"></span>
+  } @else if (message.status.toLowerCase() === 'success') {
+  <i class="fa-solid fa-circle-check text-green"></i>
+  } @else if (message.status.toLowerCase() === 'error') {
+  <i class="fa-solid fa-triangle-exclamation text-red-700"></i>
+  }
+</div>

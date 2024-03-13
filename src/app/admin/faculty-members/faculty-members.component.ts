@@ -20,7 +20,7 @@ import { CvComponent } from '../../components/cv/cv.component';
   styleUrl: './faculty-members.component.css'
 })
 
-export class FacultyMembersComponent implements OnInit {
+export class FacultyMembersComponent {
   chartOptions = {
 
     backgroundColor: 'transparent',
@@ -101,7 +101,7 @@ export class FacultyMembersComponent implements OnInit {
         });
   }
 
-  ngOnInit(): void {
-    this.getFacultyMembers();
-  }
+  // ngOnInit(): void {
+  //   this.getFacultyMembers();
+  // }
 }
