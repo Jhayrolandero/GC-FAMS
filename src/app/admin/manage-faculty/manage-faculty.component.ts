@@ -213,10 +213,8 @@ formControl(name: string) {
     this.facultyInfo.patchValue({
       password: this.facultyInfo.get('first_name')?.value
     })
-    const formData = this.facultyService.formDatanalize(this.facultyInfo)
+    const formData = this.facultyService.formDatanalize(this.facultyInfo);
 
-    this.messages.push(this.sendMessage("Adding Faculty", "pending"))
-    console.log("adding faculty")
     this.facultyService.addFaculty(formData).subscribe({
       next: (res : any) => {
         if (res.code == 200) {

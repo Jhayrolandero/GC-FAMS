@@ -6,6 +6,7 @@ import { FacultyFetcherService } from '../../services/faculty/faculty-fetcher.se
 import { mainPort } from '../../app.component';
 import { LoadingScreenComponent } from '../../components/loading-screen/loading-screen.component';
 import { CommexFormComponent } from '../../components/faculty/commex-form/commex-form.component';
+import { FacultyPostService } from '../../services/faculty/faculty-post.service';
 
 @Component({
   selector: 'app-community-extensions',
