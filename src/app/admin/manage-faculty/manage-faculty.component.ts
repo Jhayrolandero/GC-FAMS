@@ -207,13 +207,19 @@ formControl(name: string) {
     })
     const formData = this.facultyService.formDatanalize(this.facultyInfo)
 
-    console.log(formData)
     this.facultyService.addFaculty(formData).subscribe({
-      next: (next: any) => {console.log(next)},
+      next: (res : any) => {
+        if (res.code == 200) {
+          alert("Added Faculty")
+        } else if (res.code == 406) {
+          alert("Try another email")
+        } else {
+          alert("An unexpected Error has occurred")
+        }
+        console.log(res)
+      },
       error: (error) => {console.log(error)}
     })
-    // console.log(this.formControl('profile_image')?.value.file);
-
   }
 
 
