@@ -117,6 +117,7 @@ facultyInfo = new FormGroup({
   ]),
   phone_number: new FormControl('', [
     Validators.required,
+    Validators.pattern('^[0-9]+$')
   ]),
   middle_name: new FormControl('', [
     Validators.pattern('[a-zA-Z ]*')

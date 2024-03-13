@@ -6,13 +6,13 @@
       <img src="../../../../assets/faculty-dashboard/BlueUsers.png" alt="" />
       <h4 class="text-3xl">Faculty</h4>
     </div>
-    <input
+    <!-- <input
       type="text"
       placeholder="SEARCH FACULTY"
       class="flex-1 rounded-full py-2 shadow-inner placeholder:text-center placeholder:font-bold box-shadow"
-    />
+    /> -->
   </div>
-  <div class="flex justify-start">
+  <!-- <div class="flex justify-start">
     <button
       class="flex-1 pb-4 border-b-2 font-bold border-black hover:border-b-4 hover:border-black"
     >
@@ -43,125 +43,44 @@
     >
       CBA
     </button>
-  </div>
-  <div class="grid justify-items-start grid-cols-6 gap-5">
-    <p class="uppercase">Name</p>
-    <p class="uppercase">College</p>
-    <p class="uppercase">Position</p>
-    <p class="uppercase">Employment</p>
-    <p class="uppercase">Units</p>
-    <p class="uppercase">Evaluation Score</p>
+  </div> -->
+  <div class="grid justify-items-start grid-cols-4 gap-5">
+    <div class="col-span-4 grid-cols-subgrid grid border-b-2 border-black">
+      <p class="uppercase">Name</p>
+      <p class="uppercase">College</p>
+      <p class="uppercase">Position</p>
+      <p class="uppercase">Employment</p>
+    </div>
 
     <!-- DATA -->
     <div
-      class="col-span-6 grid-cols-subgrid grid items-center border-l-4 border-red-600 justify-items-start gap-5 hover:bg-gray-200 p-1"
+      *ngFor="let facultyMember of facultyMembers"
+      class="col-span-4 grid-cols-subgrid grid items-center border-l-4 justify-items-start gap-5 hover:bg-gray-200 p-1"
     >
       <div>
         <div class="flex items-center gap-3">
           <img
-            src="../../../../assets/profiles/ains.png"
+            [src]="facultyMember.profile_image"
             alt="ains"
-            class="aspect-square w-[50px] h-[50px] rounded-full"
+            class="aspect-square rounded-full"
+            onerror="this.onerror=null; this.src='../../../../assets/profiles/user.png'"
+            width="50"
+            height="50"
           />
           <div>
-            <p>Ains Ooal Gown</p>
-            <small class="leading-normal">ainsooalgownoverlord.com</small>
+            <p>
+              {{ facultyMember.first_name }} {{ facultyMember.middle_name }}
+              {{ facultyMember.last_name }} {{ facultyMember.ext_name }}
+            </p>
+            <small class="leading-normal">{{ facultyMember.email }}</small>
           </div>
         </div>
       </div>
-      <p class="text-orange-400 font-bold">CCS</p>
-      <p>Coordinator</p>
-      <p>Full-Time</p>
-      <p>23</p>
-      <p>5.0</p>
-    </div>
-    <div
-      class="col-span-6 grid-cols-subgrid grid items-center border-l-4 border-red-600 justify-items-start gap-5 hover:bg-gray-200 p-1"
-    >
-      <div>
-        <div class="flex items-center gap-3">
-          <img
-            src="../../../../assets/profiles/ains.png"
-            alt="ains"
-            class="aspect-square w-[50px] h-[50px] rounded-full"
-          />
-          <div>
-            <p>Ains Ooal Gown</p>
-            <small class="leading-normal">ainsooalgownoverlord.com</small>
-          </div>
-        </div>
-      </div>
-      <p class="text-orange-400 font-bold">CCS</p>
-      <p>Coordinator</p>
-      <p>Full-Time</p>
-      <p>23</p>
-      <p>5.0</p>
-    </div>
-    <div
-      class="col-span-6 grid-cols-subgrid grid items-center border-l-4 border-red-600 justify-items-start gap-5 hover:bg-gray-200 p-1"
-    >
-      <div>
-        <div class="flex items-center gap-3">
-          <img
-            src="../../../../assets/profiles/ains.png"
-            alt="ains"
-            class="aspect-square w-[50px] h-[50px] rounded-full"
-          />
-          <div>
-            <p>Ains Ooal Gown</p>
-            <small class="leading-normal">ainsooalgownoverlord.com</small>
-          </div>
-        </div>
-      </div>
-      <p class="text-orange-400 font-bold">CCS</p>
-      <p>Coordinator</p>
-      <p>Full-Time</p>
-      <p>23</p>
-      <p>5.0</p>
-    </div>
-    <div
-      class="col-span-6 grid-cols-subgrid grid items-center border-l-4 border-red-600 justify-items-start gap-5 hover:bg-gray-200 p-1"
-    >
-      <div>
-        <div class="flex items-center gap-3">
-          <img
-            src="../../../../assets/profiles/ains.png"
-            alt="ains"
-            class="aspect-square w-[50px] h-[50px] rounded-full"
-          />
-          <div>
-            <p>Ains Ooal Gown</p>
-            <small class="leading-normal">ainsooalgownoverlord.com</small>
-          </div>
-        </div>
-      </div>
-      <p class="text-orange-400 font-bold">CCS</p>
-      <p>Coordinator</p>
-      <p>Full-Time</p>
-      <p>23</p>
-      <p>5.0</p>
-    </div>
-    <div
-      class="col-span-6 grid-cols-subgrid grid items-center border-l-4 border-red-600 justify-items-start gap-5 hover:bg-gray-200 p-1"
-    >
-      <div>
-        <div class="flex items-center gap-3">
-          <img
-            src="../../../../assets/profiles/ains.png"
-            alt="ains"
-            class="aspect-square w-[50px] h-[50px] rounded-full"
-          />
-          <div>
-            <p>Ains Ooal Gown</p>
-            <small class="leading-normal">ainsooalgownoverlord.com</small>
-          </div>
-        </div>
-      </div>
-      <p class="text-orange-400 font-bold">CCS</p>
-      <p>Coordinator</p>
-      <p>Full-Time</p>
-      <p>23</p>
-      <p>5.0</p>
+      <p class="text-blue font-bold">{{ facultyMember.college }}</p>
+      <p>{{ facultyMember.teaching_position }}</p>
+      <p>
+        {{ facultyMember.employment_status == 1 ? "Full-Time" : "Part-Time" }}
+      </p>
     </div>
 
     <ng-content></ng-content>

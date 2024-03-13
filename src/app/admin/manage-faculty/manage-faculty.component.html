@@ -162,7 +162,7 @@
               "
               [formControlRequired]="formControl(col)!.errors?.['required']"
               [formControlEmail]="formControl(col)!.errors?.['email']"
-              [formControlPattern]="formControl(col)!.errors?.['pattern']"
+              [formControlNumber]="col == 'phone_number' ? formControl(col)!.errors?.['pattern'] : null"
             ></app-forms-error>
           </div>
         </div>
