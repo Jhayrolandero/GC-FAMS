@@ -49,4 +49,9 @@ export class CommunityExtensionsComponent{
     })
     console.log(this.commexs);
   }
+
+  toggler(){
+    this.formToggle = !this.formToggle;
+    this.getCommex();
+  }
 }

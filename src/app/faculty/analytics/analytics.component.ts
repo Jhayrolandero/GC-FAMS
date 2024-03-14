@@ -14,6 +14,7 @@ import { LoadingScreenComponent } from '../../components/loading-screen/loading-
 import { forkJoin } from 'rxjs';
 import { EvaluationService } from '../../services/evaluation.service';
 import { error } from 'console';
+import { Schedule } from '../../services/admin/schedule';
 
 type ScoreCategory = {
   name: string,
@@ -37,12 +38,15 @@ type ScoreCategory = {
   styleUrl: './analytics.component.css'
 })
 export class AnalyticsComponent implements OnInit{
+  schedules: Schedule[]= [];
+  unit = 0;
 
   constructor(
     private facultyService: FacultyFetcherService,
     private router: Router,
     private evaluationService: EvaluationService
-    ){}
+    ){
+    }
 
   isLoading: boolean = true;
   selectedSem: Evaluation = {
@@ -66,7 +70,24 @@ export class AnalyticsComponent implements OnInit{
   ]
 
   ngOnInit(): void {
-    this.getEvaluationAndProfile()
+    this.getEvaluationAndProfile();
+    this.getSchedule();
+  }
+
+  getSchedule(){
+    //Fetches the schedule data based on passed selected date
+    this.facultyService.fetchSchedDay().subscribe({
+      next: value => {this.schedules = value;
+                      this.countUnit()},
+      error: err => {if(err.status == 403){this.router.navigate(['/']);}}
+    });
+  }
+
+  countUnit(){
+    this.schedules.forEach(schedule => {
+      console.log(schedule);
+      this.unit = this.unit + schedule.unit;
+    })
   }
 
   getEvaluationAndProfile() {
@@ -102,6 +123,7 @@ export class AnalyticsComponent implements OnInit{
         this.isLoading = false
       }
     })
+    this.isLoading = false
   }
 
   setEvalScore() {

@@ -83,6 +83,25 @@ export class CvComponent {
         this.filteredSchedules.add(schedule.course_name);
       }
     })
+
+    this.filteredSchedules.forEach(schedule => {
+      if (typeof schedule === 'string' && /\(LEC\)/.test(schedule)) {
+          this.filteredSchedules.delete(schedule);
+      }
+
+    let tempFilt = new Set();
+
+    this.filteredSchedules.forEach(schedule => {
+      if(typeof schedule === 'string' && schedule.includes("(LAB)")) {
+        const tempItem = schedule.replace("(LAB)", "");
+        tempFilt.add(tempItem);
+      }
+      else{
+        tempFilt.add(schedule);
+      }
+    })
+    this.filteredSchedules = tempFilt;
+  });
   }
 
 

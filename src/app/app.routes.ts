@@ -18,7 +18,7 @@ import { CvComponent } from './components/cv/cv.component';
 export const routes: Routes = [
   {path: '', redirectTo: '/login', pathMatch: 'full'},
   {path: 'faculty', redirectTo: '/faculty/curriculum-vitae', pathMatch: 'full'},
-  {path: 'admin', redirectTo: '/admin/admin-profile', pathMatch: 'full'},
+  {path: 'admin', redirectTo: '/admin/faculty-members', pathMatch: 'full'},
   
   {path: 'login', component: LoginComponent},
   {path: 'faculty', component: FacultyComponent, children: [

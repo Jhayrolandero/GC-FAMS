@@ -27,19 +27,30 @@ export class CommexFormComponent {
 
   triggerToggle(){
     this.setToggle.emit();
+  }
 
+  refreshForm(){
+    this.commexForm = new FormGroup({
+      commex_title: new FormControl(''),
+      commex_details: new FormControl(''),
+      commex_header_img: new FormControl<File | null>(null),
+      commex_date: new FormControl(''),
+    })
   }
   
-    submitForm(){
-      console.log(this.commexForm.value);
-      const formData = this.facultyPostService.formDatanalize(this.commexForm);
-      console.log(formData);
+  submitForm(){
+    console.log(this.commexForm.value);
+    const formData = this.facultyPostService.formDatanalize(this.commexForm);
+    console.log(formData);
 
-      this.facultyPostService.addCommex(formData).subscribe({
-        next: (next: any) => {console.log(next)},
-        error: (error) => {console.log(error)}
-      })
-    }
+    this.facultyPostService.addCommex(formData).subscribe({
+      next: (next: any) => {console.log(next);
+                            this.triggerToggle();
+                            this.imageURL = undefined;
+                            this.refreshForm();},
+      error: (error) => {console.log(error)}
+    })
+  }
   
     //Dynamic Create, Edit, and Delete function call for faculty post service.
     addRes(form: FormGroup, type: string){
@@ -85,5 +96,5 @@ export class CommexFormComponent {
           reader.readAsDataURL(file);
       }
       console.log(this.commexForm);
-  }
+    }
 }

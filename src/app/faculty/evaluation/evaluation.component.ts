@@ -93,6 +93,7 @@ export class EvaluationComponent implements OnInit{
         this.isLoading = false
       }
     })
+    this.isLoading = false
   }
 
   // Select a specific evaluation history

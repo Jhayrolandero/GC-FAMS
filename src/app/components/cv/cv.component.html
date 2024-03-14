@@ -103,7 +103,9 @@
         </h1>
         <hr class="segmentLine" />
         <div *ngFor="let sched of filteredSchedules"  class="ps-[0.5in] flex flex-col gap-2 pe-10">
-          <p class="m-0 font-bold">{{sched}}</p>
+          <ul>
+            <li class="my-2 m-0 font-bold"><a>{{sched}}</a></li>
+          </ul>
         </div>
       </div>
       <div>

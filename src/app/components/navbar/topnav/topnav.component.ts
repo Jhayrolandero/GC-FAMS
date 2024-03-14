@@ -52,7 +52,7 @@ export class TopnavComponent implements OnInit{
         this.facultyProfile.last_name = res.last_name
         this.facultyProfile.middle_name = res.middle_name
         this.facultyProfile.ext_name = res.ext_name
-
+        console.log(this.facultyProfile);
       },
       error: (error) => {
         console.log(error);
