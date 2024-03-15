@@ -44,7 +44,7 @@ export class FacultyPostService {
       return this.http.post<JwtToken>(mainPort + '/gc-fams-api/API/addCommex', commexInfo, {headers:this.getHeader()})
     }
 
-    formDatanalize(FormGroup: FormGroup) : FormData {
+    formDatanalize(FormGroup: FormGroup) : FormData { //Converts FormGroup to FormData
       const formData : FormData = new FormData()
 
       Object.keys(FormGroup.controls).forEach((key: string) => {
