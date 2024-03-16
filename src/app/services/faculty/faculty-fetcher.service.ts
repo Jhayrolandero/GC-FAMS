@@ -11,6 +11,10 @@ import { Observable } from 'rxjs';
 import { FormGroup } from '@angular/forms';
 import { Faculty } from '../Interfaces/faculty';
 import { College } from '../Interfaces/college';
+import { Certifications } from '../Interfaces/certifications';
+import { Expertise } from '../Interfaces/expertise';
+import { IndustryExperience } from '../Interfaces/industry-experience';
+import { EducationalAttainment } from '../Interfaces/educational-attainment';
 @Injectable({
   providedIn: 'root'
 })
@@ -46,6 +50,18 @@ export class FacultyFetcherService {
     return this.http.get<Evaluation[]>(mainPort + '/GC-FaMS-API/API/getevaluation/fetchEvaluation', {headers:this.getHeader()});
   }
 
+  fetchCertificate(){
+    return this.http.get<Certifications[]>(mainPort + '/GC-FaMS-API/API/certificate', {headers:this.getHeader()});
+  }
+  fetchExperience(){
+    return this.http.get<IndustryExperience[]>(mainPort + '/GC-FaMS-API/API/experience', {headers:this.getHeader()});
+  }
+  fetchEducation(){
+    return this.http.get<EducationalAttainment[]>(mainPort + '/GC-FaMS-API/API/education', {headers:this.getHeader()});
+  }
+  fetchExpertise(){
+    return this.http.get<Expertise[]>(mainPort + '/GC-FaMS-API/API/expertise', {headers:this.getHeader()});
+  }
   fetchFaculty() {
     return this.http.get<Faculty[]>(mainPort + '/GC-FaMS-API/API/faculty', {headers:this.getHeader()});
   }
