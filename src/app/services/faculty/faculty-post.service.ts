@@ -1,13 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AuthService } from '../auth.service';
-import { CommunityExtension } from '../Interfaces/community-extension';
 import { mainPort } from '../../app.component';
-import { Profile } from '../Interfaces/profile';
-import { Schedule } from '../admin/schedule';
-import { Resume } from '../Interfaces/resume';
-import { Evaluation } from '../Interfaces/evaluation';
-import { Observable } from 'rxjs';
 import { JwtToken } from '../jwt-token';
 import { FormGroup } from '@angular/forms';
 
@@ -16,32 +9,27 @@ import { FormGroup } from '@angular/forms';
 })
 export class FacultyPostService {
 
-  constructor(private http: HttpClient, private auth: AuthService) { }
-
-    //Fetches cookie tokem
-    getHeader(){
-      return  new HttpHeaders().set("Authorization", "Bearer " + this.auth.getToken());
-    }
+  constructor(private http: HttpClient) { }
 
     //All fetch commands for faculty
     addRes(educForm: FormGroup, type: string){
-      return this.http.post<JwtToken>(mainPort + '/GC-FaMS-API/API/' + type, educForm.getRawValue() ,{headers:this.getHeader()});
+      return this.http.post<JwtToken>(mainPort + '/GC-FaMS-API/API/' + type, educForm.getRawValue());
     }
 
     editRes(educForm: FormGroup, type: string, id: number){
-      return this.http.patch<JwtToken>(mainPort + '/GC-FaMS-API/API/' + type + "/" + id, educForm.getRawValue() ,{headers:this.getHeader()});
+      return this.http.patch<JwtToken>(mainPort + '/GC-FaMS-API/API/' + type + "/" + id, educForm.getRawValue());
     }
 
     deleteRes(id: number, type: string){
-      return this.http.delete<JwtToken>(mainPort + '/GC-FaMS-API/API/' + type + "/" + id ,{headers:this.getHeader()});
+      return this.http.delete<JwtToken>(mainPort + '/GC-FaMS-API/API/' + type + "/" + id);
     }
 
     addFaculty(facultyInfo: FormData) {
-      return this.http.post<JwtToken>(mainPort + '/gc-fams-api/API/faculty', facultyInfo, {headers:this.getHeader()})
+      return this.http.post<JwtToken>(mainPort + '/gc-fams-api/API/faculty', facultyInfo)
     }
 
     addCommex(commexInfo: FormData){
-      return this.http.post<JwtToken>(mainPort + '/gc-fams-api/API/addCommex', commexInfo, {headers:this.getHeader()})
+      return this.http.post<JwtToken>(mainPort + '/gc-fams-api/API/addCommex', commexInfo)
     }
 
     formDatanalize(FormGroup: FormGroup) : FormData { //Converts FormGroup to FormData

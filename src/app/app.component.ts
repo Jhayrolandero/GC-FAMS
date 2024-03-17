@@ -12,4 +12,5 @@ export class AppComponent {
   title = 'GC-FaMS';
 }
 //PARA ISAHANG CHANGE NALANG NG LOCALHOST SA LAHAT NG HTTP REQUESTS
-export const mainPort =  "http://localhost:8080";
+export const mainPort =  "http://localhost";
+
