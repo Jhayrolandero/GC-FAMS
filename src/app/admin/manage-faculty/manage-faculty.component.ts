@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, WritableSignal, signal } from '@angular/core';
 import { GcBoxComponent } from './gc-box/gc-box.component';
 import { PersonalInfoFormComponent } from './personal-info-form/personal-info-form.component';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -11,7 +11,9 @@ import { LoadingScreenComponent } from '../../components/loading-screen/loading-
 import { FormsErrorComponent } from './forms-error/forms-error.component';
 import { FacultyPostService } from '../../services/faculty/faculty-post.service';
 import { error } from 'console';
+import { Message } from '../../services/Interfaces/message';
 import { MessageComponent } from '../../components/message/message.component';
+import { MessageService } from '../../services/message.service';
 export interface program {
 
   map(arg0: (item: any) => any): any;
@@ -51,11 +53,13 @@ export class ManageFacultyComponent implements OnInit {
 
   constructor(
     private adminService: AdminFetcherService,
-    private facultyService: FacultyPostService) {}
+    private facultyService: FacultyPostService,
+    private messageService: MessageService) {}
 
     ngOnInit(): void {
       this.getCollege()
     }
+
     isLoading: boolean = true
     selectedCollege: number = -1;
     selectedEmployeeType: number = -1;
@@ -65,7 +69,6 @@ export class ManageFacultyComponent implements OnInit {
       {'employmentType': 'Part-Time', 'empStatus': 0},
       {'employmentType': 'Full-Time', 'empStatus': 1},
     ]
-    messages: {message: string, status: string}[] = []
 
 positions: string[] = [
   "Dean", "Coordinator", "Instructor"
@@ -165,8 +168,6 @@ formControl(name: string) {
       employment_status: value
     })
     this.selectedEmployeeType = value;
-    console.log("Selected employee type is: " + this.selectedEmployeeType);
-
     if(value != 1) {
       this.selectedEmployeePosition = '';
       // this.disabledBox = true;
@@ -199,41 +200,39 @@ formControl(name: string) {
         isAdmin: 0
       });
     }
-
-    console.log("Currently selected position is:" + this.selectedEmployeePosition);
   }
 
-
-  sendMessage(message: string, status: string): {message: string, status: string}  {
-    return {message: message, status: status}
-  }
+  messages = this.messageService.messages
 
   onSubmit() {
-
+    let message = ''
+    let status = 0
     this.facultyInfo.patchValue({
       password: this.facultyInfo.get('first_name')?.value
     })
     const formData = this.facultyService.formDatanalize(this.facultyInfo)
 
-    this.messages.push(this.sendMessage("Adding Faculty", "pending"))
-    console.log("adding faculty")
+    this.messageService.sendMessage("Adding Faculty", 0)
+    this.messages.set(this.messageService.messageArr)
     this.facultyService.addFaculty(formData).subscribe({
       next: (res : any) => {
         if (res.code == 200) {
-          this.messages.push(this.sendMessage("New Faculty member has been added", "success"))
-          console.log("Added Faculty")
+          message = "New Faculty member has been added"
+          status = 1
         } else if (res.code == 406) {
-          this.messages.push(this.sendMessage("Email is already taken!", "error"))
-          console.log("Try another email")
+          message = "Email is already taken!"
+          status = -1
         } else {
-          this.messages.push(this.sendMessage("An unexpected Error has occurred!", "error"))
-          console.log("An unexpected Error has occurred")
+          message = "An unexpected Error has occurred!"
+          status = -1
         }
-        console.log(res)
+
+        this.messageService.sendMessage(message, status)
+        this.messages.set(this.messageService.messageArr)
       },
       error: (error) => {
-        this.messages.push(this.sendMessage("An unexpected Error has occurred!", "error"))
-        console.log(error)
+        this.messageService.sendMessage("An unexpected Error has occurred!", -1)
+        this.messages.set(this.messageService.messageArr)
       }
     })
   }
@@ -264,18 +263,18 @@ formControl(name: string) {
 
     // console.log(file.)
     if (file && allowedFileType.includes(file.type)) {
-        // File Preview
-        const reader = new FileReader();
-        reader.onload = () => {
+      // File Preview
+      const reader = new FileReader();
+      reader.onload = () => {
             this.imageURL = reader.result as string;
             this.facultyInfo.patchValue({
               profile_image: file
             })
-        };
+          };
         reader.readAsDataURL(file);
     } else {
-      this.messages.push(this.sendMessage("File type should be .png or .jpeg/.jpg", "error"))
-      // alert("File type should be .png or .jpeg/.jpg")
+      this.messageService.sendMessage("File type should be .png or .jpeg/.jpg", -1)
+      this.messages.set(this.messageService.messageArr)
     }
 }
 

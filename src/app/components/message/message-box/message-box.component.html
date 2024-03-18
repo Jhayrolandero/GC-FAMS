@@ -4,11 +4,11 @@
   [id]="'message-' + idx"
 >
   <p class="text-[16px]">{{ message.message }}</p>
-  @if(message.status.toLowerCase() === 'pending') {
+  @if(message.status == 0) {
   <span class="loader"></span>
-  } @else if (message.status.toLowerCase() === 'success') {
+  } @else if (message.status == 1) {
   <i class="fa-solid fa-circle-check text-green"></i>
-  } @else if (message.status.toLowerCase() === 'error') {
+  } @else if (message.status == -1) {
   <i class="fa-solid fa-triangle-exclamation text-red-700"></i>
   }
 </div>

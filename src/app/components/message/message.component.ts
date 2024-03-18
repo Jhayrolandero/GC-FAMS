@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, Signal, SimpleChanges, computed } from '@angular/core';
 import { MessageService } from '../../services/message.service';
 import { CommonModule } from '@angular/common';
 import { MessageBoxComponent } from './message-box/message-box.component';
@@ -10,16 +10,8 @@ import { MessageBoxComponent } from './message-box/message-box.component';
   templateUrl: './message.component.html',
   styleUrl: './message.component.css'
 })
-export class MessageComponent implements OnChanges {
-  @Input('show') isVisible = false;
-  @Input('messages')  messages: {message: string, status: string}[] = []
+export class MessageComponent {
 
-  toggle() {
-    this.isVisible = !this.isVisible
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-      console.log(changes)
-  }
-
+  showComponents: boolean = false
+  constructor(public messageService: MessageService) {}
 }

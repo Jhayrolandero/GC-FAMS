@@ -9,7 +9,7 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class MessageBoxComponent implements OnInit {
 
-  @Input('message')  message: {message: string, status: string} = {message: '', status: ''}
+  @Input('message')  message: {message: string, status: number} = {message: '', status: 0}
   @Input('id') idx: number = -1
   private timer: any;
   ngOnInit() {
