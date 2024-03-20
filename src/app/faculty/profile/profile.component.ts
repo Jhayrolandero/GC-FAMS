@@ -95,7 +95,7 @@ export class ProfileComponent {
   }
 
   getProfile(){
-    this.facultyService.fetchProfile().subscribe({
+    this.facultyService.fetchData(this.facultyProfile, 'getprofile/fetchProfile').subscribe({
     next: (next) => this.facultyProfile = next,
     error: (error) => {
       console.log(error);
@@ -111,14 +111,14 @@ export class ProfileComponent {
 
   getSchedule(){
     //Fetches the schedule data based on passed selected date
-    this.facultyService.fetchSchedDay().subscribe({
+    this.facultyService.fetchData(this.schedules, 'getschedules/fetchFaculty').subscribe({
       next: value => this.schedules = value,
       error: err => {if(err.status == 403){this.router.navigate(['/']);}}
     });
   }
 
   getResume(){
-    this.facultyService.fetchResume().subscribe({
+    this.facultyService.fetchData(this.resume, 'getresume/fetchResume').subscribe({
       next: value => {this.resume = value;
                       console.log(this.resume);
                     },

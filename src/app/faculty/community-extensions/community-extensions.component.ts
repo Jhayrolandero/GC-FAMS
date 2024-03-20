@@ -27,7 +27,7 @@ export class CommunityExtensionsComponent{
   }
 
   getCommex():void {
-    this.facultyService.fetchCommex().subscribe({
+    this.facultyService.fetchData(this.commexs, 'getcommex/fetchCommex').subscribe({
       next: (next) =>  this.commexs = next,
       error: (error) => console.log(error),
       complete: () => {

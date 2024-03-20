@@ -45,7 +45,7 @@ export class CvComponent {
   // }
 
   getProfile(){
-    this.facultyService.fetchProfile().subscribe({
+    this.facultyService.fetchData(this.facultyProfile, 'getprofile/fetchProfile').subscribe({
     next: (next) => this.facultyProfile = next,
     error: (error) => {
       console.log(error);
@@ -61,7 +61,7 @@ export class CvComponent {
 
   getSchedule(){
     //Fetches the schedule data based on passed selected date
-    this.facultyService.fetchSchedDay().subscribe({
+    this.facultyService.fetchData(this.schedules, 'getschedules/fetchFaculty').subscribe({
       next: value => {this.schedules = value;
                       this.filterSched();},
       error: err => {if(err.status == 403){this.router.navigate(['/']);}},
@@ -70,7 +70,7 @@ export class CvComponent {
   }
 
   getResume(){
-    this.facultyService.fetchResume().subscribe({
+    this.facultyService.fetchData(this.resume, 'getresume/fetchResume').subscribe({
       next: value => this.resume = value,
       error: err => {console.log(err);if(err.status == 403){this.router.navigate(['/']);}},
       complete: () => console.log("ResumeInfo loaded.")

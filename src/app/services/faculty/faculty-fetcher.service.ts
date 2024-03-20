@@ -12,35 +12,11 @@ import { College } from '../Interfaces/college';
   providedIn: 'root'
 })
 export class FacultyFetcherService {
-
   constructor(private http: HttpClient) { }
 
-  //All fetch commands for faculty
-  fetchCommex(){
-    return this.http.get<CommunityExtension[]>(mainPort + '/GC-FaMS-API/API/getcommex/fetchCommex');
-  }
-
-  fetchSchedDay(){
-    return this.http.get<Schedule[]>(mainPort + '/GC-FaMS-API/API/getschedules/fetchFaculty');
-  }
-
-  fetchProfile(){
-    return this.http.get<Profile>(mainPort + '/GC-FaMS-API/API/getprofile/fetchProfile');
-  }
-
-  fetchResume(){
-    return this.http.get<Resume>(mainPort + '/GC-FaMS-API/API/getresume/fetchResume');
-  }
-
-  fetchEvaluation(){
-    return this.http.get<Evaluation[]>(mainPort + '/GC-FaMS-API/API/getevaluation/fetchEvaluation');
-  }
-
-  fetchFaculty() {
-    return this.http.get<Faculty[]>(mainPort + '/GC-FaMS-API/API/faculty');
-  }
-
-  fetchCollege() {
-    return this.http.get<College[]>(mainPort + '/GC-FaMS-API/API/fetchCollege');
+  //Dynamic fetching function that i have no idea was actually possible
+  fetchData(data: any, endpoint: string){
+    //Get requests can just accept the undefined object to get its type
+    return this.http.get<typeof data>(mainPort + '/GC-FaMS-API/API/' + endpoint);
   }
 }

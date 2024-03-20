@@ -67,7 +67,7 @@ export class EvaluationComponent implements OnInit{
 
   // Initial Fetching of faculty evaluation
   getEvaluation() {
-    this.facultyService.fetchEvaluation().subscribe({
+    this.facultyService.fetchData(this.evaluation, 'getevaluation/fetchEvaluation').subscribe({
       next: (evalItem: Evaluation[]) => this.evaluation = evalItem,
       error: error => {
         if (error.status == 403) {

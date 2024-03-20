@@ -142,6 +142,7 @@ facultyInfo = new FormGroup({
     Validators.required,
   ]),
   profile_image: new FormControl<File | null>(null),
+  cover_image: new FormControl<File | null>(null),
   password: new FormControl<string>(''),
   isAdmin: new FormControl(0)
 });
@@ -253,9 +254,10 @@ formControl(name: string) {
   column4: string[] = ["sex", "language", "citizenship", "age", "civil_status"]
 
   imageFile?: {link: string, file: any, name: string};
-  imageURL: string = "../../../assets/profiles/user.png";
+  imageURL: string = '';
+  coverURL: string = '';
 
-  PreviewImage(event: Event) {
+  PreviewImage(event: Event, type: string) {
     const allowedFileType = ["image/png", "image/jpeg"]
     const inputElement = event.target as HTMLInputElement;
     const file = inputElement.files?.[0]; // Using optional chaining to handle null or undefined
@@ -264,12 +266,25 @@ formControl(name: string) {
     if (file && allowedFileType.includes(file.type)) {
         // File Preview
         const reader = new FileReader();
-        reader.onload = () => {
-            this.imageURL = reader.result as string;
+
+        if(type === 'profile'){
+          console.log("Changed Profile");
+          reader.onload = () => {
+              this.imageURL = reader.result as string;
+              this.facultyInfo.patchValue({
+                profile_image: file
+              })
+          };
+        }
+        else if(type === 'cover'){
+          console.log("Changed Cover");
+          reader.onload = () => {
+            this.coverURL = reader.result as string;
             this.facultyInfo.patchValue({
-              profile_image: file
+              cover_image: file
             })
         };
+        }
         reader.readAsDataURL(file);
     } else {
       this.messages.push(this.sendMessage("File type should be .png or .jpeg/.jpg", "error"))

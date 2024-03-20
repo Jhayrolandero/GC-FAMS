@@ -76,7 +76,7 @@ export class AnalyticsComponent implements OnInit{
 
   getSchedule(){
     //Fetches the schedule data based on passed selected date
-    this.facultyService.fetchSchedDay().subscribe({
+    this.facultyService.fetchData(this.schedules, 'getschedules/fetchFaculty').subscribe({
       next: value => {this.schedules = value;
                       this.countUnit()},
       error: err => {if(err.status == 403){this.router.navigate(['/']);}}
@@ -92,8 +92,8 @@ export class AnalyticsComponent implements OnInit{
 
   getEvaluationAndProfile() {
     forkJoin({
-      evaluationRequest: this.facultyService.fetchEvaluation(),
-      profileRequest: this.facultyService.fetchProfile()
+      evaluationRequest: this.facultyService.fetchData(this.evaluation, 'getevaluation/fetchEvaluation'),
+      profileRequest: this.facultyService.fetchData(this.facultyProfile, 'getprofile/fetchProfile')
     }).subscribe({
       next: (({evaluationRequest, profileRequest}) => {
         this.evaluation = evaluationRequest
