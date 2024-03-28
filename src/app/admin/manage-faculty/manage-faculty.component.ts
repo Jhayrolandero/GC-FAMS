@@ -9,7 +9,7 @@ import { EmployeeTypeComponent } from './employee-type/employee-type.component';
 import { EmployeePositionComponent } from './employee-position/employee-position.component';
 import { LoadingScreenComponent } from '../../components/loading-screen/loading-screen.component';
 import { FormsErrorComponent } from './forms-error/forms-error.component';
-import { FacultyPostService } from '../../services/faculty/faculty-post.service';
+import { FacultyRequestService } from '../../services/faculty/faculty-request.service';
 import { error } from 'console';
 import { MessageComponent } from '../../components/message/message.component';
 export interface program {
@@ -51,7 +51,7 @@ export class ManageFacultyComponent implements OnInit {
 
   constructor(
     private adminService: AdminFetcherService,
-    private facultyService: FacultyPostService) {}
+    private facultyService: FacultyRequestService) {}
 
     ngOnInit(): void {
       this.getCollege()
@@ -216,7 +216,7 @@ formControl(name: string) {
     })
     const formData = this.facultyService.formDatanalize(this.facultyInfo);
 
-    this.facultyService.addFaculty(formData).subscribe({
+    this.facultyService.postData(formData, "faculty").subscribe({
       next: (res : any) => {
         if (res.code == 200) {
           this.messages.push(this.sendMessage("New Faculty member has been added", "success"))

@@ -3,7 +3,7 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { Schedule } from '../../../../services/admin/schedule';
 import { Router } from '@angular/router';
 import { error } from 'node:console';
-import { FacultyFetcherService } from '../../../../services/faculty/faculty-fetcher.service';
+import { FacultyRequestService } from '../../../../services/faculty/faculty-request.service';
 
 
 @Component({
@@ -19,7 +19,7 @@ export class ScheduleBlockComponent {
   filteredSchedule: Schedule[] = [];
   weeks: string[] = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
-  constructor(private facultyService:FacultyFetcherService, private router:Router){
+  constructor(private facultyService:FacultyRequestService, private router:Router){
     this.getSchedule();
   }
 

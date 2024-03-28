@@ -4,7 +4,7 @@ import { FacultyMilestoneHistoryComponent } from '../../components/faculty/facul
 import { PieChartComponent } from '../../components/pie-chart/pie-chart.component';
 import { single } from './data';
 import { Init } from 'v8';
-import { FacultyFetcherService } from '../../services/faculty/faculty-fetcher.service';
+import { FacultyRequestService } from '../../services/faculty/faculty-request.service';
 import { Evaluation } from '../../services/Interfaces/evaluation';
 import { Router } from '@angular/router';
 import { Profile } from '../../services/Interfaces/profile';
@@ -42,7 +42,7 @@ export class AnalyticsComponent implements OnInit{
   unit = 0;
 
   constructor(
-    private facultyService: FacultyFetcherService,
+    private facultyService: FacultyRequestService,
     private router: Router,
     private evaluationService: EvaluationService
     ){

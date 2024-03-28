@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommunityExtension } from '../../../services/Interfaces/community-extension';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { FacultyPostService } from '../../../services/faculty/faculty-post.service';
+import { FacultyRequestService } from '../../../services/faculty/faculty-request.service';
 
 @Component({
   selector: 'app-commex-form',
@@ -16,7 +16,7 @@ export class CommexFormComponent {
   @Input() commexValue?: CommunityExtension;
   @Output() setToggle = new EventEmitter<string>();
 
-  constructor(private facultyPostService: FacultyPostService){}
+  constructor(private facultyPostService: FacultyRequestService){}
 
   commexForm = new FormGroup({
 		commex_title: new FormControl(''),
@@ -40,8 +40,7 @@ export class CommexFormComponent {
   
   submitForm(){
     const formData = this.facultyPostService.formDatanalize(this.commexForm);
-
-    this.facultyPostService.addCommex(formData).subscribe({
+    this.facultyPostService.postData(formData, "addCommex").subscribe({
       next: (next: any) => {console.log(next);},
       error: (error) => {console.log(error)},
       complete: () => {this.triggerToggle();}

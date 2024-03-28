@@ -1,7 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { AuthService } from '../../../services/auth.service';
 import { Router } from '@angular/router';
-import { FacultyFetcherService } from '../../../services/faculty/faculty-fetcher.service';
+import { FacultyRequestService } from '../../../services/faculty/faculty-request.service';
 import { Profile } from '../../../services/Interfaces/profile';
 import { mainPort } from '../../../app.component';
 import { CommonModule } from '@angular/common';
@@ -33,7 +33,7 @@ export class TopnavComponent implements OnInit{
   constructor(
     private auth: AuthService,
     private router: Router,
-    private facultyService: FacultyFetcherService){
+    private facultyService: FacultyRequestService){
     }
 
     triggerToggle(){

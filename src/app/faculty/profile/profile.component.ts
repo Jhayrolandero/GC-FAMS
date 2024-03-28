@@ -8,7 +8,7 @@ import { FacultyEducationComponent } from '../../components/faculty/faculty-prof
 import { FacultyCertificationsComponent } from '../../components/faculty/faculty-profile/faculty-certifications/faculty-certifications.component';
 import { FacultyExpertiseComponent } from '../../components/faculty/faculty-profile/faculty-expertise/faculty-expertise.component';
 import { FacultyExperienceComponent } from '../../components/faculty/faculty-profile/faculty-experience/faculty-experience.component';
-import { FacultyFetcherService } from '../../services/faculty/faculty-fetcher.service';
+import { FacultyRequestService } from '../../services/faculty/faculty-request.service';
 import { Resume } from '../../services/Interfaces/resume';
 import { HttpClient } from '@angular/common/http';
 import { AddFormsComponent } from '../../components/faculty/add-forms/add-forms.component';
@@ -18,7 +18,6 @@ import { Certifications } from '../../services/Interfaces/certifications';
 import { IndustryExperience } from '../../services/Interfaces/industry-experience';
 import { FacultyProjectsComponent } from '../../components/faculty/faculty-profile/faculty-projects/faculty-projects.component';
 import { Project } from '../../services/Interfaces/project';
-import { CvComponent } from '../../components/cv/cv.component';
 import html2canvas from 'html2canvas';
 import jspdf from 'jspdf';
 import { Expertise } from '../../services/Interfaces/expertise';
@@ -28,7 +27,7 @@ import { Expertise } from '../../services/Interfaces/expertise';
     standalone: true,
     templateUrl: './profile.component.html',
     styleUrl: './profile.component.css',
-    imports: [LoadingScreenComponent, NgOptimizedImage, CommonModule, FacultyEducationComponent, FacultyCertificationsComponent, FacultyExperienceComponent, FacultyExpertiseComponent, AddFormsComponent, FacultyProjectsComponent, CvComponent]
+    imports: [LoadingScreenComponent, NgOptimizedImage, CommonModule, FacultyEducationComponent, FacultyCertificationsComponent, FacultyExperienceComponent, FacultyExpertiseComponent, AddFormsComponent, FacultyProjectsComponent]
 })
 export class ProfileComponent {
   tempPort = mainPort;
@@ -54,7 +53,7 @@ export class ProfileComponent {
   //CV form toggle
   cvToggle = false;
 
-  constructor(private facultyService: FacultyFetcherService, private router: Router, private http: HttpClient){
+  constructor(private facultyService: FacultyRequestService, private router: Router, private http: HttpClient){
     this.getProfile();
     this.getSchedule();
     this.getResume();

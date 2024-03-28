@@ -6,7 +6,7 @@ import { EducationalAttainment } from '../../services/Interfaces/educational-att
 import { IndustryExperience } from '../../services/Interfaces/industry-experience';
 import { Project } from '../../services/Interfaces/project';
 import { Profile } from '../../services/Interfaces/profile';
-import { FacultyFetcherService } from '../../services/faculty/faculty-fetcher.service';
+import { FacultyRequestService } from '../../services/faculty/faculty-request.service';
 import { Router } from '@angular/router';
 import { mainPort } from '../../app.component';
 import { profile } from 'console';
@@ -33,7 +33,7 @@ export class CvComponent {
 
 
 
-  constructor(private facultyService: FacultyFetcherService, private router: Router){
+  constructor(private facultyService: FacultyRequestService, private router: Router){
     this.getProfile();
     this.getSchedule();
     this.getResume();
