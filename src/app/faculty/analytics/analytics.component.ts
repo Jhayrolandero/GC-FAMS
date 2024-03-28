@@ -4,7 +4,7 @@ import { FacultyMilestoneHistoryComponent } from '../../components/faculty/facul
 import { PieChartComponent } from '../../components/pie-chart/pie-chart.component';
 import { single } from './data';
 import { Init } from 'v8';
-import { FacultyFetcherService } from '../../services/faculty/faculty-fetcher.service';
+import { FacultyRequestService } from '../../services/faculty/faculty-request.service';
 import { Evaluation } from '../../services/Interfaces/evaluation';
 import { Router } from '@angular/router';
 import { Profile } from '../../services/Interfaces/profile';
@@ -14,6 +14,7 @@ import { LoadingScreenComponent } from '../../components/loading-screen/loading-
 import { forkJoin } from 'rxjs';
 import { EvaluationService } from '../../services/evaluation.service';
 import { error } from 'console';
+import { Schedule } from '../../services/admin/schedule';
 
 type ScoreCategory = {
   name: string,
@@ -37,12 +38,15 @@ type ScoreCategory = {
   styleUrl: './analytics.component.css'
 })
 export class AnalyticsComponent implements OnInit{
+  schedules: Schedule[]= [];
+  unit = 0;
 
   constructor(
-    private facultyService: FacultyFetcherService,
+    private facultyService: FacultyRequestService,
     private router: Router,
     private evaluationService: EvaluationService
-    ){}
+    ){
+    }
 
   isLoading: boolean = true;
   selectedSem: Evaluation = {
@@ -66,13 +70,30 @@ export class AnalyticsComponent implements OnInit{
   ]
 
   ngOnInit(): void {
-    this.getEvaluationAndProfile()
+    this.getEvaluationAndProfile();
+    this.getSchedule();
+  }
+
+  getSchedule(){
+    //Fetches the schedule data based on passed selected date
+    this.facultyService.fetchData(this.schedules, 'getschedules/fetchFaculty').subscribe({
+      next: value => {this.schedules = value;
+                      this.countUnit()},
+      error: err => {if(err.status == 403){this.router.navigate(['/']);}}
+    });
+  }
+
+  countUnit(){
+    this.schedules.forEach(schedule => {
+      console.log(schedule);
+      this.unit = this.unit + schedule.unit;
+    })
   }
 
   getEvaluationAndProfile() {
     forkJoin({
-      evaluationRequest: this.facultyService.fetchEvaluation(),
-      profileRequest: this.facultyService.fetchProfile()
+      evaluationRequest: this.facultyService.fetchData(this.evaluation, 'getevaluation/fetchEvaluation'),
+      profileRequest: this.facultyService.fetchData(this.facultyProfile, 'getprofile/fetchProfile')
     }).subscribe({
       next: (({evaluationRequest, profileRequest}) => {
         this.evaluation = evaluationRequest
@@ -102,6 +123,7 @@ export class AnalyticsComponent implements OnInit{
         this.isLoading = false
       }
     })
+    this.isLoading = false
   }
 
   setEvalScore() {

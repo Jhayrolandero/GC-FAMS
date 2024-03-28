@@ -9,7 +9,7 @@ import { FacultySectionComponent } from './faculty-section/faculty-section.compo
 import { CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
 import { ModalComponent } from '../../components/modal/modal.component';
 import { CvComponent } from '../../components/cv/cv.component';
-import { FacultyFetcherService } from '../../services/faculty/faculty-fetcher.service';
+import { FacultyRequestService } from '../../services/faculty/faculty-request.service';
 import { Faculty } from '../../services/Interfaces/faculty';
 import { College } from '../../services/Interfaces/college';
 import { mainPort } from '../../app.component';
@@ -99,17 +99,13 @@ export class FacultyMembersComponent implements OnInit {
   partTime: number = 0;
   fulltimeInclass: number = 0;
   parttimeInclass: number = 0;
-  constructor(
-    private facultyService: FacultyFetcherService,
-    private router: Router    ){
-
-  }
+  constructor(private facultyService: FacultyRequestService, private router: Router){}
 
 
   getCollegeAndFaculty() {
     forkJoin({
-      collegeRequest: this.facultyService.fetchCollege(),
-      facultyRequest: this.facultyService.fetchFaculty()
+      collegeRequest: this.facultyService.fetchData(this.collegeItems, 'fetchCollege'),
+      facultyRequest: this.facultyService.fetchData(this.facultyMembers, 'faculty')
     }).subscribe({
       next: (({collegeRequest, facultyRequest}) => {
         this.collegeItems = collegeRequest

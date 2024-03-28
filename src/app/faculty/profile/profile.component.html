@@ -30,15 +30,10 @@
             onerror="this.onerror=null; this.src='../../../assets/profiles/user.png'"
           />
         </div>
-        <div class="w-full h-[180px] overflow-hidden">
+        <div class="w-full h-[180px] overflow-hidden flex items-center">
           <img
             class="w-full"
-            [src]="
-              tempPort +
-              '/GC-FaMS-API/Image_Assets/Faculty_Profile/' +
-              facultyProfile.faculty_ID +
-              '/COVER.png'
-            "
+            [src]="facultyProfile.cover_image"
             onerror="this.onerror=null; this.src='../../../assets/profiles/cover.jpg'"
           />
         </div>
@@ -56,18 +51,18 @@
         </p>
       </div>
       <div
-        class="rounded-[15px] bg-blue mx-5 my-3 shadow-lg px-7 flex items-center"
+        class="rounded-[15px] bg-gradient-to-r from-blue to-greenBar mx-5 my-3 shadow-lg px-7 flex items-center w-[95%] tablet:w-[50%]"
       >
-        <div class="w-[85%]">
+        <div class="w-[85%] py-1">
           <div
-            class="flex flex-row font-Roboto font-bold text-white text-[0.85rem] justify-between"
+            class="flex flex-row font-Roboto font-bold text-white text-[0.80rem] justify-between tracking-[0.5px]"
           >
             <p>Class Code: 177013</p>
             <p>M 7:00 AM - 11:00 AM</p>
             <p>Room 407</p>
           </div>
           <div>
-            <p class="font-Roboto font-bold text-white text-[2rem]">
+            <p class="font-Roboto font-bold text-white text-[1.7rem]">
               Discrete Structures
             </p>
           </div>

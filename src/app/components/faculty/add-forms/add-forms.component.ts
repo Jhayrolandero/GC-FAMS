@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FacultyPostService } from '../../../services/faculty/faculty-post.service';
+import { FacultyRequestService } from '../../../services/faculty/faculty-request.service';
 import { EducationalAttainment } from '../../../services/Interfaces/educational-attainment';
 import { Certifications } from '../../../services/Interfaces/certifications';
 import { IndustryExperience } from '../../../services/Interfaces/industry-experience';
@@ -24,7 +24,7 @@ export class AddFormsComponent {
   @Input() projValue?: Project;
   @Output() setType = new EventEmitter<string>();
 
-  constructor(private facultyService: FacultyPostService){}
+  constructor(private facultyService: FacultyRequestService){}
 
   //Educational Attainment formgroup/ form object
 	educForm = new FormGroup({
@@ -132,7 +132,7 @@ export class AddFormsComponent {
 
   //Dynamic Create, Edit, and Delete function call for faculty post service.
   addRes(form: FormGroup, type: string){
-    this.facultyService.addRes(form, type).subscribe({
+    this.facultyService.postData(form, type).subscribe({
       next: value => {console.log(value);
                       this.emptyType('');},
       error: err => console.log(err),
@@ -140,7 +140,7 @@ export class AddFormsComponent {
   }
 
   editRes(form: FormGroup, type: string, id: number){
-    this.facultyService.editRes(form, type, id).subscribe({
+    this.facultyService.patchData(form, type + "/" + id).subscribe({
       next: value => {console.log(value);
                       this.emptyType('');},
       error: err => console.log(err),
@@ -148,7 +148,7 @@ export class AddFormsComponent {
   }
 
   deleteRes(id:number, type: string){
-    this.facultyService.deleteRes(id, type).subscribe({
+    this.facultyService.deleteData(type + "/" + id).subscribe({
       next: value => {console.log(value);
                       this.emptyType('');},
       error: err => console.log(err),

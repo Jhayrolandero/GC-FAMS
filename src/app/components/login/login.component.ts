@@ -45,6 +45,7 @@ export class LoginComponent {
 		//Success, wrong loginparams, and query error issue.
 		if(response.code == 200){
 			document.cookie = "token=" + response.token;
+			console.log("Created token: " + response.privilege);
 			//Router for faculty privilege
 			if(response.privilege == 0){
 			this.router.navigate(['/faculty']);

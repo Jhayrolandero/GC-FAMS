@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FacultyFetcherService } from '../../services/faculty/faculty-fetcher.service';
+import { FacultyRequestService } from '../../services/faculty/faculty-request.service';
 import { Router } from '@angular/router';
 import { Evaluation } from '../../services/Interfaces/evaluation';
 import { NgxChartsModule, ScaleType } from '@swimlane/ngx-charts';
-import { error } from 'node:console';
-import { parse } from 'node:path';
 import { CommonModule, NgFor } from '@angular/common';
 import { LoadingScreenComponent } from '../../components/loading-screen/loading-screen.component';
 import { EvaluationService } from '../../services/evaluation.service';
@@ -56,7 +54,7 @@ export class EvaluationComponent implements OnInit{
   evalHistory: evalScoreHistory[] = []
 
   constructor(
-    private facultyService: FacultyFetcherService,
+    private facultyService: FacultyRequestService,
     private router: Router,
     private evaluationService: EvaluationService){}
 
@@ -67,7 +65,7 @@ export class EvaluationComponent implements OnInit{
 
   // Initial Fetching of faculty evaluation
   getEvaluation() {
-    this.facultyService.fetchEvaluation().subscribe({
+    this.facultyService.fetchData(this.evaluation, 'getevaluation/fetchEvaluation').subscribe({
       next: (evalItem: Evaluation[]) => this.evaluation = evalItem,
       error: error => {
         if (error.status == 403) {
@@ -93,6 +91,7 @@ export class EvaluationComponent implements OnInit{
         this.isLoading = false
       }
     })
+    this.isLoading = false
   }
 
   // Select a specific evaluation history

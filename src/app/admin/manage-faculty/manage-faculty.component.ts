@@ -9,7 +9,7 @@ import { EmployeeTypeComponent } from './employee-type/employee-type.component';
 import { EmployeePositionComponent } from './employee-position/employee-position.component';
 import { LoadingScreenComponent } from '../../components/loading-screen/loading-screen.component';
 import { FormsErrorComponent } from './forms-error/forms-error.component';
-import { FacultyPostService } from '../../services/faculty/faculty-post.service';
+import { FacultyRequestService } from '../../services/faculty/faculty-request.service';
 import { error } from 'console';
 import { Message } from '../../services/Interfaces/message';
 import { MessageComponent } from '../../components/message/message.component';
@@ -53,8 +53,9 @@ export class ManageFacultyComponent implements OnInit {
 
   constructor(
     private adminService: AdminFetcherService,
-    private facultyService: FacultyPostService,
-    private messageService: MessageService) {}
+    // private facultyService: FacultyPostService,
+    // private messageService: MessageService) {}
+    private facultyService: FacultyRequestService) {}
 
     ngOnInit(): void {
       this.getCollege()
@@ -145,6 +146,7 @@ facultyInfo = new FormGroup({
     Validators.required,
   ]),
   profile_image: new FormControl<File | null>(null),
+  cover_image: new FormControl<File | null>(null),
   password: new FormControl<string>(''),
   isAdmin: new FormControl(0)
 });
@@ -202,7 +204,7 @@ formControl(name: string) {
     }
   }
 
-  messages = this.messageService.messages
+  // messages = this.messageService.messages
 
   onSubmit() {
     let message = ''
@@ -210,11 +212,12 @@ formControl(name: string) {
     this.facultyInfo.patchValue({
       password: this.facultyInfo.get('first_name')?.value
     })
-    const formData = this.facultyService.formDatanalize(this.facultyInfo)
+    const formData = this.facultyService.formDatanalize(this.facultyInfo);
 
-    this.messageService.sendMessage("Adding Faculty", 0)
-    this.messages.set(this.messageService.messageArr)
-    this.facultyService.addFaculty(formData).subscribe({
+    // this.messageService.sendMessage("Adding Faculty", 0)
+    // this.messages.set(this.messageService.messageArr)
+    // this.facultyService.addFaculty(formData).subscribe({
+    this.facultyService.postData(formData, "faculty").subscribe({
       next: (res : any) => {
         if (res.code == 200) {
           message = "New Faculty member has been added"
@@ -227,12 +230,13 @@ formControl(name: string) {
           status = -1
         }
 
-        this.messageService.sendMessage(message, status)
-        this.messages.set(this.messageService.messageArr)
+        // this.messageService.sendMessage(message, status)
+        // this.messages.set(this.messageService.messageArr)
       },
       error: (error) => {
-        this.messageService.sendMessage("An unexpected Error has occurred!", -1)
-        this.messages.set(this.messageService.messageArr)
+        console.log(error)
+        // this.messageService.sendMessage("An unexpected Error has occurred!", -1)
+        // this.messages.set(this.messageService.messageArr)
       }
     })
   }
@@ -254,27 +258,42 @@ formControl(name: string) {
   column4: string[] = ["sex", "language", "citizenship", "age", "civil_status"]
 
   imageFile?: {link: string, file: any, name: string};
-  imageURL: string = "../../../assets/profiles/user.png";
+  imageURL: string = '';
+  coverURL: string = '';
 
-  PreviewImage(event: Event) {
+  PreviewImage(event: Event, type: string) {
     const allowedFileType = ["image/png", "image/jpeg"]
     const inputElement = event.target as HTMLInputElement;
     const file = inputElement.files?.[0]; // Using optional chaining to handle null or undefined
 
     // console.log(file.)
     if (file && allowedFileType.includes(file.type)) {
-      // File Preview
-      const reader = new FileReader();
-      reader.onload = () => {
-            this.imageURL = reader.result as string;
-            this.facultyInfo.patchValue({
-              profile_image: file
-            })
+        // File Preview
+        const reader = new FileReader();
+
+        if(type === 'profile'){
+          console.log("Changed Profile");
+          reader.onload = () => {
+              this.imageURL = reader.result as string;
+              this.facultyInfo.patchValue({
+                profile_image: file
+              })
           };
+        }
+        else if(type === 'cover'){
+          console.log("Changed Cover");
+          reader.onload = () => {
+            this.coverURL = reader.result as string;
+            this.facultyInfo.patchValue({
+              cover_image: file
+            })
+        };
+        }
         reader.readAsDataURL(file);
     } else {
-      this.messageService.sendMessage("File type should be .png or .jpeg/.jpg", -1)
-      this.messages.set(this.messageService.messageArr)
+      console.log("File type should be .png or .jpeg/.jpg");
+      // this.messageService.sendMessage("File type should be .png or .jpeg/.jpg", -1)
+      // this.messages.set(this.messageService.messageArr)
     }
 }
 
