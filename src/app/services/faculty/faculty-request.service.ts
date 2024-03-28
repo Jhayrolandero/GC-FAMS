@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { mainPort } from '../../app.component';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { JwtToken } from '../jwt-token';
 import { FormGroup } from '@angular/forms';
 
@@ -24,8 +24,8 @@ export class FacultyRequestService {
     catch (error) {
       return this.http.post<JwtToken>(mainPort + '/GC-FaMS-API/API/' + endpoint, data);
     }
-    
   }
+
   patchData(data: any, endpoint: string){
     try {
       return this.http.patch<JwtToken>(mainPort + '/GC-FaMS-API/API/' + endpoint, data.getRawValue());

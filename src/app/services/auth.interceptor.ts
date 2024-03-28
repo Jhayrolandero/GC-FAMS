@@ -9,8 +9,6 @@ export function loggingInterceptor(req: HttpRequest<unknown>, next: HttpHandlerF
   const authToken = inject(AuthService).getToken();
   req = req.clone({
     setHeaders: {
-      'Content-Type' : 'application/json; charset=utf-8',
-      'Accept'       : 'application/json',
       'Authorization': `Bearer ${authToken}`,
     },
   });
