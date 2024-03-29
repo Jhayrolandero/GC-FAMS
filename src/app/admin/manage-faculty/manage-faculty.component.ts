@@ -211,9 +211,13 @@ formControl(name: string) {
 
   onSubmit() {
 
+    //Assign first name as password
     this.facultyInfo.patchValue({
       password: this.facultyInfo.get('first_name')?.value
     })
+    console.log(this.facultyInfo);
+
+    //Convert to formdata
     const formData = this.facultyService.formDatanalize(this.facultyInfo);
 
     this.facultyService.postData(formData, "faculty").subscribe({
