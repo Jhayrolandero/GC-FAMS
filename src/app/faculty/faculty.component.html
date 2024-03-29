@@ -1,4 +1,4 @@
-<div class="flex w-[100%]">
+<!-- <div class="flex w-[100%]">
   <div *ngIf="sideBarToggle" class="hidden flex-none h-screen sticky top-0 tablet:w-[130px] tablet:flex">
     <app-sidebar></app-sidebar>
   </div>
@@ -8,4 +8,23 @@
       <router-outlet></router-outlet>
     </div>
   </div>
-</div>
+</div> -->
+
+<mat-sidenav-container class="example-container flex w-[100%] h-[100%]">
+  <mat-sidenav #sidenav mode="side" [(opened)]="opened">
+    <div *ngIf="sideBarToggle" class="hidden flex-none h-screen sticky top-0 tablet:w-[130px] tablet:flex">
+      <app-sidebar></app-sidebar>
+    </div>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <!-- <p><mat-checkbox [(ngModel)]="opened">sidenav.opened</mat-checkbox></p>
+    <p><button mat-button (click)="sidenav.toggle()">sidenav.toggle()</button></p> -->
+    <div class="flex flex-col w-full">
+      <app-topnav (setToggle)="sidenav.toggle()"></app-topnav>
+      <div class="">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

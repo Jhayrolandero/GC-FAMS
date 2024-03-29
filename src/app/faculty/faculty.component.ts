@@ -5,15 +5,21 @@ import { AnalyticsComponent } from './analytics/analytics.component';
 import { TopnavComponent } from '../components/navbar/topnav/topnav.component';
 import { CommonModule } from '@angular/common';
 import { LoadingScreenComponent } from '../components/loading-screen/loading-screen.component';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatButtonModule} from '@angular/material/button';
+import {FormsModule} from '@angular/forms';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+
 @Component({
   selector: 'app-faculty',
   standalone: true,
-  imports: [SidebarComponent,RouterOutlet, AnalyticsComponent, TopnavComponent, CommonModule, LoadingScreenComponent],
+  imports: [SidebarComponent,RouterOutlet, AnalyticsComponent, TopnavComponent, CommonModule, LoadingScreenComponent, MatSidenavModule, MatButtonModule, FormsModule, MatCheckboxModule],
   templateUrl: './faculty.component.html',
   styleUrl: './faculty.component.css'
 })
 export class FacultyComponent {
   sideBarToggle = true;
+  opened: boolean | undefined;
 
   toggle(){
     this.sideBarToggle = !this.sideBarToggle;

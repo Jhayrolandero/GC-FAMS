@@ -7,5 +7,5 @@ import { loggingInterceptor } from './services/auth.interceptor';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideRouter(routes), provideClientHydration(), provideHttpClient(withInterceptors([loggingInterceptor])), provideAnimationsAsync()]
+  providers: [provideRouter(routes), provideClientHydration(), provideHttpClient(withInterceptors([loggingInterceptor])), provideAnimationsAsync(), provideAnimationsAsync()]
 };
