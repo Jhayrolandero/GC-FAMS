@@ -123,7 +123,6 @@ export class AnalyticsComponent implements OnInit{
         this.isLoading = false
       }
     })
-    this.isLoading = false
   }
 
   setEvalScore() {

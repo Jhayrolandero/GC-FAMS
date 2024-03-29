@@ -1,7 +1,23 @@
-<div class="fixed bottom-2 left-2 flex flex-col gap-2 ease-out">
-  <app-message-box
-    *ngFor="let msg of messageService.messages(); let i = index"
-    [message]="msg"
-    [id]="i"
-  ></app-message-box>
+@if(visible) {
+
+<div
+  (click)="visible = !visible"
+  [ngClass]="{
+  'border-[#CD2C2C]': message?.status == -1,
+  'border-[#F8C434]': message?.status == 0,
+    'border-[#27AE60]': message?.status == 1,
+  }"
+  class="cursor-pointer fixed bottom-2 left-2 flex gap-2 ease-out bg-white border-l-[4px] px-2 py-4 rounded-s-md min-w-[320px] flex-row justify-between text-[1rem] items-center"
+  #message_box
+>
+  <p class="font-bold">{{ message?.message }}</p>
+  @if(message?.status == -1) {
+  <i class="fa-solid fa-circle-exclamation text-[#CD2C2C]"></i>
+  } @else if ( message?.status == 0) {
+  <i class="fa-solid fa-spinner text-[#F8C434]"></i>
+  } @else if ( message?.status == 1) {
+  <i class="fa-solid fa-circle-check text-[#27AE60]"></i>
+  }
 </div>
+
+}

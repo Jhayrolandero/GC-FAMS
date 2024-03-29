@@ -207,36 +207,43 @@ formControl(name: string) {
   // messages = this.messageService.messages
 
   onSubmit() {
-    let message = ''
-    let status = 0
-    this.facultyInfo.patchValue({
+    this.message = {
+      message: "Adding Faculty",
+      status: 0
+    }
+this.facultyInfo.patchValue({
       password: this.facultyInfo.get('first_name')?.value
     })
     const formData = this.facultyService.formDatanalize(this.facultyInfo);
 
-    // this.messageService.sendMessage("Adding Faculty", 0)
-    // this.messages.set(this.messageService.messageArr)
-    // this.facultyService.addFaculty(formData).subscribe({
     this.facultyService.postData(formData, "faculty").subscribe({
       next: (res : any) => {
         if (res.code == 200) {
-          message = "New Faculty member has been added"
-          status = 1
-        } else if (res.code == 406) {
-          message = "Email is already taken!"
-          status = -1
-        } else {
-          message = "An unexpected Error has occurred!"
-          status = -1
-        }
+          this.message = {
+            message: "New Faculty member has been added",
+            status: 1
+          }
 
-        // this.messageService.sendMessage(message, status)
-        // this.messages.set(this.messageService.messageArr)
+        } else if (res.code == 406) {
+          this.message = {
+            message: "Email is already taken!",
+            status: -1
+          }
+
+        } else {
+          this.message = {
+            message: "An unexpected Error has occurred!",
+            status: -1
+          }
+
+        }
       },
       error: (error) => {
         console.log(error)
-        // this.messageService.sendMessage("An unexpected Error has occurred!", -1)
-        // this.messages.set(this.messageService.messageArr)
+        this.message = {
+          message: "An unexpected Error has occurred!",
+          status: -1
+        }
       }
     })
   }
@@ -260,7 +267,7 @@ formControl(name: string) {
   imageFile?: {link: string, file: any, name: string};
   imageURL: string = '';
   coverURL: string = '';
-
+  message?: Message
   PreviewImage(event: Event, type: string) {
     const allowedFileType = ["image/png", "image/jpeg"]
     const inputElement = event.target as HTMLInputElement;
@@ -291,6 +298,10 @@ formControl(name: string) {
         }
         reader.readAsDataURL(file);
     } else {
+      this.message = {
+        message: "File type should be .png or .jpeg/.jpg",
+        status: -1
+      }
       console.log("File type should be .png or .jpeg/.jpg");
       // this.messageService.sendMessage("File type should be .png or .jpeg/.jpg", -1)
       // this.messages.set(this.messageService.messageArr)

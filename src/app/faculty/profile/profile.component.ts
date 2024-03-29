@@ -23,13 +23,24 @@ import jspdf from 'jspdf';
 import { Expertise } from '../../services/Interfaces/expertise';
 import { forkJoin } from 'rxjs';
 import { error } from 'console';
-
+import { MessageComponent } from '../../components/message/message.component';
 @Component({
     selector: 'app-profile',
     standalone: true,
     templateUrl: './profile.component.html',
     styleUrl: './profile.component.css',
-    imports: [LoadingScreenComponent, NgOptimizedImage, CommonModule, FacultyEducationComponent, FacultyCertificationsComponent, FacultyExperienceComponent, FacultyExpertiseComponent, AddFormsComponent, FacultyProjectsComponent]
+    imports: [
+      MessageComponent,
+      LoadingScreenComponent,
+      NgOptimizedImage,
+      CommonModule,
+      FacultyEducationComponent,
+      FacultyCertificationsComponent,
+      FacultyExperienceComponent,
+      FacultyExpertiseComponent,
+      AddFormsComponent,
+      FacultyProjectsComponent
+    ]
 })
 export class ProfileComponent {
   tempPort = mainPort;
@@ -55,14 +66,9 @@ export class ProfileComponent {
   //CV form toggle
   cvToggle = false;
 
-  // constructor(private facultyService: FacultyFetcherService, private router: Router, private http: HttpClient){
-  //   // this.getProfile();
-  //   // this.getSchedule();
-  //   // this.getResume();
-    // this.getProfileScheduleResume()
     constructor(private facultyService: FacultyRequestService, private router: Router, private http: HttpClient){
       this.getProfileScheduleResume()
-    //   this.getProfile();
+  //   this.getProfile();
     // this.getSchedule();
     // this.getResume();
   }
@@ -141,38 +147,6 @@ export class ProfileComponent {
       }
     })
   }
-
-  // getProfile(){
-  //   this.facultyService.fetchData(this.facultyProfile, 'getprofile/fetchProfile').subscribe({
-  //   next: (next) => this.facultyProfile = next,
-  //   error: (error) => {
-  //     console.log(error);
-  //     this.router.navigate(['/']);
-  //   },
-  //   complete: () => {
-  //     this.facultyProfile.profile_image = mainPort + this.facultyProfile.profile_image;
-  //     this.facultyProfile.cover_image = mainPort + this.facultyProfile.cover_image;
-  //     this.isLoading = false
-  //   }
-  //   });
-  // }
-
-  // getSchedule(){
-  //   //Fetches the schedule data based on passed selected date
-  //   this.facultyService.fetchData(this.schedules, 'getschedules/fetchFaculty').subscribe({
-  //     next: value => this.schedules = value,
-  //     error: err => {if(err.status == 403){this.router.navigate(['/']);}}
-  //   });
-  // }
-
-  // getResume(){
-  //   this.facultyService.fetchData(this.resume, 'getresume/fetchResume').subscribe({
-  //     next: value => {this.resume = value;
-  //                     console.log(this.resume);
-  //                   },
-  //     error: err => {console.log(err);if(err.status == 403){this.router.navigate(['/']);}}
-  //   });
-  // }
 
   showAdd(comp: string){
     switch (comp) {
