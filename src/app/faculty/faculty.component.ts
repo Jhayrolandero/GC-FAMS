@@ -25,13 +25,13 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     MatButtonModule, 
     FormsModule, 
     MatCheckboxModule],
-    
+
   templateUrl: './faculty.component.html',
   styleUrl: './faculty.component.css'
 })
 export class FacultyComponent {
   sideBarToggle = true;
-  opened: boolean | undefined;
+  opened: boolean = true;
 
   toggle() {
     this.sideBarToggle = !this.sideBarToggle;

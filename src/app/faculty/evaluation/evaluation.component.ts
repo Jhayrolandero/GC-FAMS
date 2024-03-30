@@ -38,6 +38,8 @@ export class EvaluationComponent implements OnInit{
     {name: "", value: 0, bgColor: ''},
     {name: "", value: 0, bgColor: ''},
     {name: "", value: 0, bgColor: ''},
+    {name: "", value: 0, bgColor: ''},
+    {name: "", value: 0, bgColor: ''},
     {name: "", value: 0, bgColor: ''}
   ]
   selectedEvalSem: Evaluation = {
@@ -49,6 +51,8 @@ export class EvaluationComponent implements OnInit{
     param2_score: 0,
     param3_score: 0,
     param4_score: 0,
+    param5_score: 0,
+    param6_score: 0,
     evalAverage: 0
   }
   evalHistory: evalScoreHistory[] = []
@@ -77,12 +81,14 @@ export class EvaluationComponent implements OnInit{
         this.evaluation = this.evaluation.map((evalItem) => {
           return {
             ...evalItem,
-            "evalAverage": this.evaluationService.averageEvaluation(
-                      +evalItem.param1_score,
-                      +evalItem.param2_score,
-                      +evalItem.param3_score,
-                      +evalItem.param4_score
-            )
+            "evalAverage": parseFloat(((
+                      +evalItem.param1_score +
+                      +evalItem.param2_score +
+                      +evalItem.param3_score +
+                      +evalItem.param4_score +
+                      +evalItem.param5_score +
+                      +evalItem.param6_score
+            ) / 6).toFixed(1))
           }
         })
         this.evalHistory = this.evaluationService.setEvalHistory(this.evaluation)

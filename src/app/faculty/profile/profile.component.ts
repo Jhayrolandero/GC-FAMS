@@ -68,9 +68,7 @@ export class ProfileComponent {
 
     constructor(private facultyService: FacultyRequestService, private router: Router, private http: HttpClient){
       this.getProfileScheduleResume()
-  //   this.getProfile();
-    // this.getSchedule();
-    // this.getResume();
+      // this.getResume();
   }
 
   setForm(value: string){
@@ -84,7 +82,7 @@ export class ProfileComponent {
     this.specValue = undefined;
 
     //Refreshes resume get.
-    // this.getResume();
+    this.getProfileScheduleResume()
   }
 
   setEducValueForm(value: EducationalAttainment){
@@ -111,15 +109,27 @@ export class ProfileComponent {
   experience!: IndustryExperience[]
   education!: EducationalAttainment[]
   expertise!: Expertise[]
+  project!: Project[]
 
+  // getResume(){
+  //   this.facultyService.fetchData(this.resume, 'getresume/fetchResume').subscribe({
+  //     next: value => {this.resume = value;
+  //                     console.log(this.resume);
+  //                     this.isLoading = false
+  //                   },
+  //     error: err => {console.log(err);if(err.status == 403){this.router.navigate(['/']);}}
+  //   });
+  // }
 
   getProfileScheduleResume() {
     forkJoin({
       profileRequest: this.facultyService.fetchData(this.facultyProfile, 'getprofile/fetchProfile'),
       scheduleRequest: this.facultyService.fetchData(this.schedules, 'getschedules/fetchFaculty'),
+
       certificateRequest: this.facultyService.fetchData(this.certificate, 'certificate'),
       experienceRequest: this.facultyService.fetchData(this.experience, 'experience'),
       educationRequest: this.facultyService.fetchData(this.education, 'education'),
+      projectRequest: this.facultyService.fetchData(this.project, 'project'),
       expertiseRequest: this.facultyService.fetchData(this.expertise, 'expertise'),
     }).subscribe({
       next: (({
@@ -128,12 +138,14 @@ export class ProfileComponent {
         certificateRequest,
         experienceRequest,
         educationRequest,
+        projectRequest,
         expertiseRequest}) => {
           this.facultyProfile = profileRequest
           this.schedules = scheduleRequest
           this.certificate = certificateRequest
           this.experience = experienceRequest
           this.education = educationRequest
+          this.project = projectRequest
           this.expertise = expertiseRequest
       }),
       error: (error) => {
@@ -143,6 +155,7 @@ export class ProfileComponent {
       complete: () => {
         this.facultyProfile.profile_image = mainPort + this.facultyProfile.profile_image;
         this.facultyProfile.cover_image = mainPort + this.facultyProfile.cover_image;
+        console.log(this.project);
         this.isLoading = false
       }
     })

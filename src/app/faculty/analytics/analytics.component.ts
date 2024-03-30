@@ -58,11 +58,15 @@ export class AnalyticsComponent implements OnInit{
     param2_score: 0,
     param3_score: 0,
     param4_score: 0,
+    param5_score: 0,
+    param6_score: 0,
     evalAverage: 0
   }
   facultyProfile!: Profile;
   evaluation: Evaluation[] = []
   evalScoreCategory: ScoreCategory[] = [
+    {name: "", value: 0, bgColor: ""},
+    {name: "", value: 0, bgColor: ""},
     {name: "", value: 0, bgColor: ""},
     {name: "", value: 0, bgColor: ""},
     {name: "", value: 0, bgColor: ""},

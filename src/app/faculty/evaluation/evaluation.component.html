@@ -31,7 +31,7 @@
 
     <div class="w-full flex flex-col laptop:flex-row p-4 pb-2 gap-4">
       <div
-        class="bg-white w-full laptop:w-[450px] rounded-[25px] shadow-lg laptop:mr-2 py-4"
+        class="bg-white w-full laptop:w-[450px] rounded-[25px] shadow-lg laptop:mr-2 py-4 flex flex-col"
       >
         <p class="font-Poppins font-semibold text-[1.4rem] mb-2 text-center">
           Selected Evaluation Score
@@ -56,7 +56,7 @@
         </p>
       </div>
       <div
-        class="bg-white rounded-[25px] w-full shadow-lg laptop:ml-2 py-4 px-8"
+        class="bg-white rounded-[25px] w-full shadow-lg laptop:ml-2 py-4 px-8 tablet:h-[220px] tablet:overflow-y-scroll"
       >
         <div *ngFor="let evalItem of evalScoreCategory">
           <div class="flex justify-between">

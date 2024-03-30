@@ -27,7 +27,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 })
 export class AdminComponent {
   sideBarToggle = true;
-  opened: boolean | undefined;
+  opened: boolean = true;
 
   toggle(){
     this.sideBarToggle = !this.sideBarToggle;
