@@ -6,6 +6,7 @@ import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { JwtToken } from '../../services/jwt-token';
 import { mainPort } from '../../app.component';
+import { MessageService } from '../../services/message.service';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -15,6 +16,7 @@ import { mainPort } from '../../app.component';
 })
 
 export class LoginComponent {
+
   title: string = "GC-FaMS"
   subTitle: string = "Faculty Profiling and Development Monitoring System"
   privSwitch!: boolean;
@@ -26,50 +28,56 @@ export class LoginComponent {
   authService = inject(AuthService);
   router = inject(Router);
 
-  	//Login form object
-	loginForm = new FormGroup({
-		email: new FormControl(''),
-		password: new FormControl('')
-	})
+  //Login form object
+  loginForm = new FormGroup({
+    email: new FormControl(''),
+    password: new FormControl('')
+  })
 
-	constructor(){
-		this.authService.flushToken();
-	}
+  constructor(private messageService: MessageService) {
+    this.authService.flushToken();
+  }
 
-	onLogin(): void{
-		this.authService.flushToken();
-		this.validForm = true;
-		//Main http post request, uses JwtToken interface, and stringified loginForm
-		this.http.post<JwtToken>(this.url, this.loginForm.getRawValue()).subscribe((response) => {
-			console.log(response);
-		//Success, wrong loginparams, and query error issue.
-		if(response.code == 200){
-			document.cookie = "token=" + response.token;
-			console.log("Created token: " + response.privilege);
-			//Router for faculty privilege
-			if(response.privilege == 0){
-			this.router.navigate(['/faculty']);
-			}
-			//Router for admin privilege
-			else if(response.privilege == 1){
-			this.router.navigate(['/admin']);
-			}
-		}
-		else if(response.code == 403){
-			console.log("Invalid parameters: ");
-			console.log(response);
-			this.validForm = false;
-		}
-		else if(response.code == 404){
-			console.log("Invalid query: ")
-			console.log(response);
-			this.validForm = false;
-		}
-		})
-	}
+  onLogin(): void {
+    this.authService.flushToken();
+    this.messageService.sendMessage("Logging In", 0)
+    this.validForm = true;
+    //Main http post request, uses JwtToken interface, and stringified loginForm
+    this.http.post<JwtToken>(this.url, this.loginForm.getRawValue()).subscribe(
+      (response) => {
+        console.log(response);
+        //Success, wrong loginparams, and query error issue.
+        if (response.code == 200) {
+          document.cookie = "token=" + response.token;
+          console.log("Created token: " + response.privilege);
+          //Router for faculty privilege
+          if (response.privilege == 0) {
+            this.router.navigate(['/faculty']);
 
-	showPass(){
-		var pass = document.getElementById("password");
+          }
+          //Router for admin privilege
+          else if (response.privilege == 1) {
+            this.router.navigate(['/admin']);
 
-	}
+          }
+
+          this.messageService.sendMessage("Welcome Back!", 1)
+        }
+        else if (response.code == 403) {
+          console.log("Invalid parameters: ");
+          console.log(response);
+          this.validForm = false;
+        }
+        else if (response.code == 404) {
+          console.log("Invalid query: ")
+          console.log(response);
+          this.validForm = false;
+        }
+      })
+  }
+
+  showPass() {
+    var pass = document.getElementById("password");
+
+  }
 }

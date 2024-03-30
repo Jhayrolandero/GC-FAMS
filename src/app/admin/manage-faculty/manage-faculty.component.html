@@ -5,13 +5,13 @@
   class="bg-white shadow-lg bg-opacity-70 w-full rounded-[25px] flex flex-col px-5"
 >
   <div
-  class="bg-white shadow-lg bg-opacity-70 w-full rounded-[25px] flex flex-col tablet:flex-row tablet:justify-between items-center px-5"
+    class="bg-white shadow-lg bg-opacity-70 w-full rounded-[25px] flex flex-col tablet:flex-row tablet:justify-between items-center px-5"
   >
     <h1 class="font-Poppins font-semibold text-[2.5rem] py-2 text-blue">
       Manage Faculty
     </h1>
   </div>
-  
+
   <form
     enctype="multipart/form-data"
     action=""
@@ -87,57 +87,60 @@
         Personal Information
       </h4>
       <div class="flex flex-row w-full rounded-full shadow-lg">
-
-        <div class="rounded-full w-[200px] h-[200px] aspect-square overflow-hidden flex justify-center items-center shadow-lg">
+        <div
+          class="rounded-full w-[200px] h-[200px] aspect-square overflow-hidden flex justify-center items-center shadow-lg"
+        >
           <img
-          *ngIf="imageURL != ''"
+            *ngIf="imageURL != ''"
             [src]="imageURL"
             alt=""
             class="w-full h-full object-cover"
           />
           <label
-          *ngIf="imageURL == ''"
-          for="dropzone-file"
-          class="flex flex-col items-center justify-center w-full cursor-pointer"
+            *ngIf="imageURL == ''"
+            for="dropzone-file"
+            class="flex flex-col items-center justify-center w-full cursor-pointer"
           >
-          <svg
-            width="30"
-            height="31"
-            viewBox="0 0 30 31"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <g clip-path="url(#clip0_984_350)">
-              <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
-                d="M11.25 6.75C11.25 6.08696 11.5134 5.45107 11.9822 4.98223C12.4511 4.51339 13.087 4.25 13.75 4.25H16.25C16.913 4.25 17.5489 4.51339 18.0178 4.98223C18.4866 5.45107 18.75 6.08696 18.75 6.75V11.75H23.75C24.413 11.75 25.0489 12.0134 25.5178 12.4822C25.9866 12.9511 26.25 13.587 26.25 14.25V16.75C26.25 17.413 25.9866 18.0489 25.5178 18.5178C25.0489 18.9866 24.413 19.25 23.75 19.25H18.75V24.25C18.75 24.913 18.4866 25.5489 18.0178 26.0178C17.5489 26.4866 16.913 26.75 16.25 26.75H13.75C13.087 26.75 12.4511 26.4866 11.9822 26.0178C11.5134 25.5489 11.25 24.913 11.25 24.25V19.25H6.25C5.58696 19.25 4.95107 18.9866 4.48223 18.5178C4.01339 18.0489 3.75 17.413 3.75 16.75V14.25C3.75 13.587 4.01339 12.9511 4.48223 12.4822C4.95107 12.0134 5.58696 11.75 6.25 11.75H11.25V6.75Z"
-                fill="#BCBCBC"
-              />
-            </g>
-            <defs>
-              <clipPath id="clip0_984_350">
-                <rect
-                  width="30"
-                  height="30"
-                  fill="white"
-                  transform="translate(0 0.5)"
+            <svg
+              width="30"
+              height="31"
+              viewBox="0 0 30 31"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <g clip-path="url(#clip0_984_350)">
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M11.25 6.75C11.25 6.08696 11.5134 5.45107 11.9822 4.98223C12.4511 4.51339 13.087 4.25 13.75 4.25H16.25C16.913 4.25 17.5489 4.51339 18.0178 4.98223C18.4866 5.45107 18.75 6.08696 18.75 6.75V11.75H23.75C24.413 11.75 25.0489 12.0134 25.5178 12.4822C25.9866 12.9511 26.25 13.587 26.25 14.25V16.75C26.25 17.413 25.9866 18.0489 25.5178 18.5178C25.0489 18.9866 24.413 19.25 23.75 19.25H18.75V24.25C18.75 24.913 18.4866 25.5489 18.0178 26.0178C17.5489 26.4866 16.913 26.75 16.25 26.75H13.75C13.087 26.75 12.4511 26.4866 11.9822 26.0178C11.5134 25.5489 11.25 24.913 11.25 24.25V19.25H6.25C5.58696 19.25 4.95107 18.9866 4.48223 18.5178C4.01339 18.0489 3.75 17.413 3.75 16.75V14.25C3.75 13.587 4.01339 12.9511 4.48223 12.4822C4.95107 12.0134 5.58696 11.75 6.25 11.75H11.25V6.75Z"
+                  fill="#BCBCBC"
                 />
-              </clipPath>
-            </defs>
-          </svg>
-          <p class="font-bold text-gray-300">Profile Upload</p>
-          <input
-            id="dropzone-file"
-            type="file"
-            class="hidden"
-            (change)="PreviewImage($event, 'profile')"
-            accept="image/*"
-          />
-        </label>
+              </g>
+              <defs>
+                <clipPath id="clip0_984_350">
+                  <rect
+                    width="30"
+                    height="30"
+                    fill="white"
+                    transform="translate(0 0.5)"
+                  />
+                </clipPath>
+              </defs>
+            </svg>
+            <p class="font-bold text-gray-300">Profile Upload</p>
+            <input
+              id="dropzone-file"
+              type="file"
+              class="hidden"
+              (change)="PreviewImage($event, 'profile')"
+              accept="image/*"
+            />
+          </label>
         </div>
 
-        <div class="flex flex-1 items-center justify-center h-[200px] w-full overflow-hidden rounded-full">
+        <div
+          class="flex flex-1 items-center justify-center h-[200px] w-full overflow-hidden rounded-full"
+        >
           <img
             *ngIf="coverURL != ''"
             [src]="coverURL"
@@ -185,14 +188,17 @@
             />
           </label>
         </div>
-
       </div>
 
       <div class="flex flex-col gap-4">
         <div class="flex justify-center items-center gap-4">
           <div class="flex flex-col flex-1" *ngFor="let col of column1">
-            <label class="formTextFormat uppercase" for="">{{ col }}</label>
+            <label class="formTextFormat uppercase" [for]="col">{{
+              col
+            }}</label>
             <input
+              [id]="col"
+              [name]="col"
               [ngClass]="{
                 'border-b-[4px] border-red-500':
                   formControl(col)!.invalid &&
@@ -222,8 +228,12 @@
 
         <div class="flex justify-center items-center gap-4">
           <div class="flex flex-col flex-1 gap-2" *ngFor="let col of column2">
-            <label class="formTextFormat uppercase" for="">{{ col }}</label>
+            <label class="formTextFormat uppercase" [for]="col">{{
+              col
+            }}</label>
             <input
+              [id]="col"
+              [name]="col"
               [ngClass]="{
                 'border-b-[4px] border-red-500':
                   formControl(col)!.invalid &&
@@ -246,8 +256,12 @@
 
         <div class="flex justify-center items-center gap-4">
           <div class="flex flex-col flex-1" *ngFor="let col of column3">
-            <label class="formTextFormat uppercase" for="">{{ col }}</label>
+            <label class="formTextFormat uppercase" [for]="col">{{
+              col
+            }}</label>
             <input
+              [id]="col"
+              [name]="col"
               [ngClass]="{
                 'border-b-[4px] border-red-500':
                   formControl(col)!.invalid &&
@@ -270,8 +284,12 @@
 
         <div class="flex justify-center items-start gap-4">
           <div class="flex flex-col flex-1" *ngFor="let col of column4">
-            <label class="formTextFormat uppercase" for="">{{ col }}</label>
+            <label class="formTextFormat uppercase" [for]="col">{{
+              col
+            }}</label>
             <input
+              [id]="col"
+              [name]="col"
               [ngClass]="{
                 'border-b-[4px] border-red-500':
                   formControl(col)!.invalid &&
@@ -310,4 +328,3 @@
     </div>
   </form>
 </div>
-<app-message [messages]="messages"></app-message>
