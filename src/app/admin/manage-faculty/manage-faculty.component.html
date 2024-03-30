@@ -7,7 +7,7 @@
   <div
     class="bg-white shadow-lg bg-opacity-70 w-full rounded-[25px] flex flex-col tablet:flex-row tablet:justify-between items-center px-5"
   >
-    <h1 class="font-Poppins font-semibold text-[2.5rem] py-2">
+    <h1 class="font-Poppins font-semibold text-[2.5rem] py-2 text-blue">
       Manage Faculty
     </h1>
   </div>
@@ -15,17 +15,17 @@
   <form
     enctype="multipart/form-data"
     action=""
-    class="bg-white flex flex-col px-4 py-2 my-2 rounded-[25px]"
+    class="bg-white bg-opacity-70 flex flex-col px-4 py-2 my-2 rounded-[25px]"
     [formGroup]="facultyInfo"
     (ngSubmit)="onSubmit()"
   >
     <div class="px-[16px] py-[24px] flex flex-col gap-4" id="contents">
-      <h4 class="border-b-2 border-black font-Poppins font-bold text-[2rem]">
+      <h4 class="border-b-2 border-black font-Poppins font-bold text-[2rem] text-blue">
         <span *ngIf="formControl('college_ID')!.errors?.['required']">
           <i
             class="fa-solid fa-triangle-exclamation mr-2 text-red-700"
           ></i> </span
-        >COLLEGE
+        >College
       </h4>
       <div class="grid grid-cols-5 gap-2 items-stretch">
         <app-gc-box
@@ -40,14 +40,14 @@
       <div class="flex-1 flex flex-row gap-4">
         <div class="flex-1 flex flex-col">
           <h4
-            class="border-b-2 border-black font-Poppins font-bold text-[2rem]"
+            class="border-b-2 border-black font-Poppins font-bold text-[2rem] text-blue"
           >
             <span
               *ngIf="formControl('employment_status')!.errors?.['required']"
             >
               <i class="fa-solid fa-triangle-exclamation mr-2 text-red-700"></i>
             </span>
-            EMPLOYMENT
+            Employment
           </h4>
           <div class="grid grid-cols-2 gap-2 pt-4">
             <app-employee-type
@@ -62,14 +62,14 @@
         </div>
         <div class="flex-1 flex flex-col w-full">
           <h4
-            class="border-b-2 border-black font-Poppins font-bold text-[2rem]"
+            class="border-b-2 border-black font-Poppins font-bold text-[2rem] text-blue"
           >
             <span
               *ngIf="formControl('teaching_position')!.errors?.['required']"
             >
               <i class="fa-solid fa-triangle-exclamation mr-2 text-red-700"></i>
             </span>
-            POSITION
+            Position
           </h4>
           <div class="flex flex-row gap-2 pt-4 w-full">
             <app-employee-position
@@ -83,8 +83,8 @@
           </div>
         </div>
       </div>
-      <h4 class="border-b-2 border-black font-Poppins font-bold text-[2rem]">
-        PERSONAL INFORMATION
+      <h4 class="border-b-2 border-black font-Poppins font-bold text-[2rem] text-blue">
+        Personal Information
       </h4>
       <div class="flex flex-row w-full rounded-full shadow-lg">
         <div
