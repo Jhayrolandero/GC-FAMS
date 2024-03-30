@@ -7,30 +7,17 @@ import { Message } from '../../services/Interfaces/message';
   selector: 'app-message',
   standalone: true,
   imports: [CommonModule, MessageBoxComponent],
-  providers: [MessageService],
   templateUrl: './message.component.html',
   styleUrl: './message.component.css'
 })
-export class MessageComponent implements OnChanges{
+export class MessageComponent implements OnInit{
+  constructor(private messageService: MessageService) {}
 
-  @ViewChild("message_box") target1ref!: ElementRef; // gets #target1
-  visible = true;
-  ngOnChanges(changes: SimpleChanges): void {
-    if(!changes['message'].firstChange) {
-      this.visible = true
-      console.log(this.target1ref)
-    }
+  messages: Message[] = [];
 
-    // setInterval(() => {
-    //   this.target1ref += "Hello"
-    // }, 1000);
+  ngOnInit(): void {
+    this.messages = this.messageService.getMessage
   }
 
-  /*
-  -1  - Error
-  0   - Pending
-  1   - Success
-  */
-
-  @Input('message') message?: Message
+  isFade = false
 }

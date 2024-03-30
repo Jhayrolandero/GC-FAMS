@@ -54,7 +54,7 @@ export class ManageFacultyComponent implements OnInit {
   constructor(
     private adminService: AdminFetcherService,
     // private facultyService: FacultyPostService,
-    // private messageService: MessageService) {}
+    private messageService: MessageService,
     private facultyService: FacultyRequestService) {}
 
     ngOnInit(): void {
@@ -207,11 +207,8 @@ formControl(name: string) {
   // messages = this.messageService.messages
 
   onSubmit() {
-    this.message = {
-      message: "Adding Faculty",
-      status: 0
-    }
-this.facultyInfo.patchValue({
+    this.messageService.sendMessage("Adding Faculty...", 0)
+    this.facultyInfo.patchValue({
       password: this.facultyInfo.get('first_name')?.value
     })
     const formData = this.facultyService.formDatanalize(this.facultyInfo);
@@ -219,31 +216,16 @@ this.facultyInfo.patchValue({
     this.facultyService.postData(formData, "faculty").subscribe({
       next: (res : any) => {
         if (res.code == 200) {
-          this.message = {
-            message: "New Faculty member has been added",
-            status: 1
-          }
-
+          this.messageService.sendMessage("New Faculty member has been added", 1)
         } else if (res.code == 406) {
-          this.message = {
-            message: "Email is already taken!",
-            status: -1
-          }
-
+          this.messageService.sendMessage("Email already taken!", -1)
         } else {
-          this.message = {
-            message: "An unexpected Error has occurred!",
-            status: -1
-          }
-
+          this.messageService.sendMessage("An unexpected Error has occurred!", -1)
         }
       },
       error: (error) => {
         console.log(error)
-        this.message = {
-          message: "An unexpected Error has occurred!",
-          status: -1
-        }
+        this.messageService.sendMessage("An unexpected Error has occurred!", -1)
       }
     })
   }
@@ -298,11 +280,7 @@ this.facultyInfo.patchValue({
         }
         reader.readAsDataURL(file);
     } else {
-      this.message = {
-        message: "File type should be .png or .jpeg/.jpg",
-        status: -1
-      }
-      console.log("File type should be .png or .jpeg/.jpg");
+      this.messageService.sendMessage("File type should be .png or .jpeg/.jpg", -1)
       // this.messageService.sendMessage("File type should be .png or .jpeg/.jpg", -1)
       // this.messages.set(this.messageService.messageArr)
     }

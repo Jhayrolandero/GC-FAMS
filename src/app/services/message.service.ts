@@ -12,17 +12,22 @@ export class MessageService {
   0 = Pending/Process
   1 = success
   */
-  messages: WritableSignal<Message[]> = signal([])
-
+  messages: Message[] = [];
   constructor() { }
 
+  sendMessage(message: string, status: number) {
 
-  sendMessage(message: string, status: number): void  {
-    this.messages.update(value => [...value, {'message': message, 'status': status}])
-    console.log(this.messages().length)
+    this.messages.push({
+      message, status
+    })
   }
 
-  get messageArr(): Message[] {
-    return this.messages()
+  // sendMessage(message: string, status: number): void  {
+  //   this.messages.update(value => [...value, {'message': message, 'status': status}])
+  //   console.log(this.messages().length)
+  // }
+
+  get getMessage(): Message[] {
+    return this.messages
   }
 }

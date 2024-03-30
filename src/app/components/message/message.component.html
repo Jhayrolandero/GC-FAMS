@@ -1,23 +1,26 @@
-@if(visible) {
-
-<div
-  (click)="visible = !visible"
+<div class="flex flex-col gap-2 fixed bottom-0 left-0 p-4">
+  @for (msg of messages; track msg.message; let idx = $index) {
+  <div
   [ngClass]="{
-  'border-[#CD2C2C]': message?.status == -1,
-  'border-[#F8C434]': message?.status == 0,
-    'border-[#27AE60]': message?.status == 1,
+    'border-[#27AE60]': msg.status == 1,
+    'border-[#F8C434]': msg.status == 0,
+    'border-[#CD2C2C]': msg.status == -1
   }"
-  class="cursor-pointer fixed bottom-2 left-2 flex gap-2 ease-out bg-white border-l-[4px] px-2 py-4 rounded-s-md min-w-[320px] flex-row justify-between text-[1rem] items-center"
-  #message_box
->
-  <p class="font-bold">{{ message?.message }}</p>
-  @if(message?.status == -1) {
-  <i class="fa-solid fa-circle-exclamation text-[#CD2C2C]"></i>
-  } @else if ( message?.status == 0) {
-  <i class="fa-solid fa-spinner text-[#F8C434]"></i>
-  } @else if ( message?.status == 1) {
-  <i class="fa-solid fa-circle-check text-[#27AE60]"></i>
+  class="bg-white py-4 px-2 border-l-[6px] rounded-s-lg flex flex-row justify-between items-center gap-6 msg-box">
+  <p
+  class="font-bold"
+  [ngClass]="{
+    'text-[#27AE60]': msg.status == 1,
+    'text-[#F8C434]': msg.status == 0,
+    'text-[#CD2C2C]': msg.status == -1
+  }">{{ msg.message }}</p>
+  @if(msg.status == 1) {
+    <i class="fa-solid fa-circle-check text-[#27AE60] text-2xl"></i>
+  } @else if (msg.status == 0) {
+    <i class="fa-solid fa-spinner text-[#F8C434] text-2xl animate-spin"></i>
+  } @else if (msg.status == -1) {
+    <i class="fa-solid fa-circle-exclamation text-[#CD2C2C] text-2xl"></i>
   }
 </div>
-
-}
+  }
+</div>
