@@ -10,8 +10,8 @@ import { Message } from '../../services/Interfaces/message';
   templateUrl: './message.component.html',
   styleUrl: './message.component.css'
 })
-export class MessageComponent implements OnInit{
-  constructor(private messageService: MessageService) {}
+export class MessageComponent implements OnInit {
+  constructor(public messageService: MessageService) { }
 
   messages: Message[] = [];
 

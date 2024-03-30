@@ -1,14 +1,22 @@
 <div
-  class="flex justify-between items-center cursor-pointer min-w-[320px] bg-white px-4 py-2"
-  (click)="deleteMessage()"
-  [id]="'message-' + idx"
->
-  <p class="text-[16px]">{{ message.message }}</p>
-  @if(message.status == 0) {
-  <span class="loader"></span>
-  } @else if (message.status == 1) {
-  <i class="fa-solid fa-circle-check text-green"></i>
-  } @else if (message.status == -1) {
-  <i class="fa-solid fa-triangle-exclamation text-red-700"></i>
+  [ngClass]="{
+    'border-[#27AE60]': status == 1,
+    'border-[#F8C434]': status == 0,
+    'border-[#CD2C2C]': status == -1
+  }"
+  class="bg-white py-4 px-2 border-l-[6px] rounded-s-lg flex flex-row justify-between items-center gap-6 msg-box">
+  <p
+  class="font-bold"
+  [ngClass]="{
+    'text-[#27AE60]': status == 1,
+    'text-[#F8C434]': status == 0,
+    'text-[#CD2C2C]': status == -1
+  }">{{ msg }}</p>
+  @if(status == 1) {
+    <i class="fa-solid fa-circle-check text-[#27AE60] text-2xl"></i>
+  } @else if (status == 0) {
+    <i class="fa-solid fa-spinner text-[#F8C434] text-2xl animate-spin"></i>
+  } @else if (status == -1) {
+    <i class="fa-solid fa-circle-exclamation text-[#CD2C2C] text-2xl"></i>
   }
 </div>

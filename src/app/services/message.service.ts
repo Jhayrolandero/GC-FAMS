@@ -30,4 +30,12 @@ export class MessageService {
   get getMessage(): Message[] {
     return this.messages
   }
+
+  clearMessage = () => {
+    this.messages = []
+  }
+
+  deleteMessage = () => {
+    this.messages.shift()
+  }
 }
