@@ -1,25 +1,23 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, ElementRef, Input, OnChanges, OnInit, Signal, SimpleChanges, ViewChild, computed } from '@angular/core';
 import { MessageService } from '../../services/message.service';
 import { CommonModule } from '@angular/common';
 import { MessageBoxComponent } from './message-box/message-box.component';
+import { Message } from '../../services/Interfaces/message';
 @Component({
   selector: 'app-message',
   standalone: true,
   imports: [CommonModule, MessageBoxComponent],
-  providers: [MessageService],
   templateUrl: './message.component.html',
   styleUrl: './message.component.css'
 })
-export class MessageComponent implements OnChanges {
-  @Input('show') isVisible = false;
-  @Input('messages')  messages: {message: string, status: string}[] = []
+export class MessageComponent implements OnInit {
+  constructor(public messageService: MessageService) { }
 
-  toggle() {
-    this.isVisible = !this.isVisible
+  messages: Message[] = [];
+
+  ngOnInit(): void {
+    this.messages = this.messageService.getMessage
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-      console.log(changes)
-  }
-
+  isFade = false
 }

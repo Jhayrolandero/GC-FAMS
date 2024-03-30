@@ -197,7 +197,7 @@
           (setEducEdit)="setEducValueForm($event)"
           (setType)="setForm($event)"
           *ngIf="educToggle == true"
-          [educAttainment]="resume?.educAttainment"
+          [educAttainment]="education"
         ></app-faculty-education>
       </div>
 
@@ -267,7 +267,7 @@
           (setCertEdit)="setCertValueForm($event)"
           (setType)="setForm($event)"
           *ngIf="certToggle == true"
-          [certifications]="resume?.certifications"
+          [certifications]="certificate"
         ></app-faculty-certifications>
       </div>
 
@@ -337,7 +337,7 @@
           (setExpEdit)="setExpValueForm($event)"
           (setType)="setForm($event)"
           *ngIf="expToggle == true"
-          [experiences]="resume?.industryExp"
+          [experiences]="experience"
         ></app-faculty-experience>
       </div>
 
@@ -477,7 +477,7 @@
           (setSpecEdit)="setSpecValueForm($event)"
           (setType)="setForm($event)"
           *ngIf="specToggle == true"
-          [expertise]="resume?.expertise"
+          [expertise]="expertise"
         ></app-faculty-expertise>
       </div>
     </div>
