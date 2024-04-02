@@ -6,6 +6,10 @@ import { Profile } from '../../../services/Interfaces/profile';
 import { mainPort } from '../../../app.component';
 import { CommonModule } from '@angular/common';
 
+import {MatInputModule} from '@angular/material/input';
+import {MatSelectModule} from '@angular/material/select';
+import {MatFormFieldModule} from '@angular/material/form-field';
+
 type topnavProfile = {
   profile_image: string,
   first_name: string,
@@ -16,12 +20,15 @@ type topnavProfile = {
 @Component({
   selector: 'app-topnav',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,
+            MatInputModule,
+            MatSelectModule,
+            MatFormFieldModule],
   templateUrl: './topnav.component.html',
   styleUrl: './topnav.component.css'
 })
 export class TopnavComponent implements OnInit{
-
+  dropToggle = false;
   isLoading: boolean = true;
   facultyProfile: topnavProfile = {
     profile_image: "",
