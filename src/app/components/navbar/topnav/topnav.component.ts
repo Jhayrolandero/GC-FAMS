@@ -1,11 +1,11 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, inject } from '@angular/core';
 import { AuthService } from '../../../services/auth.service';
 import { Router } from '@angular/router';
 import { FacultyRequestService } from '../../../services/faculty/faculty-request.service';
 import { Profile } from '../../../services/Interfaces/profile';
 import { mainPort } from '../../../app.component';
 import { CommonModule } from '@angular/common';
-
+import {MatDialog, MatDialogRef} from '@angular/material/dialog'
 import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -40,11 +40,15 @@ export class TopnavComponent implements OnInit{
   constructor(
     private auth: AuthService,
     private router: Router,
-    private facultyService: FacultyRequestService){
-    }
+    private facultyService: FacultyRequestService,
+    public dialog: MatDialog){}
 
     triggerToggle(){
       this.setToggle.emit();
+    }
+
+    openDialog(): void {
+      this.dialog.open(TopnavLogout);
     }
 
 
@@ -74,6 +78,26 @@ export class TopnavComponent implements OnInit{
 
   @Output() setToggle = new EventEmitter<string>();
 
+}
+
+@Component({
+  selector: 'app-logout',
+  standalone: true,
+  imports: [CommonModule,
+            MatInputModule,
+            MatSelectModule,
+            MatFormFieldModule],
+  templateUrl: './topnav.logout.html'
+})
+export class TopnavLogout{
+  constructor(private router: Router, public dialogRef: MatDialogRef<TopnavLogout>){}
+  logout(){
+    this.router.navigate(['/']);
+    this.dialogRef.close()
+  }
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
 }
 
 
