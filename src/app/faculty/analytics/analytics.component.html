@@ -152,8 +152,8 @@
           {{ selectedSem.evalAverage }}
         </p>
         <small class="text-[16px] text-[#1E7242] font-semibold">
-          As of {{ selectedSem.semester }}@if(selectedSem.semester == 1){st}
-          @else if (selectedSem.semester == 2) {nd} A.Y.
+          As of {{ selectedSem.semester }}
+          {{ selectedSem.semester == 1 ? "st" : "nd" }} A.Y.
           {{ selectedSem.evaluation_year }}-{{
             +selectedSem.evaluation_year + 1
           }}</small

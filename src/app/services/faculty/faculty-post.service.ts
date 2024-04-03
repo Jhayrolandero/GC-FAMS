@@ -40,7 +40,6 @@ export class FacultyPostService {
       return this.http.post<JwtToken>(mainPort + '/gc-fams-api/API/faculty', facultyInfo, {headers:this.getHeader()})
     }
 
-
     formDatanalize(FormGroup: FormGroup) : FormData {
       const formData : FormData = new FormData()
 

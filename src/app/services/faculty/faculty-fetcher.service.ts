@@ -29,6 +29,8 @@ export class FacultyFetcherService {
     return  new HttpHeaders().set("Authorization", "Bearer " + this.auth.getToken());
   }
 
+  
+
   //All fetch commands for faculty
   fetchCommex(){
     return this.http.get<CommunityExtension[]>(mainPort + '/GC-FaMS-API/API/getcommex/fetchCommex', {headers:this.getHeader()});
