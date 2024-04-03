@@ -76,7 +76,7 @@
             <div class="w-full h-[2px] bg-slate-200 mx-3"></div>
 
 
-            <div class="flex flex-row py-2 px-3 hover:bg-slate-200 hover:duration-300 duration-300">
+            <div class="flex flex-row py-2 px-3 hover:bg-slate-200 hover:duration-300 duration-300" (click)="openDialog()">
               <div class="w-[30px] h-[30px] bg-slate-200 flex justify-center items-center rounded-full mr-[10px]">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M17 7L15.59 8.41L18.17 11H8V13H18.17L15.59 15.58L17 17L22 12M4 5H12V3H4C2.9 3 2 3.9 2 5V19C2 20.1 2.9 21 4 21H12V19H4V5Z" fill="#656565"/>
@@ -84,8 +84,7 @@
                   
               </div>
                 
-              <p class="my-1 font-Roboto font-medium text-blue"
-                 (click)="openDialog()">Log Out</p>
+              <p class="my-1 font-Roboto font-medium text-blue">Log Out</p>
             </div>
 
 

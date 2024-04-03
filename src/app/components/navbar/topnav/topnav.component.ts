@@ -48,6 +48,7 @@ export class TopnavComponent implements OnInit{
     }
 
     openDialog(): void {
+      console.log("Checking dialogue");
       this.dialog.open(TopnavLogout);
     }
 
