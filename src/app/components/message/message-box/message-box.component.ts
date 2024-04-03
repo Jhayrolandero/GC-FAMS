@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MessageService } from '../../../services/message.service';
 @Component({
   selector: 'app-message-box',
@@ -8,13 +8,18 @@ import { MessageService } from '../../../services/message.service';
   templateUrl: './message-box.component.html',
   styleUrl: './message-box.component.css'
 })
-export class MessageBoxComponent implements OnInit {
+export class MessageBoxComponent implements OnInit{
 
   constructor(private messageService: MessageService) { }
   @Input("message") msg!: string
   @Input("status") status!: number
 
   ngOnInit(): void {
+    this.deleteMessage()
+  }
+  
+
+  deleteMessage() {
     setTimeout(() => {
       this.messageService.deleteMessage()
     }, 6000)

@@ -19,5 +19,7 @@ export class MessageComponent implements OnInit {
     this.messages = this.messageService.getMessage
   }
 
-  isFade = false
+  deleteMessage(idx: number) {
+    this.messageService.deleteMessage(idx)
+  }
 }

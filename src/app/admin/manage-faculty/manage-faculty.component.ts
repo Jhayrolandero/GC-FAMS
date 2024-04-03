@@ -255,6 +255,7 @@ export class ManageFacultyComponent implements OnInit {
   imageURL: string = '';
   coverURL: string = '';
   message?: Message
+
   PreviewImage(event: Event, type: string) {
 
     const allowedFileType = ["image/png", "image/jpeg"]

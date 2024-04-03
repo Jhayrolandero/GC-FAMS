@@ -16,7 +16,10 @@
 
 <mat-sidenav-container class="example-container flex w-[100%] h-[100%]">
   <mat-sidenav #sidenav mode="side" [(opened)]="opened">
-    <div *ngIf="sideBarToggle" class="hidden flex-none h-screen sticky top-0 tablet:w-[130px] tablet:flex">
+    <div
+      *ngIf="sideBarToggle"
+      class="hidden flex-none h-screen sticky top-0 tablet:w-[130px] tablet:flex"
+    >
       <app-sidebar></app-sidebar>
     </div>
   </mat-sidenav>
@@ -30,6 +33,6 @@
         <router-outlet></router-outlet>
       </div>
     </div>
+    <app-message></app-message>
   </mat-sidenav-content>
 </mat-sidenav-container>
-<app-message></app-message>
