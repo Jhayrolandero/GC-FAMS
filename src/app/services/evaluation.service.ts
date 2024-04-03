@@ -29,25 +29,37 @@ export class EvaluationService {
   setEvalScoreCategory(evalSem: Evaluation): ScoreCategory[]{
     return [
       {
-        name: "Category 1",
+        name: "Knowledge of Content",
         value: evalSem.param1_score,
         bgColor: "#fbd650"
 
       },
       {
-        name: "Category 2",
+        name: "Instructional Skills",
         value: evalSem.param2_score,
         bgColor: "#65c280"
 
       },
       {
-        name: "Category 3",
+        name: "Communication SKills",
         value: evalSem.param3_score,
         bgColor: "#1f7cb5"
 
       },
       {
-        name: "Category 4",
+        name: "Teaching for Independent Learning",
+        value: evalSem.param3_score,
+        bgColor: "#1f7cb5"
+
+      },
+      {
+        name: "Management of Learning",
+        value: evalSem.param3_score,
+        bgColor: "#1f7cb5"
+
+      },
+      {
+        name: "Flexible Learning Modality",
         value: evalSem.param4_score,
         bgColor: "#ef6540"
 
@@ -71,12 +83,14 @@ export class EvaluationService {
   setSeries(evaluation: Evaluation[]): Series[] {
     return evaluation.map((evalItem: Evaluation) => ({
         name: `${evalItem.semester}${evalItem.semester== 1 ? 'st' : 'nd'}, A.Y. ${evalItem.evaluation_year} - ${+evalItem.evaluation_year + 1}`,
-        value: this.averageEvaluation(
-            evalItem.param1_score,
-            evalItem.param2_score,
-            evalItem.param3_score,
-            evalItem.param4_score
-        )
+        value: parseFloat(((
+          +evalItem.param1_score +
+          +evalItem.param2_score +
+          +evalItem.param3_score +
+          +evalItem.param4_score +
+          +evalItem.param5_score +
+          +evalItem.param6_score
+) / 6).toFixed(1))
     }));
   }
 }

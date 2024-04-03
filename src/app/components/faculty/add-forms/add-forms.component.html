@@ -11,10 +11,10 @@
                 <rect width="24" height="24" fill="white"/>
                 </clipPath>
                 </defs>
-            </svg> 
+            </svg>
         </div>
         <form (ngSubmit)="submitForm('educ')" [formGroup]="educForm" class="m-5 border-2 p-3">
-            <p class="font-Roboto font-medium text-[1.1rem]">Brain Title</p>
+            <p class="font-Roboto font-medium text-[1.1rem]">Educational Attainment</p>
             <input
             type="text"
             placeholder="Add Educational Title"
@@ -94,7 +94,7 @@
                 <rect width="24" height="24" fill="white"/>
                 </clipPath>
                 </defs>
-            </svg> 
+            </svg>
         </div>
         <form (ngSubmit)="submitForm('cert')" [formGroup]="certForm" class="m-5 border-2 p-3">
             <p class="font-Roboto font-medium text-[1.1rem]">Certification Title</p>
@@ -167,7 +167,7 @@
                 <rect width="24" height="24" fill="white"/>
                 </clipPath>
                 </defs>
-            </svg> 
+            </svg>
         </div>
         <form (ngSubmit)="submitForm('exp')" [formGroup]="expForm" class="m-5 border-2 p-3">
             <p class="font-Roboto font-medium text-[1.1rem]">Industry Experience Name</p>
@@ -250,7 +250,7 @@
                 <rect width="24" height="24" fill="white"/>
                 </clipPath>
                 </defs>
-            </svg> 
+            </svg>
         </div>
         <form (ngSubmit)="submitForm('spec')" [formGroup]="specForm" class="m-5 border-2 p-3">
             <p class="font-Roboto font-medium text-[1.1rem]">Expertise Name</p>
@@ -263,7 +263,7 @@
             class="w-full border-2 px-2 font-Roboto font-regular text-[1.1rem] rounded-[5px] text-black py-1"
             >
 
-            <p class="font-Roboto font-medium text-[1.1rem] mt-4">Confidence <span class="font-Roboto font-medium text-[1.1rem] italic">(work in progress)</span></p>
+            <p class="font-Roboto font-medium text-[1.1rem] mt-4">Confidence</p>
             <input
             [ngModel]="specValue?.expertise_confidence"
             type="text"
@@ -293,7 +293,7 @@
                 <rect width="24" height="24" fill="white"/>
                 </clipPath>
                 </defs>
-            </svg> 
+            </svg>
         </div>
         <form (ngSubmit)="submitForm('proj')" [formGroup]="projForm" class="m-5 border-2 p-3">
             <p class="font-Roboto font-medium text-[1.1rem]">Project Name</p>
@@ -347,7 +347,7 @@
                 <rect width="24" height="24" fill="white"/>
                 </clipPath>
                 </defs>
-            </svg> 
+            </svg>
         </div>
         <form (ngSubmit)="submitForm('proj')" [formGroup]="projForm" class="m-5 border-2 p-3">
             <p class="font-Roboto font-medium text-[1.1rem]">Project Name</p>
@@ -405,7 +405,7 @@
                 <rect width="24" height="24" fill="white"/>
                 </clipPath>
                 </defs>
-            </svg> 
+            </svg>
         </div>
         <form (ngSubmit)="deleteRes(educValue!.educattainment_ID, 'deleteEduc')" [formGroup]="educForm" class="m-5 border-2 p-3">
             <p class="font-Roboto font-medium text-[1.1rem]">Are you sure you want to delete this record? You cannot undo this later.</p>
@@ -430,7 +430,7 @@
                 <rect width="24" height="24" fill="white"/>
                 </clipPath>
                 </defs>
-            </svg> 
+            </svg>
         </div>
         <form (ngSubmit)="deleteRes(expValue!.experience_ID, 'deleteExp')" [formGroup]="expForm" class="m-5 border-2 p-3">
             <p class="font-Roboto font-medium text-[1.1rem]">Are you sure you want to delete this record? You cannot undo this later.</p>
@@ -455,7 +455,7 @@
                 <rect width="24" height="24" fill="white"/>
                 </clipPath>
                 </defs>
-            </svg> 
+            </svg>
         </div>
         <form (ngSubmit)="deleteRes(certValue!.cert_ID, 'deleteCert')" [formGroup]="certForm" class="m-5 border-2 p-3">
             <p class="font-Roboto font-medium text-[1.1rem]">Are you sure you want to delete this record? You cannot undo this later.</p>
@@ -480,7 +480,7 @@
                 <rect width="24" height="24" fill="white"/>
                 </clipPath>
                 </defs>
-            </svg> 
+            </svg>
         </div>
         <form (ngSubmit)="deleteRes(projValue!.project_ID, 'deleteProj')" [formGroup]="projForm" class="m-5 border-2 p-3">
             <p class="font-Roboto font-medium text-[1.1rem]">Are you sure you want to delete this record? You cannot undo this later.</p>
@@ -505,7 +505,7 @@
                 <rect width="24" height="24" fill="white"/>
                 </clipPath>
                 </defs>
-            </svg> 
+            </svg>
         </div>
         <form (ngSubmit)="deleteRes(specValue!.expertise_ID, 'deleteSpec')" [formGroup]="specForm" class="m-5 border-2 p-3">
             <p class="font-Roboto font-medium text-[1.1rem]">Are you sure you want to delete this record? You cannot undo this later.</p>

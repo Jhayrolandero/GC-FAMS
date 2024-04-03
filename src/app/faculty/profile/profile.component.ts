@@ -8,7 +8,7 @@ import { FacultyEducationComponent } from '../../components/faculty/faculty-prof
 import { FacultyCertificationsComponent } from '../../components/faculty/faculty-profile/faculty-certifications/faculty-certifications.component';
 import { FacultyExpertiseComponent } from '../../components/faculty/faculty-profile/faculty-expertise/faculty-expertise.component';
 import { FacultyExperienceComponent } from '../../components/faculty/faculty-profile/faculty-experience/faculty-experience.component';
-import { FacultyFetcherService } from '../../services/faculty/faculty-fetcher.service';
+import { FacultyRequestService } from '../../services/faculty/faculty-request.service';
 import { Resume } from '../../services/Interfaces/resume';
 import { HttpClient } from '@angular/common/http';
 import { AddFormsComponent } from '../../components/faculty/add-forms/add-forms.component';
@@ -18,19 +18,29 @@ import { Certifications } from '../../services/Interfaces/certifications';
 import { IndustryExperience } from '../../services/Interfaces/industry-experience';
 import { FacultyProjectsComponent } from '../../components/faculty/faculty-profile/faculty-projects/faculty-projects.component';
 import { Project } from '../../services/Interfaces/project';
-import { CvComponent } from '../../components/cv/cv.component';
 import html2canvas from 'html2canvas';
 import jspdf from 'jspdf';
 import { Expertise } from '../../services/Interfaces/expertise';
 import { forkJoin } from 'rxjs';
 import { error } from 'console';
-
+import { MessageComponent } from '../../components/message/message.component';
 @Component({
     selector: 'app-profile',
     standalone: true,
     templateUrl: './profile.component.html',
     styleUrl: './profile.component.css',
-    imports: [LoadingScreenComponent, NgOptimizedImage, CommonModule, FacultyEducationComponent, FacultyCertificationsComponent, FacultyExperienceComponent, FacultyExpertiseComponent, AddFormsComponent, FacultyProjectsComponent, CvComponent]
+    imports: [
+      MessageComponent,
+      LoadingScreenComponent,
+      NgOptimizedImage,
+      CommonModule,
+      FacultyEducationComponent,
+      FacultyCertificationsComponent,
+      FacultyExperienceComponent,
+      FacultyExpertiseComponent,
+      AddFormsComponent,
+      FacultyProjectsComponent
+    ]
 })
 export class ProfileComponent {
   tempPort = mainPort;
@@ -56,11 +66,9 @@ export class ProfileComponent {
   //CV form toggle
   cvToggle = false;
 
-  constructor(private facultyService: FacultyFetcherService, private router: Router, private http: HttpClient){
-    // this.getProfile();
-    // this.getSchedule();
-    // this.getResume();
-    this.getProfileScheduleResume()
+    constructor(private facultyService: FacultyRequestService, private router: Router, private http: HttpClient){
+      this.getProfileScheduleResume()
+      // this.getResume();
   }
 
   setForm(value: string){
@@ -74,7 +82,7 @@ export class ProfileComponent {
     this.specValue = undefined;
 
     //Refreshes resume get.
-    // this.getResume();
+    this.getProfileScheduleResume()
   }
 
   setEducValueForm(value: EducationalAttainment){
@@ -97,54 +105,32 @@ export class ProfileComponent {
     this.projValue = value;
   }
 
-  // getProfile(){
-  //   this.facultyService.fetchProfile().subscribe({
-  //   next: (next) => this.facultyProfile = next,
-  //   error: (error) => {
-  //     console.log(error);
-  //     this.router.navigate(['/']);
-  //   },
-  //   complete: () => {
-  //     this.facultyProfile.profile_image = mainPort + this.facultyProfile.profile_image;
-  //     this.facultyProfile.cover_image = mainPort + this.facultyProfile.cover_image;
-  //     this.isLoading = false
-  //   }
-  //   });
-  // }
-
-  // getSchedule(){
-  //   //Fetches the schedule data based on passed selected date
-  //   this.facultyService.fetchSchedDay().subscribe({
-  //     next: value => this.schedules = value,
-  //     error: err => {if(err.status == 403){this.router.navigate(['/']);}}
-  //   });
-  // }
-
-  // getResume(){
-  //   this.facultyService.fetchResume().subscribe({
-  //     next: value => {this.resume = value;
-  //                     console.log(this.resume);
-  //                   },
-  //     error: err => {
-  //       console.log(err);
-  //       if(err.status == 403){
-  //         this.router.navigate(['/']);
-  //       }}
-  //     });
-  // }
-
   certificate!: Certifications[]
   experience!: IndustryExperience[]
   education!: EducationalAttainment[]
   expertise!: Expertise[]
+  project!: Project[]
+
+  // getResume(){
+  //   this.facultyService.fetchData(this.resume, 'getresume/fetchResume').subscribe({
+  //     next: value => {this.resume = value;
+  //                     console.log(this.resume);
+  //                     this.isLoading = false
+  //                   },
+  //     error: err => {console.log(err);if(err.status == 403){this.router.navigate(['/']);}}
+  //   });
+  // }
+
   getProfileScheduleResume() {
     forkJoin({
-      profileRequest: this.facultyService.fetchProfile(),
-      scheduleRequest: this.facultyService.fetchSchedDay(),
-      certificateRequest: this.facultyService.fetchCertificate(),
-      experienceRequest: this.facultyService.fetchExperience(),
-      educationRequest: this.facultyService.fetchEducation(),
-      expertiseRequest: this.facultyService.fetchExpertise(),
+      profileRequest: this.facultyService.fetchData(this.facultyProfile, 'getprofile/fetchProfile'),
+      scheduleRequest: this.facultyService.fetchData(this.schedules, 'getschedules/fetchFaculty'),
+
+      certificateRequest: this.facultyService.fetchData(this.certificate, 'certificate'),
+      experienceRequest: this.facultyService.fetchData(this.experience, 'experience'),
+      educationRequest: this.facultyService.fetchData(this.education, 'education'),
+      projectRequest: this.facultyService.fetchData(this.project, 'project'),
+      expertiseRequest: this.facultyService.fetchData(this.expertise, 'expertise'),
     }).subscribe({
       next: (({
         profileRequest,
@@ -152,12 +138,14 @@ export class ProfileComponent {
         certificateRequest,
         experienceRequest,
         educationRequest,
+        projectRequest,
         expertiseRequest}) => {
           this.facultyProfile = profileRequest
           this.schedules = scheduleRequest
           this.certificate = certificateRequest
           this.experience = experienceRequest
           this.education = educationRequest
+          this.project = projectRequest
           this.expertise = expertiseRequest
       }),
       error: (error) => {
@@ -167,6 +155,7 @@ export class ProfileComponent {
       complete: () => {
         this.facultyProfile.profile_image = mainPort + this.facultyProfile.profile_image;
         this.facultyProfile.cover_image = mainPort + this.facultyProfile.cover_image;
+        console.log(this.project);
         this.isLoading = false
       }
     })

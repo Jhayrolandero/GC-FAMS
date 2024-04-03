@@ -41,7 +41,7 @@ ngOnChanges(changes: SimpleChanges): void {
     this.facultyMembers = this.faculties.map((facultyMember: Faculty) => {
       let collegeAbbrev = '';
       for(let i = 0; i < this.colleges.length; i++) {
-        console.log(this.colleges[i])
+        // console.log(this.colleges[i])
         if(this.colleges[i].college_ID == facultyMember.college_ID) {
           collegeAbbrev = this.colleges[i].college_abbrev
         }

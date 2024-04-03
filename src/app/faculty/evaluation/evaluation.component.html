@@ -6,11 +6,11 @@
   >
     <h1 class="font-Poppins font-semibold text-[2.5rem] py-2">Evaluation</h1>
     <div class="flex flex-row space-x-4">
-      <button
+      <!-- <button
         class="bg-gradient-to-r from-blue to-greenBar text-white font-Poppins font-semibold px-11 py-2 rounded-full shadow-xl hover:scale-[102%] hover:duration-300 duration-300"
       >
         +Add
-      </button>
+      </button> -->
     </div>
   </div>
 
@@ -30,7 +30,9 @@
     </div>
 
     <div class="w-full flex flex-col laptop:flex-row p-4 pb-2 gap-4">
-      <div class="bg-white w-full laptop:w-[450px] rounded-[25px] shadow-lg laptop:mr-2 py-4">
+      <div
+        class="bg-white w-full laptop:w-[450px] rounded-[25px] shadow-lg laptop:mr-2 py-4 flex flex-col"
+      >
         <p class="font-Poppins font-semibold text-[1.4rem] mb-2 text-center">
           Selected Evaluation Score
         </p>
@@ -53,7 +55,9 @@
           }}
         </p>
       </div>
-      <div class="bg-white rounded-[25px] w-full shadow-lg laptop:ml-2 py-4 px-8">
+      <div
+        class="bg-white rounded-[25px] w-full shadow-lg laptop:ml-2 py-4 px-8 tablet:h-[220px] tablet:overflow-y-scroll"
+      >
         <div *ngFor="let evalItem of evalScoreCategory">
           <div class="flex justify-between">
             <p class="font-Poppins font-semibold text-blue text-[1.2rem]">
@@ -75,9 +79,7 @@
         <p class="font-Poppins font-semibold text-[2rem]">
           Evaluation Timeline
         </p>
-        <div
-          class="w-[90%] px-4 py-2 flex flex-col items-center h-[250px]"
-        >
+        <div class="w-[90%] px-4 py-2 flex flex-col items-center h-[250px]">
           <ngx-charts-line-chart
             [scheme]="colorScheme"
             [legend]="legend"

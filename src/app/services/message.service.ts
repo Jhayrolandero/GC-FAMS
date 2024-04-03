@@ -1,14 +1,41 @@
-import { Injectable } from '@angular/core';
+import { Injectable, WritableSignal, signal } from '@angular/core';
+import { Message } from './Interfaces/message';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class MessageService {
-
-  messages: string[] = []
+  /*
+  Status Meaning
+  -1 = Error
+  0 = Pending/Process
+  1 = success
+  */
+  messages: Message[] = [];
   constructor() { }
 
-  setMessage(message: string):void {
-    this.messages.push(message)
+  sendMessage(message: string, status: number) {
+
+    this.messages.push({
+      message, status
+    })
+  }
+
+  // sendMessage(message: string, status: number): void  {
+  //   this.messages.update(value => [...value, {'message': message, 'status': status}])
+  //   console.log(this.messages().length)
+  // }
+
+  get getMessage(): Message[] {
+    return this.messages
+  }
+
+  clearMessage = () => {
+    this.messages = []
+  }
+
+  deleteMessage = () => {
+    this.messages.shift()
   }
 }

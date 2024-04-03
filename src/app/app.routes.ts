@@ -14,11 +14,12 @@ import { ManageFacultyComponent } from './admin/manage-faculty/manage-faculty.co
 import { EvaluationComponent } from './faculty/evaluation/evaluation.component';
 import { ProjectsComponent } from './faculty/projects/projects.component';
 import { CvComponent } from './components/cv/cv.component';
+import { authGuard } from './services/auth.guard';
 
 export const routes: Routes = [
   {path: '', redirectTo: '/login', pathMatch: 'full'},
   {path: 'faculty', redirectTo: '/faculty/curriculum-vitae', pathMatch: 'full'},
-  {path: 'admin', redirectTo: '/admin/admin-profile', pathMatch: 'full'},
+  {path: 'admin', redirectTo: '/admin/faculty-members', pathMatch: 'full'},
   
   {path: 'login', component: LoginComponent},
   {path: 'faculty', component: FacultyComponent, children: [
@@ -30,7 +31,7 @@ export const routes: Routes = [
     {path: 'certifications', component: AnalyticsComponent},
     {path: 'community', component: CommunityExtensionsComponent},
     {path: 'evaluation', component: EvaluationComponent},
-  ]},
+  ], canActivateChild: [authGuard]},
   {path: 'admin', component: AdminComponent, children: [
     {path: 'admin-profile', component: ProgramAnalyticsComponent},
     {path: 'program-analytics', component: ProgramAnalyticsComponent},
@@ -40,7 +41,7 @@ export const routes: Routes = [
     {path: 'community-extensions', component: ProgramAnalyticsComponent},
     {path: 'evaluation-analytics', component: ProgramAnalyticsComponent},
     {path: 'manage-faculty', component: ManageFacultyComponent},
-  ]},
+  ], canActivateChild: [authGuard]},
   {path: 'cv', component: CvComponent},
   {path: '**', component: PagenotfoundComponent}
 ];

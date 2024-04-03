@@ -2,7 +2,7 @@
 
 <div class="p-5 flex flex-col gap-3 text-blue" *ngIf="!isLoading">
   <div class="absolute z-50">
-    <app-commex-form (setToggle)="formToggle = false" 
+    <app-commex-form (setToggle)="toggler()" 
                       [formToggle]="formToggle">
     </app-commex-form>
   </div>
@@ -14,7 +14,7 @@
     </h1>
     <div class="flex flex-row space-x-4">
       <button
-        (click)="formToggle = true" class="bg-gradient-to-r from-blue to-greenBar text-white font-Poppins font-semibold w-[125px] h-[40px] rounded-full shadow-xl hover:scale-[102%] hover:duration-300 duration-300"
+        (click)="toggler()" class="bg-gradient-to-r from-blue to-greenBar text-white font-Poppins font-semibold w-[125px] h-[40px] rounded-full shadow-xl hover:scale-[102%] hover:duration-300 duration-300"
       >
         +Add
       </button>
@@ -30,8 +30,8 @@
     *ngIf="commexs[0] != undefined"
     class="bg-white shadow-lg w-full rounded-[25px] flex flex-row overflow-hidden hover:scale-[101%] hover:duration-300 duration-300"
   >
-    <div class="bg-red-400 w-[25%] h-[280px]">
-      <img [src]="tempPort + '/GC-FaMS-API/Image_Assets/CommunityExtensions/' + commexs[0].commex_ID + '/COMMEX_HEADER.png'" class="h-full w-full object-cover" />
+    <div *ngIf="commexs[0].commex_header_img != 'http://localhost:8080'" class="bg-red-400 w-[25%] h-[280px]">
+      <img [src]="commexs[0].commex_header_img" class="h-full w-full object-cover" />
     </div>
     <div class="ml-4 mt-4 w-[75%] pr-6">
       <h1 class="font-Poppins font-semibold text-[1.5rem]">
@@ -46,7 +46,7 @@
           {{ commexs[0].commex_date }}
         </h2>
       </div>
-      <p>
+      <p class="mb-4">
         {{ commexs[0].commex_details }}
       </p>
     </div>
@@ -63,23 +63,25 @@
       *ngFor="let commex of commexs; let i = index"
       
     >
-      <div *ngIf="i != 0" class="bg-white rounded-xl shadow-lg p-3 flex flex-col gap-2 duration-300 hover:scale-[102%] hover:shadow-xl hover:duration-300 break-inside-avoid mb-2">
-        <img [src]="tempPort + '/GC-FaMS-API/Image_Assets/CommunityExtensions/' + commex.commex_ID + '/COMMEX_HEADER.png'" alt="" />
-        <div>
+      <div *ngIf="i != 0" class="bg-white rounded-xl shadow-lg flex flex-col gap-2 duration-300 hover:scale-[102%] hover:shadow-xl hover:duration-300 break-inside-avoid mb-2 overflow-hidden">
+        <div class="bg-red-300">
+          <img [src]="commex.commex_header_img" alt="" />
+        </div>
+        <div class="p-3">
           <h4 class="text-xl font-bold">{{ commex.commex_title }}</h4>
           <img
             src="../../../assets/faculty-dashboard/BlueVector.png"
             class="w-[20px] h-[20px] mr-[5px] inline-block"
           />
           <span>{{ commex.commex_date }}</span>
+          <p>
+            {{ commex.commex_details }}
+          </p>
         </div>
 
-        <p>
-          {{ commex.commex_details }}
-        </p>
-        <button class="bg-blue text-white font-bold p-2 rounded-lg">
+        <!-- <button class="bg-blue text-white font-bold p-2 rounded-lg">
           Read More
-        </button>
+        </button> -->
       </div>
     </div>
   </app-other-commex>

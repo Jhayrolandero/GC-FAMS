@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommunityExtension } from '../../../services/Interfaces/community-extension';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { FacultyRequestService } from '../../../services/faculty/faculty-request.service';
 
 @Component({
   selector: 'app-commex-form',
@@ -15,22 +16,47 @@ export class CommexFormComponent {
   @Input() commexValue?: CommunityExtension;
   @Output() setToggle = new EventEmitter<string>();
 
+  constructor(private facultyPostService: FacultyRequestService){}
+
   commexForm = new FormGroup({
 		commex_title: new FormControl(''),
     commex_details: new FormControl(''),
-    experience_details: new FormControl(''),
-		commex_header_img: new FormControl(''),
+		commex_header_img: new FormControl<File | null>(null),
     commex_date: new FormControl(''),
 	})
 
   triggerToggle(){
     this.setToggle.emit();
-
   }
-  
-    submitForm(){
-      console.log(this.commexForm.value);
-    }
+
+  // refreshForm(){
+  //   this.commexForm = new FormGroup({
+  //     commex_title: new FormControl(''),
+  //     commex_details: new FormControl(''),
+  //     commex_header_img: new FormControl<File | null>(null),
+  //     commex_date: new FormControl(''),
+  //   })
+  // }
+
+  submitForm(){
+    // console.log(this.commexForm);
+    const formData = this.facultyPostService.formDatanalize(this.commexForm);
+    // console.log(formData.get("commex_title"))
+    this.facultyPostService.postData(formData, 'addCommex').subscribe({
+      next: (next: any) => {console.log(next);},
+      error: (error) => {console.log(error)},
+      complete: () => {this.triggerToggle();}
+    });
+  }
+
+  // submitForm(){
+  //   const formData = this.facultyPostService.formDatanalize(this.commexForm);
+  //   this.facultyPostService.postData(formData, "addCommex").subscribe({
+  //     next: (next: any) => {console.log(next);},
+  //     error: (error) => {console.log(error)},
+  //     complete: () => {this.triggerToggle();}
+  //   });
+  // }
   
     //Dynamic Create, Edit, and Delete function call for faculty post service.
     addRes(form: FormGroup, type: string){
@@ -55,5 +81,26 @@ export class CommexFormComponent {
       //                   this.emptyType('');},
       //   error: err => console.log(err),
       // });
+    }
+
+
+
+    imageURL?: string = undefined;
+    PreviewImage(event: Event) {
+      const inputElement = event.target as HTMLInputElement;
+      const file = inputElement.files?.[0]; // Using optional chaining to handle null or undefined
+  
+      if (file) {
+          // File Preview
+          const reader = new FileReader();
+          reader.onload = () => {
+              this.imageURL = reader.result as string;
+              this.commexForm.patchValue({
+                commex_header_img: file
+              })
+          };
+          reader.readAsDataURL(file);
+      }
+      console.log(this.commexForm);
     }
 }

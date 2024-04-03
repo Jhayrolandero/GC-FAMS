@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FacultyFetcherService } from '../../services/faculty/faculty-fetcher.service';
+import { FacultyRequestService } from '../../services/faculty/faculty-request.service';
 import { Router } from '@angular/router';
 import { Evaluation } from '../../services/Interfaces/evaluation';
 import { NgxChartsModule, ScaleType } from '@swimlane/ngx-charts';
-import { error } from 'node:console';
-import { parse } from 'node:path';
 import { CommonModule, NgFor } from '@angular/common';
 import { LoadingScreenComponent } from '../../components/loading-screen/loading-screen.component';
 import { EvaluationService } from '../../services/evaluation.service';
@@ -40,6 +38,8 @@ export class EvaluationComponent implements OnInit{
     {name: "", value: 0, bgColor: ''},
     {name: "", value: 0, bgColor: ''},
     {name: "", value: 0, bgColor: ''},
+    {name: "", value: 0, bgColor: ''},
+    {name: "", value: 0, bgColor: ''},
     {name: "", value: 0, bgColor: ''}
   ]
   selectedEvalSem: Evaluation = {
@@ -51,12 +51,14 @@ export class EvaluationComponent implements OnInit{
     param2_score: 0,
     param3_score: 0,
     param4_score: 0,
+    param5_score: 0,
+    param6_score: 0,
     evalAverage: 0
   }
   evalHistory: evalScoreHistory[] = []
 
   constructor(
-    private facultyService: FacultyFetcherService,
+    private facultyService: FacultyRequestService,
     private router: Router,
     private evaluationService: EvaluationService){}
 
@@ -67,7 +69,7 @@ export class EvaluationComponent implements OnInit{
 
   // Initial Fetching of faculty evaluation
   getEvaluation() {
-    this.facultyService.fetchEvaluation().subscribe({
+    this.facultyService.fetchData(this.evaluation, 'getevaluation/fetchEvaluation').subscribe({
       next: (evalItem: Evaluation[]) => this.evaluation = evalItem,
       error: error => {
         if (error.status == 403) {
@@ -79,12 +81,14 @@ export class EvaluationComponent implements OnInit{
         this.evaluation = this.evaluation.map((evalItem) => {
           return {
             ...evalItem,
-            "evalAverage": this.evaluationService.averageEvaluation(
-                      +evalItem.param1_score,
-                      +evalItem.param2_score,
-                      +evalItem.param3_score,
-                      +evalItem.param4_score
-            )
+            "evalAverage": parseFloat(((
+                      +evalItem.param1_score +
+                      +evalItem.param2_score +
+                      +evalItem.param3_score +
+                      +evalItem.param4_score +
+                      +evalItem.param5_score +
+                      +evalItem.param6_score
+            ) / 6).toFixed(1))
           }
         })
         this.evalHistory = this.evaluationService.setEvalHistory(this.evaluation)

@@ -6,7 +6,7 @@ import { EducationalAttainment } from '../../services/Interfaces/educational-att
 import { IndustryExperience } from '../../services/Interfaces/industry-experience';
 import { Project } from '../../services/Interfaces/project';
 import { Profile } from '../../services/Interfaces/profile';
-import { FacultyFetcherService } from '../../services/faculty/faculty-fetcher.service';
+import { FacultyRequestService } from '../../services/faculty/faculty-request.service';
 import { Router } from '@angular/router';
 import { mainPort } from '../../app.component';
 import { profile } from 'console';
@@ -33,7 +33,7 @@ export class CvComponent {
 
 
 
-  constructor(private facultyService: FacultyFetcherService, private router: Router){
+  constructor(private facultyService: FacultyRequestService, private router: Router){
     this.getProfile();
     this.getSchedule();
     this.getResume();
@@ -45,7 +45,7 @@ export class CvComponent {
   // }
 
   getProfile(){
-    this.facultyService.fetchProfile().subscribe({
+    this.facultyService.fetchData(this.facultyProfile, 'getprofile/fetchProfile').subscribe({
     next: (next) => this.facultyProfile = next,
     error: (error) => {
       console.log(error);
@@ -61,7 +61,7 @@ export class CvComponent {
 
   getSchedule(){
     //Fetches the schedule data based on passed selected date
-    this.facultyService.fetchSchedDay().subscribe({
+    this.facultyService.fetchData(this.schedules, 'getschedules/fetchFaculty').subscribe({
       next: value => {this.schedules = value;
                       this.filterSched();},
       error: err => {if(err.status == 403){this.router.navigate(['/']);}},
@@ -70,7 +70,7 @@ export class CvComponent {
   }
 
   getResume(){
-    this.facultyService.fetchResume().subscribe({
+    this.facultyService.fetchData(this.resume, 'getresume/fetchResume').subscribe({
       next: value => this.resume = value,
       error: err => {console.log(err);if(err.status == 403){this.router.navigate(['/']);}},
       complete: () => console.log("ResumeInfo loaded.")
@@ -83,6 +83,25 @@ export class CvComponent {
         this.filteredSchedules.add(schedule.course_name);
       }
     })
+
+    this.filteredSchedules.forEach(schedule => {
+      if (typeof schedule === 'string' && /\(LEC\)/.test(schedule)) {
+          this.filteredSchedules.delete(schedule);
+      }
+
+    let tempFilt = new Set();
+
+    this.filteredSchedules.forEach(schedule => {
+      if(typeof schedule === 'string' && schedule.includes("(LAB)")) {
+        const tempItem = schedule.replace("(LAB)", "");
+        tempFilt.add(tempItem);
+      }
+      else{
+        tempFilt.add(schedule);
+      }
+    })
+    this.filteredSchedules = tempFilt;
+  });
   }
 
 

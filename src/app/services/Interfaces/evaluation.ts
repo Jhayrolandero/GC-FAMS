@@ -7,6 +7,8 @@ export interface Evaluation {
     param2_score: number,
     param3_score: number,
     param4_score: number,
+    param5_score: number,
+    param6_score: number,
     evalAverage: number
 }
 

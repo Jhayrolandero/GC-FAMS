@@ -1,7 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { AuthService } from '../../../services/auth.service';
 import { Router } from '@angular/router';
-import { FacultyFetcherService } from '../../../services/faculty/faculty-fetcher.service';
+import { FacultyRequestService } from '../../../services/faculty/faculty-request.service';
 import { Profile } from '../../../services/Interfaces/profile';
 import { mainPort } from '../../../app.component';
 import { CommonModule } from '@angular/common';
@@ -33,7 +33,7 @@ export class TopnavComponent implements OnInit{
   constructor(
     private auth: AuthService,
     private router: Router,
-    private facultyService: FacultyFetcherService){
+    private facultyService: FacultyRequestService){
     }
 
     triggerToggle(){
@@ -45,14 +45,14 @@ export class TopnavComponent implements OnInit{
         this.getProfile()
     }
     getProfile(){
-      this.facultyService.fetchProfile().subscribe({
+      this.facultyService.fetchData(this.facultyProfile, 'getprofile/fetchProfile').subscribe({
       next: (res : Profile) => {
         this.facultyProfile.profile_image = res.profile_image
         this.facultyProfile.first_name = res.first_name
         this.facultyProfile.last_name = res.last_name
         this.facultyProfile.middle_name = res.middle_name
         this.facultyProfile.ext_name = res.ext_name
-
+        console.log(this.facultyProfile);
       },
       error: (error) => {
         console.log(error);
