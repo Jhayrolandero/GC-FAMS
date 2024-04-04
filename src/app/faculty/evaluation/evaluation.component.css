@@ -8,7 +8,7 @@
 
 .bar::before {
   content: '';
-  background-color: green;
+  background-color: #1E7242;
   height: 100%;
   display: block;
   width: var(--width);

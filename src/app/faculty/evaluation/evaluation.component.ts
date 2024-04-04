@@ -34,27 +34,8 @@ export class EvaluationComponent implements OnInit {
 
   isLoading: boolean = true;
   evaluation: Evaluation[] = [];
-  evalScoreCategory: ScoreCategory[] = [
-    { name: "", value: 0, bgColor: '' },
-    { name: "", value: 0, bgColor: '' },
-    { name: "", value: 0, bgColor: '' },
-    { name: "", value: 0, bgColor: '' },
-    { name: "", value: 0, bgColor: '' },
-    { name: "", value: 0, bgColor: '' }
-  ]
-  selectedEvalSem: Evaluation = {
-    evaluation_ID: 0,
-    faculty_ID: 0,
-    semester: 0,
-    evaluation_year: 0,
-    param1_score: 0,
-    param2_score: 0,
-    param3_score: 0,
-    param4_score: 0,
-    param5_score: 0,
-    param6_score: 0,
-    evalAverage: 0
-  }
+  evalScoreCategory!: ScoreCategory[]
+  selectedEvalSem!: Evaluation
   evalHistory: evalScoreHistory[] = []
   evalBar!: HTMLElement
   constructor(
@@ -99,6 +80,7 @@ export class EvaluationComponent implements OnInit {
         this.selectedEvalSem = this.evaluation[this.evaluation.length - 1]
         this.selectEvalSem()
         this.isLoading = false
+        console.log(this.selectedEvalSem)
       }
     })
   }
