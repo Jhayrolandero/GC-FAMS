@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer2, ElementRef } from '@angular/core';
 import { FacultyRequestService } from '../../services/faculty/faculty-request.service';
 import { Router } from '@angular/router';
 import { Evaluation } from '../../services/Interfaces/evaluation';
@@ -13,10 +13,10 @@ type Series = {
 }
 
 type ScoreCategory = {
-    name: string,
-    value: number
-    bgColor?: string
-  }
+  name: string,
+  value: number
+  bgColor?: string
+}
 
 export interface evalScoreHistory {
   'name': string,
@@ -30,17 +30,17 @@ export interface evalScoreHistory {
   templateUrl: './evaluation.component.html',
   styleUrl: './evaluation.component.css'
 })
-export class EvaluationComponent implements OnInit{
+export class EvaluationComponent implements OnInit {
 
   isLoading: boolean = true;
   evaluation: Evaluation[] = [];
   evalScoreCategory: ScoreCategory[] = [
-    {name: "", value: 0, bgColor: ''},
-    {name: "", value: 0, bgColor: ''},
-    {name: "", value: 0, bgColor: ''},
-    {name: "", value: 0, bgColor: ''},
-    {name: "", value: 0, bgColor: ''},
-    {name: "", value: 0, bgColor: ''}
+    { name: "", value: 0, bgColor: '' },
+    { name: "", value: 0, bgColor: '' },
+    { name: "", value: 0, bgColor: '' },
+    { name: "", value: 0, bgColor: '' },
+    { name: "", value: 0, bgColor: '' },
+    { name: "", value: 0, bgColor: '' }
   ]
   selectedEvalSem: Evaluation = {
     evaluation_ID: 0,
@@ -56,15 +56,19 @@ export class EvaluationComponent implements OnInit{
     evalAverage: 0
   }
   evalHistory: evalScoreHistory[] = []
-
+  evalBar!: HTMLElement
   constructor(
     private facultyService: FacultyRequestService,
     private router: Router,
-    private evaluationService: EvaluationService){}
+    private evaluationService: EvaluationService,
+    private renderer: Renderer2,
+    private elementRef: ElementRef) { }
 
   ngOnInit(): void {
     this.getEvaluation();
 
+    // this.evalBar = this.elementRef.nativeElement.querySelector('.bar')
+    // this.renderer.setStyle(this.evalBar, '.bar::before', `{ width: 87.5%; }`);
   }
 
   // Initial Fetching of faculty evaluation
@@ -82,12 +86,12 @@ export class EvaluationComponent implements OnInit{
           return {
             ...evalItem,
             "evalAverage": parseFloat(((
-                      +evalItem.param1_score +
-                      +evalItem.param2_score +
-                      +evalItem.param3_score +
-                      +evalItem.param4_score +
-                      +evalItem.param5_score +
-                      +evalItem.param6_score
+              +evalItem.param1_score +
+              +evalItem.param2_score +
+              +evalItem.param3_score +
+              +evalItem.param4_score +
+              +evalItem.param5_score +
+              +evalItem.param6_score
             ) / 6).toFixed(1))
           }
         })
@@ -101,8 +105,8 @@ export class EvaluationComponent implements OnInit{
 
   // Select a specific evaluation history
   selectEvalSem(id?: number): void {
-    if(id) {
-      let evalItem : Evaluation[] = this.evaluation.filter((evalItem: Evaluation) => evalItem.evaluation_ID == id)
+    if (id) {
+      let evalItem: Evaluation[] = this.evaluation.filter((evalItem: Evaluation) => evalItem.evaluation_ID == id)
       this.selectedEvalSem = evalItem[0]
       this.evalScoreCategory = this.evaluationService.setEvalScoreCategory(this.selectedEvalSem)
 
@@ -125,9 +129,10 @@ export class EvaluationComponent implements OnInit{
   yAxisLabel: string = 'Evaluation Average';
   timeline: boolean = true;
 
-  colorScheme = {name: 'myScheme',
-  selectable: true,
-  group: ScaleType.Ordinal,
+  colorScheme = {
+    name: 'myScheme',
+    selectable: true,
+    group: ScaleType.Ordinal,
     domain: ['#5AA454', '#E44D25', '#CFC0BB', '#7aa3e5', '#a8385d', '#aae3f5']
   };
 

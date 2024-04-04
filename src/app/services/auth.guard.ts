@@ -20,10 +20,10 @@ export const authGuard: CanActivateFn = (route, state) => {
   //Extract state url, split to array, then get 2nd index to check if url root is faculty or not. Maybe a better way to extract this?
   const urlRoot = state.url.split("/")[1];
 
-  if(priv == urlRoot){
+  if (priv == urlRoot) {
     return true;
   }
-  else{
+  else {
     console.log("Discrepancy in privilege detected.");
     priv === "faculty" ? router.navigate(['faculty']) : router.navigate(['admin']);
     return false;
