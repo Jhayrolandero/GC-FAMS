@@ -15,7 +15,7 @@ class="text-blue"
   <div class="mainBox rounded-[15px] h-[100px] flex items-center shadow-md hover:scale-[101%] hover:duration-300 duration-300 select-none"
   [ngClass]="{'bg-blue text-white': selectedCollege == college?.college_ID}"
   >
-    <div class="flex flex-row items-center py-5">
+    <div class="flex flex-row items-center py-5 relative">
       <div class="pl-4 pr-6 z-50">
         <h6 class="text-[28px] font-bold font-Poppins">{{ college?.college_abbrev }}</h6>
         <p class="text-[13px] font-bold font-Poppins z-10">{{ college?.college_name }}</p>
@@ -25,6 +25,6 @@ class="text-blue"
         alt=""
         class="h-[90px] aspect-square absolute translate-x-[120px] opacity-50"
       />
-    </div>  
+    </div>
   </div>
 </label>

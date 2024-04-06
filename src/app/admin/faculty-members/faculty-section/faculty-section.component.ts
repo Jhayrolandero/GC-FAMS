@@ -4,6 +4,10 @@ import { Faculty } from '../../../services/Interfaces/faculty';
 import { College } from '../../../services/Interfaces/college';
 import { mainPort } from '../../../app.component';
 import { LoadingScreenComponent } from '../../../components/loading-screen/loading-screen.component';
+import { forkJoin } from 'rxjs';
+import { FacultyRequestService } from '../../../services/faculty/faculty-request.service';
+import { Router } from '@angular/router';
+
 type FacultyMember = {
   first_name: string,
   middle_name: string,
@@ -22,30 +26,64 @@ type FacultyMember = {
   templateUrl: './faculty-section.component.html',
   styleUrl: './faculty-section.component.css'
 })
-export class FacultySectionComponent implements OnChanges {
+export class FacultySectionComponent {
+  constructor(
+    private facultyService: FacultyRequestService,
+    private router: Router) { }
   isLoading: boolean = true
-@Input('Faculty') faculties: Faculty[] = []
-@Input('Colleges') colleges: College[] = []
-facultyMembers: FacultyMember[]  = []
-ngOnInit(): void {
-  console.log(this.facultyMembers)
-  console.log(this.colleges)
-  this.createFacultyMember()
-}
 
-ngOnChanges(changes: SimpleChanges): void {
-  this.createFacultyMember()
-  console.log(changes)
-}
-  createFacultyMember() {
-    this.facultyMembers = this.faculties.map((facultyMember: Faculty) => {
-      let collegeAbbrev = '';
-      for(let i = 0; i < this.colleges.length; i++) {
-        // console.log(this.colleges[i])
-        if(this.colleges[i].college_ID == facultyMember.college_ID) {
-          collegeAbbrev = this.colleges[i].college_abbrev
-        }
+  //facultyMembers: FacultyMember[] = []
+  facultyMembers: Faculty[] = [];
+  colleges: College[] = [];
+  faculty: FacultyMember[] = []
+
+
+  ngOnInit(): void {
+    this.getCollegeAndFaculty()
+  }
+
+  // ngOnChanges(changes: SimpleChanges): void {
+  //   this.createFacultyMember()
+  //   console.log(changes)
+  // }
+
+  getCollegeAndFaculty() {
+    forkJoin({
+      collegeRequest: this.facultyService.fetchData(this.colleges, 'fetchCollege'),
+      facultyRequest: this.facultyService.fetchData(this.facultyMembers, 'faculty')
+    }).subscribe({
+      next: (({ collegeRequest, facultyRequest }) => {
+        this.colleges = collegeRequest
+        this.facultyMembers = facultyRequest
+      }),
+      error: (error) => {
+        console.log(error);
+        this.router.navigate(['/'])
+      },
+      complete: () => {
+        console.log(this.facultyMembers)
+        console.log(this.colleges)
+        this.facultyMembers = this.facultyMembers.map(facultyMember => {
+          return {
+            ...facultyMember,
+            profile_image: mainPort + facultyMember.profile_image
+          };
+        });
+
+        this.isLoading = false
+        this.createFacultyMember()
+        console.log(this.faculty)
       }
+    })
+  }
+
+
+  createFacultyMember() {
+    this.faculty = this.facultyMembers.map((facultyMember: Faculty) => {
+      const facultyCollegeAbbrev = this.colleges.find(
+        (college) => college.college_ID === facultyMember.college_ID
+      )?.college_abbrev || '';
+
       return {
         first_name: facultyMember.first_name,
         middle_name: facultyMember.middle_name,
@@ -55,7 +93,7 @@ ngOnChanges(changes: SimpleChanges): void {
         teaching_position: facultyMember.teaching_position,
         employment_status: facultyMember.employment_status,
         profile_image: facultyMember.profile_image,
-        college: collegeAbbrev
+        college: facultyCollegeAbbrev
       };
     });
 
