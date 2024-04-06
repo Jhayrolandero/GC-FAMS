@@ -1,5 +1,5 @@
 import { CommonModule, NgClass, NgFor } from '@angular/common';
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component } from '@angular/core';
 import { Faculty } from '../../../services/Interfaces/faculty';
 import { College } from '../../../services/Interfaces/college';
 import { mainPort } from '../../../app.component';
@@ -7,7 +7,7 @@ import { LoadingScreenComponent } from '../../../components/loading-screen/loadi
 import { forkJoin } from 'rxjs';
 import { FacultyRequestService } from '../../../services/faculty/faculty-request.service';
 import { Router } from '@angular/router';
-
+import { FacultySkeletonComponent } from '../../../components/faculty-skeleton/faculty-skeleton.component';
 type FacultyMember = {
   first_name: string,
   middle_name: string,
@@ -22,30 +22,32 @@ type FacultyMember = {
 @Component({
   selector: 'app-faculty-section',
   standalone: true,
-  imports: [NgClass, NgFor, LoadingScreenComponent, CommonModule],
+  imports: [
+    NgClass,
+    NgFor,
+    LoadingScreenComponent,
+    CommonModule,
+    FacultySkeletonComponent
+  ],
   templateUrl: './faculty-section.component.html',
   styleUrl: './faculty-section.component.css'
 })
 export class FacultySectionComponent {
+
   constructor(
     private facultyService: FacultyRequestService,
     private router: Router) { }
-  isLoading: boolean = true
 
   //facultyMembers: FacultyMember[] = []
   facultyMembers: Faculty[] = [];
   colleges: College[] = [];
-  faculty: FacultyMember[] = []
+  faculties: FacultyMember[] = []
 
 
   ngOnInit(): void {
     this.getCollegeAndFaculty()
   }
 
-  // ngOnChanges(changes: SimpleChanges): void {
-  //   this.createFacultyMember()
-  //   console.log(changes)
-  // }
 
   getCollegeAndFaculty() {
     forkJoin({
@@ -70,16 +72,14 @@ export class FacultySectionComponent {
           };
         });
 
-        this.isLoading = false
         this.createFacultyMember()
-        console.log(this.faculty)
       }
     })
   }
 
 
   createFacultyMember() {
-    this.faculty = this.facultyMembers.map((facultyMember: Faculty) => {
+    this.faculties = this.facultyMembers.map((facultyMember: Faculty) => {
       const facultyCollegeAbbrev = this.colleges.find(
         (college) => college.college_ID === facultyMember.college_ID
       )?.college_abbrev || '';
