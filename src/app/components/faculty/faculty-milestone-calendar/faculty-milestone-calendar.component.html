@@ -1,4 +1,4 @@
-<div class="flex justify-center">
+<!-- <div class="flex justify-center">
   <table>
     <thead>
       <tr>
@@ -374,4 +374,23 @@
       </tr>
     </tbody>
   </table>
+</div>
+
+ -->
+<div class="flex flex-row justify-center overflow-x-scroll overflow-y-hidden">
+  <div *ngFor="let week of daysOfYear" class="flex flex-col flex-none my-10">
+    <div *ngFor="let day of week" 
+      [ngClass]="day[1] == '' ?  'bg-[#f0f0f0] hover:bg-[#d6d6d6]' :  'bg-[#27AE60] hover:bg-[#219251]'"
+      class="group relative m-[2px] h-[15px] w-[15px] rounded-[3px] shadow-sm hover:duration-150 duration-150">
+
+      <div *ngIf="day[1] != ''" class="hidden tablet:flex">
+        <div class="p-2 absolute z-50 top-[-65px] hidden group-hover:flex flex-auto flex-col w-max-[980px] bg-blue shadow-lg rounded-[10px]"
+             [ngClass]="{'top-[20px]': ((day[0] | date: 'EEE') === 'Sun' || (day[0] | date: 'EEE') === 'Mon' || (day[0] | date: 'EEE') === 'Tue')}">
+          <p class="whitespace-nowrap italic text-white text-[0.6rem] font-Poppins font-bold">{{ day[0] | date: 'yyyy-mm-dd' }}  |  {{ day[1].eventType }}</p>
+          <p class="whitespace-nowrap text-white text-[1.0rem] font-Poppins font-bold">{{ day[1].eventName }}</p>
+          <p class="whitespace-nowrap italic text-white text-[0.6rem] font-Poppins">{{ day[1].eventPlace }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

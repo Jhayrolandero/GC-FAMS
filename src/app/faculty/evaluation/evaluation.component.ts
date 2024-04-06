@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FacultyRequestService } from '../../services/faculty/faculty-request.service';
 import { Router } from '@angular/router';
 import { Evaluation } from '../../services/Interfaces/evaluation';
@@ -6,6 +6,19 @@ import { NgxChartsModule, ScaleType } from '@swimlane/ngx-charts';
 import { CommonModule, NgFor } from '@angular/common';
 import { LoadingScreenComponent } from '../../components/loading-screen/loading-screen.component';
 import { EvaluationService } from '../../services/evaluation.service';
+import {
+  MatDialog,
+  MAT_DIALOG_DATA,
+  MatDialogRef,
+  MatDialogTitle,
+  MatDialogContent,
+  MatDialogActions,
+  MatDialogClose,
+} from '@angular/material/dialog';
+import {MatButtonModule} from '@angular/material/button';
+import {FormControl, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {MatInputModule} from '@angular/material/input';
+import {MatFormFieldModule} from '@angular/material/form-field';
 
 type Series = {
   'name': string,
@@ -23,6 +36,58 @@ export interface evalScoreHistory {
   'series': Series[]
 
 }
+
+@Component({
+  selector: 'evaluation-form-component',
+  templateUrl: 'evaluation-form.component.html',
+  standalone: true,
+  imports: [
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule,
+    MatButtonModule,
+    MatDialogTitle,
+    MatDialogContent,
+    MatDialogActions,
+    MatDialogClose,
+    CommonModule, 
+    ReactiveFormsModule, 
+    FormsModule
+  ],
+})
+
+export class EvaluationForm {
+  constructor(
+    public dialogRef: MatDialogRef<EvaluationForm>,
+    @Inject(MAT_DIALOG_DATA) public data: Evaluation,
+  ) {}
+
+  evalForm = new FormGroup({
+    semester: new FormControl(''),
+    evaluation_year: new FormControl(''),
+		param1_score: new FormControl(''),
+		param2_score: new FormControl(''),
+		param3_score: new FormControl(''),
+		param4_score: new FormControl(''),
+		param5_score: new FormControl(''),
+		param6_score: new FormControl(''),
+	})
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+  submitForm(){
+    console.log(this.evalForm);
+  }
+}
+
+
+
+
+
+
+
 @Component({
   selector: 'app-evaluation',
   standalone: true,
@@ -60,11 +125,18 @@ export class EvaluationComponent implements OnInit{
   constructor(
     private facultyService: FacultyRequestService,
     private router: Router,
-    private evaluationService: EvaluationService){}
+    private evaluationService: EvaluationService,
+    public dialog: MatDialog){}
 
   ngOnInit(): void {
     this.getEvaluation();
 
+  }
+
+  formToggle: boolean = false;
+
+  openDialog(){
+    const dialogRef = this.dialog.open(EvaluationForm);
   }
 
   // Initial Fetching of faculty evaluation
