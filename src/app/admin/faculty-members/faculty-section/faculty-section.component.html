@@ -76,9 +76,23 @@
         </div>
       <p class="text-blue font-bold">{{ faculty.college }}</p>
       <p>{{ faculty.teaching_position }}</p>
-      <p>
-        {{ faculty.employment_status == 1 ? "Full-Time" : "Part-Time" }}
-      </p>
+      <div class="flex justify-between w-full">
+        <p>
+          {{ faculty.employment_status == 1 ? "Full-Time" : "Part-Time" }}
+        </p>
+        <button mat-button [matMenuTriggerFor]="menu"
+        class=" hover:bg-none cursor-pointer w-[40px]">
+          <i class="fa-solid fa-ellipsis-vertical"></i>
+        </button>
+        <mat-menu #menu="matMenu">
+          <ng-template matMenuContent>
+          <button mat-menu-item>Reset Password</button>
+          <button mat-menu-item>Edit</button>
+          <button mat-menu-item (click)="openForm()">Delete</button>
+          <!-- <button mat-menu-item (click)="deleteFaculty(faculty.id)">Delete</button> -->
+          </ng-template>
+        </mat-menu>
+      </div>
     </div>
     } @empty {
 
@@ -121,7 +135,7 @@
         <div class="h-4 bg-gray-200 rounded-full w-1/4"></div>
         <span class="sr-only">Loading...</span>
       </div>
-        }
+    }
 
 
     <ng-content></ng-content>

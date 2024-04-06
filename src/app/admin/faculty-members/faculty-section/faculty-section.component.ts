@@ -8,6 +8,11 @@ import { forkJoin } from 'rxjs';
 import { FacultyRequestService } from '../../../services/faculty/faculty-request.service';
 import { Router } from '@angular/router';
 import { FacultySkeletonComponent } from '../../../components/faculty-skeleton/faculty-skeleton.component';
+import { MatButtonModule } from '@angular/material/button';
+import { MatMenuModule } from '@angular/material/menu';
+import { MessageService } from '../../../services/message.service';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogBoxComponent } from '../../../components/dialog-box/dialog-box.component';
 type FacultyMember = {
   first_name: string,
   middle_name: string,
@@ -17,7 +22,8 @@ type FacultyMember = {
   teaching_position: string,
   employment_status: number,
   profile_image: string,
-  college: string
+  college: string,
+  id: number
 }
 @Component({
   selector: 'app-faculty-section',
@@ -27,7 +33,10 @@ type FacultyMember = {
     NgFor,
     LoadingScreenComponent,
     CommonModule,
-    FacultySkeletonComponent
+    FacultySkeletonComponent,
+    MatButtonModule,
+    MatMenuModule,
+    DialogBoxComponent
   ],
   templateUrl: './faculty-section.component.html',
   styleUrl: './faculty-section.component.css'
@@ -36,7 +45,9 @@ export class FacultySectionComponent {
 
   constructor(
     private facultyService: FacultyRequestService,
-    private router: Router) { }
+    private router: Router,
+    private messageService: MessageService,
+    public dialog: MatDialog) { }
 
   //facultyMembers: FacultyMember[] = []
   facultyMembers: Faculty[] = [];
@@ -93,9 +104,32 @@ export class FacultySectionComponent {
         teaching_position: facultyMember.teaching_position,
         employment_status: facultyMember.employment_status,
         profile_image: facultyMember.profile_image,
-        college: facultyCollegeAbbrev
+        college: facultyCollegeAbbrev,
+        id: facultyMember.faculty_ID
       };
     });
 
   }
+
+  deleteFaculty(id: number) {
+    // console.log(id)
+    this.facultyService.deleteData("faculty/" + id).subscribe({
+      next: res => {
+        this.messageService.sendMessage(`Successfully Deleted!`, 1)
+      },
+      error: err => {
+        this.messageService.sendMessage("An unexpected Error has occurred!", -1)
+        console.log(err)
+      }
+    })
+  }
+
+  openForm(): void {
+    const dialogRef = this.dialog.open(DialogBoxComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
+  }
+
 }
