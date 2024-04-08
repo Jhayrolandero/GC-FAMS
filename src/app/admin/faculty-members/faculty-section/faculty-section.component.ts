@@ -111,25 +111,24 @@ export class FacultySectionComponent {
 
   }
 
-  deleteFaculty(id: number) {
-    // console.log(id)
-    this.facultyService.deleteData("faculty/" + id).subscribe({
-      next: res => {
-        this.messageService.sendMessage(`Successfully Deleted!`, 1)
-      },
-      error: err => {
-        this.messageService.sendMessage("An unexpected Error has occurred!", -1)
-        console.log(err)
-      }
-    })
-  }
+  // deleteFaculty(id: number) {
+  //   // console.log(id)
+  //   this.facultyService.deleteData("faculty/" + id).subscribe({
+  //     next: res => {
+  //       this.messageService.sendMessage(`Successfully Deleted!`, 1)
+  //     },
+  //     error: err => {
+  //       this.messageService.sendMessage("An unexpected Error has occurred!", -1)
+  //       console.log(err)
+  //     }
+  //   })
+  // }
 
-  openForm(): void {
-    const dialogRef = this.dialog.open(DialogBoxComponent);
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
+  openForm(id: number): void {
+    const dialogRef = this.dialog.open(DialogBoxComponent, {
+      data: { faculty_ID: id }
     });
+
   }
 
 }
