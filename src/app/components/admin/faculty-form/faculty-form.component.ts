@@ -225,6 +225,38 @@ export class FacultyFormComponent implements OnInit {
 
 
   onSubmit() {
+
+
+    if (this.editMode) {
+      this.messageService.sendMessage("Editting Faculty...", 0)
+
+      //Assign first name as password
+      this.facultyInfo.patchValue({
+        password: this.facultyInfo.get('first_name')?.value
+      })
+      console.log(this.facultyInfo);
+
+      //Convert to formdata
+      const formData = this.facultyService.formDatanalize(this.facultyInfo);
+
+      this.facultyService.patchData(formData, "")
+      this.facultyService.postData(formData, "faculty").subscribe({
+        next: (res: any) => {
+          if (res.code == 200) {
+            this.messageService.sendMessage("New Faculty member has been added", 1)
+          } else if (res.code == 406) {
+            this.messageService.sendMessage("Email already taken!", -1)
+          } else {
+            this.messageService.sendMessage("An unexpected Error has occurred!", -1)
+          }
+        },
+        error: (error) => {
+          console.log(error)
+          this.messageService.sendMessage("An unexpected Error has occurred!", -1)
+        }
+      })
+
+    }
     this.messageService.sendMessage("Adding Faculty...", 0)
 
     //Assign first name as password
