@@ -53,7 +53,7 @@
     </div>
 
     <!-- DATA -->
-    @for (faculty of faculties; track faculty.first_name) {
+    @for (faculty of facultyMembers; track faculty.first_name) {
       <div
       class="col-span-4 grid-cols-subgrid grid items-center border-l-4 justify-items-start gap-5 hover:bg-gray-200 p-1"
     >
@@ -87,15 +87,14 @@
         <mat-menu #menu="matMenu">
           <ng-template matMenuContent>
           <button mat-menu-item>Reset Password</button>
-          <button mat-menu-item>Edit</button>
-          <button mat-menu-item (click)="openForm(faculty.id)">Delete</button>
+          <button mat-menu-item (click)="openForm(faculty)">Edit</button>
+          <button mat-menu-item (click)="deleteForm(faculty.faculty_ID)">Delete</button>
           <!-- <button mat-menu-item (click)="deleteFaculty(faculty.id)">Delete</button> -->
           </ng-template>
         </mat-menu>
       </div>
     </div>
     } @empty {
-
       <div role="status" class="max-w-sm animate-pulse col-span-4 grid-cols-subgrid grid items-center border-l-4 justify-items-start gap-5 p-1">
         <div class="flex items-center gap-3 w-full">
           <div class="w-[50px] aspect-square bg-gray-200 rounded-full"></div>

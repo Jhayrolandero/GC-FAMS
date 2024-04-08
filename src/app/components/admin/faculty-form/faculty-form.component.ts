@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { AdminFetcherService } from '../../../services/admin/admin-fetcher.service';
 import { FacultyRequestService } from '../../../services/faculty/faculty-request.service';
 import { MessageService } from '../../../services/message.service';
@@ -10,12 +10,12 @@ import { EmployeeTypeComponent } from "../../../admin/manage-faculty/employee-ty
 import { EmployeePositionComponent } from "../../../admin/manage-faculty/employee-position/employee-position.component";
 import { CommonModule } from '@angular/common';
 import { FormsErrorComponent } from "../../../admin/manage-faculty/forms-error/forms-error.component";
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { Employment } from '../../../services/Interfaces/employment';
 import { LoadingScreenComponent } from '../../loading-screen/loading-screen.component';
+import { Faculty } from '../../../services/Interfaces/faculty';
 export interface program {
-
   map(arg0: (item: any) => any): any;
   'program_id': number;
   'college_id': number;
@@ -46,12 +46,44 @@ export class FacultyFormComponent implements OnInit {
   constructor(
     private adminService: AdminFetcherService,
     private messageService: MessageService,
-    private facultyService: FacultyRequestService) { }
+    private facultyService: FacultyRequestService,
+    @Inject(MAT_DIALOG_DATA) public data?: { faculty: Faculty }) {
+
+
+    this.editMode = !!data?.faculty
+  }
 
   ngOnInit(): void {
     this.getCollege()
+
+    if (this.editMode) {
+      this.facultyInfo.patchValue({
+        first_name: this.data!.faculty.first_name,
+        last_name: this.data!.faculty.last_name,
+        birthdate: this.data!.faculty.birthdate,
+        age: this.data!.faculty.age,
+        citizenship: this.data!.faculty.citizenship,
+        civil_status: this.data!.faculty.civil_status,
+        sex: this.data!.faculty.sex,
+        email: this.data!.faculty.email,
+        phone_number: this.data!.faculty.phone_number,
+        middle_name: this.data!.faculty.middle_name,
+        ext_name: this.data!.faculty.ext_name,
+        region: this.data!.faculty.region,
+        province: this.data!.faculty.province,
+        language: this.data!.faculty.language,
+        city: this.data!.faculty.city,
+        barangay: this.data!.faculty.barangay,
+        isAdmin: this.data!.faculty.isAdmin
+      })
+
+      this.setCollege(this.data!.faculty.college_ID)
+      this.setEmployment(this.data!.faculty.employment_status)
+      this.setPosition(this.data!.faculty.teaching_position)
+    }
   }
 
+  editMode: boolean = false;
   isLoading: boolean = true
   selectedCollege: number = -1;
   selectedEmployeeType: number = -1;
@@ -87,7 +119,7 @@ export class FacultyFormComponent implements OnInit {
     birthdate: new FormControl('', [
       Validators.required,
     ]),
-    age: new FormControl('', [
+    age: new FormControl<string | number>('', [
       Validators.required,
       Validators.pattern('^[0-9]+$')
     ]),
@@ -162,15 +194,11 @@ export class FacultyFormComponent implements OnInit {
     })
     this.selectedEmployeeType = value;
     if (value != 1) {
-      this.selectedEmployeePosition = '';
+      this.selectedEmployeePosition = 'Instructor';
       // this.disabledBox = true;
       this.facultyInfo.patchValue({
-        teaching_position: 'instructor'
+        teaching_position: 'Instructor'
       })
-    } else {
-      this.facultyInfo.patchValue({
-        teaching_position: ''
-      });
     }
   }
 
@@ -179,7 +207,7 @@ export class FacultyFormComponent implements OnInit {
       teaching_position: value
     });
     this.selectedEmployeePosition = value;
-
+    console.log(this.selectedEmployeePosition)
     if (this.selectedEmployeePosition != '') {
       this.selectedEmployeeType = 1;
     }

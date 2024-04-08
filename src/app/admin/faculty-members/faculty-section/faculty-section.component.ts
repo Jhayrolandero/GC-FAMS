@@ -13,18 +13,8 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MessageService } from '../../../services/message.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogBoxComponent } from '../../../components/dialog-box/dialog-box.component';
-type FacultyMember = {
-  first_name: string,
-  middle_name: string,
-  last_name: string,
-  ext_name: string,
-  email: string,
-  teaching_position: string,
-  employment_status: number,
-  profile_image: string,
-  college: string,
-  id: number
-}
+import { FacultyFormComponent } from '../../../components/admin/faculty-form/faculty-form.component';
+
 @Component({
   selector: 'app-faculty-section',
   standalone: true,
@@ -52,7 +42,6 @@ export class FacultySectionComponent {
   //facultyMembers: FacultyMember[] = []
   facultyMembers: Faculty[] = [];
   colleges: College[] = [];
-  faculties: FacultyMember[] = []
 
 
   ngOnInit(): void {
@@ -90,45 +79,33 @@ export class FacultySectionComponent {
 
 
   createFacultyMember() {
-    this.faculties = this.facultyMembers.map((facultyMember: Faculty) => {
+    this.facultyMembers = this.facultyMembers.map((facultyMember: Faculty) => {
       const facultyCollegeAbbrev = this.colleges.find(
         (college) => college.college_ID === facultyMember.college_ID
       )?.college_abbrev || '';
 
       return {
-        first_name: facultyMember.first_name,
-        middle_name: facultyMember.middle_name,
-        last_name: facultyMember.last_name,
-        ext_name: facultyMember.ext_name,
-        email: facultyMember.email,
-        teaching_position: facultyMember.teaching_position,
-        employment_status: facultyMember.employment_status,
-        profile_image: facultyMember.profile_image,
-        college: facultyCollegeAbbrev,
-        id: facultyMember.faculty_ID
+        ...facultyMember,
+        college: facultyCollegeAbbrev
       };
     });
 
   }
 
-  // deleteFaculty(id: number) {
-  //   // console.log(id)
-  //   this.facultyService.deleteData("faculty/" + id).subscribe({
-  //     next: res => {
-  //       this.messageService.sendMessage(`Successfully Deleted!`, 1)
-  //     },
-  //     error: err => {
-  //       this.messageService.sendMessage("An unexpected Error has occurred!", -1)
-  //       console.log(err)
-  //     }
-  //   })
-  // }
-
-  openForm(id: number): void {
-    const dialogRef = this.dialog.open(DialogBoxComponent, {
+  deleteForm(id: number): void {
+    this.dialog.open(DialogBoxComponent, {
       data: { faculty_ID: id }
     });
-
   }
 
+  openForm(faculty?: Faculty): void {
+
+    if (faculty) {
+      this.dialog.open(FacultyFormComponent, {
+        data: { faculty: faculty }
+      })
+      return
+    }
+    this.dialog.open(FacultyFormComponent)
+  }
 }
