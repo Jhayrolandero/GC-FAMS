@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, Renderer2, ElementRef } from '@angular/core';
 import { AdminFetcherService } from '../../../services/admin/admin-fetcher.service';
 import { FacultyRequestService } from '../../../services/faculty/faculty-request.service';
 import { MessageService } from '../../../services/message.service';
@@ -74,12 +74,21 @@ export class FacultyFormComponent implements OnInit {
         language: this.data!.faculty.language,
         city: this.data!.faculty.city,
         barangay: this.data!.faculty.barangay,
-        isAdmin: this.data!.faculty.isAdmin
+        isAdmin: this.data!.faculty.isAdmin,
+        password: this.data!.faculty.password
       })
 
       this.setCollege(this.data!.faculty.college_ID)
       this.setEmployment(this.data!.faculty.employment_status)
       this.setPosition(this.data!.faculty.teaching_position)
+
+      this.imageURL = this.data!.faculty.profile_image !== 'null' ? this.data!.faculty.profile_image : undefined
+      this.coverURL = this.data!.faculty.cover_image !== 'null' ? this.data!.faculty.cover_image : undefined
+      // console.log(this.data!.faculty)
+      console.log(this.coverURL)
+    } else {
+      console.log(this.coverURL)
+      console.log(typeof undefined)
     }
   }
 
@@ -225,10 +234,19 @@ export class FacultyFormComponent implements OnInit {
 
 
   onSubmit() {
-
-
     if (this.editMode) {
       this.messageService.sendMessage("Editting Faculty...", 0)
+
+      this.facultyService.patchData(this.facultyInfo, `faculty/${this.data!.faculty.faculty_ID}`).subscribe({
+        next: (res: any) => {
+          console.log(res)
+        },
+        error: (err) => {
+          console.log(err)
+        }
+      })
+    } else {
+      this.messageService.sendMessage("Adding Faculty...", 0)
 
       //Assign first name as password
       this.facultyInfo.patchValue({
@@ -239,7 +257,6 @@ export class FacultyFormComponent implements OnInit {
       //Convert to formdata
       const formData = this.facultyService.formDatanalize(this.facultyInfo);
 
-      this.facultyService.patchData(formData, "")
       this.facultyService.postData(formData, "faculty").subscribe({
         next: (res: any) => {
           if (res.code == 200) {
@@ -255,34 +272,7 @@ export class FacultyFormComponent implements OnInit {
           this.messageService.sendMessage("An unexpected Error has occurred!", -1)
         }
       })
-
     }
-    this.messageService.sendMessage("Adding Faculty...", 0)
-
-    //Assign first name as password
-    this.facultyInfo.patchValue({
-      password: this.facultyInfo.get('first_name')?.value
-    })
-    console.log(this.facultyInfo);
-
-    //Convert to formdata
-    const formData = this.facultyService.formDatanalize(this.facultyInfo);
-
-    this.facultyService.postData(formData, "faculty").subscribe({
-      next: (res: any) => {
-        if (res.code == 200) {
-          this.messageService.sendMessage("New Faculty member has been added", 1)
-        } else if (res.code == 406) {
-          this.messageService.sendMessage("Email already taken!", -1)
-        } else {
-          this.messageService.sendMessage("An unexpected Error has occurred!", -1)
-        }
-      },
-      error: (error) => {
-        console.log(error)
-        this.messageService.sendMessage("An unexpected Error has occurred!", -1)
-      }
-    })
   }
 
 
@@ -302,42 +292,54 @@ export class FacultyFormComponent implements OnInit {
   column4: string[] = ["sex", "language", "citizenship", "age", "civil_status"]
 
   imageFile?: { link: string, file: any, name: string };
-  imageURL: string = '';
-  coverURL: string = '';
+  imageURL: string | undefined = undefined;
+  coverURL: string | undefined = undefined;
   message?: Message
+
+
   PreviewImage(event: Event, type: string) {
 
     const allowedFileType = ["image/png", "image/jpeg"]
     const inputElement = event.target as HTMLInputElement;
     const file = inputElement.files?.[0]; // Using optional chaining to handle null or undefined
 
-    // console.log(file.)
     if (file && allowedFileType.includes(file.type)) {
       // File Preview
       const reader = new FileReader();
 
-      if (type === 'profile') {
-        console.log("Changed Profile");
-        reader.onload = () => {
-          this.imageURL = reader.result as string;
-          this.facultyInfo.patchValue({
-            profile_image: file
-          })
-        };
-      }
-      else if (type === 'cover') {
-        console.log("Changed Cover");
-        reader.onload = () => {
-          this.coverURL = reader.result as string;
-          this.facultyInfo.patchValue({
-            cover_image: file
-          })
-        };
+      switch (type) {
+        case 'profile':
+          this.setProfile(reader, file);
+          console.log(file)
+          console.log(reader.result)
+          break
+        case 'cover':
+          this.setCover(reader, file)
+          break
       }
       reader.readAsDataURL(file);
     } else {
       this.messageService.sendMessage("File type should be .png or .jpeg/.jpg", -1)
     }
+  }
+
+
+  setProfile(reader: FileReader, file: File | undefined) {
+    reader.onload = () => {
+      this.imageURL = reader.result as string;
+      this.facultyInfo.patchValue({
+        profile_image: file
+      })
+    };
+  }
+
+  setCover(reader: FileReader, file: File | undefined) {
+    reader.onload = () => {
+      this.coverURL = reader.result as string;
+      this.facultyInfo.patchValue({
+        cover_image: file
+      })
+    };
   }
 
 }

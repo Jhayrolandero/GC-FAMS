@@ -79,14 +79,15 @@
             <div
               class="rounded-full w-[200px] h-[200px] aspect-square overflow-hidden flex justify-center items-center shadow-lg"
             >
+
+            @if(imageURL) {
               <img
-                *ngIf="imageURL != ''"
                 [src]="imageURL"
                 alt=""
                 class="w-full h-full object-cover"
               />
+            } @else {
               <label
-                *ngIf="imageURL == ''"
                 for="dropzone-file"
                 class="flex flex-col items-center justify-center w-full cursor-pointer"
               >
@@ -125,18 +126,19 @@
                   accept="image/*"
                 />
               </label>
+            }
             </div>
             <div
               class="flex flex-1 items-center justify-center h-[200px] w-full overflow-hidden rounded-full"
             >
+            @if(coverURL) {
               <img
-                *ngIf="coverURL != ''"
                 [src]="coverURL"
                 alt=""
                 class="w-full h-full object-cover"
               />
+            } @else {
               <label
-                *ngIf="coverURL == ''"
                 for="dropzone-file-cover"
                 class="flex flex-col items-center justify-center w-full cursor-pointer"
               >
@@ -175,6 +177,8 @@
                   accept="image/*"
                 />
               </label>
+
+            }
             </div>
           </div>
           <div class="flex flex-col gap-4">
