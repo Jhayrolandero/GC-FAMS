@@ -13,7 +13,7 @@ import { single } from '../../faculty/analytics/data';
 export class PieChartComponent implements OnInit {
   @Input('data') data: any[] = []
   single: any[] | undefined;
-  view: any[] = [700, 400];
+  view: any[] | undefined;
 
   // options
   gradient: boolean = false;
@@ -32,6 +32,10 @@ export class PieChartComponent implements OnInit {
   }
   ngOnInit(): void {
     this.single = this.data
+  }
+
+  labelFormatter(lb: string){
+    return "h3h3" + lb;
   }
 
   onSelect(data: any): void {

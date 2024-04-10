@@ -16,9 +16,10 @@ import {
   MatDialogClose,
 } from '@angular/material/dialog';
 import {MatButtonModule} from '@angular/material/button';
-import {FormControl, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import { Faculty } from '../../services/Interfaces/faculty';
 
 type Series = {
   'name': string,
@@ -40,6 +41,7 @@ export interface evalScoreHistory {
 @Component({
   selector: 'evaluation-form-component',
   templateUrl: 'evaluation-form.component.html',
+  styleUrl: 'evaluation-form.component.css',
   standalone: true,
   imports: [
     MatFormFieldModule,
@@ -57,20 +59,24 @@ export interface evalScoreHistory {
 })
 
 export class EvaluationForm {
+[x: string]: any;
   constructor(
+    public facultyRequest: FacultyRequestService,
     public dialogRef: MatDialogRef<EvaluationForm>,
-    @Inject(MAT_DIALOG_DATA) public data: Evaluation,
-  ) {}
+    @Inject(MAT_DIALOG_DATA) public data: any,
+  ) {
+
+  }
 
   evalForm = new FormGroup({
     semester: new FormControl(''),
     evaluation_year: new FormControl(''),
-		param1_score: new FormControl(''),
-		param2_score: new FormControl(''),
-		param3_score: new FormControl(''),
-		param4_score: new FormControl(''),
-		param5_score: new FormControl(''),
-		param6_score: new FormControl(''),
+		param1_score: new FormControl('', [Validators.max(5), Validators.min(0)]),
+		param2_score: new FormControl('', [Validators.max(5), Validators.min(0)]),
+		param3_score: new FormControl('', [Validators.max(5), Validators.min(0)]),
+		param4_score: new FormControl('', [Validators.max(5), Validators.min(0)]),
+		param5_score: new FormControl('', [Validators.max(5), Validators.min(0)]),
+		param6_score: new FormControl('', [Validators.max(5), Validators.min(0)]),
 	})
 
   onNoClick(): void {
@@ -78,15 +84,30 @@ export class EvaluationForm {
   }
 
   submitForm(){
-    console.log(this.evalForm);
+    //Proceed to next semester or year
+    if(this.data.sem == 1){
+      this.evalForm.patchValue({
+        semester: '2',
+        evaluation_year: (this.data.year) + ''
+      });
+    }
+    else{
+      this.evalForm.patchValue({
+        semester: '1',
+        evaluation_year: ((+this.data.year) + 1) + ""
+      })
+    }
+
+    //Post request on form
+    this.facultyRequest.postData(this.evalForm, "addEval").subscribe({
+      next: value => {
+        console.log(value);
+        this.onNoClick();
+      },
+      error: err => console.log(err)
+    })
   }
 }
-
-
-
-
-
-
 
 @Component({
   selector: 'app-evaluation',
@@ -121,7 +142,16 @@ export class EvaluationComponent implements OnInit {
   formToggle: boolean = false;
 
   openDialog(){
-    const dialogRef = this.dialog.open(EvaluationForm);
+    console.log(this.evaluation[this.evaluation.length-1]);
+    const dialogRef = this.dialog.open(EvaluationForm, {
+      data: {
+        year: this.evaluation[this.evaluation.length-1].evaluation_year,
+        sem: this.evaluation[this.evaluation.length-1].semester
+      }
+    //Refreshes data after submit
+    }).afterClosed().subscribe(result => {
+      this.getEvaluation();
+    });
   }
 
   // Initial Fetching of faculty evaluation

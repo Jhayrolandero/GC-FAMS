@@ -1,22 +1,22 @@
 
 <div class="flex flex-row justify-center overflow-x-scroll overflow-y-hidden">
   <div class="flex flex-col flex-none justify-end text-end my-5">
-    <div class="m-[2px] w-[15px] h-[15px]">
+    <div class="m-[2px] w-[12px] h-[12px]">
     </div>
-    <div class="m-[2px] h-[15px]">
+    <div class="m-[2px] h-[12px]">
       Mon
     </div>
-    <div class="m-[2px] w-[15px] h-[15px]">
+    <div class="m-[2px] w-[12px] h-[12px]">
     </div>
-    <div class="m-[2px] h-[15px]">
+    <div class="m-[2px] h-[12px]">
       Wed
     </div>
-    <div class="m-[2px] w-[15px] h-[15px]">
+    <div class="m-[2px] w-[12px] h-[12px]">
     </div>
-    <div class="m-[2px] h-[15px]">
+    <div class="m-[2px] h-[12px]">
       Fri
     </div>
-    <div class="m-[2px] w-[15px] h-[15px]">
+    <div class="m-[2px] w-[12px] h-[12px]">
     </div>
   </div>
   @for (week of daysOfYear; track week; let i = $index){
@@ -27,7 +27,7 @@
       }
       <div  *ngFor="let day of week" 
         [ngClass]="day[1] == '' ?  'bg-[#f0f0f0] hover:bg-[#d6d6d6]' :  'bg-[#27AE60] hover:bg-[#219251]'"
-        class="group relative m-[2px] h-[15px] w-[15px] rounded-[3px] shadow-sm hover:duration-150 duration-150">
+        class="group relative m-[2px] h-[12px] w-[12px] rounded-[3px] shadow-sm hover:duration-150 duration-150">
   
         <div *ngIf="day[1] != ''" class="hidden tablet:flex">
           <div class="p-2 absolute z-50 top-[-65px] hidden group-hover:flex flex-auto flex-col w-max-[980px] bg-blue shadow-lg rounded-[10px]"

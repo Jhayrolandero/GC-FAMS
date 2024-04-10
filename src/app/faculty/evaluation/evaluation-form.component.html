@@ -22,13 +22,11 @@
                     placeholder="Add Project Name"
                     id="commex_title"
                     formControlName="commex_title"
-                    [ngModel]="commexValue?.commex_title"
                     class="w-full border-2 px-2 font-Roboto font-regular text-[1.1rem] rounded-[5px] text-black py-1"
                     >
             
                     <p class="font-Roboto font-medium text-[1.1rem] mt-4">Details</p>
                     <textarea
-                    [ngModel]="commexValue?.commex_details"
                     type="textarea"
                     placeholder=""
                     id="commex_details"
@@ -38,7 +36,6 @@
             
                     <p class="font-Roboto font-medium text-[1.1rem] mt-4">Date</p>
                     <input
-                    [ngModel]="commexValue?.commex_date"
                     type="date"
                     placeholder=""
                     id="commex_date"
@@ -60,7 +57,7 @@
 </div> -->
 
 
-<form class="rounded-[15px] w-[500px]" [formGroup]="evalForm" (ngSubmit)="submitForm()">
+<form class="rounded-[15px] w-[500px] overflow-hidden mb-5" [formGroup]="evalForm" (ngSubmit)="submitForm()">
   <div class="bg-blue h-[38px] flex items-center justify-between px-3">
     <p class="text-white font-Poppins font-semibold">Encode Evaluation Score</p>
 
@@ -80,7 +77,10 @@
     <div class="flex flex-row justify-between items-center">
       <p class="font-Roboto font-semibold text-blue my-3">Knowledge of Content</p>
       <input
-      type="text"
+      type="number"
+      min="1"
+      max="5"
+      required
       id="param1_score"
       formControlName="param1_score"
       class="w-[60px] h-[30px] border-2 "
@@ -89,8 +89,11 @@
     <div class="flex flex-row justify-between items-center">
       <p class="font-Roboto font-semibold text-blue my-3">Instructional Skills</p>
       <input
-      type="text"
-      id="param1_score"
+      type="number"
+      min="1"
+      max="5"
+      required
+      id="param2_score"
       formControlName="param2_score"
       class="w-[60px] h-[30px] border-2 "
       >
@@ -98,8 +101,11 @@
     <div class="flex flex-row justify-between items-center">
       <p class="font-Roboto font-semibold text-blue my-3">Communication Skills</p>
       <input
-      type="text"
-      id="param1_score"
+      type="number"
+      min="1"
+      max="5"
+      required
+      id="param3_score"
       formControlName="param3_score"
       class="w-[60px] h-[30px] border-2 "
       >
@@ -107,8 +113,11 @@
     <div class="flex flex-row justify-between items-center">
       <p class="font-Roboto font-semibold text-blue my-3">Teaching for Independent Learning</p>
       <input
-      type="text"
-      id="param1_score"
+      type="number"
+      min="1"
+      max="5"
+      required
+      id="param4_score"
       formControlName="param4_score"
       class="w-[60px] h-[30px] border-2 "
       >
@@ -116,8 +125,11 @@
     <div class="flex flex-row justify-between items-center">
       <p class="font-Roboto font-semibold text-blue my-3">Management of Learning</p>
       <input
-      type="text"
-      id="param1_score"
+      type="number"
+      min="1"
+      max="5"
+      required
+      id="param5_score"
       formControlName="param5_score"
       class="w-[60px] h-[30px] border-2 "
       >
@@ -125,14 +137,18 @@
     <div class="flex flex-row justify-between items-center">
       <p class="font-Roboto font-semibold text-blue my-3">Flexible Learning Modality</p>
       <input
-      type="text"
-      id="param1_score"
+      type="number"
+      min="1"
+      max="5"
+      required
+      id="param6_score"
       formControlName="param6_score"
       class="w-[60px] h-[30px] border-2 "
       >
     </div>
   </div>
-  <div class="w-full">
-    <button type="submit">Encode</button>
+  <div class="w-full flex justify-end px-3">
+    <button [disabled]="evalForm.invalid" type="submit" class="p-2 px-5 bg-blue text-white font-Poppins font-semibold rounded-full"
+            [ngClass]="evalForm.invalid ? 'opacity-50' : 'opacity-100'">Encode</button>
   </div>
 </form>
