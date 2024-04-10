@@ -30,8 +30,8 @@ type response = {
     CanvasJSAngularChartsModule,
     CvComponent,
     ModalComponent,
-  CommonModule,
-LoadingScreenComponent],
+    CommonModule,
+    LoadingScreenComponent],
   providers: [FacultymembersService],
   templateUrl: './faculty-members.component.html',
   styleUrl: './faculty-members.component.css'
@@ -47,59 +47,61 @@ export class FacultyMembersComponent implements OnInit {
 
     backgroundColor: 'transparent',
     indexLabelPlacement: "outside",
-	  animationEnabled: true,
-	  data: [{
+    animationEnabled: true,
+    data: [{
       indexLabel: "{name}",
-		type: "doughnut",
-		yValueFormatString: "#,###.##'%'",
-		dataPoints: [
-		  { y: 50, name: "Part-Time", color: "#FFA500" },
-		  { y: 50, name: "Full-Time" },
-		]
-	  }]
-	}
+      type: "doughnut",
+      yValueFormatString: "#,###.##'%'",
+      dataPoints: [
+        { y: 50, name: "Part-Time", color: "#FFA500" },
+        { y: 50, name: "Full-Time" },
+      ]
+    }]
+  }
   status = {
 
     backgroundColor: 'transparent',
     indexLabelPlacement: "outside",
-	  animationEnabled: true,
-	  data: [{
+    animationEnabled: true,
+    data: [{
       indexLabel: "{name}",
-		type: "doughnut",
-		yValueFormatString: "#,###.##'%'",
-		dataPoints: [
-		  { y: 33.33, name: "In-Class", color: "#d2292b" },
-		  { y: 33.33, name: "Day-Off", color: "#24ac64" },
-		  { y: 33.33, name: "Unavailable", color: "#9ca3af" },
-		]
-	  }]
-	}
+      type: "doughnut",
+      yValueFormatString: "#,###.##'%'",
+      dataPoints: [
+        { y: 33.33, name: "In-Class", color: "#d2292b" },
+        { y: 33.33, name: "Day-Off", color: "#24ac64" },
+        { y: 33.33, name: "Unavailable", color: "#9ca3af" },
+      ]
+    }]
+  }
   colleges = {
 
     backgroundColor: 'transparent',
     indexLabelPlacement: "outside",
-	  animationEnabled: true,
+    animationEnabled: true,
 
-	  data: [{
+    data: [{
       indexLabel: "{name}",
-		type: "doughnut",
-		yValueFormatString: "#,###.##'%'",
-		dataPoints: [
-		  { y: 33.33, name: "CCS", color: "#f79548" },
-		  { y: 33.33, name: "CAHS", color: "#e02424" },
-		  { y: 33.33, name: "CEAS", color: "#074287" },
-		  { y: 33.33, name: "CHTM", color: "#fc8eb0" },
-		  { y: 33.33, name: "CBA", color: "#ffe444" },
-		]
-	  }]
-	}
+      type: "doughnut",
+      yValueFormatString: "#,###.##'%'",
+      dataPoints: [
+        { y: 33.33, name: "CCS", color: "#f79548" },
+        { y: 33.33, name: "CAHS", color: "#e02424" },
+        { y: 33.33, name: "CEAS", color: "#074287" },
+        { y: 33.33, name: "CHTM", color: "#fc8eb0" },
+        { y: 33.33, name: "CBA", color: "#ffe444" },
+      ]
+    }]
+  }
   facultyMembers: Faculty[] = [];
   collegeItems: College[] = [];
   fullTime: number = 0;
   partTime: number = 0;
   fulltimeInclass: number = 0;
   parttimeInclass: number = 0;
-  constructor(private facultyService: FacultyRequestService, private router: Router){}
+  constructor(
+    private facultyService: FacultyRequestService,
+    private router: Router) { }
 
 
   getCollegeAndFaculty() {
@@ -107,7 +109,7 @@ export class FacultyMembersComponent implements OnInit {
       collegeRequest: this.facultyService.fetchData(this.collegeItems, 'fetchCollege'),
       facultyRequest: this.facultyService.fetchData(this.facultyMembers, 'faculty')
     }).subscribe({
-      next: (({collegeRequest, facultyRequest}) => {
+      next: (({ collegeRequest, facultyRequest }) => {
         this.collegeItems = collegeRequest
         this.facultyMembers = facultyRequest
       }),
@@ -118,14 +120,14 @@ export class FacultyMembersComponent implements OnInit {
       complete: () => {
 
         console.log(this.collegeItems)
-    this.facultyMembers = this.facultyMembers.map(facultyMember => {
-      return {
-        ...facultyMember,
-        profile_image: mainPort + facultyMember.profile_image
-      };
-    });
+        this.facultyMembers = this.facultyMembers.map(facultyMember => {
+          return {
+            ...facultyMember,
+            profile_image: mainPort + facultyMember.profile_image
+          };
+        });
 
-this.isLoading = false
+        this.isLoading = false
       }
     })
   }

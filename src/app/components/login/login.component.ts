@@ -43,41 +43,34 @@ export class LoginComponent {
     this.messageService.sendMessage("Logging In", 0)
     this.validForm = true;
     //Main http post request, uses JwtToken interface, and stringified loginForm
-    this.http.post<JwtToken>(this.url, this.loginForm.getRawValue()).subscribe(
-      (response) => {
-        console.log(response);
+    this.http.post<JwtToken>(this.url, this.loginForm.getRawValue()).subscribe({
+      next: (res: any) => {
         //Success, wrong loginparams, and query error issue.
-        if (response.code == 200) {
-          document.cookie = "token=" + response.token;
-          console.log("Created token: " + response.privilege);
-          //Router for faculty privilege
-          if (response.privilege == 0) {
-            this.router.navigate(['/faculty']);
+        if (res.code == 200) {
+          document.cookie = "token=" + res.token;
+          console.log("Created token: " + res.privilege);
 
-          }
-          //Router for admin privilege
-          else if (response.privilege == 1) {
-            this.router.navigate(['/admin']);
-
-          }
+          res.privilege == 0 ? this.router.navigate(['/faculty']) : this.router.navigate(['/admin']);
 
           this.messageService.sendMessage("Welcome Back!", 1)
-        }
-        else if (response.code == 403) {
+        } else if (res.code == 403) {
           console.log("Invalid parameters: ");
-          console.log(response);
+          console.log(res);
           this.validForm = false;
-        }
-        else if (response.code == 404) {
+        } else if (res.code == 404) {
           console.log("Invalid query: ")
-          console.log(response);
+          console.log(res);
           this.validForm = false;
         }
-      })
+      },
+      error: (err) => {
+        this.messageService.sendMessage("An unexpected Error has occurred!", -1)
+        console.log(err)
+      }
+    })
   }
 
   showPass() {
     var pass = document.getElementById("password");
-
   }
 }

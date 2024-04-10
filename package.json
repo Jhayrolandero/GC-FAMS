@@ -33,6 +33,7 @@
     "jose": "^5.2.2",
     "json-server": "^1.0.0-alpha.23",
     "jspdf": "^2.5.1",
+    "jwt-decode": "^4.0.0",
     "ng-apexcharts": "^1.9.0",
     "ngx-cookie-service": "^17.1.0",
     "node": "^21.7.1",

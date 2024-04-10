@@ -26,10 +26,10 @@
     <p><button mat-button (click)="sidenav.toggle()">sidenav.toggle()</button></p> -->
     <div class="flex flex-col w-full">
       <app-topnav (setToggle)="sidenav.toggle()"></app-topnav>
-      <div class="">
+      <div class="bg-[#E2E2E2]">
         <router-outlet></router-outlet>
       </div>
     </div>
+    <app-message></app-message>
   </mat-sidenav-content>
 </mat-sidenav-container>
-<app-message></app-message>
