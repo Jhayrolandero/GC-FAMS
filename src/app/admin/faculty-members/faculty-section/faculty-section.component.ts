@@ -1,5 +1,5 @@
 import { CommonModule, NgClass, NgFor } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, Input, Output, SimpleChange, EventEmitter } from '@angular/core';
 import { Faculty } from '../../../services/Interfaces/faculty';
 import { College } from '../../../services/Interfaces/college';
 import { mainPort } from '../../../app.component';
@@ -33,39 +33,52 @@ import { FacultyFormComponent } from '../../../components/admin/faculty-form/fac
 })
 export class FacultySectionComponent {
 
+  @Input('refresh') refresh: boolean = false
+  @Output() refreshEmitter = new EventEmitter<boolean>()
+
+  ngOnChanges() {
+    // Extract changes to the input property by its name
+    // let change: SimpleChange = changes['data'];
+    this.getCollegeAndFaculty()
+    this.refreshEmitter.emit(false)
+    // Whenever the data in the parent changes, this method gets triggered
+    // You can act on the changes here. You will have both the previous
+    // value and the  current value here.
+  }
   constructor(
-    private facultyService: FacultyRequestService,
+    public facultyService: FacultyRequestService,
     private router: Router,
-    private messageService: MessageService,
     public dialog: MatDialog) { }
 
-  //facultyMembers: FacultyMember[] = []
+  // facultyMembers: FacultyMember[] = []
   facultyMembers: Faculty[] = [];
   colleges: College[] = [];
 
 
   ngOnInit(): void {
-    this.getCollegeAndFaculty()
+    // console.log(`Cached: ${this.facultyMembers.length}`)
+    if (this.facultyMembers.length <= 0) {
+      this.getCollegeAndFaculty()
+    }
   }
-
 
   getCollegeAndFaculty() {
     forkJoin({
-      collegeRequest: this.facultyService.fetchData(this.colleges, 'fetchCollege'),
-      facultyRequest: this.facultyService.fetchData(this.facultyMembers, 'faculty')
+      collegeRequest: this.facultyService.fetchData(this.facultyService.colleges, 'fetchCollege'),
+      facultyRequest: this.facultyService.fetchData(this.facultyService.facultyMembers, 'faculty')
     }).subscribe({
       next: (({ collegeRequest, facultyRequest }) => {
-        this.colleges = collegeRequest
-        this.facultyMembers = facultyRequest
+        this.facultyService.colleges = collegeRequest
+        this.facultyService.facultyMembers = facultyRequest
       }),
       error: (error) => {
         console.log(error);
         this.router.navigate(['/'])
       },
       complete: () => {
-        console.log(this.facultyMembers)
-        console.log(this.colleges)
-        this.facultyMembers = this.facultyMembers.map(facultyMember => {
+        console.log(this.facultyService.facultyMembers)
+        console.log(this.facultyService.colleges)
+        this.facultyService.facultyMembers = this.facultyService.facultyMembers.map(facultyMember => {
           return {
             ...facultyMember,
             profile_image: mainPort + facultyMember.profile_image
@@ -73,14 +86,15 @@ export class FacultySectionComponent {
         });
 
         this.createFacultyMember()
+        console.log(this.facultyService.facultyMembers)
       }
     })
   }
 
 
   createFacultyMember() {
-    this.facultyMembers = this.facultyMembers.map((facultyMember: Faculty) => {
-      const facultyCollegeAbbrev = this.colleges.find(
+    this.facultyMembers = this.facultyService.facultyMembers.map((facultyMember: Faculty) => {
+      const facultyCollegeAbbrev = this.facultyService.colleges.find(
         (college) => college.college_ID === facultyMember.college_ID
       )?.college_abbrev || '';
 
@@ -89,23 +103,36 @@ export class FacultySectionComponent {
         college: facultyCollegeAbbrev
       };
     });
-
   }
 
   deleteForm(id: number): void {
-    this.dialog.open(DialogBoxComponent, {
+    const dialogRef = this.dialog.open(DialogBoxComponent, {
       data: { faculty_ID: id }
     });
+
+    dialogRef.afterClosed().subscribe(res => {
+      if (res && res.deleted) {
+        this.getCollegeAndFaculty();
+      }
+      console.log(res)
+    })
   }
 
   openForm(faculty?: Faculty): void {
 
     if (faculty) {
-      this.dialog.open(FacultyFormComponent, {
+      const dialogRef = this.dialog.open(FacultyFormComponent, {
         data: { faculty: faculty }
       })
-      return
+
+      dialogRef.afterClosed().subscribe(res => {
+        if (res && res.edited) {
+          this.getCollegeAndFaculty();
+        }
+        console.log(res)
+      })
+    } else {
+      this.dialog.open(FacultyFormComponent)
     }
-    this.dialog.open(FacultyFormComponent)
   }
 }

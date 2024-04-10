@@ -15,7 +15,7 @@ export class DialogBoxComponent {
   constructor(@Inject(MAT_DIALOG_DATA) public data: { faculty_ID: number },
     private facultyService: FacultyRequestService,
     private messageService: MessageService,
-    private dialogRef: MatDialogRef<DialogBoxComponent>
+    public dialogRef: MatDialogRef<DialogBoxComponent>
   ) { }
 
   isDisable: boolean = false
@@ -29,17 +29,14 @@ export class DialogBoxComponent {
       error: err => {
         this.messageService.sendMessage("An unexpected Error has occurred!", -1)
         this.isDisable = false
-        this.close()
+        this.dialogRef.close();
         console.log(err)
       },
       complete: () => {
         this.isDisable = false
-        this.close()
+        this.dialogRef.close({ deleted: true });
       }
     })
   }
 
-  close() {
-    this.dialogRef.close();
-  }
 }

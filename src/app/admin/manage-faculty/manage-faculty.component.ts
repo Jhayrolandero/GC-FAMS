@@ -26,11 +26,17 @@ import { FacultySectionComponent } from '../faculty-members/faculty-section/facu
 export class ManageFacultyComponent {
 
   constructor(public dialog: MatDialog) { }
+
+  refresh: boolean = false
   openForm(): void {
     const dialogRef = this.dialog.open(FacultyFormComponent);
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
+    dialogRef.afterClosed().subscribe(res => {
+      if (res && res.added) {
+        this.refresh = true
+        console.log('added now refresh')
+        // this.getCollegeAndFaculty();
+      }
     });
   }
 

@@ -16,6 +16,6 @@
   </button>
   </div>
 
-  <app-faculty-section
+  <app-faculty-section [refresh]="refresh" (refreshEmitter)="refresh = $event"
   ></app-faculty-section>
 </div>

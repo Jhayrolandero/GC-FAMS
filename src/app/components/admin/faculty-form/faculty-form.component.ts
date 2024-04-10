@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, Renderer2, ElementRef } from '@angular/core';
+import { Component, Inject, OnInit, Renderer2, ElementRef, EventEmitter, Output } from '@angular/core';
 import { AdminFetcherService } from '../../../services/admin/admin-fetcher.service';
 import { FacultyRequestService } from '../../../services/faculty/faculty-request.service';
 import { MessageService } from '../../../services/message.service';
@@ -10,7 +10,7 @@ import { EmployeeTypeComponent } from "../../../admin/manage-faculty/employee-ty
 import { EmployeePositionComponent } from "../../../admin/manage-faculty/employee-position/employee-position.component";
 import { CommonModule } from '@angular/common';
 import { FormsErrorComponent } from "../../../admin/manage-faculty/forms-error/forms-error.component";
-import { MAT_DIALOG_DATA, MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { Employment } from '../../../services/Interfaces/employment';
 import { LoadingScreenComponent } from '../../loading-screen/loading-screen.component';
@@ -45,18 +45,27 @@ export interface program {
   ]
 })
 export class FacultyFormComponent implements OnInit {
+
+  @Output() newItemEvent = new EventEmitter();
+
+
   constructor(
     private adminService: AdminFetcherService,
     private messageService: MessageService,
-    private facultyService: FacultyRequestService,
+    public facultyService: FacultyRequestService,
+    private dialogRef: MatDialogRef<FacultyFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data?: { faculty: Faculty }) {
-
-
     this.editMode = !!data?.faculty
   }
 
   ngOnInit(): void {
-    this.getCollege()
+
+
+    console.log(this.facultyService.colleges)
+    // Caching
+    if (this.facultyService.colleges.length > 0) {
+      this.getCollege()
+    }
 
     if (this.editMode) {
       this.facultyInfo.patchValue({
@@ -111,7 +120,6 @@ export class FacultyFormComponent implements OnInit {
     "Dean", "Coordinator", "Instructor"
   ]
 
-  colleges: College[] = [];
   programs: program[] = [];
 
   facultyInfo = new FormGroup({
@@ -249,11 +257,14 @@ export class FacultyFormComponent implements OnInit {
       this.facultyService.patchData(restOfFacultyInfo, `faculty/${this.data!.faculty.faculty_ID}`).subscribe({
         next: (res: any) => {
           console.log(res)
-          this.messageService.sendMessage("Faculty Successfully Edited!...", 0)
+          this.messageService.sendMessage("Faculty Successfully Edited!", 1)
         },
         error: (err) => {
           console.log(err)
           this.messageService.sendMessage("An unexpected Error has occurred!", -1)
+        },
+        complete: () => {
+          this.dialogRef.close({ edited: true })
         }
       })
     } else {
@@ -281,6 +292,9 @@ export class FacultyFormComponent implements OnInit {
         error: (error) => {
           console.log(error)
           this.messageService.sendMessage("An unexpected Error has occurred!", -1)
+        },
+        complete: () => {
+          this.dialogRef.close({ added: true })
         }
       })
     }
@@ -289,7 +303,7 @@ export class FacultyFormComponent implements OnInit {
 
   getCollege(): void {
     this.adminService.fetchCollege().subscribe({
-      next: (next) => this.colleges = next,
+      next: (next) => this.facultyService.colleges = next,
       error: (error) => console.log(error),
       complete: () => this.isLoading = false
     }

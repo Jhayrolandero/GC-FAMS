@@ -17,14 +17,15 @@
             >COLLEGE
           </h4>
           <div class="grid grid-cols-5 gap-2 items-stretch">
-            <app-gc-box
-              *ngFor="let college of colleges"
+            @for (college of facultyService.colleges; track college.college_ID) {
+              <app-gc-box
               [college]="college"
               [selectedCollege]="selectedCollege"
               (setRole)="setCollege($event)"
               [radioGroup]="'college'"
               class="flex-1"
-            ></app-gc-box>
+              ></app-gc-box>
+            }
           </div>
           <div class="flex-1 flex flex-row gap-4">
             <div class="flex-1 flex flex-col">
