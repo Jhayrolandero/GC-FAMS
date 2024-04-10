@@ -81,11 +81,20 @@
             >
 
             @if(imageURL) {
-              <img
+              <label for="previewimgzone-file" class="cursor-pointer">
+                <input
+                  id="previewimgzone-file"
+                  type="file"
+                  class="hidden"
+                  (change)="PreviewImage($event, 'profile')"
+                  accept="image/*"
+                />
+                <img
                 [src]="imageURL"
-                alt=""
+                alt="image"
                 class="w-full h-full object-cover"
-              />
+                />
+              </label>
             } @else {
               <label
                 for="dropzone-file"
@@ -132,11 +141,20 @@
               class="flex flex-1 items-center justify-center h-[200px] w-full overflow-hidden rounded-full"
             >
             @if(coverURL) {
-              <img
+              <label for="previewcoverzone-file" class="cursor-pointer w-full h-full object-cover">
+                <img
                 [src]="coverURL"
-                alt=""
+                alt="cover"
                 class="w-full h-full object-cover"
+                />
+                <input
+                id="previewcoverzone-file"
+                type="file"
+                class="hidden"
+                (change)="PreviewImage($event, 'cover')"
+                accept="image/*"
               />
+              </label>
             } @else {
               <label
                 for="dropzone-file-cover"
@@ -184,9 +202,7 @@
           <div class="flex flex-col gap-4">
             <div class="flex justify-center items-center gap-4">
               <div class="flex flex-col flex-1" *ngFor="let col of column1">
-                <label class="formTextFormat uppercase" [for]="col">{{
-                  col
-                }}</label>
+                <label class="formTextFormat uppercase" [for]="col">{{ col }}</label>
                 <input
                   [id]="col"
                   [name]="col"

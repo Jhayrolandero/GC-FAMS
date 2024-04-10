@@ -15,6 +15,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { Employment } from '../../../services/Interfaces/employment';
 import { LoadingScreenComponent } from '../../loading-screen/loading-screen.component';
 import { Faculty } from '../../../services/Interfaces/faculty';
+import { forkJoin } from 'rxjs';
+import { text } from 'stream/consumers';
 export interface program {
   map(arg0: (item: any) => any): any;
   'program_id': number;
@@ -78,6 +80,7 @@ export class FacultyFormComponent implements OnInit {
         password: this.data!.faculty.password
       })
 
+      this.facultyInfo.get('email')?.disable();
       this.setCollege(this.data!.faculty.college_ID)
       this.setEmployment(this.data!.faculty.employment_status)
       this.setPosition(this.data!.faculty.teaching_position)
@@ -89,6 +92,7 @@ export class FacultyFormComponent implements OnInit {
     } else {
       console.log(this.coverURL)
       console.log(typeof undefined)
+      this.facultyInfo.get('email')?.enable();
     }
   }
 
@@ -146,7 +150,8 @@ export class FacultyFormComponent implements OnInit {
     ]),
     email: new FormControl('', [
       Validators.required,
-      Validators.email]
+      Validators.email],
+
     ),
     employment_status: new FormControl<number | null>(null, [
       Validators.required,
@@ -235,14 +240,20 @@ export class FacultyFormComponent implements OnInit {
 
   onSubmit() {
     if (this.editMode) {
-      this.messageService.sendMessage("Editting Faculty...", 0)
+      this.messageService.sendMessage("Editing Faculty...", 0)
 
-      this.facultyService.patchData(this.facultyInfo, `faculty/${this.data!.faculty.faculty_ID}`).subscribe({
+      const facultyInfoData = this.facultyInfo.value;
+
+      // Exclude profile_image and cover_image fields
+      const { profile_image, cover_image, ...restOfFacultyInfo } = facultyInfoData;
+      this.facultyService.patchData(restOfFacultyInfo, `faculty/${this.data!.faculty.faculty_ID}`).subscribe({
         next: (res: any) => {
           console.log(res)
+          this.messageService.sendMessage("Faculty Successfully Edited!...", 0)
         },
         error: (err) => {
           console.log(err)
+          this.messageService.sendMessage("An unexpected Error has occurred!", -1)
         }
       })
     } else {
