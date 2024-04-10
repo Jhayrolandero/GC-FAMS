@@ -104,28 +104,29 @@ export class FacultyMilestoneCalendarComponent {
 
   //Builds calendar
   calendarBuild(){
-        //Iterates through each week
-        while (this.currentDate <= this.endDate){
-          const week: (Date|any)[] = [];
-    
-          //Iterates through 7 days of current week
-          for (let i = 0; i < 7; i++) {
-            //Initial gate so each week always has first sunday
-            if(this.delay == true && this.currentDate.getDay() != i){
-              week.push([new Date(""), ""]);
-              continue;
-            }
-            else{
-              this.delay = false;
-            }
-    
-            //Push current week array to 2d array
-            week.push([new Date(this.currentDate), ""]);
-    
-            //Replace current date to first day of next week (while loop now iterates each wek)
-            this.currentDate.setDate(this.currentDate.getDate() + 1);
-          }
-          this.daysOfYear.push(week);
+    //Iterates through each week
+    while (this.currentDate <= this.endDate){
+      const week: (Date|any)[] = [];
+
+      //Iterates through 7 days of current week
+      for (let i = 0; i < 7; i++) {
+        //Initial gate so each week always has first sunday
+        if(this.delay == true && this.currentDate.getDay() != i){
+          week.push([new Date(""), ""]);
+          continue;
         }
+        else{
+          this.delay = false;
+        }
+
+        //Push current week array to 2d array
+        week.push([new Date(this.currentDate), ""]);
+
+        //Replace current date to first day of next week (while loop now iterates each wek)
+        this.currentDate.setDate(this.currentDate.getDate() + 1);
+      }
+      this.daysOfYear.push(week);
+    }
+    console.log(this.daysOfYear);
   }
 }
