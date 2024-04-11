@@ -5,7 +5,91 @@ import { CommonModule, NgFor, SlicePipe } from '@angular/common';
 import { FacultyRequestService } from '../../services/faculty/faculty-request.service';
 import { mainPort } from '../../app.component';
 import { LoadingScreenComponent } from '../../components/loading-screen/loading-screen.component';
-import { CommexFormComponent } from '../../components/faculty/commex-form/commex-form.component';
+import {
+  MatDialog,
+  MAT_DIALOG_DATA,
+  MatDialogRef,
+  MatDialogTitle,
+  MatDialogContent,
+  MatDialogActions,
+  MatDialogClose,
+} from '@angular/material/dialog';
+import {MatButtonModule} from '@angular/material/button';
+import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {MatInputModule} from '@angular/material/input';
+import {MatFormFieldModule} from '@angular/material/form-field';
+
+@Component({
+  selector: 'app-commex-form',
+  standalone: true,
+  imports: [
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule,
+    MatButtonModule,
+    MatDialogTitle,
+    MatDialogContent,
+    MatDialogActions,
+    MatDialogClose,
+    CommonModule, 
+    ReactiveFormsModule, 
+    FormsModule
+  ],
+  templateUrl: 'commex-form.component.html',
+  styleUrl: 'commex-form.component.css'
+})
+export class CommexFormComponent {
+
+  constructor(private facultyPostService: FacultyRequestService,
+              public dialogRef: MatDialogRef<CommexFormComponent>,
+  ){}
+
+  commexForm = new FormGroup({
+		commex_title: new FormControl(''),
+    commex_details: new FormControl(''),
+		commex_header_img: new FormControl<File | null>(null),
+    commex_date: new FormControl(''),
+	})
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+  submitForm(){
+    // console.log(this.commexForm);
+    const formData = this.facultyPostService.formDatanalize(this.commexForm);
+    // console.log(formData.get("commex_title"))
+    this.facultyPostService.postData(formData, 'addCommex').subscribe({
+      next: (next: any) => {console.log(next);},
+      error: (error) => {console.log(error)},
+      complete: () => {this.onNoClick();}
+    });
+  }
+
+    imageURL?: string = undefined;
+    PreviewImage(event: Event) {
+      const inputElement = event.target as HTMLInputElement;
+      const file = inputElement.files?.[0]; // Using optional chaining to handle null or undefined
+  
+      if (file) {
+          // File Preview
+          const reader = new FileReader();
+          reader.onload = () => {
+              this.imageURL = reader.result as string;
+              this.commexForm.patchValue({
+                commex_header_img: file
+              })
+          };
+          reader.readAsDataURL(file);
+      }
+      console.log(this.commexForm);
+    }
+}
+
+
+
+
+
 
 @Component({
   selector: 'app-community-extensions',
@@ -21,7 +105,7 @@ export class CommunityExtensionsComponent{
   commexs: CommunityExtension[] = [];
 
 
-  constructor(private facultyService: FacultyRequestService){
+  constructor(private facultyService: FacultyRequestService, public dialog: MatDialog,){
     this.getCommex();
   }
 
@@ -49,8 +133,10 @@ export class CommunityExtensionsComponent{
     console.log(this.commexs);
   }
 
-  toggler(){
-    this.formToggle = !this.formToggle;
-    this.getCommex();
+  openDialog(){
+    const dialogRef = this.dialog.open(CommexFormComponent).afterClosed().subscribe(result => {
+      this.getCommex();
+    });
   }
+
 }

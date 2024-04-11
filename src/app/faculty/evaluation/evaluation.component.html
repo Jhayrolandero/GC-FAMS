@@ -67,9 +67,12 @@
               {{ evalItem.value }}
             </p>
           </div>
-          <div
-          class="bg-greenBar rounded-full h-[10px] my-1 bar"
-          [ngStyle]="{'--width': (evalItem.value / 5.00) * 100 + '%'}"></div>
+          <div class="w-full rounded-full">
+            <div
+            class=" rounded-full h-[10px] my-1 bar"
+            [ngStyle]="{'--width': (evalItem.value / 5.00) * 100 + '%', 'background-color': '#D4D4D4'}">
+            </div>
+          </div>
         </div>
       </div>
     </div>
