@@ -57,6 +57,7 @@ export class FacultySectionComponent {
   filteredArray: Faculty[] = []
   searchQuery: string = ''
   activeButton: string = ''
+  isLoading: boolean = true
 
   ngOnInit(): void {
     // console.log(`Cached: ${this.facultyMembers.length}`)
@@ -90,6 +91,7 @@ export class FacultySectionComponent {
 
         this.createFacultyMember()
         this.filteredArray = this.facultyMembers
+        this.isLoading = false
       }
     })
   }
