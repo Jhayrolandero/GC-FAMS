@@ -1,11 +1,6 @@
 <app-loading-screen *ngIf="isLoading"></app-loading-screen>
 
 <div class="p-5 flex flex-col gap-3 text-blue" *ngIf="!isLoading">
-  <div class="absolute z-50">
-    <app-commex-form (setToggle)="toggler()" 
-                      [formToggle]="formToggle">
-    </app-commex-form>
-  </div>
   <div
     class="bg-white shadow-lg bg-opacity-70 w-full rounded-[25px] flex flex-col tablet:flex-row tablet:justify-between items-center px-5"
   >
@@ -14,7 +9,7 @@
     </h1>
     <div class="flex flex-row space-x-4">
       <button
-        (click)="toggler()" class="bg-gradient-to-r from-blue to-greenBar text-white font-Poppins font-semibold w-[125px] h-[40px] rounded-full shadow-xl hover:scale-[102%] hover:duration-300 duration-300"
+        (click)="openDialog()" class="bg-gradient-to-r from-blue to-greenBar text-white font-Poppins font-semibold w-[125px] h-[40px] rounded-full shadow-xl hover:scale-[102%] hover:duration-300 duration-300"
       >
         +Add
       </button>

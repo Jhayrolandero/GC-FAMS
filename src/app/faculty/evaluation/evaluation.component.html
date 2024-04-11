@@ -6,11 +6,11 @@
   >
     <h1 class="font-Poppins font-semibold text-[2.5rem] py-2">Evaluation</h1>
     <div class="flex flex-row space-x-4">
-      <!-- <button
-        class="bg-gradient-to-r from-blue to-greenBar text-white font-Poppins font-semibold px-11 py-2 rounded-full shadow-xl hover:scale-[102%] hover:duration-300 duration-300"
+      <button
+      (click)="openDialog()" class="bg-gradient-to-r from-blue to-greenBar text-white font-Poppins font-semibold px-11 py-2 rounded-full shadow-xl hover:scale-[102%] hover:duration-300 duration-300"
       >
-        +Add
-      </button> -->
+        + Encode
+      </button>    
     </div>
   </div>
 
@@ -67,9 +67,12 @@
               {{ evalItem.value }}
             </p>
           </div>
-          <div
-          class="bg-greenBar rounded-full h-[10px] my-1 bar"
-          [ngStyle]="{'--width': (evalItem.value / 5.00) * 100 + '%'}"></div>
+          <div class="w-full rounded-full">
+            <div
+            class=" rounded-full h-[10px] my-1 bar"
+            [ngStyle]="{'--width': (evalItem.value / 5.00) * 100 + '%', 'background-color': '#D4D4D4'}">
+            </div>
+          </div>
         </div>
       </div>
     </div>
