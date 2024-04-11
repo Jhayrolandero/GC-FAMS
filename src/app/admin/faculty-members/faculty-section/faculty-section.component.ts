@@ -14,7 +14,7 @@ import { MessageService } from '../../../services/message.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogBoxComponent } from '../../../components/dialog-box/dialog-box.component';
 import { FacultyFormComponent } from '../../../components/admin/faculty-form/faculty-form.component';
-
+import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-faculty-section',
   standalone: true,
@@ -26,7 +26,8 @@ import { FacultyFormComponent } from '../../../components/admin/faculty-form/fac
     FacultySkeletonComponent,
     MatButtonModule,
     MatMenuModule,
-    DialogBoxComponent
+    DialogBoxComponent,
+    FormsModule
   ],
   templateUrl: './faculty-section.component.html',
   styleUrl: './faculty-section.component.css'
@@ -53,7 +54,10 @@ export class FacultySectionComponent {
   // facultyMembers: FacultyMember[] = []
   facultyMembers: Faculty[] = [];
   colleges: College[] = [];
-
+  filteredArray: Faculty[] = []
+  searchQuery: string = ''
+  activeButton: string = ''
+  isLoading: boolean = true
 
   ngOnInit(): void {
     // console.log(`Cached: ${this.facultyMembers.length}`)
@@ -86,7 +90,8 @@ export class FacultySectionComponent {
         });
 
         this.createFacultyMember()
-        console.log(this.facultyService.facultyMembers)
+        this.filteredArray = this.facultyMembers
+        this.isLoading = false
       }
     })
   }
@@ -134,5 +139,40 @@ export class FacultySectionComponent {
     } else {
       this.dialog.open(FacultyFormComponent)
     }
+  }
+
+  filterCollege(keyword: string) {
+    let filter = ''
+    switch (keyword.toLowerCase()) {
+      case 'ccs':
+        filter = 'CCS'
+        break
+      case 'ceas':
+        filter = 'CEAS'
+        break
+      case 'chtm':
+        filter = 'CHTM'
+        break
+      case 'cahs':
+        filter = 'CAHS'
+        break
+      case 'cba':
+        filter = 'CBA'
+        break
+      default:
+        filter = ''
+        break
+    }
+
+    if (filter === '') {
+      this.filteredArray = this.facultyMembers
+      return
+    }
+    this.filteredArray = this.facultyMembers.filter((item: Faculty) => item.college === filter)
+  }
+
+  filterName() {
+    this.filteredArray = this.facultyMembers.filter((item: Faculty) => item.first_name.toLowerCase().includes(this.searchQuery.toLowerCase()) || item.last_name.toLowerCase().includes(this.searchQuery.toLowerCase())
+    )
   }
 }
