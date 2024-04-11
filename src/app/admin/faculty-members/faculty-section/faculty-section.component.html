@@ -5,55 +5,89 @@
     <div class="flex-1 flex gap-2 font-Poppins">
       <!-- <img class="h-[20px] w-[20px]" src="../../../../assets/faculty-dashboard/BlueUsers.png" alt="" /> -->
       <h4 class="text-[2rem] font-Poppins font-semibold text-blue">Faculty</h4>
-    </div>
-    <!-- <input
+      <!-- <div class="flex-1 flex">
+        <input type="checkbox" id="switch" class="hidden peer"/>
+
+        <label
+          for="switch"
+          class="relative w-8/12 max-w-52 py-4 bg-white rounded-[25px] after:py-1 after:absolute after:w-1/2 after:h-full after:rounded-full after:bg-blue after:top-0 after:left-0 after:transition-all after:duration-150 after:content-['Part-Time'] after:text-center after:font-bold peer-checked:after:left-1/2 peer-checked:after:content-['Full-Time'] after:flex after:justify-center after:items-center after:text-white"
+        >
+          <span
+            class="select-none absolute top-0 inset-x-1/2 right-0 text-blue text-center font-bold py-1 flex justify-center items-center h-full"
+            >Full-Time</span
+          >
+
+          <span
+            class="select-none absolute top-0 inset-x-1/2 left-0 text-blue text-center font-bold py-1 flex justify-center items-center h-full"
+            >Part-Time</span
+          >
+        </label>
+      </div> -->
+      <div class="flex-1 flex justify-end">
+    <input
+        [(ngModel)]="searchQuery"
+        (ngModelChange)="filterName()"
       type="text"
       placeholder="SEARCH FACULTY"
-      class="flex-1 rounded-full py-2 shadow-inner placeholder:text-center placeholder:font-bold box-shadow"
-    /> -->
+      class="flex-1 rounded-full py-2 shadow-inner placeholder:text-center placeholder:font-bold border-2 border-black w-1/4 max-w-[400px] min-w-[200px]"
+    />
   </div>
-  <!-- <div class="flex justify-start">
+    </div>
+  </div>
+  <div class="flex justify-start">
     <button
-      class="flex-1 pb-4 border-b-2 font-bold border-black hover:border-b-4 hover:border-black"
-    >
+      (click)="filterCollege(''); activeButton = 'all'"
+      [ngClass]="{ 'bg-blue text-white rounded-tr-[1rem] rounded-tl-[1rem]': activeButton === 'all' }"
+      class="flex-1  border-b-2 font-bold border-black py-1"
+      >
       All
     </button>
     <button
-      class="flex-1 pb-4 border-b-2 font-bold border-black hover:border-b-4 hover:border-orange-400"
+    (click)="filterCollege('CCS'); activeButton = 'ccs'"
+    [ngClass]="{ 'bg-blue text-white rounded-tr-[1rem] rounded-tl-[1rem]': activeButton === 'ccs' }"
+    class="flex-1  border-b-2 font-bold border-black  py-1"
     >
       CCS
     </button>
     <button
-      class="flex-1 pb-4 border-b-2 font-bold border-black hover:border-b-4 hover:border-blue"
+      (click)="filterCollege('CEAS'); activeButton = 'ceas'"
+    [ngClass]="{ 'bg-blue text-white rounded-tr-[1rem] rounded-tl-[1rem]': activeButton === 'ceas' }"
+    class="flex-1  border-b-2 font-bold border-black py-1"
     >
-      CEAS
+    CEAS
     </button>
     <button
-      class="flex-1 pb-4 border-b-2 font-bold border-black hover:border-b-4 hover:border-pink-500"
+    (click)="filterCollege('CHTM'); activeButton = 'chtm'"
+    [ngClass]="{ 'bg-blue text-white rounded-tr-[1rem] rounded-tl-[1rem]': activeButton === 'chtm' }"
+    class="flex-1  border-b-2 font-bold border-black  py-1"
     >
       CHTM
     </button>
     <button
-      class="flex-1 pb-4 border-b-2 font-bold border-black hover:border-b-4 hover:border-red-600"
+    (click)="filterCollege('CAHS'); activeButton = 'cahs'"
+    [ngClass]="{ 'bg-blue text-white rounded-tr-[1rem] rounded-tl-[1rem]': activeButton === 'cahs' }"
+    class="flex-1  border-b-2 font-bold border-black  py-1"
     >
-      CAHS
-    </button>
-    <button
-      class="flex-1 pb-4 border-b-2 font-bold border-black hover:border-b-4 hover:border-yellow-300"
-    >
+    CAHS
+  </button>
+  <button
+  (click)="filterCollege('CBA'); activeButton = 'cba'"
+  [ngClass]="{ 'bg-blue text-white rounded-tr-[1rem] rounded-tl-[1rem]': activeButton === 'cba' }"
+  class="flex-1  border-b-2 font-bold border-black  py-1"
+  >
       CBA
     </button>
-  </div> -->
+  </div>
   <div class="grid justify-items-start grid-cols-4 gap-5">
-    <div class="col-span-4 grid-cols-subgrid grid border-b-2 border-gray">
+    <!-- <div class="col-span-4 grid-cols-subgrid grid border-b-2 border-gray">
       <p class="uppercase">Name</p>
       <p class="uppercase">College</p>
       <p class="uppercase">Position</p>
       <p class="uppercase">Employment</p>
-    </div>
+    </div> -->
 
     <!-- DATA -->
-    @for (faculty of facultyMembers; track faculty.first_name) {
+    @for (faculty of filteredArray; track faculty.first_name) {
       <div
       class="col-span-4 grid-cols-subgrid grid items-center border-l-4 justify-items-start gap-5 hover:bg-gray-200 p-1"
     >
