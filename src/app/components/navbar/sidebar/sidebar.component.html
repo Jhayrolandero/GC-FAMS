@@ -7,63 +7,25 @@
     </div>
     <div class="faculty-side flex-1">
       <ul *ngIf="!isFaculty">
-        <!-- <app-nav
-          (click)="onSelect(0)"
-          [selectedBar]="selectedBar"
-          [index]="'0'"
-          [title]="'Admin Profile'"
-          [source]="'Person.png'"
-        ></app-nav>
-        <app-nav
-          (click)="onSelect(1)"
-          [selectedBar]="selectedBar"
-          [index]="'1'"
-          [title]="'Program Analytics'"
-          [source]="'Signal.png'"
-        ></app-nav> -->
-        <app-nav
-          (click)="onSelect(2)"
-          [selectedBar]="selectedBar"
-          [index]="'2'"
-          [title]="'Faculty Members'"
-          [source]="'Users.png'"
-        ></app-nav>
-        <!-- <app-nav
-          (click)="onSelect(3)"
-          [selectedBar]="selectedBar"
-          [index]="'3'"
-          [title]="'Faculty Schedules'"
-          [source]="'Vector.png'"
-        ></app-nav> -->
-        <!-- <app-nav
-          (click)="onSelect(4)"
-          [selectedBar]="selectedBar"
-          [index]="'4'"
-          [title]="'Program Projects'"
-          [source]="'Mortarboard.png'"
-        ></app-nav> -->
-        <!-- <app-nav
-          (click)="onSelect(5)"
-          [selectedBar]="selectedBar"
-          [index]="'5'"
-          [title]="'Community Extensions'"
-          [source]="'Users.png'"
-        ></app-nav> -->
-        <!-- <app-nav
-          (click)="onSelect(6)"
-          [selectedBar]="selectedBar"
-          [index]="'6'"
-          [title]="'Evaluation Analytics'"
-          [source]="'ScatterPlot.png'"
-        ></app-nav> -->
         <app-nav
           (click)="onSelect(7)"
           [selectedBar]="selectedBar"
           [index]="'7'"
           [title]="'Manage Faculty'"
+          [source]="'Users.png'"
+        ></app-nav>
+        <app-nav
+          (click)="onSelect(2)"
+          [selectedBar]="selectedBar"
+          [index]="'2'"
+          [title]="'Program Analytics'"
           [source]="'ScatterPlot.png'"
         ></app-nav>
+
       </ul>
+
+
+
       <ul *ngIf="isFaculty">
         <app-nav
           (click)="onSelect(7)"

@@ -2,7 +2,7 @@
 
 <div class="p-5 flex flex-col gap-3 text-blue" *ngIf="!isLoading">
   <div
-    class="bg-white shadow-lg bg-opacity-70 w-full rounded-[25px] flex flex-col tablet:flex-row tablet:justify-between items-center px-5"
+    class="bg-white shadow-main bg-opacity-70 w-full rounded-[15px] flex flex-col tablet:flex-row tablet:justify-between items-center px-5"
   >
     <h1 class="font-Poppins font-semibold text-[2.5rem] py-2">
       Community Extensions
@@ -19,11 +19,11 @@
   <h1 class="font-Poppins font-semibold text-[1.5rem] py-2">
     Latest Community Extensions
   </h1>
-  <hr class="h-[2px] bg-black" />
+  <hr class="border-[1.5px] border-slate-400">
 
   <div
     *ngIf="commexs[0] != undefined"
-    class="bg-white shadow-lg w-full rounded-[25px] flex flex-row overflow-hidden hover:scale-[101%] hover:duration-300 duration-300"
+    class="bg-white shadow-main w-full rounded-[15px] flex flex-row overflow-hidden hover:scale-[101%] hover:duration-300 duration-300"
   >
     <div *ngIf="commexs[0].commex_header_img != 'http://localhost:8080'" class="bg-red-400 w-[25%] h-[280px]">
       <img [src]="commexs[0].commex_header_img" class="h-full w-full object-cover" />
@@ -51,14 +51,14 @@
   <h1 class="font-Poppins font-semibold text-[1.5rem] py-2">
     Other Community Extensions
   </h1>
-  <hr class="h-[2px] bg-black" />
+  <hr class="border-[1.5px] border-slate-400">
 
   <app-other-commex>
     <div
       *ngFor="let commex of commexs; let i = index"
       
     >
-      <div *ngIf="i != 0" class="bg-white rounded-xl shadow-lg flex flex-col gap-2 duration-300 hover:scale-[102%] hover:shadow-xl hover:duration-300 break-inside-avoid mb-2 overflow-hidden">
+      <div *ngIf="i != 0" class="bg-white rounded-xl shadow-main flex flex-col gap-2 duration-300 hover:scale-[102%] hover:shadow-xl hover:duration-300 break-inside-avoid mb-2 overflow-hidden">
         <div class="bg-red-300">
           <img [src]="commex.commex_header_img" alt="" />
         </div>
@@ -74,7 +74,7 @@
           </p>
         </div>
 
-        <!-- <button class="bg-blue text-white font-bold p-2 rounded-lg">
+        <!-- <button class="bg-blue text-white font-bold p-2 rounded-main">
           Read More
         </button> -->
       </div>
