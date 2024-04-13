@@ -10,6 +10,7 @@ import { FormsModule, ReactiveFormsModule, FormGroup, FormControl } from '@angul
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { FacultyRequestService } from '../../../services/faculty/faculty-request.service';
 
 @Component({
   selector: 'app-faculty-certifications-form',
@@ -21,7 +22,7 @@ import { MatInputModule } from '@angular/material/input';
 })
 
 export class FacultyCertificationsFormComponent { 
-  constructor(public dialogRef: MatDialogRef<FacultyCertificationsFormComponent>,){}
+  constructor(public dialogRef: MatDialogRef<FacultyCertificationsFormComponent>, private facultyRequest: FacultyRequestService){}
 
   certForm = new FormGroup({
     cert_name: new FormControl(''),
@@ -31,8 +32,19 @@ export class FacultyCertificationsFormComponent {
     cert_image: new FormControl<File | null>(null)
   })
 
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
   submitForm(){
-    
+    console.log(this.certForm);
+
+    const formData = this.facultyRequest.formDatanalize(this.certForm);
+    this.facultyRequest.postData(formData, 'addCert').subscribe({
+      next: (next: any) => {console.log(next);},
+      error: (error) => {console.log(error)},
+      complete: () => {this.onNoClick();}
+    });
   }
 
   imageURL?: string = undefined;

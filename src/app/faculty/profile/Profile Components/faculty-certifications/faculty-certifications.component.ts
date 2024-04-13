@@ -2,6 +2,7 @@ import { Certifications } from '../../../../services/Interfaces/certifications';
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FacultyRequestService } from '../../../../services/faculty/faculty-request.service';
+import { mainPort } from '../../../../app.component';
 @Component({
   selector: 'app-faculty-certifications',
   standalone: true,
@@ -20,11 +21,18 @@ export class FacultyCertificationsComponent {
 
     this.facultyRequest.fetchData(this.certifications, 'certificate').subscribe({
       next: (next: any) => {
-        this.certifications = next;
-        console.log(next);},
+        this.certifications = next;},
       error: (error) => {console.log(error)},
-      complete: () => {}
+      complete: () => {
+        this.certifications?.forEach(this.parseImageLink);
+        console.log(this.certifications);
+      }
     });
+  }
+
+  //Adds mainPort to all header image links.
+  parseImageLink(i: Certifications){
+    i.cert_image = mainPort + i.cert_image;
   }
 
 }
