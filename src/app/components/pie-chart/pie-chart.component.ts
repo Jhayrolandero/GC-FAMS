@@ -19,7 +19,7 @@ export class PieChartComponent implements OnInit {
   arcWidth: number = 0.4;
   viewSize = [2,2];
   gradient: boolean = false;
-  showLegend: boolean = true;
+  showLegend: boolean = false;
   showLabels: boolean = false;
   isDoughnut: boolean = true;
   explodeSlices: boolean = false;

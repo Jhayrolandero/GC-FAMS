@@ -130,10 +130,27 @@
                     </div>
                 </div>
 
-                <div
-                    class="bg-white bg-opacity-70 shadow-main w-[35%] p-3 rounded-[15px] shadow-[0px, 4px, 4px, 0px] flex flex-col">
-                    <p class="text-[1.3rem] font-Poppins font-semibold">Degree Distribution</p>
-                    <app-pie-chart [data]="degree"></app-pie-chart>
+                <div class="bg-white bg-opacity-70 shadow-main w-[35%] p-3 rounded-[15px] shadow-[0px, 4px, 4px, 0px] flex flex-col">
+                    <div class="flex flex-row">
+                        <app-pie-chart class="w-[50%]" [data]="degree"></app-pie-chart>
+                        <div class="w-[50%] flex flex-col justify-center">
+                            <p class="font-Roboto font-semibold">Legend</p>
+                            <div class="p-3 bg-slate-200 bg-opacity-50 rounded-[10px] p-2 flex flex-col gap-y-2">
+                                <div class="flex flex-row items-center">
+                                    <div class="mr-2 w-[20px] h-[20px] bg-[#074287] rounded-[5px]"></div>
+                                    <p>Doctorate Degree</p>
+                                </div>
+                                <div class="flex flex-row items-center">
+                                    <div class="mr-2 w-[20px] h-[20px] bg-[#1E7242] rounded-[5px]"></div>
+                                    <p>Master's Degree</p>
+                                </div>
+                                <div class="flex flex-row items-center">
+                                    <div class="mr-2 w-[20px] h-[20px] bg-[#FF7A00] rounded-[5px]"></div>
+                                    <p>Bachelor's Degree</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
