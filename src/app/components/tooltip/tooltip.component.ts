@@ -16,6 +16,7 @@ export class TooltipComponent implements OnDestroy {
   @Input('isVisible') isVisible: boolean = false
   @Input('id') id: number = -1
   @Input('activeID') activeID: number | null = null
+  @Input('isLoading') isLoading: boolean = true
 
 
   get shouldShowTooltip() {

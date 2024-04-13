@@ -98,6 +98,7 @@ export class CommexFormComponent {
 export class CommunityExtensionsComponent {
   tempPort = mainPort;
   isLoading: boolean = true;
+  isAttendeeLoading: boolean = true;
   formToggle: boolean = false;
   commexs: CommunityExtension[] = [];
   attendees: Attendee[] = []
@@ -149,7 +150,9 @@ export class CommunityExtensionsComponent {
         }
       },
       error: (error) => console.log(error),
-      complete: () => { }
+      complete: () => {
+        this.isAttendeeLoading = false;
+      }
     })
 
     this.activeID = id
@@ -159,6 +162,7 @@ export class CommunityExtensionsComponent {
     this.isVisible = false
     this.activeID = null
     this.attendees = []
+    this.isAttendeeLoading = true;
     this.attendeeFetch.unsubscribe()
   }
 }
