@@ -19,7 +19,8 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { TooltipComponent } from '../../components/tooltip/tooltip.component';
-
+import { Attendee } from '../../services/Interfaces/attendee';
+import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-commex-form',
   standalone: true,
@@ -90,8 +91,7 @@ export class CommexFormComponent {
 @Component({
   selector: 'app-community-extensions',
   standalone: true,
-  imports: [OtherCommexComponent, NgFor, SlicePipe, CommonModule, LoadingScreenComponent, CommexFormComponent, TooltipComponent, NgIf
-  ],
+  imports: [OtherCommexComponent, NgFor, SlicePipe, CommonModule, LoadingScreenComponent, CommexFormComponent, TooltipComponent, NgIf],
   templateUrl: './community-extensions.component.html',
   styleUrl: './community-extensions.component.css'
 })
@@ -100,8 +100,10 @@ export class CommunityExtensionsComponent {
   isLoading: boolean = true;
   formToggle: boolean = false;
   commexs: CommunityExtension[] = [];
-
-
+  attendees: Attendee[] = []
+  isVisible: boolean = false
+  activeID: number | null = null
+  attendeeFetch!: Subscription
   constructor(private facultyService: FacultyRequestService, public dialog: MatDialog,) {
     this.getCommex();
   }
@@ -136,4 +138,27 @@ export class CommunityExtensionsComponent {
     });
   }
 
+
+  toggleVisible(id: number) {
+    this.isVisible = true
+
+    this.attendeeFetch = this.facultyService.fetchData(this.attendees, `attendee/${id}`).subscribe({
+      next: (res: any) => {
+        if (res.code == 200) {
+          this.attendees = res.data
+        }
+      },
+      error: (error) => console.log(error),
+      complete: () => { }
+    })
+
+    this.activeID = id
+  }
+
+  toggleHide() {
+    this.isVisible = false
+    this.activeID = null
+    this.attendees = []
+    this.attendeeFetch.unsubscribe()
+  }
 }

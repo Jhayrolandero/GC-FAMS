@@ -1,1 +1,13 @@
-<p>tooltip works!</p>
+<div
+*ngIf="shouldShowTooltip"
+class="bg-[#1E1E1E] opacity-90 text-white absolute bottom-0 left-[10%] p-2 rounded-lg min-w-max z-10"
+>
+  <h4>Attendee</h4>
+  <ul>
+    @for (attendee of attendees; track attendees) {
+      <li>{{attendee.first_name}} {{attendee.middle_name}} {{attendee.last_name}} {{attendee.ext_name}}</li>
+    } @empty {
+      <h4>No Attendee</h4>
+    }
+  </ul>
+</div>
