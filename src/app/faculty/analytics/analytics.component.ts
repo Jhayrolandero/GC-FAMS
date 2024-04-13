@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FacultyMilestoneCalendarComponent } from '../../components/faculty/faculty-milestone-calendar/faculty-milestone-calendar.component';
-import { FacultyMilestoneHistoryComponent } from '../../components/faculty/faculty-milestone-history/faculty-milestone-history.component';
 import { PieChartComponent } from '../../components/pie-chart/pie-chart.component';
-import { single } from './data';
-import { Init } from 'v8';
 import { FacultyRequestService } from '../../services/faculty/faculty-request.service';
 import { Evaluation } from '../../services/Interfaces/evaluation';
 import { Router } from '@angular/router';
@@ -13,7 +10,6 @@ import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { LoadingScreenComponent } from '../../components/loading-screen/loading-screen.component';
 import { forkJoin } from 'rxjs';
 import { EvaluationService } from '../../services/evaluation.service';
-import { error } from 'console';
 import { Schedule } from '../../services/admin/schedule';
 
 type ScoreCategory = {
@@ -27,7 +23,6 @@ type ScoreCategory = {
   standalone: true,
   imports: [
     FacultyMilestoneCalendarComponent,
-    FacultyMilestoneHistoryComponent,
     PieChartComponent,
     NgOptimizedImage,
     LoadingScreenComponent,

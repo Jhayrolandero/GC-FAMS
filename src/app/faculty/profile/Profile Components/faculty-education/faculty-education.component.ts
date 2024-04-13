@@ -13,22 +13,4 @@ import { FormControl, FormGroup } from '@angular/forms';
   styleUrl: './faculty-education.component.css'
 })
 export class FacultyEducationComponent {
-  @Input() educAttainment?: EducationalAttainment[];
-  @Input() addEducToggle: boolean = false;
-  @Output() setEducEdit = new EventEmitter<EducationalAttainment>();
-  @Output() setType = new EventEmitter<string>();
-
-  //Send selected resume info on form component
-  sendValueParams(value: EducationalAttainment) {
-    this.setEducEdit.emit(value);
-  }
-
-  //Change form type.
-  changeType(value: string) {
-    this.setType.emit(value);
-  }
-  
-  
-  showCrud = false;
-  tempPort = mainPort;
 }
