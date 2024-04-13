@@ -3,17 +3,17 @@
   <div class="flex flex-col flex-none justify-end text-end my-5">
     <div class="m-[2px] w-[12px] h-[12px]">
     </div>
-    <div class="m-[2px] h-[12px]">
+    <div class="m-[2px] h-[12px] text-black">
       Mon
     </div>
     <div class="m-[2px] w-[12px] h-[12px]">
     </div>
-    <div class="m-[2px] h-[12px]">
+    <div class="m-[2px] h-[12px] text-black">
       Wed
     </div>
     <div class="m-[2px] w-[12px] h-[12px]">
     </div>
-    <div class="m-[2px] h-[12px]">
+    <div class="m-[2px] h-[12px] text-black">
       Fri
     </div>
     <div class="m-[2px] w-[12px] h-[12px]">
@@ -22,7 +22,7 @@
   @for (week of daysOfYear; track week; let i = $index){
     <div class="flex flex-col flex-none my-5 relative">
       @if (week[6][0].getDate() <= 7){
-        <p class='absolute top-[-20px]'>{{week[6][0] | date:'MMM'}}</p>
+        <p class='absolute top-[-20px] text-black'>{{week[6][0] | date:'MMM'}}</p>
       
       }
       <div  *ngFor="let day of week" 

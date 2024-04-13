@@ -1,5 +1,5 @@
 <div
-  class="h-[60px] bg-white overscroll-none justify-between items-center py-2 px-6 flex flex-row shadow-lg"
+  class="h-[60px] bg-white overscroll-none justify-between items-center py-2 px-6 flex flex-row shadow-main"
 >
   <svg (click)="triggerToggle()" class="hover:scale-[101%]" width="31" height="27" viewBox="0 0 31 27" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M29.2778 23.625C29.7167 23.6255 30.1389 23.7902 30.4581 24.0854C30.7773 24.3807 30.9694 24.7842 30.9951 25.2136C31.0209 25.643 30.8783 26.0658 30.5965 26.3956C30.3148 26.7254 29.9152 26.9374 29.4793 26.9882L29.2778 27H1.72222C1.28326 26.9995 0.861056 26.8348 0.541866 26.5396C0.222676 26.2443 0.0305953 25.8408 0.00487024 25.4114C-0.0208548 24.982 0.121717 24.5592 0.403456 24.2294C0.685195 23.8996 1.08483 23.6876 1.52072 23.6368L1.72222 23.625H29.2778ZM29.2778 11.8125C29.7345 11.8125 30.1726 11.9903 30.4956 12.3068C30.8186 12.6232 31 13.0524 31 13.5C31 13.9476 30.8186 14.3768 30.4956 14.6932C30.1726 15.0097 29.7345 15.1875 29.2778 15.1875H1.72222C1.26546 15.1875 0.827406 15.0097 0.504427 14.6932C0.181448 14.3768 0 13.9476 0 13.5C0 13.0524 0.181448 12.6232 0.504427 12.3068C0.827406 11.9903 1.26546 11.8125 1.72222 11.8125H29.2778ZM29.2778 0C29.7345 0 30.1726 0.17779 30.4956 0.494258C30.8186 0.810725 31 1.23995 31 1.6875C31 2.13505 30.8186 2.56427 30.4956 2.88074C30.1726 3.19721 29.7345 3.375 29.2778 3.375H1.72222C1.26546 3.375 0.827406 3.19721 0.504427 2.88074C0.181448 2.56427 0 2.13505 0 1.6875C0 1.23995 0.181448 0.810725 0.504427 0.494258C0.827406 0.17779 1.26546 0 1.72222 0H29.2778Z" fill="#074287"/>
@@ -22,7 +22,7 @@
     </div>
     <i class="fa-solid fa-chevron-down"></i>
 
-    <div *ngIf="dropToggle" class="absolute  right-[25px] top-[65px] w-[240px] bg-white rounded-[10px] shadow-lg flex flex-col items-center py-5 z-50">
+    <div *ngIf="dropToggle" class="absolute  right-[25px] top-[65px] w-[240px] bg-white rounded-[10px] shadow-main flex flex-col items-center py-5 z-50">
           <div class="w-[80px] h-[80px] bg-red-200 rounded-full overflow-hidden">
             <img [src]="facultyProfile.profile_image">
           </div>

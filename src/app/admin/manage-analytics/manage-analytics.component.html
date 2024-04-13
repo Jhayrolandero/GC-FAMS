@@ -1,0 +1,189 @@
+<!-- <app-loading-screen *ngIf="isLoading"></app-loading-screen> -->
+
+<div class="p-5 flex flex-col gap-y-3 text-blue">
+    <div class="bg-white shadow-main w-full rounded-[15px] flex justify-between items-center px-5">
+        <h1 class="font-Poppins font-semibold text-[2.5rem] py-2">
+            Program Analytics
+        </h1>
+    </div>
+
+    <div class="w-full h-[360px] flex flex-row gap-x-3 items-center">
+        <div class="bg-white shadow-main w-[80%] h-full rounded-[15px]">
+            <div class="px-4">
+                <h1 class="font-Poppins font-semibold text-[2rem] py-2">
+                    Milestone Calendar
+                </h1>
+
+                <app-faculty-milestone-calendar></app-faculty-milestone-calendar>
+
+                <h4 class="font-Poppins font-semibold text-[1.4rem] py-2">
+                    Milestone History
+                </h4>
+            </div>
+        </div>
+
+        <div class="w-[20%] h-full flex flex-col gap-y-3">
+
+            <div
+                class="bg-white shadow-main  h-[50%] rounded-[15px] overflow-hidden flex flex-col justify-center items-center">
+                <p class="text-blue text-[5rem] font-Poppins font-bold leading-[90%]">22</p>
+                <p class="text-blue font-Poppins font-bold">CCS Faculty Members</p>
+
+                <div class="bg-blue rounded-[15px] shadow-main py-2 px-3 mt-3">
+                    <p class="text-white text-[0.9rem] font-Poppins font-semibold">Browse CCS Curriculum Vitae</p>
+                </div>
+            </div>
+
+            <div
+                class="bg-white shadow-main  h-[50%] rounded-[15px] overflow-hidden flex flex-col justify-center items-center">
+                <p class="text-center text-blue text-[1.2rem] font-Poppins font-semibold">CCS Average
+                    Faculty<br>Evaluation Score</p>
+                <p class="text-greenBar text-[5rem] font-Poppins font-bold leading-[90%]">4.3</p>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="w-full h-[300px] flex flex-row gap-x-3 items-center">
+
+
+        <div class="bg-white bg-opacity-70 p-3 shadow-main w-full h-full rounded-[15px]">
+            <p class="text-[1.5rem] font-Poppins font-semibold">Educational Attainments</p>
+            <div class="flex flex-row gap-x-3">
+                <div class="w-[65%] h-[220px] flex flex-col gap-y-3 overflow-y-scroll">
+
+                    <div class="p-2 px-4 flex flex-col gap-y-2">
+                        <p class="font-Roboto font-semibold">Doctorate Degree</p>
+                        <hr class="border-[1.5px] border-slate-400">
+
+                        <div class="w-full rounded-full bg-white bg-opacity-100 shadow-main flex flex-row justify-between items-center">
+                            <div class=" w-[40%] flex flex-row items-center">
+                                <div class="h-[35px] w-[35px] aspect-square bg-slate-200 rounded-full"></div>
+                                <p class="text-blue text-[0.9rem] mx-2 font-Poppins font-semibold">Nami Navigator</p>
+                            </div>
+                            <p class="text-blue font-light italic">University of Herrscher</p>
+                            <svg class="mr-3" width="9" height="15" viewBox="0 0 9 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M1 1L6.97112 6.35101C7.67629 6.98295 7.67629 8.01705 6.97112 8.64899L1 14" stroke="#074287" stroke-width="1.89895" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+
+                        <div class="w-full rounded-full bg-white shadow-main flex flex-row justify-between items-center">
+                            <div class=" w-[40%] flex flex-row items-center">
+                                <div class="h-[35px] w-[35px] aspect-square bg-slate-200 rounded-full"></div>
+                                <p class="text-blue text-[0.9rem] mx-2 font-Poppins font-semibold">Kirk Nerdington Fitzgerald</p>
+                            </div>
+                            <p class="text-blue font-light italic">University of Herrscher</p>
+                            <svg class="mr-3" width="9" height="15" viewBox="0 0 9 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M1 1L6.97112 6.35101C7.67629 6.98295 7.67629 8.01705 6.97112 8.64899L1 14" stroke="#074287" stroke-width="1.89895" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+
+                        <div class="w-full rounded-full bg-white shadow-main flex flex-row justify-between items-center">
+                            <div class=" w-[40%] flex flex-row items-center">
+                                <div class="h-[35px] w-[35px] aspect-square bg-slate-200 rounded-full"></div>
+                                <p class="text-blue text-[0.9rem] mx-2 font-Poppins font-semibold">Kirk Nerdington Fitzgerald</p>
+                            </div>
+                            <p class="text-blue font-light italic">University of Herrscher</p>
+                            <svg class="mr-3" width="9" height="15" viewBox="0 0 9 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M1 1L6.97112 6.35101C7.67629 6.98295 7.67629 8.01705 6.97112 8.64899L1 14" stroke="#074287" stroke-width="1.89895" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <div class="p-2 px-4 flex flex-col gap-y-2">
+                        <p class="font-Roboto font-semibold">Master's Degree</p>
+                        <hr class="border-[1.5px] border-slate-400">
+
+                        <div class="w-full rounded-full bg-white shadow-main flex flex-row justify-between items-center">
+                            <div class=" w-[40%] flex flex-row items-center">
+                                <div class="h-[35px] w-[35px] aspect-square bg-slate-200 rounded-full"></div>
+                                <p class="text-blue text-[0.9rem] mx-2 font-Poppins font-semibold">Nami Navigator</p>
+                            </div>
+                            <p class="text-blue font-light italic">University of Herrscher</p>
+                            <svg class="mr-3" width="9" height="15" viewBox="0 0 9 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M1 1L6.97112 6.35101C7.67629 6.98295 7.67629 8.01705 6.97112 8.64899L1 14" stroke="#074287" stroke-width="1.89895" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+
+                        <div class="w-full rounded-full bg-white shadow-main flex flex-row justify-between items-center">
+                            <div class=" w-[40%] flex flex-row items-center">
+                                <div class="h-[35px] w-[35px] aspect-square bg-slate-200 rounded-full"></div>
+                                <p class="text-blue text-[0.9rem] mx-2 font-Poppins font-semibold">Kirk Nerdington Fitzgerald</p>
+                            </div>
+                            <p class="text-blue font-light italic">University of Herrscher</p>
+                            <svg class="mr-3" width="9" height="15" viewBox="0 0 9 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M1 1L6.97112 6.35101C7.67629 6.98295 7.67629 8.01705 6.97112 8.64899L1 14" stroke="#074287" stroke-width="1.89895" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+
+                        <div class="w-full rounded-full bg-white shadow-main flex flex-row justify-between items-center">
+                            <div class=" w-[40%] flex flex-row items-center">
+                                <div class="h-[35px] w-[35px] aspect-square bg-slate-200 rounded-full"></div>
+                                <p class="text-blue text-[0.9rem] mx-2 font-Poppins font-semibold">Kirk Nerdington Fitzgerald</p>
+                            </div>
+                            <p class="text-blue font-light italic">University of Herrscher</p>
+                            <svg class="mr-3" width="9" height="15" viewBox="0 0 9 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M1 1L6.97112 6.35101C7.67629 6.98295 7.67629 8.01705 6.97112 8.64899L1 14" stroke="#074287" stroke-width="1.89895" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white bg-opacity-70 shadow-main w-[35%] p-3 rounded-[15px] shadow-[0px, 4px, 4px, 0px] flex flex-col">
+                    <div class="flex flex-row">
+                        <app-pie-chart class="w-[50%]" [data]="degree"></app-pie-chart>
+                        <div class="w-[50%] flex flex-col justify-center">
+                            <p class="font-Roboto font-semibold">Legend</p>
+                            <div class="p-3 bg-slate-200 bg-opacity-50 rounded-[10px] p-2 flex flex-col gap-y-2">
+                                <div class="flex flex-row items-center">
+                                    <div class="mr-2 w-[20px] h-[20px] bg-[#074287] rounded-[5px]"></div>
+                                    <p>Doctorate Degree</p>
+                                </div>
+                                <div class="flex flex-row items-center">
+                                    <div class="mr-2 w-[20px] h-[20px] bg-[#1E7242] rounded-[5px]"></div>
+                                    <p>Master's Degree</p>
+                                </div>
+                                <div class="flex flex-row items-center">
+                                    <div class="mr-2 w-[20px] h-[20px] bg-[#FF7A00] rounded-[5px]"></div>
+                                    <p>Bachelor's Degree</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="w-full h-[350px] flex flex-row gap-x-3 items-center">
+        <div class="bg-white shadow-main p-3 w-[65%] flex flex-col gap-y-3 h-full rounded-[15px]">
+            <p class="text-[1.5rem] font-Poppins font-semibold">Certifications</p>
+
+            <div class="w-full rounded-full bg-blue shadow-main flex flex-row items-center">
+                <div class=" w-[40%] flex flex-row items-center">
+                    <div class="h-[35px] w-[35px] aspect-square bg-slate-200 rounded-full"></div>
+                    <p class="text-white text-[0.9rem] mx-2 font-Poppins font-semibold">Nami Navigator</p>
+                </div>
+                <p class="text-white font-light italics">University of Herrscher</p>
+            </div>
+
+        </div>
+
+        <div class="bg-white bg-opacity-70 p-3 shadow-main w-[35%] h-full rounded-[15px]">
+            <p class="text-[1.5rem] font-Poppins font-semibold">Industry Experience</p>
+
+            <div class="px-4">
+
+                <div class="flex flex-row items-center">
+                    <p class="text-greenBar text-[2.8rem] font-Poppins font-bold">12%</p>
+                    <p class="text-blue text-[0.9rem] font-Poppins font-bold ml-3">of CCS Faculty Members have served
+                        more than 10 year(s) in Gordon College.</p>
+                </div>
+                <p class="text-blue text-[0.9rem] font-Poppins font-bold">All CCS faculty members have served by an
+                    average of 13.7 years.</p>
+
+            </div>
+        </div>
+    </div>
+</div>
