@@ -20,7 +20,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { TooltipComponent } from '../../components/tooltip/tooltip.component';
 import { Attendee } from '../../services/Interfaces/attendee';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription, catchError, finalize, forkJoin, of, switchMap, toArray } from 'rxjs';
+import { error } from 'console';
 @Component({
   selector: 'app-commex-form',
   standalone: true,
@@ -101,14 +102,16 @@ export class CommunityExtensionsComponent {
   isAttendeeLoading: boolean = true;
   formToggle: boolean = false;
   commexs: CommunityExtension[] = [];
-  attendees: Attendee[] = []
+  attendees: Attendee[][] = []
   isVisible: boolean = false
   activeID: number | null = null
   attendeeFetch!: Subscription
+  noAttendee: number[] = []
   constructor(private facultyService: FacultyRequestService, public dialog: MatDialog,) {
     this.getCommex();
   }
 
+  // temporary solution i will make this lazy loaded in the future
   getCommex(): void {
     this.facultyService.fetchData(this.commexs, 'getcommex/fetchCommex').subscribe({
       next: (next) => this.commexs = next,
@@ -116,9 +119,46 @@ export class CommunityExtensionsComponent {
       complete: () => {
         this.dateSorter();
         this.commexs.forEach(this.parseImageLink);
-        this.isLoading = false
+        this.commexs.map((commex: CommunityExtension) => this.fetchAttendee(commex.commex_ID))
+
+        const attendeeObservables: Observable<Attendee>[] = this.commexs.map((commex: CommunityExtension) =>
+          this.fetchAttendee(commex.commex_ID)
+        );
+
+        forkJoin(attendeeObservables).pipe(
+          catchError((error) => {
+            console.error('Error fetching attendees:', error);
+            return [];
+          }),
+        ).subscribe({
+          next: (res) => {
+            res.forEach((attendeeData: any) => {
+              this.attendees.push(attendeeData.data);
+              this.noAttendee.push(attendeeData.data.length)
+            });
+          },
+          complete: () => {
+            this.isLoading = false
+            console.log(this.attendees)
+            console.log(this.noAttendee)
+          }
+        });
       }
     });
+  }
+
+  fetchAttendee(id: number): Observable<Attendee> {
+    return this.facultyService.fetchData(this.attendees, `attendee/${id}`);
+    // // forkJoin()
+    // this.facultyService.fetchData(this.attendees, `attendee/${id}`).subscribe({
+    //   next: res => this.attendees.push(res.data),
+    //   error: err => console.log(err),
+    //   complete: () => {
+    //     console.log(this.attendees)
+    //     this.isLoading = false
+    //   }
+
+    // })
   }
 
   //Adds mainPort to all header image links.
@@ -143,17 +183,17 @@ export class CommunityExtensionsComponent {
   toggleVisible(id: number) {
     this.isVisible = true
 
-    this.attendeeFetch = this.facultyService.fetchData(this.attendees, `attendee/${id}`).subscribe({
-      next: (res: any) => {
-        if (res.code == 200) {
-          this.attendees = res.data
-        }
-      },
-      error: (error) => console.log(error),
-      complete: () => {
-        this.isAttendeeLoading = false;
-      }
-    })
+    // this.attendeeFetch = this.facultyService.fetchData(this.attendees, `attendee/${id}`).subscribe({
+    //   next: (res: any) => {
+    //     if (res.code == 200) {
+    //       this.attendees = res.data
+    //     }
+    //   },
+    //   error: (error) => console.log(error),
+    //   complete: () => {
+    //     this.isAttendeeLoading = false;
+    //   }
+    // })
 
     this.activeID = id
   }
@@ -161,8 +201,8 @@ export class CommunityExtensionsComponent {
   toggleHide() {
     this.isVisible = false
     this.activeID = null
-    this.attendees = []
+    // this.attendees = []
     this.isAttendeeLoading = true;
-    this.attendeeFetch.unsubscribe()
+    // this.attendeeFetch.unsubscribe()
   }
 }

@@ -50,16 +50,15 @@
           <p>
             <span (mouseenter)="toggleVisible(commexs[0].commex_ID)" (mouseleave)="toggleHide()">
               <span class="mr-2"><i class="fa-solid fa-users"></i></span>
-              <span>5</span>
+                <span>{{ noAttendee[0] }}</span>
             </span>
           </p>
           <div class="relative">
             <app-tooltip
-            [attendees]="attendees"
+            [attendees]="attendees[0]"
             [isVisible]="isVisible"
             [id]="commexs[0].commex_ID"
             [activeID]="activeID"
-            [isLoading]="isAttendeeLoading"
             ></app-tooltip>
           </div>
         </div>
@@ -98,16 +97,15 @@
             <p>
               <span (mouseenter)="toggleVisible(commex.commex_ID)" (mouseleave)="toggleHide()">
                 <span class="mr-2"><i class="fa-solid fa-users"></i></span>
-                <span>{{attendees.length}}</span>
+                <span>{{ noAttendee[i] }}</span>
               </span>
             </p>
             <div class="relative">
               <app-tooltip
-              [attendees]="attendees"
+              [attendees]="attendees[i]"
               [isVisible]="isVisible"
               [id]="commex.commex_ID"
               [activeID]="activeID"
-              [isLoading]="isAttendeeLoading"
               ></app-tooltip>
             </div>
           </div>
