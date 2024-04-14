@@ -1,6 +1,6 @@
 import { Certifications } from '../../../../services/Interfaces/certifications';
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, Input, SimpleChanges } from '@angular/core';
 import { FacultyRequestService } from '../../../../services/faculty/faculty-request.service';
 import { mainPort } from '../../../../app.component';
 @Component({
@@ -11,9 +11,17 @@ import { mainPort } from '../../../../app.component';
   styleUrl: './faculty-certifications.component.css'
 })
 export class FacultyCertificationsComponent { 
+  @Input() certRefresh: boolean = false;
   certifications?: Certifications[];
   
   constructor(private facultyRequest: FacultyRequestService){
+
+    this.getCertificate();
+  }
+
+  //Checks if certRefresh has been poked. Triggers cert fetch re-request
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log("Refreshing certificate...");
     this.getCertificate();
   }
 

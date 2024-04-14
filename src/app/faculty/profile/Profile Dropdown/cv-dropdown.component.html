@@ -60,10 +60,10 @@
     <!-- "Educational Attaiment", "Certifications", "Industry Experience", "Projects", "Expertise" -->
     @switch(name){
         @case("Educational Attainment"){
-            <!-- <app-faculty-education *ngIf="rotated"></app-faculty-education> -->
+            <app-faculty-education [educRefresh]="refresher[0]" *ngIf="rotated"></app-faculty-education>
         }
         @case("Certifications"){
-            <app-faculty-certifications *ngIf="rotated"></app-faculty-certifications>
+            <app-faculty-certifications [certRefresh]="refresher[1]" *ngIf="rotated"></app-faculty-certifications>
         }
         @case("Industry Experience"){
             <!-- <app-faculty-experience *ngIf="rotated"></app-faculty-experience> -->

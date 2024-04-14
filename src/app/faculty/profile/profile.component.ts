@@ -32,7 +32,7 @@ export class ProfileComponent {
   schedules: Schedule[] = [];
 
   rotated = false;
-  components: string[] = ["Educational Attaiment", "Certifications", "Industry Experience", "Projects", "Expertise"]
+  components: string[] = ["Educational Attainment", "Certifications", "Industry Experience", "Projects", "Expertise"]
 
   //CV form toggle
   cvToggle = false;
