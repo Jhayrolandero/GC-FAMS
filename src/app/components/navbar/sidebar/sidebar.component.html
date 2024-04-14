@@ -21,7 +21,13 @@
           [title]="'Program Analytics'"
           [source]="'ScatterPlot.png'"
         ></app-nav>
-
+        <app-nav
+        (click)="onSelect(13)"
+        [selectedBar]="selectedBar"
+        [index]="'13'"
+        [title]="'Community'"
+        [source]="'Users.png'"
+      ></app-nav>
       </ul>
 
 

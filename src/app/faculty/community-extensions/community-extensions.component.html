@@ -7,13 +7,33 @@
     <h1 class="font-Poppins font-semibold text-[2.5rem] py-2">
       Community Extensions
     </h1>
-    <div class="flex flex-row space-x-4">
+    <!-- <div class="flex flex-row space-x-4">
       <button
         (click)="openDialog()" class="bg-gradient-to-r from-blue to-greenBar text-white font-Poppins font-semibold w-[125px] h-[40px] rounded-full shadow-xl hover:scale-[102%] hover:duration-300 duration-300"
       >
         +Add
       </button>
-    </div>
+    </div> -->
+    <div class="flex-1 flex justify-end items-end">
+        <input type="checkbox" id="switch" class="hidden peer"/>
+
+        <label
+          for="switch"
+          label1="All Commex"
+          label2="My Commex"
+          class="relative w-8/12 max-w-52 py-4 bg-white rounded-[25px] after:py-1 after:absolute after:w-1/2 after:h-full after:rounded-full after:bg-blue after:top-0 after:left-0 after:transition-all after:duration-150 after:content-[attr(label1)] after:text-center after:font-bold peer-checked:after:left-1/2 peer-checked:after:content-[attr(label2)] after:flex after:justify-center after:items-center after:text-white"
+        >
+          <span
+            class="select-none absolute top-0 inset-x-1/2 right-0 text-blue text-center font-bold py-1 flex justify-center items-center h-full"
+            >My Commex</span
+          >
+
+          <span
+            class="select-none absolute top-0 inset-x-1/2 left-0 text-blue text-center font-bold py-1 flex justify-center items-center h-full"
+            >All Commex</span
+          >
+        </label>
+      </div>
   </div>
 
   <h1 class="font-Poppins font-semibold text-[1.5rem] py-2">
@@ -75,6 +95,7 @@
   <app-other-commex>
     <div
       *ngFor="let commex of commexs; let i = index"
+      [ngStyle]="{'slide': !isLoading}"
     >
       <div *ngIf="i != 0" class="bg-white rounded-xl shadow-main flex flex-col gap-2 duration-300 hover:scale-[102%] hover:shadow-xl hover:duration-300 break-inside-avoid mb-2 overflow-hidden">
         <div class="bg-red-300">
