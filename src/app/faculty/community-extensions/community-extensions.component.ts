@@ -21,7 +21,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { TooltipComponent } from '../../components/tooltip/tooltip.component';
 import { Attendee } from '../../services/Interfaces/attendee';
 import { Observable, Subscription, catchError, finalize, forkJoin, of, switchMap, toArray } from 'rxjs';
-import { error } from 'console';
+
 @Component({
   selector: 'app-commex-form',
   standalone: true,
@@ -92,7 +92,15 @@ export class CommexFormComponent {
 @Component({
   selector: 'app-community-extensions',
   standalone: true,
-  imports: [OtherCommexComponent, NgFor, SlicePipe, CommonModule, LoadingScreenComponent, CommexFormComponent, TooltipComponent, NgIf],
+  imports: [OtherCommexComponent,
+    NgFor,
+    SlicePipe,
+    CommonModule,
+    LoadingScreenComponent,
+    CommexFormComponent,
+    TooltipComponent,
+    NgIf,
+    FormsModule],
   templateUrl: './community-extensions.component.html',
   styleUrl: './community-extensions.component.css'
 })
@@ -102,18 +110,43 @@ export class CommunityExtensionsComponent {
   isAttendeeLoading: boolean = true;
   formToggle: boolean = false;
   commexs: CommunityExtension[] = [];
+  collegeCommexs: CommunityExtension[] = [];
+  facultyCommexs: CommunityExtension[] = [];
   attendees: Attendee[][] = []
   isVisible: boolean = false
   activeID: number | null = null
   attendeeFetch!: Subscription
   noAttendee: number[] = []
+  mainPort: string = mainPort;
+  switch: 'faculty' | 'college' = 'faculty';
   constructor(private facultyService: FacultyRequestService, public dialog: MatDialog,) {
-    this.getCommex();
   }
 
+
+  ngOnInit(): void {
+    this.getCommex();
+    console.log(this.commexs)
+  }
   // temporary solution i will make this lazy loaded in the future
   getCommex(): void {
-    this.facultyService.fetchData(this.commexs, 'getcommex/fetchCommex').subscribe({
+
+    let reqURI = '';
+
+
+    if (this.commexs.length > 1) {
+      return
+    }
+    switch (this.switch) {
+      case 'college':
+        reqURI = 'getcommex/3?t=college'
+        break;
+      case 'faculty':
+        reqURI = 'getcommex?t=faculty'
+        break
+    }
+
+
+    this.facultyService.fetchData(this.commexs, 'getcommex?t=faculty').subscribe({
       next: (next) => this.commexs = next,
       error: (error) => console.log(error),
       complete: () => {
@@ -204,5 +237,15 @@ export class CommunityExtensionsComponent {
     // this.attendees = []
     this.isAttendeeLoading = true;
     // this.attendeeFetch.unsubscribe()
+  }
+
+  toggleView() {
+    if (this.switch === 'faculty') {
+      this.switch = 'college'
+    } else {
+      this.switch = 'faculty'
+    }
+
+    console.log(this.switch)
   }
 }

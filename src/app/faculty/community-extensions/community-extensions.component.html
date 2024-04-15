@@ -1,10 +1,9 @@
-<app-loading-screen *ngIf="isLoading"></app-loading-screen>
-
-<div class="p-5 flex flex-col gap-3 text-blue" *ngIf="!isLoading">
-  <div
+@if(!isLoading) {
+  <div class="p-5 flex flex-col gap-3 text-blue">
+    <div
     class="bg-white shadow-main bg-opacity-70 w-full rounded-[15px] flex flex-col tablet:flex-row tablet:justify-between items-center px-5"
   >
-    <h1 class="font-Poppins font-semibold text-[2.5rem] py-2">
+  <h1 class="font-Poppins font-semibold text-[2.5rem] py-2">
       Community Extensions
     </h1>
     <!-- <div class="flex flex-row space-x-4">
@@ -15,7 +14,7 @@
       </button>
     </div> -->
     <div class="flex-1 flex justify-end items-end">
-        <input type="checkbox" id="switch" class="hidden peer"/>
+        <input type="checkbox" id="switch" class="hidden peer" (click)="toggleView()"/>
 
         <label
           for="switch"
@@ -66,13 +65,19 @@
       </p>
       <div class="flex flex-col flex-wrap justify-end flex-1 gap-2">
         <hr class=" text-black text-[0.5rem] bg-black">
-        <div class="flex">
-          <p>
-            <span (mouseenter)="toggleVisible(commexs[0].commex_ID)" (mouseleave)="toggleHide()">
-              <span class="mr-2"><i class="fa-solid fa-users"></i></span>
-                <span>{{ noAttendee[0] }}</span>
-            </span>
-          </p>
+        <div class="flex gap-2" (mouseenter)="toggleVisible(commexs[0].commex_ID)" (mouseleave)="toggleHide()" >
+            <div class="flex flex-row">
+
+              <!-- <span class="mr-2"></span> -->
+              @for(attendee of attendees[0]; track attendee; let idx = $index) {
+                @if( idx < 3) {
+                  <img [src]="mainPort + attendee.profile_image" alt="attendee.first_name" width="20" height="20" class=" rounded-full aspect-square">
+                }
+              }
+            </div>
+              <!-- <span class="mr-2"><i class="fa-solid fa-users"></i></span> -->
+            <div>{{ noAttendee[0] }}</div>
+            <!-- </span> -->
           <div class="relative">
             <app-tooltip
             [attendees]="attendees[0]"
@@ -111,28 +116,40 @@
           <p>
             {{ commex.commex_details }}
           </p>
-        </div>
-        <div class="flex flex-col flex-wrap justify-end flex-1 gap-2">
-          <hr class=" text-black text-[0.5rem] bg-black">
-          <div class="flex">
-            <p>
-              <span (mouseenter)="toggleVisible(commex.commex_ID)" (mouseleave)="toggleHide()">
-                <span class="mr-2"><i class="fa-solid fa-users"></i></span>
-                <span>{{ noAttendee[i] }}</span>
-              </span>
-            </p>
-            <div class="relative">
-              <app-tooltip
-              [attendees]="attendees[i]"
-              [isVisible]="isVisible"
-              [id]="commex.commex_ID"
-              [activeID]="activeID"
-              ></app-tooltip>
+          <div class="flex flex-col flex-wrap justify-end flex-1 gap-2">
+            <hr class=" text-black text-[0.5rem] bg-black">
+            <div class="flex gap-2" (mouseenter)="toggleVisible(commex.commex_ID)" (mouseleave)="toggleHide()" >
+              <div class="flex flex-row">
+                <!-- <span class="mr-2"></span> -->
+                <ng-container *ngFor="let attendee of attendees[i]; let idx = index">
+                  <ng-container *ngIf="idx < 3">
+                    <img [src]="mainPort + attendee.profile_image" alt="attendee.first_name" width="20" height="20" class="rounded-full aspect-square">
+                  </ng-container>
+                </ng-container>
+                <!-- @for(attendee of attendees[i]; track attendee; let idx = $index) {
+                  @if( idx < 3) {
+                    <img [src]="mainPort + attendee.profile_image" alt="attendee.first_name" width="20" height="20" class=" rounded-full aspect-square">
+                  }
+                } -->
+              </div>
+              <div>{{ noAttendee[i] }}</div>
+              <!-- <p>
+                <span (mouseenter)="toggleVisible(commex.commex_ID)" (mouseleave)="toggleHide()">
+                  <span class="mr-2"><i class="fa-solid fa-users"></i></span>
+                  <span>{{ noAttendee[i] }}</span>
+                </span>
+              </p> -->
+              <div class="relative">
+                <app-tooltip
+                [attendees]="attendees[i]"
+                [isVisible]="isVisible"
+                [id]="commex.commex_ID"
+                [activeID]="activeID"
+                ></app-tooltip>
+              </div>
             </div>
           </div>
         </div>
-
-
         <!-- <button class="bg-blue text-white font-bold p-2 rounded-main">
           Read More
         </button> -->
@@ -140,3 +157,7 @@
     </div>
   </app-other-commex>
 </div>
+
+} @else {
+  <app-loading-screen *ngIf="isLoading"></app-loading-screen>
+}
