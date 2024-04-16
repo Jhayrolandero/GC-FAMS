@@ -5,6 +5,7 @@ import { JwtToken } from '../jwt-token';
 import { FormGroup } from '@angular/forms';
 import { College } from '../Interfaces/college';
 import { Faculty } from '../Interfaces/faculty';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -18,8 +19,8 @@ export class FacultyRequestService {
   facultyMembers: Faculty[] = []
 
   //CRUD requests
-  fetchData(data: any, endpoint: string) {
-    return this.http.get<typeof data>(mainPort + '/GC-FaMS-API/API/' + endpoint);
+  fetchData<T>(data: any, endpoint: string): Observable<T> {
+    return this.http.get<T>(mainPort + '/GC-FaMS-API/API/' + endpoint);
   }
 
   postData(data: any, endpoint: string) {

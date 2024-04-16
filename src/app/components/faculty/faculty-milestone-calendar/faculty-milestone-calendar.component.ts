@@ -31,23 +31,23 @@ export class FacultyMilestoneCalendarComponent {
   industryExp!: IndustryExperience[];
   projects!: Project[];
   commex!: CommunityExtension[];
-  
-  daysOfYear: (Date|any)[][] = [];
+
+  daysOfYear: (Date | any)[][] = [];
   startDate = new Date(2024, 0, 1)
   endDate = new Date(2024, 11, 31);
   delay = true;
   showCard = false;
   currentDate = new Date(this.startDate);
 
-  
+
 
   //Creates a 52-week formatted calendar of all dates in the current year.
-  constructor(private facultyService: FacultyRequestService){
+  constructor(private facultyService: FacultyRequestService) {
     this.calendarBuild();
     this.getMilestones();
   }
 
-  eventParser(type: string, name: string, place: string){
+  eventParser(type: string, name: string, place: string) {
     const temp = {} as Event;
 
     temp.eventType = type;
@@ -58,15 +58,15 @@ export class FacultyMilestoneCalendarComponent {
   }
 
   //Add given event to calendar
-  addEvent(givenDate: Date, eventData: Event){
+  addEvent(givenDate: Date, eventData: Event) {
     let wIdx = 0;
-    
+
     this.daysOfYear.forEach((week) => {
       let dIdx = 0;
       week.forEach((day) => {
         const dayG = new Date(givenDate).toLocaleDateString("en-US");
         const dayN = new Date(day).toLocaleDateString("en-US");
-        if(dayG == dayN){
+        if (dayG == dayN) {
           this.daysOfYear[wIdx][dIdx][1] = eventData;
           return;
         }
@@ -77,45 +77,45 @@ export class FacultyMilestoneCalendarComponent {
   }
 
   //Fetches all milestones
-  getMilestones(){
+  getMilestones() {
     forkJoin({
-      certRequest: this.facultyService.fetchData(this.certifications, 'certificate'),
-      experienceRequest: this.facultyService.fetchData(this.industryExp, 'experience'),
-      educationRequest: this.facultyService.fetchData(this.educAttainment, 'education'),
-      projectRequest: this.facultyService.fetchData(this.projects, 'project'),
-      commexRequest: this.facultyService.fetchData(this.commex, 'getcommex/fetchCommex')
+      certRequest: this.facultyService.fetchData<Certifications[]>(this.certifications, 'certificate'),
+      experienceRequest: this.facultyService.fetchData<IndustryExperience[]>(this.industryExp, 'experience'),
+      educationRequest: this.facultyService.fetchData<EducationalAttainment[]>(this.educAttainment, 'education'),
+      projectRequest: this.facultyService.fetchData<Project[]>(this.projects, 'project'),
+      commexRequest: this.facultyService.fetchData<CommunityExtension[]>(this.commex, 'getcommex/fetchCommex')
     })
-    .subscribe({
-      next: (({certRequest, experienceRequest, educationRequest, projectRequest, commexRequest}) => {
+      .subscribe({
+        next: (({ certRequest, experienceRequest, educationRequest, projectRequest, commexRequest }) => {
           this.certifications = certRequest;
           this.industryExp = experienceRequest;
           this.educAttainment = educationRequest;
           this.projects = projectRequest;
           this.commex = commexRequest;
         }),
-      complete: () => {    
-      this.certifications.forEach((cert) => {this.addEvent(new Date(cert.accomplished_date), this.eventParser("Certification", cert.cert_name, cert.cert_corporation))});
-      this.educAttainment.forEach((educ) => {this.addEvent(new Date(educ.year_end), this.eventParser("Educational Attainment", educ.educ_title, educ.educ_school))});
-      this.projects.forEach((proj) => {this.addEvent(new Date(proj.project_date), this.eventParser("Project", proj.project_name, ""))});
-      this.commex.forEach((comm) => {this.addEvent(new Date(comm.commex_date), this.eventParser("Community Extension", comm.commex_title, ""))});
-      }
-    })
+        complete: () => {
+          this.certifications.forEach((cert) => { this.addEvent(new Date(cert.accomplished_date), this.eventParser("Certification", cert.cert_name, cert.cert_corporation)) });
+          this.educAttainment.forEach((educ) => { this.addEvent(new Date(educ.year_end), this.eventParser("Educational Attainment", educ.educ_title, educ.educ_school)) });
+          this.projects.forEach((proj) => { this.addEvent(new Date(proj.project_date), this.eventParser("Project", proj.project_name, "")) });
+          this.commex.forEach((comm) => { this.addEvent(new Date(comm.commex_date), this.eventParser("Community Extension", comm.commex_title, "")) });
+        }
+      })
   }
 
   //Builds calendar
-  calendarBuild(){
+  calendarBuild() {
     //Iterates through each week
-    while (this.currentDate <= this.endDate){
-      const week: (Date|any)[] = [];
+    while (this.currentDate <= this.endDate) {
+      const week: (Date | any)[] = [];
 
       //Iterates through 7 days of current week
       for (let i = 0; i < 7; i++) {
         //Initial gate so each week always has first sunday
-        if(this.delay == true && this.currentDate.getDay() != i){
+        if (this.delay == true && this.currentDate.getDay() != i) {
           week.push([new Date(""), ""]);
           continue;
         }
-        else{
+        else {
           this.delay = false;
         }
 

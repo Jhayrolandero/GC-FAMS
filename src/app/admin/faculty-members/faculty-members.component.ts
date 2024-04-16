@@ -106,8 +106,8 @@ export class FacultyMembersComponent implements OnInit {
 
   getCollegeAndFaculty() {
     forkJoin({
-      collegeRequest: this.facultyService.fetchData(this.collegeItems, 'fetchCollege'),
-      facultyRequest: this.facultyService.fetchData(this.facultyMembers, 'faculty')
+      collegeRequest: this.facultyService.fetchData<College[]>(this.collegeItems, 'fetchCollege'),
+      facultyRequest: this.facultyService.fetchData<Faculty[]>(this.facultyMembers, 'faculty')
     }).subscribe({
       next: (({ collegeRequest, facultyRequest }) => {
         this.collegeItems = collegeRequest

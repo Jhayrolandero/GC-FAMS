@@ -37,16 +37,16 @@ type ScoreCategory = {
   templateUrl: './analytics.component.html',
   styleUrl: './analytics.component.css'
 })
-export class AnalyticsComponent implements OnInit{
-  schedules: Schedule[]= [];
+export class AnalyticsComponent implements OnInit {
+  schedules: Schedule[] = [];
   unit = 0;
 
   constructor(
     private facultyService: FacultyRequestService,
     private router: Router,
     private evaluationService: EvaluationService
-    ){
-    }
+  ) {
+  }
 
   isLoading: boolean = true;
   selectedSem: Evaluation = {
@@ -65,12 +65,12 @@ export class AnalyticsComponent implements OnInit{
   facultyProfile!: Profile;
   evaluation: Evaluation[] = []
   evalScoreCategory: ScoreCategory[] = [
-    {name: "", value: 0, bgColor: ""},
-    {name: "", value: 0, bgColor: ""},
-    {name: "", value: 0, bgColor: ""},
-    {name: "", value: 0, bgColor: ""},
-    {name: "", value: 0, bgColor: ""},
-    {name: "", value: 0, bgColor: ""}
+    { name: "", value: 0, bgColor: "" },
+    { name: "", value: 0, bgColor: "" },
+    { name: "", value: 0, bgColor: "" },
+    { name: "", value: 0, bgColor: "" },
+    { name: "", value: 0, bgColor: "" },
+    { name: "", value: 0, bgColor: "" }
   ]
 
   ngOnInit(): void {
@@ -78,16 +78,18 @@ export class AnalyticsComponent implements OnInit{
     this.getSchedule();
   }
 
-  getSchedule(){
+  getSchedule() {
     //Fetches the schedule data based on passed selected date
-    this.facultyService.fetchData(this.schedules, 'getschedules/fetchFaculty').subscribe({
-      next: value => {this.schedules = value;
-                      this.countUnit()},
-      error: err => {if(err.status == 403){this.router.navigate(['/']);}}
+    this.facultyService.fetchData<Schedule[]>(this.schedules, 'getschedules/fetchFaculty').subscribe({
+      next: value => {
+        this.schedules = value;
+        this.countUnit()
+      },
+      error: err => { if (err.status == 403) { this.router.navigate(['/']); } }
     });
   }
 
-  countUnit(){
+  countUnit() {
     this.schedules.forEach(schedule => {
       console.log(schedule);
       this.unit = this.unit + schedule.unit;
@@ -96,10 +98,10 @@ export class AnalyticsComponent implements OnInit{
 
   getEvaluationAndProfile() {
     forkJoin({
-      evaluationRequest: this.facultyService.fetchData(this.evaluation, 'getevaluation/fetchEvaluation'),
-      profileRequest: this.facultyService.fetchData(this.facultyProfile, 'getprofile/fetchProfile')
+      evaluationRequest: this.facultyService.fetchData<Evaluation[]>(this.evaluation, 'getevaluation/fetchEvaluation'),
+      profileRequest: this.facultyService.fetchData<Profile>(this.facultyProfile, 'getprofile/fetchProfile')
     }).subscribe({
-      next: (({evaluationRequest, profileRequest}) => {
+      next: (({ evaluationRequest, profileRequest }) => {
         this.evaluation = evaluationRequest
         this.facultyProfile = profileRequest
       }),
@@ -115,10 +117,10 @@ export class AnalyticsComponent implements OnInit{
           return {
             ...evalItem,
             "evalAverage": this.evaluationService.averageEvaluation(
-                      +evalItem.param1_score,
-                      +evalItem.param2_score,
-                      +evalItem.param3_score,
-                      +evalItem.param4_score
+              +evalItem.param1_score,
+              +evalItem.param2_score,
+              +evalItem.param3_score,
+              +evalItem.param4_score
             )
           }
         })

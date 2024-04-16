@@ -25,22 +25,22 @@ import { forkJoin } from 'rxjs';
 import { error } from 'console';
 import { MessageComponent } from '../../components/message/message.component';
 @Component({
-    selector: 'app-profile',
-    standalone: true,
-    templateUrl: './profile.component.html',
-    styleUrl: './profile.component.css',
-    imports: [
-      MessageComponent,
-      LoadingScreenComponent,
-      NgOptimizedImage,
-      CommonModule,
-      FacultyEducationComponent,
-      FacultyCertificationsComponent,
-      FacultyExperienceComponent,
-      FacultyExpertiseComponent,
-      AddFormsComponent,
-      FacultyProjectsComponent
-    ]
+  selector: 'app-profile',
+  standalone: true,
+  templateUrl: './profile.component.html',
+  styleUrl: './profile.component.css',
+  imports: [
+    MessageComponent,
+    LoadingScreenComponent,
+    NgOptimizedImage,
+    CommonModule,
+    FacultyEducationComponent,
+    FacultyCertificationsComponent,
+    FacultyExperienceComponent,
+    FacultyExpertiseComponent,
+    AddFormsComponent,
+    FacultyProjectsComponent
+  ]
 })
 export class ProfileComponent {
   tempPort = mainPort;
@@ -66,12 +66,12 @@ export class ProfileComponent {
   //CV form toggle
   cvToggle = false;
 
-    constructor(private facultyService: FacultyRequestService, private router: Router, private http: HttpClient){
-      this.getProfileScheduleResume()
-      // this.getResume();
+  constructor(private facultyService: FacultyRequestService, private router: Router, private http: HttpClient) {
+    this.getProfileScheduleResume()
+    // this.getResume();
   }
 
-  setForm(value: string){
+  setForm(value: string) {
     this.formType = value;
 
     //Refreshed passed form value for edit.
@@ -85,23 +85,23 @@ export class ProfileComponent {
     this.getProfileScheduleResume()
   }
 
-  setEducValueForm(value: EducationalAttainment){
+  setEducValueForm(value: EducationalAttainment) {
     this.educValue = value;
   }
 
-  setCertValueForm(value: Certifications){
+  setCertValueForm(value: Certifications) {
     this.certValue = value;
   }
 
-  setExpValueForm(value: IndustryExperience){
+  setExpValueForm(value: IndustryExperience) {
     this.expValue = value;
   }
 
-  setSpecValueForm(value: Expertise){
+  setSpecValueForm(value: Expertise) {
     this.specValue = value;
   }
 
-  setProjValueForm(value: Project){
+  setProjValueForm(value: Project) {
     this.projValue = value;
   }
 
@@ -123,14 +123,14 @@ export class ProfileComponent {
 
   getProfileScheduleResume() {
     forkJoin({
-      profileRequest: this.facultyService.fetchData(this.facultyProfile, 'getprofile/fetchProfile'),
-      scheduleRequest: this.facultyService.fetchData(this.schedules, 'getschedules/fetchFaculty'),
+      profileRequest: this.facultyService.fetchData<Profile>(this.facultyProfile, 'getprofile/fetchProfile'),
+      scheduleRequest: this.facultyService.fetchData<Schedule[]>(this.schedules, 'getschedules/fetchFaculty'),
 
-      certificateRequest: this.facultyService.fetchData(this.certificate, 'certificate'),
-      experienceRequest: this.facultyService.fetchData(this.experience, 'experience'),
-      educationRequest: this.facultyService.fetchData(this.education, 'education'),
-      projectRequest: this.facultyService.fetchData(this.project, 'project'),
-      expertiseRequest: this.facultyService.fetchData(this.expertise, 'expertise'),
+      certificateRequest: this.facultyService.fetchData<Certifications[]>(this.certificate, 'certificate'),
+      experienceRequest: this.facultyService.fetchData<IndustryExperience[]>(this.experience, 'experience'),
+      educationRequest: this.facultyService.fetchData<EducationalAttainment[]>(this.education, 'education'),
+      projectRequest: this.facultyService.fetchData<Project[]>(this.project, 'project'),
+      expertiseRequest: this.facultyService.fetchData<Expertise[]>(this.expertise, 'expertise'),
     }).subscribe({
       next: (({
         profileRequest,
@@ -139,14 +139,14 @@ export class ProfileComponent {
         experienceRequest,
         educationRequest,
         projectRequest,
-        expertiseRequest}) => {
-          this.facultyProfile = profileRequest
-          this.schedules = scheduleRequest
-          this.certificate = certificateRequest
-          this.experience = experienceRequest
-          this.education = educationRequest
-          this.project = projectRequest
-          this.expertise = expertiseRequest
+        expertiseRequest }) => {
+        this.facultyProfile = profileRequest
+        this.schedules = scheduleRequest
+        this.certificate = certificateRequest
+        this.experience = experienceRequest
+        this.education = educationRequest
+        this.project = projectRequest
+        this.expertise = expertiseRequest
       }),
       error: (error) => {
         console.log(error)
@@ -161,7 +161,7 @@ export class ProfileComponent {
     })
   }
 
-  showAdd(comp: string){
+  showAdd(comp: string) {
     switch (comp) {
       case "educ":
 
@@ -172,32 +172,32 @@ export class ProfileComponent {
     }
   }
 
-  testPng(){
+  testPng() {
     console.log("Test");
     var cv = document.getElementById('cv')!;
     html2canvas(cv).then(canvas => {
-    // Few necessary setting options
-    var imgWidth = 210;
-    var pageHeight = 297;
-    var imgHeight = canvas.height * imgWidth / canvas.width;
-    var heightLeft = imgHeight;
+      // Few necessary setting options
+      var imgWidth = 210;
+      var pageHeight = 297;
+      var imgHeight = canvas.height * imgWidth / canvas.width;
+      var heightLeft = imgHeight;
 
-    const contentDataURL = canvas.toDataURL('image/png')
-    let pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF
-    var position = 0;
-    pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)
-    pdf.save('new-file.pdf'); // Generated PDF
+      const contentDataURL = canvas.toDataURL('image/png')
+      let pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF
+      var position = 0;
+      pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)
+      pdf.save('new-file.pdf'); // Generated PDF
     });
   }
 
-  getCv(){
+  getCv() {
     // const url = this.router.serializeUrl(this.router.createUrlTree(['cv']));
     // window.open(url, '_blank');
     this.router.navigate(['cv']);
   }
 
 
-  toggle(drop: string){
+  toggle(drop: string) {
     switch (drop) {
       case 'ed':
         this.educToggle = !this.educToggle;

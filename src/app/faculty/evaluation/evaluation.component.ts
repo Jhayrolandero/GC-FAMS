@@ -15,10 +15,10 @@ import {
   MatDialogActions,
   MatDialogClose,
 } from '@angular/material/dialog';
-import {MatButtonModule} from '@angular/material/button';
-import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
-import {MatInputModule} from '@angular/material/input';
-import {MatFormFieldModule} from '@angular/material/form-field';
+import { MatButtonModule } from '@angular/material/button';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { Faculty } from '../../services/Interfaces/faculty';
 
 type Series = {
@@ -52,14 +52,14 @@ export interface evalScoreHistory {
     MatDialogContent,
     MatDialogActions,
     MatDialogClose,
-    CommonModule, 
-    ReactiveFormsModule, 
+    CommonModule,
+    ReactiveFormsModule,
     FormsModule
   ],
 })
 
 export class EvaluationForm {
-[x: string]: any;
+  [x: string]: any;
   constructor(
     public facultyRequest: FacultyRequestService,
     public dialogRef: MatDialogRef<EvaluationForm>,
@@ -71,27 +71,27 @@ export class EvaluationForm {
   evalForm = new FormGroup({
     semester: new FormControl(''),
     evaluation_year: new FormControl(''),
-		param1_score: new FormControl('', [Validators.max(5), Validators.min(0)]),
-		param2_score: new FormControl('', [Validators.max(5), Validators.min(0)]),
-		param3_score: new FormControl('', [Validators.max(5), Validators.min(0)]),
-		param4_score: new FormControl('', [Validators.max(5), Validators.min(0)]),
-		param5_score: new FormControl('', [Validators.max(5), Validators.min(0)]),
-		param6_score: new FormControl('', [Validators.max(5), Validators.min(0)]),
-	})
+    param1_score: new FormControl('', [Validators.max(5), Validators.min(0)]),
+    param2_score: new FormControl('', [Validators.max(5), Validators.min(0)]),
+    param3_score: new FormControl('', [Validators.max(5), Validators.min(0)]),
+    param4_score: new FormControl('', [Validators.max(5), Validators.min(0)]),
+    param5_score: new FormControl('', [Validators.max(5), Validators.min(0)]),
+    param6_score: new FormControl('', [Validators.max(5), Validators.min(0)]),
+  })
 
   onNoClick(): void {
     this.dialogRef.close();
   }
 
-  submitForm(){
+  submitForm() {
     //Proceed to next semester or year
-    if(this.data.sem == 1){
+    if (this.data.sem == 1) {
       this.evalForm.patchValue({
         semester: '2',
         evaluation_year: (this.data.year) + ''
       });
     }
-    else{
+    else {
       this.evalForm.patchValue({
         semester: '1',
         evaluation_year: ((+this.data.year) + 1) + ""
@@ -141,14 +141,14 @@ export class EvaluationComponent implements OnInit {
 
   formToggle: boolean = false;
 
-  openDialog(){
-    console.log(this.evaluation[this.evaluation.length-1]);
+  openDialog() {
+    console.log(this.evaluation[this.evaluation.length - 1]);
     const dialogRef = this.dialog.open(EvaluationForm, {
       data: {
-        year: this.evaluation[this.evaluation.length-1].evaluation_year,
-        sem: this.evaluation[this.evaluation.length-1].semester
+        year: this.evaluation[this.evaluation.length - 1].evaluation_year,
+        sem: this.evaluation[this.evaluation.length - 1].semester
       }
-    //Refreshes data after submit
+      //Refreshes data after submit
     }).afterClosed().subscribe(result => {
       this.getEvaluation();
     });
@@ -156,8 +156,8 @@ export class EvaluationComponent implements OnInit {
 
   // Initial Fetching of faculty evaluation
   getEvaluation() {
-    this.facultyService.fetchData(this.evaluation, 'getevaluation/fetchEvaluation').subscribe({
-      next: (evalItem: Evaluation[]) => this.evaluation = evalItem,
+    this.facultyService.fetchData<Evaluation[]>(this.evaluation, 'getevaluation/fetchEvaluation').subscribe({
+      next: (evalItem) => this.evaluation = evalItem,
       error: error => {
         if (error.status == 403) {
           console.log(error);
