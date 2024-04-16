@@ -45,7 +45,7 @@ export class FacultyEducationComponent {
     this.editEvent.emit(value);
   }
 
-  deleteEducation(){
-    this.deleteEvent.emit();
+  deleteEducation(id: number){
+    this.deleteEvent.emit(['deleteEduc/' + id, 0]);
   }
 }

@@ -33,8 +33,13 @@ export class CvDropdownComponent {
     this.rotated = !this.rotated;
   }
 
-  deleteDialog(){
-    const deleteForm = this.dialog.open(CvDeleteForm);
+  //Opens dynamic delete dialog
+  deleteDialog(deleteData: any){
+    const deleteForm = this.dialog.open(CvDeleteForm, {
+      data: deleteData
+    }).afterClosed().subscribe(result => {
+      this.refresher[result] = !this.refresher[result];
+    })
   }
 
   //Cases for opening dialogue

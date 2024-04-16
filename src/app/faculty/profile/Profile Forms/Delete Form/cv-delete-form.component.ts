@@ -20,21 +20,22 @@ import { FacultyRequestService } from '../../../../services/faculty/faculty-requ
 
     constructor(
       public dialogRef: MatDialogRef<CvDeleteForm>, 
-      private facultyRequest: FacultyRequestService){
+      private facultyRequest: FacultyRequestService,
+      @Inject(MAT_DIALOG_DATA) public data: any){
         // console.log(this.data.length);
       }
 
   
     onNoClick(): void {
-      this.dialogRef.close();
+      this.dialogRef.close(this.data[1]);
     }
   
     submitForm(){
-      //   console.log(this.educForm);
-      //   this.facultyRequest.postData(this.educForm, 'addEduc').subscribe({
-      //   next: (next: any) => {console.log(next);},
-      //   error: (error) => {console.log(error)},
-      //   complete: () => {this.onNoClick();}
-      // });
+        console.log(this.data);
+        this.facultyRequest.deleteData(this.data[0]).subscribe({
+        next: (next: any) => {console.log(next);},
+        error: (error) => {console.log(error)},
+        complete: () => {this.onNoClick();}
+      });
     }
   }

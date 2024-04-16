@@ -60,7 +60,7 @@
     <!-- "Educational Attaiment", "Certifications", "Industry Experience", "Projects", "Expertise" -->
     @switch(name){
         @case("Educational Attainment"){
-            <app-faculty-education (deleteEvent)="deleteDialog()" (editEvent)="openDialog('Educational Attainment', $event)" [educRefresh]="refresher[0]" *ngIf="rotated"></app-faculty-education>
+            <app-faculty-education (deleteEvent)="deleteDialog($event)" (editEvent)="openDialog('Educational Attainment', $event)" [educRefresh]="refresher[0]" *ngIf="rotated"></app-faculty-education>
         }
         @case("Certifications"){
             <app-faculty-certifications [certRefresh]="refresher[1]" *ngIf="rotated"></app-faculty-certifications>

@@ -39,11 +39,19 @@ import { FacultyRequestService } from '../../../../services/faculty/faculty-requ
     }
   
     submitForm(){
-        console.log(this.educForm);
-        this.facultyRequest.postData(this.educForm, 'addEduc').subscribe({
-        next: (next: any) => {console.log(next);},
-        error: (error) => {console.log(error)},
-        complete: () => {this.onNoClick();}
-      });
+        if(this.data.length == 0){
+          this.facultyRequest.postData(this.educForm, 'addEduc').subscribe({
+            next: (next: any) => {console.log(next);},
+            error: (error) => {console.log(error)},
+            complete: () => {this.onNoClick();}
+          });
+        }
+        else{
+          this.facultyRequest.patchData(this.educForm, 'editEduc/' + this.data.educattainment_ID).subscribe({
+            next: (next: any) => {console.log(next);},
+            error: (error) => {console.log(error)},
+            complete: () => {this.onNoClick();}
+          });
+        }
     }
   }
