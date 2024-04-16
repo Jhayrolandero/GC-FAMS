@@ -3,9 +3,9 @@ import { FormsModule, ReactiveFormsModule, FormGroup, FormControl } from '@angul
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { FacultyRequestService } from '../../../../../services/faculty/faculty-request.service';
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { FacultyRequestService } from '../../../../services/faculty/faculty-request.service';
 
 @Component({
     selector: 'app-faculty-certifications-form',

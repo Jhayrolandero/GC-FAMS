@@ -27,7 +27,7 @@
         </p>
       </div>
       <div
-        (click)="openDialog(name)" class="w-[80px] h-[28px] rounded-[15px] bg-white mr-5 hover:shadow-main hover:scale-[102%] hover:duration-300 duration:300 flex justify-center items-center"
+        (click)="openDialog(name, [])" class="w-[80px] h-[28px] rounded-[15px] bg-white mr-5 hover:shadow-main hover:scale-[102%] hover:duration-300 duration:300 flex justify-center items-center"
       >
         <svg
           width="25"
@@ -60,7 +60,7 @@
     <!-- "Educational Attaiment", "Certifications", "Industry Experience", "Projects", "Expertise" -->
     @switch(name){
         @case("Educational Attainment"){
-            <app-faculty-education [educRefresh]="refresher[0]" *ngIf="rotated"></app-faculty-education>
+            <app-faculty-education (deleteEvent)="deleteDialog()" (editEvent)="openDialog('Educational Attainment', $event)" [educRefresh]="refresher[0]" *ngIf="rotated"></app-faculty-education>
         }
         @case("Certifications"){
             <app-faculty-certifications [certRefresh]="refresher[1]" *ngIf="rotated"></app-faculty-certifications>

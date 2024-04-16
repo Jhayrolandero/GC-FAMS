@@ -1,11 +1,11 @@
-import { MatDialog, MatDialogActions, MatDialogClose, MatDialogContent, MatDialogRef, MatDialogTitle } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogClose, MatDialogContent, MatDialogRef, MatDialogTitle } from '@angular/material/dialog';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { FacultyRequestService } from '../../../../../services/faculty/faculty-request.service';
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
+import { FacultyRequestService } from '../../../../services/faculty/faculty-request.service';
 
 @Component({
     selector: 'app-faculty-certifications-form',
@@ -17,15 +17,22 @@ import { Component } from '@angular/core';
   })
   
   export class EducationalAttainmentFormComponent { 
-    constructor(public dialogRef: MatDialogRef<EducationalAttainmentFormComponent>, private facultyRequest: FacultyRequestService){}
-  
     educForm = new FormGroup({
-        educ_title: new FormControl(''),
-        educ_details: new FormControl(''),
-        educ_school: new FormControl(''),
-        year_start: new FormControl(''),
-        year_end: new FormControl(''),
-      })
+      educ_level: new FormControl(''),
+      educ_title: new FormControl(''),
+      educ_details: new FormControl(''),
+      educ_school: new FormControl(''),
+      year_start: new FormControl(''),
+      year_end: new FormControl(''),
+    })
+
+    constructor(
+      public dialogRef: MatDialogRef<EducationalAttainmentFormComponent>, 
+      private facultyRequest: FacultyRequestService,
+      @Inject(MAT_DIALOG_DATA) public data: any){
+        // console.log(this.data.length);
+      }
+
   
     onNoClick(): void {
       this.dialogRef.close();

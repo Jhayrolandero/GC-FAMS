@@ -6,8 +6,9 @@ import { FacultyExperienceComponent } from '../Profile Components/faculty-experi
 import { FacultyExpertiseComponent } from '../Profile Components/faculty-expertise/faculty-expertise.component';
 import { FacultyProjectsComponent } from '../Profile Components/faculty-projects/faculty-projects.component';
 import { MatDialog } from '@angular/material/dialog';
-import { FacultyCertificationsFormComponent } from './Profile Forms/Certification Form/faculty-certifications-form.component';
-import { EducationalAttainmentFormComponent } from './Profile Forms/Educattainment Form/educational-attainment-form.component';
+import { FacultyCertificationsFormComponent } from '../Profile Forms/Certification Form/faculty-certifications-form.component';
+import { EducationalAttainmentFormComponent } from '../Profile Forms/Educattainment Form/educational-attainment-form.component';
+import { CvDeleteForm } from '../Profile Forms/Delete Form/cv-delete-form.component';
 
 
 @Component({
@@ -18,7 +19,9 @@ import { EducationalAttainmentFormComponent } from './Profile Forms/Educattainme
     imports: [CommonModule, FacultyCertificationsComponent, FacultyEducationComponent, FacultyExperienceComponent, FacultyProjectsComponent, FacultyExpertiseComponent]
 })
 export class CvDropdownComponent {
+  //Name of dropdown
   @Input() name?: string;
+  //Rotated state of icon
   rotated = true;
 
   //A somewhat hacky solution to trigger refresh on each cv component
@@ -30,20 +33,28 @@ export class CvDropdownComponent {
     this.rotated = !this.rotated;
   }
 
+  deleteDialog(){
+    const deleteForm = this.dialog.open(CvDeleteForm);
+  }
+
   //Cases for opening dialogue
-  openDialog(formType: any){
+  openDialog(formType: any, editData: any){
     switch (formType) {
+      case "Educational Attainment":
+        const educRef = this.dialog.open(EducationalAttainmentFormComponent, {
+          data: editData
+        }).afterClosed().subscribe(result => {
+          this.refresher[0] = !this.refresher[0];
+        })
+        break;
+
       case "Certifications":
         const certRef = this.dialog.open(FacultyCertificationsFormComponent).afterClosed().subscribe(result => {
           this.refresher[1] = !this.refresher[1];
         })
         break;
 
-      case "Educational Attainment":
-        const educRef = this.dialog.open(EducationalAttainmentFormComponent).afterClosed().subscribe(result => {
-          this.refresher[0] = !this.refresher[0];
-        })
-        break;
+
     
       default:
         break;
