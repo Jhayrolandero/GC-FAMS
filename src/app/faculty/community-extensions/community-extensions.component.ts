@@ -133,9 +133,9 @@ export class CommunityExtensionsComponent {
     let reqURI = '';
 
 
-    if (this.commexs.length > 1) {
-      return
-    }
+    // if (this.commexs.length > 1) {
+    //   return
+    // }
     switch (this.switch) {
       case 'college':
         reqURI = 'getcommex/3?t=college'
@@ -145,9 +145,11 @@ export class CommunityExtensionsComponent {
         break
     }
 
-
     this.facultyService.fetchData(this.commexs, 'getcommex?t=faculty').subscribe({
-      next: (next) => this.commexs = next,
+      next: (next) => {
+        this.commexs = next
+        console.log(this.commexs)
+      },
       error: (error) => console.log(error),
       complete: () => {
         this.dateSorter();

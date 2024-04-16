@@ -3,8 +3,9 @@ import { mainPort } from '../../app.component';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { JwtToken } from '../jwt-token';
 import { FormGroup } from '@angular/forms';
-import { Faculty } from '../Interfaces/faculty';
 import { College } from '../Interfaces/college';
+import { Faculty } from '../Interfaces/faculty';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -13,8 +14,9 @@ export class FacultyRequestService {
   constructor(private http: HttpClient) { }
 
 
-  facultyMembers: Faculty[] = []
   colleges: College[] = []
+  facultyMembers: Faculty[] = []
+
   //CRUD requests
   fetchData(data: any, endpoint: string) {
     return this.http.get<typeof data>(mainPort + '/GC-FaMS-API/API/' + endpoint);
