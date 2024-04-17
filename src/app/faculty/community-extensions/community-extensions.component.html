@@ -66,21 +66,10 @@
       <div class="flex flex-col flex-wrap justify-end flex-1 gap-2">
         <hr class=" text-black text-[0.5rem] bg-black">
         <div class="flex gap-2" (mouseenter)="toggleVisible(commexs[0].commex_ID)" (mouseleave)="toggleHide()" >
-            <div class="flex flex-row">
-
-              <!-- <span class="mr-2"></span> -->
-              @for(attendee of attendees[0]; track attendee; let idx = $index) {
-                @if( idx < 3) {
-                  <img [src]="mainPort + attendee.profile_image" alt="attendee.first_name" width="20" height="20" class=" rounded-full aspect-square">
-                }
-              }
-            </div>
-              <!-- <span class="mr-2"><i class="fa-solid fa-users"></i></span> -->
-            <div>{{ noAttendee[0] }}</div>
-            <!-- </span> -->
+            <span><i class="fa-solid fa-users"></i></span><p>{{commexs[0].attendee}}</p>
           <div class="relative">
+            <!-- [attendees]="attendees[0]" -->
             <app-tooltip
-            [attendees]="attendees[0]"
             [isVisible]="isVisible"
             [id]="commexs[0].commex_ID"
             [activeID]="activeID"
@@ -120,28 +109,11 @@
             <hr class=" text-black text-[0.5rem] bg-black">
             <div class="flex gap-2" (mouseenter)="toggleVisible(commex.commex_ID)" (mouseleave)="toggleHide()" >
               <div class="flex flex-row">
-                <!-- <span class="mr-2"></span> -->
-                <ng-container *ngFor="let attendee of attendees[i]; let idx = index">
-                  <ng-container *ngIf="idx < 3">
-                    <img [src]="mainPort + attendee.profile_image" alt="attendee.first_name" width="20" height="20" class="rounded-full aspect-square">
-                  </ng-container>
-                </ng-container>
-                <!-- @for(attendee of attendees[i]; track attendee; let idx = $index) {
-                  @if( idx < 3) {
-                    <img [src]="mainPort + attendee.profile_image" alt="attendee.first_name" width="20" height="20" class=" rounded-full aspect-square">
-                  }
-                } -->
+                <span><i class="fa-solid fa-users"></i></span><p>{{commex.attendee}}</p>
               </div>
-              <div>{{ noAttendee[i] }}</div>
-              <!-- <p>
-                <span (mouseenter)="toggleVisible(commex.commex_ID)" (mouseleave)="toggleHide()">
-                  <span class="mr-2"><i class="fa-solid fa-users"></i></span>
-                  <span>{{ noAttendee[i] }}</span>
-                </span>
-              </p> -->
               <div class="relative">
+                <!-- [attendees]="attendees[i]" -->
                 <app-tooltip
-                [attendees]="attendees[i]"
                 [isVisible]="isVisible"
                 [id]="commex.commex_ID"
                 [activeID]="activeID"

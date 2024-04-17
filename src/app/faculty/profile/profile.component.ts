@@ -111,26 +111,15 @@ export class ProfileComponent {
   expertise!: Expertise[]
   project!: Project[]
 
-  // getResume(){
-  //   this.facultyService.fetchData(this.resume, 'getresume/fetchResume').subscribe({
-  //     next: value => {this.resume = value;
-  //                     console.log(this.resume);
-  //                     this.isLoading = false
-  //                   },
-  //     error: err => {console.log(err);if(err.status == 403){this.router.navigate(['/']);}}
-  //   });
-  // }
-
   getProfileScheduleResume() {
     forkJoin({
-      profileRequest: this.facultyService.fetchData<Profile>(this.facultyProfile, 'getprofile/fetchProfile'),
-      scheduleRequest: this.facultyService.fetchData<Schedule[]>(this.schedules, 'getschedules/fetchFaculty'),
-
-      certificateRequest: this.facultyService.fetchData<Certifications[]>(this.certificate, 'certificate'),
-      experienceRequest: this.facultyService.fetchData<IndustryExperience[]>(this.experience, 'experience'),
-      educationRequest: this.facultyService.fetchData<EducationalAttainment[]>(this.education, 'education'),
-      projectRequest: this.facultyService.fetchData<Project[]>(this.project, 'project'),
-      expertiseRequest: this.facultyService.fetchData<Expertise[]>(this.expertise, 'expertise'),
+      profileRequest: this.facultyService.fetchData<Profile>('getprofile/fetchProfile'),
+      scheduleRequest: this.facultyService.fetchData<Schedule[]>('getschedules/fetchFaculty'),
+      certificateRequest: this.facultyService.fetchData<Certifications[]>('certificate'),
+      experienceRequest: this.facultyService.fetchData<IndustryExperience[]>('experience'),
+      educationRequest: this.facultyService.fetchData<EducationalAttainment[]>('education'),
+      projectRequest: this.facultyService.fetchData<Project[]>('project'),
+      expertiseRequest: this.facultyService.fetchData<Expertise[]>('expertise'),
     }).subscribe({
       next: (({
         profileRequest,

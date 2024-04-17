@@ -30,7 +30,7 @@ export class ScheduleBlockComponent {
 
   getSchedule() {
     //Fetches the schedule data based on passed selected date
-    this.facultyService.fetchData<Schedule[]>(this.schedules, 'getschedules/fetchFaculty').subscribe((next) => {
+    this.facultyService.fetchData<Schedule[]>('getschedules/fetchFaculty').subscribe((next) => {
       this.schedules = next;
     }, (error) => {
       if (error.status == 403) {

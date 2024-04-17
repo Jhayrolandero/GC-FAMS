@@ -19,7 +19,7 @@ export class FacultyRequestService {
   facultyMembers: Faculty[] = []
 
   //CRUD requests
-  fetchData<T>(data: any, endpoint: string): Observable<T> {
+  fetchData<T>(endpoint: string): Observable<T> {
     return this.http.get<T>(mainPort + '/GC-FaMS-API/API/' + endpoint);
   }
 

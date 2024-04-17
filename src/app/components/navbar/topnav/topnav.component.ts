@@ -57,7 +57,7 @@ export class TopnavComponent implements OnInit {
     this.getProfile()
   }
   getProfile() {
-    this.facultyService.fetchData<Profile>(this.facultyProfile, 'getprofile/fetchProfile').subscribe({
+    this.facultyService.fetchData<Profile>('getprofile/fetchProfile').subscribe({
       next: (res) => {
         this.facultyProfile.profile_image = res.profile_image
         this.facultyProfile.first_name = res.first_name

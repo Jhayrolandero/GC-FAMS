@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommunityExtension } from '../../services/Interfaces/community-extension';
 import { OtherCommexComponent } from './other-commex/other-commex.component';
 import { CommonModule, NgFor, NgIf, SlicePipe } from '@angular/common';
@@ -7,7 +7,6 @@ import { mainPort } from '../../app.component';
 import { LoadingScreenComponent } from '../../components/loading-screen/loading-screen.component';
 import {
   MatDialog,
-  MAT_DIALOG_DATA,
   MatDialogRef,
   MatDialogTitle,
   MatDialogContent,
@@ -20,7 +19,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { TooltipComponent } from '../../components/tooltip/tooltip.component';
 import { Attendee } from '../../services/Interfaces/attendee';
-import { Observable, Subscription, catchError, concatMap, finalize, forkJoin, from, map, mergeMap, of, switchMap, toArray } from 'rxjs';
+import { Observable, Subscription, map, mergeAll, mergeMap, toArray } from 'rxjs';
+import { Dictionary } from '../../services/Interfaces/dictionary';
 
 @Component({
   selector: 'app-commex-form',
@@ -105,6 +105,8 @@ export class CommexFormComponent {
   styleUrl: './community-extensions.component.css'
 })
 export class CommunityExtensionsComponent {
+  constructor(private facultyService: FacultyRequestService, public dialog: MatDialog) { }
+
   tempPort = mainPort;
   isLoading: boolean = true;
   isAttendeeLoading: boolean = true;
@@ -112,104 +114,42 @@ export class CommunityExtensionsComponent {
   commexs: CommunityExtension[] = [];
   collegeCommexs: CommunityExtension[] = [];
   facultyCommexs: CommunityExtension[] = [];
-  attendees: Attendee[][] = []
+  // attendees: Attendee[][] = []
+  attendees: Dictionary<Attendee[]>[] = []
+
   isVisible: boolean = false
   activeID: number | null = null
   attendeeFetch!: Subscription
   noAttendee: number[] = []
   mainPort: string = mainPort;
   switch: 'faculty' | 'college' = 'faculty';
-  constructor(private facultyService: FacultyRequestService, public dialog: MatDialog,) {
-  }
 
+  attendeeFetch$ = (id: number): Observable<Attendee[]> => {
+    return this.facultyService.fetchData<Attendee[]>(`attendee/${id}`)
+  }
 
   ngOnInit(): void {
     this.getCommex();
-    console.log('In commex')
   }
   // temporary solution i will make this lazy loaded in the future
   getCommex(): void {
-
-    console.log('In get commex')
-    // let reqURI = '';
-
-
-    // // if (this.commexs.length > 1) {
-    // //   return
-    // // }
-    // switch (this.switch) {
-    //   case 'college':
-    //     reqURI = 'getcommex/3?t=college'
-    //     break;
-    //   case 'faculty':
-    //     reqURI = 'getcommex?t=faculty'
-    //     break
-    // }
-
-
-    const source = this.facultyService.fetchData<CommunityExtension[]>(this.commexs, 'getcommex?t=faculty').pipe(
-      // map(commex => {
-      //   return {
-      //     ...commex,
-      //     attendee: 5
-      //   }
-      // })
-
-      concatMap(commexs => from(commexs)),
-      mergeMap(commex => this.fetchAttendee(commex.commex_ID).pipe(
-        map(attendee => ({ ...commex, attendee }))
-      )),
+    this.facultyService.fetchData<CommunityExtension[]>('getcommex?t=faculty').pipe(
+      mergeAll(),
+      mergeMap(commex => this.fetchAttendee<number>(commex.commex_ID).pipe(map(attendee => ({ ...commex, attendee: attendee })))),
       toArray()
-    ).subscribe(val => console.log(val))
-    // this.facultyService.fetchData<CommunityExtension[]>(this.commexs, 'getcommex?t=faculty').subscribe({
-    //   next: (next) => {
-    //     this.commexs = next
-    //   },
-    //   error: (error) => console.log(error),
-    //   complete: () => {
-    //     this.dateSorter();
-    //     this.commexs.forEach(this.parseImageLink);
-    //     this.commexs.map((commex: CommunityExtension) => this.fetchAttendee(commex.commex_ID))
-
-    //     const attendeeObservables: Observable<Attendee>[] = this.commexs.map((commex: CommunityExtension) =>
-    //       this.fetchAttendee(commex.commex_ID)
-    //     );
-
-    //     forkJoin(attendeeObservables).pipe(
-    //       catchError((error) => {
-    //         console.error('Error fetching attendees:', error);
-    //         return [];
-    //       }),
-    //     ).subscribe({
-    //       next: (res) => {
-    //         res.forEach((attendeeData: any) => {
-    //           this.attendees.push(attendeeData.data);
-    //           this.noAttendee.push(attendeeData.data.length)
-    //         });
-    //       },
-    //       complete: () => {
-    //         this.isLoading = false
-    //       }
-    //     });
-    //   }
-    // });
+    ).subscribe({
+      next: (res) => this.commexs = res,
+      error: err => console.log(err),
+      complete: () => {
+        this.dateSorter();
+        this.commexs.forEach(this.parseImageLink);
+        this.isLoading = false
+      }
+    })
   }
 
-  testID(id: number): number {
-    return id
-  }
-  fetchAttendee(id: number): Observable<Attendee> {
-    return this.facultyService.fetchData(this.attendees, `attendee/${id}`);
-    // // forkJoin()
-    // this.facultyService.fetchData(this.attendees, `attendee/${id}`).subscribe({
-    //   next: res => this.attendees.push(res.data),
-    //   error: err => console.log(err),
-    //   complete: () => {
-    //     console.log(this.attendees)
-    //     this.isLoading = false
-    //   }
-
-    // })
+  fetchAttendee<T>(id: number): Observable<T> {
+    return this.facultyService.fetchData<T>(`attendee/${id}?q=number`);
   }
 
   //Adds mainPort to all header image links.
@@ -225,7 +165,7 @@ export class CommunityExtensionsComponent {
   }
 
   openDialog() {
-    const dialogRef = this.dialog.open(CommexFormComponent).afterClosed().subscribe(result => {
+    this.dialog.open(CommexFormComponent).afterClosed().subscribe(result => {
       this.getCommex();
     });
   }
@@ -234,6 +174,14 @@ export class CommunityExtensionsComponent {
   toggleVisible(id: number) {
     this.isVisible = true
 
+    this.attendeeFetch$(id).subscribe({
+      next: res => this.attendees.push({ [id]: res }),
+      error: err => console.log(err),
+      complete: () => {
+        this.isAttendeeLoading = false
+        console.log(this.attendees)
+      }
+    });
     // this.attendeeFetch = this.facultyService.fetchData(this.attendees, `attendee/${id}`).subscribe({
     //   next: (res: any) => {
     //     if (res.code == 200) {

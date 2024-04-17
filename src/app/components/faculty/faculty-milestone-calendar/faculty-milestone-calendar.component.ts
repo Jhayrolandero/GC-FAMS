@@ -79,11 +79,11 @@ export class FacultyMilestoneCalendarComponent {
   //Fetches all milestones
   getMilestones() {
     forkJoin({
-      certRequest: this.facultyService.fetchData<Certifications[]>(this.certifications, 'certificate'),
-      experienceRequest: this.facultyService.fetchData<IndustryExperience[]>(this.industryExp, 'experience'),
-      educationRequest: this.facultyService.fetchData<EducationalAttainment[]>(this.educAttainment, 'education'),
-      projectRequest: this.facultyService.fetchData<Project[]>(this.projects, 'project'),
-      commexRequest: this.facultyService.fetchData<CommunityExtension[]>(this.commex, 'getcommex/fetchCommex')
+      certRequest: this.facultyService.fetchData<Certifications[]>('certificate'),
+      experienceRequest: this.facultyService.fetchData<IndustryExperience[]>('experience'),
+      educationRequest: this.facultyService.fetchData<EducationalAttainment[]>('education'),
+      projectRequest: this.facultyService.fetchData<Project[]>('project'),
+      commexRequest: this.facultyService.fetchData<CommunityExtension[]>('getcommex/fetchCommex')
     })
       .subscribe({
         next: (({ certRequest, experienceRequest, educationRequest, projectRequest, commexRequest }) => {

@@ -80,7 +80,7 @@ export class AnalyticsComponent implements OnInit {
 
   getSchedule() {
     //Fetches the schedule data based on passed selected date
-    this.facultyService.fetchData<Schedule[]>(this.schedules, 'getschedules/fetchFaculty').subscribe({
+    this.facultyService.fetchData<Schedule[]>('getschedules/fetchFaculty').subscribe({
       next: value => {
         this.schedules = value;
         this.countUnit()
@@ -98,8 +98,8 @@ export class AnalyticsComponent implements OnInit {
 
   getEvaluationAndProfile() {
     forkJoin({
-      evaluationRequest: this.facultyService.fetchData<Evaluation[]>(this.evaluation, 'getevaluation/fetchEvaluation'),
-      profileRequest: this.facultyService.fetchData<Profile>(this.facultyProfile, 'getprofile/fetchProfile')
+      evaluationRequest: this.facultyService.fetchData<Evaluation[]>('getevaluation/fetchEvaluation'),
+      profileRequest: this.facultyService.fetchData<Profile>('getprofile/fetchProfile')
     }).subscribe({
       next: (({ evaluationRequest, profileRequest }) => {
         this.evaluation = evaluationRequest
