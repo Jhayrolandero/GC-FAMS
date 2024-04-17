@@ -1,0 +1,7 @@
+.formBgColor{
+    background-color: rgba(128, 128, 128, 0.411);
+}
+
+::ng-deep .mat-mdc-dialog-container {
+    --mdc-dialog-container-shape: 15px;
+  }

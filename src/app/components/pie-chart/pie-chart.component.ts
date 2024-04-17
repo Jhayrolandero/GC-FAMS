@@ -13,25 +13,31 @@ import { single } from '../../faculty/analytics/data';
 export class PieChartComponent implements OnInit {
   @Input('data') data: any[] = []
   single: any[] | undefined;
-  view: any[] = [700, 400];
+  view: any[] | undefined;
 
   // options
+  arcWidth: number = 0.4;
+  viewSize = [2,2];
   gradient: boolean = false;
   showLegend: boolean = false;
-  showLabels: boolean = true;
-  isDoughnut: boolean = false;
+  showLabels: boolean = false;
+  isDoughnut: boolean = true;
   explodeSlices: boolean = false;
 
   colorScheme = {name: 'myScheme',
   selectable: true,
   group: ScaleType.Ordinal,
-    domain: ['#fbd650', '#65c280', '#1f7cb5', '#ef6540']
+    domain: ['#074287', '#1E7242', '#FF7A00', '#ef6540']
   };
 
   constructor() {
   }
   ngOnInit(): void {
     this.single = this.data
+  }
+
+  labelFormatter(lb: string){
+    return "h3h3" + lb;
   }
 
   onSelect(data: any): void {

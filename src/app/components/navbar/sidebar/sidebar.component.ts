@@ -39,6 +39,5 @@ export class SidebarComponent {
   logout() {
     this.auth.flushToken();
     this.router.navigate(['/']);
-    this.messageService.sendMessage("Have a nice day!", 1)
   }
 }

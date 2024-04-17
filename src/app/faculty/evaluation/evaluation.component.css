@@ -1,0 +1,15 @@
+.bar {
+  width: 100%;
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+  background-color: red;
+}
+
+.bar::before {
+  content: '';
+  background-color: #1E7242;
+  height: 100%;
+  display: block;
+  width: var(--width);
+}

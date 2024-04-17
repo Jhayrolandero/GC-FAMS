@@ -3,6 +3,5 @@
     *ngFor="let msg of messages; index as idx"
     [message]="msg.message"
     [status]="msg.status"
-    (click)="deleteMessage(idx)"
   ></app-message-box>
 </div>

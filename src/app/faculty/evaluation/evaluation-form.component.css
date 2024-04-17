@@ -1,0 +1,7 @@
+::ng-deep .mat-mdc-dialog-container {
+    --mdc-dialog-container-shape: 15px;
+  }
+
+input.ng-invalid.ng-touched {
+    border: red 1px solid;
+}

@@ -1,10 +1,13 @@
 <ngx-charts-pie-chart
   class="advanced-pie-legend total-value total-label legend-items"
+  [arcWidth]="arcWidth"
+  [view]=[180,180]
   [scheme]="colorScheme"
   [results]="single"
   [gradient]="gradient"
   [legend]="showLegend"
   [labels]="showLabels"
+  [trimLabels]="false"
   [doughnut]="isDoughnut"
   [explodeSlices]="explodeSlices"
   (select)="onSelect($event)"
