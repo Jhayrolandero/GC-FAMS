@@ -23,6 +23,7 @@ import { Observable, Subscription, map, mergeAll, mergeMap, toArray } from 'rxjs
 import { Dictionary } from '../../services/Interfaces/dictionary';
 import { Response } from '../../services/Interfaces/response';
 import { AttendeeCount } from '../../services/Interfaces/attendeeCount';
+import { MessageService } from '../../services/message.service';
 @Component({
   selector: 'app-commex-form',
   standalone: true,
@@ -106,7 +107,11 @@ export class CommexFormComponent {
   styleUrl: './community-extensions.component.css'
 })
 export class CommunityExtensionsComponent {
-  constructor(private facultyService: FacultyRequestService, public dialog: MatDialog) { }
+  constructor(
+    private facultyService: FacultyRequestService,
+    public dialog: MatDialog,
+    private messageService: MessageService
+  ) { }
 
   tempPort = mainPort;
   isLoading: boolean = true;
@@ -137,22 +142,51 @@ export class CommunityExtensionsComponent {
   currFetch$!: Subscription
 
   ngOnInit(): void {
-    this.getCommex();
+    this.getCommex(this.switch);
   }
   // temporary solution i will make this lazy loaded in the future
-  getCommex(): void {
-    this.facultyService.fetchData<CommunityExtension[]>('getcommex?t=faculty').pipe(
+  getCommex(view: 'college' | 'faculty'): void {
+
+    let uri = ''
+    switch (view) {
+      case 'faculty':
+        uri = 'getcommex?t=faculty'
+        break
+      case 'college':
+        uri = 'getcommex/1?t=college'
+        break
+    }
+
+
+    this.facultyService.fetchData<CommunityExtension[]>(uri).pipe(
       mergeAll(),
       mergeMap(commex => this.fetchAttendee<Response<AttendeeCount[]>>(commex.commex_ID)
         .pipe(map(attendee => ({ ...commex, attendee: attendee.data[0].count })))),
       toArray()
     ).subscribe({
       next: (res) => {
-        this.commexs = res
-        // console.log(res)
+
+        switch (view) {
+          case 'faculty':
+            this.facultyCommexs = res
+            break
+          case 'college':
+            this.collegeCommexs = res
+            break
+        }
       },
       error: err => console.log(err),
       complete: () => {
+
+        switch (view) {
+          case 'faculty':
+            this.commexs = this.facultyCommexs
+            break
+          case 'college':
+            this.commexs = this.collegeCommexs
+            break
+        }
+        // this.commexs = this.facultyCommexs
         this.dateSorter();
         this.commexs.forEach(this.parseImageLink);
         this.isLoading = false
@@ -178,7 +212,8 @@ export class CommunityExtensionsComponent {
 
   openDialog() {
     this.dialog.open(CommexFormComponent).afterClosed().subscribe(result => {
-      this.getCommex();
+      // this.getCommex(this.switch);
+      this.checkCache()
     });
   }
 
@@ -192,10 +227,6 @@ export class CommunityExtensionsComponent {
       this.attendee = this.attendees.find(mem => mem[id])![id]
     }
 
-    // // this.attendee = this.attendees.map(attendee => attendee[id])[0]
-    // // console.log(this.attendees.map(attendee => attendee[id]))
-    // console.log(this.attendees.find(mem => mem[id]));
-    // // console.log(this.attendee)
     this.isVisible = true
     this.activeID = id
   }
@@ -213,12 +244,35 @@ export class CommunityExtensionsComponent {
   }
 
   toggleView() {
+
+
     if (this.switch === 'faculty') {
       this.switch = 'college'
+
     } else {
       this.switch = 'faculty'
     }
 
-    console.log(this.switch)
+
+    this.checkCache()
+  }
+
+  // not really a cache just a copy of state
+  checkCache() {
+    if (this.collegeCommexs.length == 0 || this.facultyCommexs.length == 0) {
+      this.messageService.sendMessage(`Fetching ${this.switch}`, 0)
+      this.getCommex(this.switch);
+      return
+    }
+
+
+    switch (this.switch) {
+      case 'faculty':
+        this.commexs = this.facultyCommexs
+        break
+      case 'college':
+        this.commexs = this.collegeCommexs
+        break
+    }
   }
 }
