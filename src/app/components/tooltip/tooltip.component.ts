@@ -8,10 +8,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './tooltip.component.html',
   styleUrl: './tooltip.component.css'
 })
-export class TooltipComponent implements OnDestroy {
-  ngOnDestroy(): void {
-    this.attendees = []
-  }
+export class TooltipComponent {
   @Input('attendees') attendees: Attendee[] = []
   @Input('isVisible') isVisible: boolean = false
   @Input('id') id: number = -1

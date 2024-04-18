@@ -21,7 +21,8 @@ import { TooltipComponent } from '../../components/tooltip/tooltip.component';
 import { Attendee } from '../../services/Interfaces/attendee';
 import { Observable, Subscription, map, mergeAll, mergeMap, toArray } from 'rxjs';
 import { Dictionary } from '../../services/Interfaces/dictionary';
-
+import { Response } from '../../services/Interfaces/response';
+import { AttendeeCount } from '../../services/Interfaces/attendeeCount';
 @Component({
   selector: 'app-commex-form',
   standalone: true,
@@ -114,19 +115,26 @@ export class CommunityExtensionsComponent {
   commexs: CommunityExtension[] = [];
   collegeCommexs: CommunityExtension[] = [];
   facultyCommexs: CommunityExtension[] = [];
-  // attendees: Attendee[][] = []
   attendees: Dictionary<Attendee[]>[] = []
-
+  attendee: Attendee[] = []
   isVisible: boolean = false
   activeID: number | null = null
-  attendeeFetch!: Subscription
-  noAttendee: number[] = []
   mainPort: string = mainPort;
   switch: 'faculty' | 'college' = 'faculty';
 
-  attendeeFetch$ = (id: number): Observable<Attendee[]> => {
-    return this.facultyService.fetchData<Attendee[]>(`attendee/${id}`)
+  attendeeFetch$ = (id: number): Subscription => {
+    return this.facultyService.fetchData<Response<Attendee[]>>(`attendee/${id}`).subscribe({
+      next: res => this.attendees.push({ [id]: res.data }),
+      error: err => console.log(err),
+      complete: () => {
+        this.attendee = this.attendees.find(mem => mem[id])![id]
+        this.isAttendeeLoading = false
+        console.log(this.attendees)
+      }
+    });
   }
+
+  currFetch$!: Subscription
 
   ngOnInit(): void {
     this.getCommex();
@@ -135,10 +143,14 @@ export class CommunityExtensionsComponent {
   getCommex(): void {
     this.facultyService.fetchData<CommunityExtension[]>('getcommex?t=faculty').pipe(
       mergeAll(),
-      mergeMap(commex => this.fetchAttendee<number>(commex.commex_ID).pipe(map(attendee => ({ ...commex, attendee: attendee })))),
+      mergeMap(commex => this.fetchAttendee<Response<AttendeeCount[]>>(commex.commex_ID)
+        .pipe(map(attendee => ({ ...commex, attendee: attendee.data[0].count })))),
       toArray()
     ).subscribe({
-      next: (res) => this.commexs = res,
+      next: (res) => {
+        this.commexs = res
+        // console.log(res)
+      },
       error: err => console.log(err),
       complete: () => {
         this.dateSorter();
@@ -170,39 +182,34 @@ export class CommunityExtensionsComponent {
     });
   }
 
-
   toggleVisible(id: number) {
+
+    const exist = this.attendees.some(attendee => id in attendee);
+
+    if (!exist) {
+      this.currFetch$ = this.attendeeFetch$(id)
+    } else {
+      this.attendee = this.attendees.find(mem => mem[id])![id]
+    }
+
+    // // this.attendee = this.attendees.map(attendee => attendee[id])[0]
+    // // console.log(this.attendees.map(attendee => attendee[id]))
+    // console.log(this.attendees.find(mem => mem[id]));
+    // // console.log(this.attendee)
     this.isVisible = true
-
-    this.attendeeFetch$(id).subscribe({
-      next: res => this.attendees.push({ [id]: res }),
-      error: err => console.log(err),
-      complete: () => {
-        this.isAttendeeLoading = false
-        console.log(this.attendees)
-      }
-    });
-    // this.attendeeFetch = this.facultyService.fetchData(this.attendees, `attendee/${id}`).subscribe({
-    //   next: (res: any) => {
-    //     if (res.code == 200) {
-    //       this.attendees = res.data
-    //     }
-    //   },
-    //   error: (error) => console.log(error),
-    //   complete: () => {
-    //     this.isAttendeeLoading = false;
-    //   }
-    // })
-
     this.activeID = id
   }
 
   toggleHide() {
+    console.log("Unsub...")
+
+    this.currFetch$.unsubscribe()
+
+
     this.isVisible = false
     this.activeID = null
-    // this.attendees = []
+    this.attendee = []
     this.isAttendeeLoading = true;
-    // this.attendeeFetch.unsubscribe()
   }
 
   toggleView() {

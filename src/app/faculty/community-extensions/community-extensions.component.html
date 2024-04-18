@@ -65,11 +65,14 @@
       </p>
       <div class="flex flex-col flex-wrap justify-end flex-1 gap-2">
         <hr class=" text-black text-[0.5rem] bg-black">
-        <div class="flex gap-2" (mouseenter)="toggleVisible(commexs[0].commex_ID)" (mouseleave)="toggleHide()" >
-            <span><i class="fa-solid fa-users"></i></span><p>{{commexs[0].attendee}}</p>
+        <div class="flex gap-2">
+            <div
+            (mouseenter)="toggleVisible(commexs[0].commex_ID)"
+            (mouseleave)="toggleHide()"
+            ><i class="fa-solid fa-users"></i><span>{{commexs[0].attendee}}</span></div>
           <div class="relative">
-            <!-- [attendees]="attendees[0]" -->
             <app-tooltip
+            [attendees]="attendee"
             [isVisible]="isVisible"
             [id]="commexs[0].commex_ID"
             [activeID]="activeID"
@@ -107,13 +110,15 @@
           </p>
           <div class="flex flex-col flex-wrap justify-end flex-1 gap-2">
             <hr class=" text-black text-[0.5rem] bg-black">
-            <div class="flex gap-2" (mouseenter)="toggleVisible(commex.commex_ID)" (mouseleave)="toggleHide()" >
+            <div class="flex gap-2"
+                (mouseenter)="toggleVisible(commex.commex_ID)"
+                (mouseleave)="toggleHide()" >
               <div class="flex flex-row">
                 <span><i class="fa-solid fa-users"></i></span><p>{{commex.attendee}}</p>
               </div>
               <div class="relative">
-                <!-- [attendees]="attendees[i]" -->
                 <app-tooltip
+                [attendees]="attendee"
                 [isVisible]="isVisible"
                 [id]="commex.commex_ID"
                 [activeID]="activeID"
