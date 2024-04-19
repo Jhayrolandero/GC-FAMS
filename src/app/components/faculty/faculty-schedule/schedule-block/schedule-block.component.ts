@@ -19,29 +19,29 @@ export class ScheduleBlockComponent {
   filteredSchedule: Schedule[] = [];
   weeks: string[] = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
-  constructor(private facultyService:FacultyRequestService, private router:Router){
+  constructor(private facultyService: FacultyRequestService, private router: Router) {
     this.getSchedule();
   }
 
-  ngOnChanges(changes: SimpleChanges){
+  ngOnChanges(changes: SimpleChanges) {
     this.filteredSchedule = [];
     this.filterSchedule();
   }
-  
-  getSchedule(){
+
+  getSchedule() {
     //Fetches the schedule data based on passed selected date
-    this.facultyService.fetchData(this.schedules, 'getschedules/fetchFaculty').subscribe((next: Schedule[]) => {
+    this.facultyService.fetchData<Schedule[]>('getschedules/fetchFaculty').subscribe((next) => {
       this.schedules = next;
     }, (error) => {
-      if(error.status == 403){
+      if (error.status == 403) {
         this.router.navigate(['/']);
       };
     });
   }
 
-  filterSchedule(){
-    for(let i = 0; i < this.schedules.length; i++){
-      if(this.schedules[i].week == this.week){
+  filterSchedule() {
+    for (let i = 0; i < this.schedules.length; i++) {
+      if (this.schedules[i].week == this.week) {
         this.filteredSchedule.push(this.schedules[i]);
       }
     }
@@ -49,12 +49,12 @@ export class ScheduleBlockComponent {
   }
 
 
-  tConvert (time: any) {
+  tConvert(time: any) {
     // Check correct time format and split into components
-    time = time.toString ().match (/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
-  
+    time = time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
+
     if (time.length > 1) { // If time format correct
-      time = time.slice (1);  // Remove full string match value
+      time = time.slice(1);  // Remove full string match value
       time[5] = +time[0] < 12 ? 'AM' : 'PM'; // Set AM/PM
       time[0] = +time[0] % 12 || 12; // Adjust hours
     }
