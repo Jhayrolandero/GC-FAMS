@@ -3,19 +3,12 @@
   column-gap: 1.5em;
 }
 
-.slide {
-  animation: myAnim 2s ease 1s 1 normal forwards;
-
-}
-
 /* The Masonry Brick */
 .item {
   background: #fff;
   padding: 1em;
   margin: 0 0 1.5em;
 }
-
-
 
 /* Masonry on large screens */
 @media only screen and (min-width: 1024px) {
@@ -36,16 +29,4 @@
   .masonry {
     column-count: 2;
   }
-}
-
-@keyframes myAnim {
-	0% {
-		opacity: 0;
-		transform: translateY(250px);
-	}
-
-	100% {
-		opacity: 1;
-		transform: translateY(0);
-	}
 }

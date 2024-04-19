@@ -1,38 +1,19 @@
-@if(!isLoading) {
-  <div class="p-5 flex flex-col gap-3 text-blue">
-    <div
+<app-loading-screen *ngIf="isLoading"></app-loading-screen>
+
+<div class="p-5 flex flex-col gap-3 text-blue" *ngIf="!isLoading">
+  <div
     class="bg-white shadow-main bg-opacity-70 w-full rounded-[15px] flex flex-col tablet:flex-row tablet:justify-between items-center px-5"
   >
-  <h1 class="font-Poppins font-semibold text-[2.5rem] py-2">
+    <h1 class="font-Poppins font-semibold text-[2.5rem] py-2">
       Community Extensions
     </h1>
-    <!-- <div class="flex flex-row space-x-4">
+    <div class="flex flex-row space-x-4">
       <button
         (click)="openDialog()" class="bg-gradient-to-r from-blue to-greenBar text-white font-Poppins font-semibold w-[125px] h-[40px] rounded-full shadow-xl hover:scale-[102%] hover:duration-300 duration-300"
       >
         +Add
       </button>
-    </div> -->
-    <div class="flex-1 flex justify-end items-end">
-        <input type="checkbox" id="switch" class="hidden peer" (click)="toggleView()"/>
-
-        <label
-          for="switch"
-          label1="My Commex"
-          label2="All Commex"
-          class="relative w-8/12 max-w-52 py-4 bg-white rounded-[25px] after:py-1 after:absolute after:w-1/2 after:h-full after:rounded-full after:bg-blue after:top-0 after:left-0 after:transition-all after:duration-150 after:content-[attr(label1)] after:text-center after:font-bold peer-checked:after:left-1/2 peer-checked:after:content-[attr(label2)] after:flex after:justify-center after:items-center after:text-white"
-        >
-          <span
-            class="select-none absolute top-0 inset-x-1/2 right-0 text-blue text-center font-bold py-1 flex justify-center items-center h-full"
-            >All Commex</span
-          >
-
-          <span
-            class="select-none absolute top-0 inset-x-1/2 left-0 text-blue text-center font-bold py-1 flex justify-center items-center h-full"
-            >My Commex</span
-          >
-        </label>
-      </div>
+    </div>
   </div>
 
   <h1 class="font-Poppins font-semibold text-[1.5rem] py-2">
@@ -47,11 +28,11 @@
     <div *ngIf="commexs[0].commex_header_img != 'http://localhost:8080'" class="bg-red-400 w-[25%] h-[280px]">
       <img [src]="commexs[0].commex_header_img" class="h-full w-full object-cover" />
     </div>
-    <div class="p-4 w-[75%] flex flex-col gap-2">
+    <div class="ml-4 mt-4 w-[75%] pr-6">
       <h1 class="font-Poppins font-semibold text-[1.5rem]">
         {{ commexs[0].commex_title }}
       </h1>
-      <div class="flex flex-row opacity-70">
+      <div class="flex flex-row opacity-70 mb-3">
         <img
           src="../../../assets/faculty-dashboard/BlueVector.png"
           class="w-[20px] h-full mr-[5px]"
@@ -60,26 +41,9 @@
           {{ commexs[0].commex_date }}
         </h2>
       </div>
-      <p class="">
+      <p class="mb-4">
         {{ commexs[0].commex_details }}
       </p>
-      <div class="flex flex-col flex-wrap justify-end flex-1 gap-2">
-        <hr class=" text-black text-[0.5rem] bg-black">
-        <div class="flex gap-2">
-            <div
-            (mouseenter)="toggleVisible(commexs[0].commex_ID)"
-            (mouseleave)="toggleHide()"
-            ><i class="fa-solid fa-users"></i><span>{{commexs[0].attendee}}</span></div>
-          <div class="relative">
-            <app-tooltip
-            [attendees]="attendee"
-            [isVisible]="isVisible"
-            [id]="commexs[0].commex_ID"
-            [activeID]="activeID"
-            ></app-tooltip>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 
@@ -107,25 +71,8 @@
           <p>
             {{ commex.commex_details }}
           </p>
-          <div class="flex flex-col flex-wrap justify-end flex-1 gap-2">
-            <hr class=" text-black text-[0.5rem] bg-black">
-            <div class="flex gap-2"
-                (mouseenter)="toggleVisible(commex.commex_ID)"
-                (mouseleave)="toggleHide()" >
-              <div class="flex flex-row">
-                <span><i class="fa-solid fa-users"></i></span><p>{{commex.attendee}}</p>
-              </div>
-              <div class="relative">
-                <app-tooltip
-                [attendees]="attendee"
-                [isVisible]="isVisible"
-                [id]="commex.commex_ID"
-                [activeID]="activeID"
-                ></app-tooltip>
-              </div>
-            </div>
-          </div>
         </div>
+
         <!-- <button class="bg-blue text-white font-bold p-2 rounded-main">
           Read More
         </button> -->
@@ -133,7 +80,3 @@
     </div>
   </app-other-commex>
 </div>
-
-} @else {
-  <app-loading-screen *ngIf="isLoading"></app-loading-screen>
-}
