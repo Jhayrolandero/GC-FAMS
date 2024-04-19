@@ -68,8 +68,8 @@ export class FacultySectionComponent {
 
   getCollegeAndFaculty() {
     forkJoin({
-      collegeRequest: this.facultyService.fetchData<College[]>('fetchCollege'),
-      facultyRequest: this.facultyService.fetchData<Faculty[]>('faculty')
+      collegeRequest: this.facultyService.fetchData(this.facultyService.colleges, 'fetchCollege'),
+      facultyRequest: this.facultyService.fetchData(this.facultyService.facultyMembers, 'faculty')
     }).subscribe({
       next: (({ collegeRequest, facultyRequest }) => {
         this.facultyService.colleges = collegeRequest

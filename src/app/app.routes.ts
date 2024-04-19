@@ -1,34 +1,37 @@
 import { Routes } from '@angular/router';
-import { authGuard } from './services/auth.guard';
-import { AdminComponent } from './admin/admin.component';
+import { LoginComponent } from './components/login/login.component';
 import { FacultyComponent } from './faculty/faculty.component';
+import { AdminComponent } from './admin/admin.component';
+import { PagenotfoundComponent } from './components/pagenotfound/pagenotfound.component';
+import { AnalyticsComponent } from './faculty/analytics/analytics.component';
+import { ScheduleComponent } from './faculty/schedule/schedule.component';
+import { CommunityExtensionsComponent } from './faculty/community-extensions/community-extensions.component';
+import { ProfileComponent } from './faculty/profile/profile.component';
+import { ManageFacultyComponent } from './admin/manage-faculty/manage-faculty.component';
+import { EvaluationComponent } from './faculty/evaluation/evaluation.component';
+import { CvComponent } from './components/cv/cv.component';
+import { authGuard } from './services/auth.guard';
+import { ManageAnalyticsComponent } from './admin/manage-analytics/manage-analytics.component';
 
 export const routes: Routes = [
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
-  { path: 'faculty', redirectTo: '/faculty/curriculum-vitae', pathMatch: 'full' },
-  { path: 'admin', redirectTo: '/admin/manage-faculty', pathMatch: 'full' },
-
-  {
-    path: 'login',
-    loadComponent: () =>
-      import('./components/login/login.component').then(m => m.LoginComponent)
-  },
-  {
-    path: 'faculty', component: FacultyComponent, children: [
-      { path: 'curriculum-vitae', loadComponent: () => import('./faculty/profile/profile.component').then(m => m.ProfileComponent) },
-      { path: 'analytics', loadComponent: () => import('./faculty/analytics/analytics.component').then(m => m.AnalyticsComponent) },
-      { path: 'schedule', loadComponent: () => import('./faculty/schedule/schedule.component').then(m => m.ScheduleComponent) },
-      { path: 'community', loadComponent: () => import('./faculty/community-extensions/community-extensions.component').then(m => m.CommunityExtensionsComponent) },
-      { path: 'evaluation', loadComponent: () => import('./faculty/evaluation/evaluation.component').then(m => m.EvaluationComponent) },
-    ], canActivateChild: [authGuard]
-  },
-  {
-    path: 'admin', component: AdminComponent, children: [
-      { path: 'manage-faculty', loadComponent: () => import('./admin/manage-faculty/manage-faculty.component').then(m => m.ManageFacultyComponent) },
-      { path: 'program-analytics', loadComponent: () => import('./admin/manage-analytics/manage-analytics.component').then(m => m.ManageAnalyticsComponent) },
-      { path: 'community', loadComponent: () => import('./faculty/community-extensions/community-extensions.component').then(m => m.CommunityExtensionsComponent) },
-    ], canActivateChild: [authGuard]
-  },
-  { path: 'cv', loadComponent: () => import('./components/cv/cv.component').then(m => m.CvComponent) },
-  { path: '**', loadComponent: () => import('./components/pagenotfound/pagenotfound.component').then(m => m.PagenotfoundComponent) }
+  {path: '', redirectTo: '/login', pathMatch: 'full'},
+  {path: 'faculty', redirectTo: '/faculty/curriculum-vitae', pathMatch: 'full'},
+  {path: 'admin', redirectTo: '/admin/manage-faculty', pathMatch: 'full'},
+  
+  {path: 'login', component: LoginComponent},
+  {path: 'faculty', component: FacultyComponent, children: [
+    {path: 'curriculum-vitae', component: ProfileComponent},
+    {path: 'analytics', component: AnalyticsComponent},
+    {path: 'schedule', component: ScheduleComponent},
+    {path: 'graduate-studies', component: AnalyticsComponent},
+    {path: 'certifications', component: AnalyticsComponent},
+    {path: 'community', component: CommunityExtensionsComponent},
+    {path: 'evaluation', component: EvaluationComponent},
+  ], canActivateChild: [authGuard]},
+  {path: 'admin', component: AdminComponent, children: [
+    {path: 'manage-faculty', component: ManageFacultyComponent},
+    {path: 'program-analytics', component: ManageAnalyticsComponent},
+  ], canActivateChild: [authGuard]},
+  {path: 'cv', component: CvComponent},
+  {path: '**', component: PagenotfoundComponent}
 ];

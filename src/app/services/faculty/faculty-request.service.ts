@@ -3,10 +3,8 @@ import { mainPort } from '../../app.component';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { JwtToken } from '../jwt-token';
 import { FormGroup } from '@angular/forms';
-import { College } from '../Interfaces/college';
 import { Faculty } from '../Interfaces/faculty';
-import { Observable } from 'rxjs';
-
+import { College } from '../Interfaces/college';
 @Injectable({
   providedIn: 'root'
 })
@@ -15,12 +13,11 @@ export class FacultyRequestService {
   constructor(private http: HttpClient) { }
 
 
-  colleges: College[] = []
   facultyMembers: Faculty[] = []
-
+  colleges: College[] = []
   //CRUD requests
-  fetchData<T>(endpoint: string): Observable<T> {
-    return this.http.get<T>(mainPort + '/GC-FaMS-API/API/' + endpoint);
+  fetchData(data: any, endpoint: string) {
+    return this.http.get<typeof data>(mainPort + '/GC-FaMS-API/API/' + endpoint);
   }
 
   postData(data: any, endpoint: string) {

@@ -14,23 +14,17 @@ import { forkJoin } from 'rxjs';
 import { MessageComponent } from '../../components/message/message.component';
 import { CvDropdownComponent } from "./Profile Dropdown/cv-dropdown.component";
 @Component({
-  selector: 'app-profile',
-  standalone: true,
-  templateUrl: './profile.component.html',
-  styleUrl: './profile.component.css',
-  imports: [
-    MessageComponent,
-    LoadingScreenComponent,
-    NgOptimizedImage,
-    CommonModule,
-    FacultyEducationComponent,
-    FacultyCertificationsComponent,
-    FacultyExperienceComponent,
-    FacultyExpertiseComponent,
-    AddFormsComponent,
-    FacultyProjectsComponent
-  ]
-
+    selector: 'app-profile',
+    standalone: true,
+    templateUrl: './profile.component.html',
+    styleUrl: './profile.component.css',
+    imports: [
+        MessageComponent,
+        LoadingScreenComponent,
+        NgOptimizedImage,
+        CommonModule,
+        CvDropdownComponent
+    ]
 })
 export class ProfileComponent {
   isLoading: boolean = true
@@ -43,8 +37,7 @@ export class ProfileComponent {
   //CV form toggle
   cvToggle = false;
 
-
-  constructor(private facultyService: FacultyRequestService, private router: Router, private http: HttpClient){
+    constructor(private facultyService: FacultyRequestService, private router: Router, private http: HttpClient){
       this.getProfileScheduleResume()
   }
 
@@ -71,36 +64,25 @@ export class ProfileComponent {
     })
   }
 
-  showAdd(comp: string) {
-    switch (comp) {
-      case "educ":
-
-        break;
-
-      default:
-        break;
-    }
-  }
-
-  testPng() {
+  testPng(){
     console.log("Test");
     var cv = document.getElementById('cv')!;
     html2canvas(cv).then(canvas => {
-      // Few necessary setting options
-      var imgWidth = 210;
-      var pageHeight = 297;
-      var imgHeight = canvas.height * imgWidth / canvas.width;
-      var heightLeft = imgHeight;
+    // Few necessary setting options
+    var imgWidth = 210;
+    var pageHeight = 297;
+    var imgHeight = canvas.height * imgWidth / canvas.width;
+    var heightLeft = imgHeight;
 
-      const contentDataURL = canvas.toDataURL('image/png')
-      let pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF
-      var position = 0;
-      pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)
-      pdf.save('new-file.pdf'); // Generated PDF
+    const contentDataURL = canvas.toDataURL('image/png')
+    let pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF
+    var position = 0;
+    pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)
+    pdf.save('new-file.pdf'); // Generated PDF
     });
   }
 
-  getCv() {
+  getCv(){
     // const url = this.router.serializeUrl(this.router.createUrlTree(['cv']));
     // window.open(url, '_blank');
     this.router.navigate(['cv']);
@@ -111,7 +93,7 @@ export class ProfileComponent {
   }
 
 
-  toggle(drop: string) {
+  toggle(drop: string){
     switch (drop) {
       case 'cv':
         this.cvToggle = !this.cvToggle;
