@@ -91,8 +91,7 @@
 
   <app-other-commex>
     <div
-      *ngFor="let commex of commexs; let i = index"
-      [ngStyle]="{'slide': !isLoading}"
+      *ngFor="let commex of commexs; let i = index" 
     >
       <div *ngIf="i != 0" class="bg-white rounded-xl shadow-main flex flex-col gap-2 duration-300 hover:scale-[102%] hover:shadow-xl hover:duration-300 break-inside-avoid mb-2 overflow-hidden">
         <div class="bg-red-300">
