@@ -33,7 +33,7 @@ export class CvComponent {
 
 
 
-  constructor(private facultyService: FacultyRequestService, private router: Router){
+  constructor(private facultyService: FacultyRequestService, private router: Router) {
     this.getProfile();
     this.getSchedule();
     this.getResume();
@@ -44,64 +44,66 @@ export class CvComponent {
   //   window.print();
   // }
 
-  getProfile(){
-    this.facultyService.fetchData(this.facultyProfile, 'getprofile/fetchProfile').subscribe({
-    next: (next) => this.facultyProfile = next,
-    error: (error) => {
-      console.log(error);
-      this.router.navigate(['/']);
-    },
-    complete: () => {
-      this.facultyProfile.profile_image = mainPort + this.facultyProfile.profile_image;
-      this.facultyProfile.cover_image = mainPort + this.facultyProfile.cover_image;
-      console.log("Profile loaded.");
-    }
+  getProfile() {
+    this.facultyService.fetchData<Profile>('getprofile/fetchProfile').subscribe({
+      next: (next) => this.facultyProfile = next,
+      error: (error) => {
+        console.log(error);
+        this.router.navigate(['/']);
+      },
+      complete: () => {
+        this.facultyProfile.profile_image = mainPort + this.facultyProfile.profile_image;
+        this.facultyProfile.cover_image = mainPort + this.facultyProfile.cover_image;
+        console.log("Profile loaded.");
+      }
     });
   }
 
-  getSchedule(){
+  getSchedule() {
     //Fetches the schedule data based on passed selected date
-    this.facultyService.fetchData(this.schedules, 'getschedules/fetchFaculty').subscribe({
-      next: value => {this.schedules = value;
-                      this.filterSched();},
-      error: err => {if(err.status == 403){this.router.navigate(['/']);}},
+    this.facultyService.fetchData<Schedule[]>('getschedules/fetchFaculty').subscribe({
+      next: value => {
+        this.schedules = value;
+        this.filterSched();
+      },
+      error: err => { if (err.status == 403) { this.router.navigate(['/']); } },
       complete: () => console.log("Schedule loaded.")
     });
   }
 
-  getResume(){
-    this.facultyService.fetchData(this.resume, 'getresume/fetchResume').subscribe({
+  getResume() {
+    this.facultyService.fetchData<Resume>('getresume/fetchResume').subscribe({
       next: value => this.resume = value,
-      error: err => {console.log(err);if(err.status == 403){this.router.navigate(['/']);}},
+      error: err => { console.log(err); if (err.status == 403) { this.router.navigate(['/']); } },
       complete: () => console.log("ResumeInfo loaded.")
     });
   }
 
-  filterSched(){
-    this.schedules?.forEach(schedule =>{
-      if(!this.filteredSchedules.has(schedule.course_name)){
+  filterSched() {
+    this.schedules?.forEach(schedule => {
+      if (!this.filteredSchedules.has(schedule.course_name)) {
         this.filteredSchedules.add(schedule.course_name);
       }
     })
 
     this.filteredSchedules.forEach(schedule => {
       if (typeof schedule === 'string' && /\(LEC\)/.test(schedule)) {
-          this.filteredSchedules.delete(schedule);
+        this.filteredSchedules.delete(schedule);
       }
 
-    let tempFilt = new Set();
+      let tempFilt = new Set();
 
-    this.filteredSchedules.forEach(schedule => {
-      if(typeof schedule === 'string' && schedule.includes("(LAB)")) {
-        const tempItem = schedule.replace("(LAB)", "");
-        tempFilt.add(tempItem);
-      }
-      else{
-        tempFilt.add(schedule);
-      }
-    })
-    this.filteredSchedules = tempFilt;
-  });
+      this.filteredSchedules.forEach(schedule => {
+        if (typeof schedule === 'string' && schedule.includes("(LAB)")) {
+          const tempItem = schedule.replace("(LAB)", "");
+          tempFilt.add(tempItem);
+        }
+        else {
+          tempFilt.add(schedule);
+        }
+      })
+      this.filteredSchedules = tempFilt;
+    });
   }
 
 

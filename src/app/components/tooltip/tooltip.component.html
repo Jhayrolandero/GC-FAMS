@@ -1,0 +1,18 @@
+<div
+  [ngClass]="{'opacity-90' : shouldShowTooltip, 'opacity-0' : !shouldShowTooltip }"
+class="bg-[#1E1E1E] text-white absolute bottom-0 left-[10%] p-2 rounded-lg min-w-max z-10"
+>
+<!-- @if(!isLoading) { -->
+
+  <ul>
+    @for (attendee of attendees; track attendees) {
+      <li>{{attendee.first_name}} {{attendee.middle_name}} {{attendee.last_name}} {{attendee.ext_name}}</li>
+    } @empty {
+      <!-- <h4>No Attendee</h4> -->
+      <!-- Temporary -->
+      <i class="fa-duotone fa-spinner-third animate-spin"></i>
+    }
+  </ul>
+<!-- } @else {
+} -->
+</div>

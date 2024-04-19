@@ -5,10 +5,10 @@ import { FacultyRequestService } from '../../../services/faculty/faculty-request
 import { Profile } from '../../../services/Interfaces/profile';
 import { mainPort } from '../../../app.component';
 import { CommonModule } from '@angular/common';
-import {MatDialog, MatDialogRef} from '@angular/material/dialog'
-import {MatInputModule} from '@angular/material/input';
-import {MatSelectModule} from '@angular/material/select';
-import {MatFormFieldModule} from '@angular/material/form-field';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog'
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 type topnavProfile = {
   profile_image: string,
@@ -21,13 +21,13 @@ type topnavProfile = {
   selector: 'app-topnav',
   standalone: true,
   imports: [CommonModule,
-            MatInputModule,
-            MatSelectModule,
-            MatFormFieldModule],
+    MatInputModule,
+    MatSelectModule,
+    MatFormFieldModule],
   templateUrl: './topnav.component.html',
   styleUrl: './topnav.component.css'
 })
-export class TopnavComponent implements OnInit{
+export class TopnavComponent implements OnInit {
   dropToggle = false;
   isLoading: boolean = true;
   facultyProfile: topnavProfile = {
@@ -41,24 +41,24 @@ export class TopnavComponent implements OnInit{
     private auth: AuthService,
     private router: Router,
     private facultyService: FacultyRequestService,
-    public dialog: MatDialog){}
+    public dialog: MatDialog) { }
 
-    triggerToggle(){
-      this.setToggle.emit();
-    }
+  triggerToggle() {
+    this.setToggle.emit();
+  }
 
-    openDialog(): void {
-      console.log("Checking dialogue");
-      this.dialog.open(TopnavLogout);
-    }
+  openDialog(): void {
+    console.log("Checking dialogue");
+    this.dialog.open(TopnavLogout);
+  }
 
 
-    ngOnInit(): void {
-        this.getProfile()
-    }
-    getProfile(){
-      this.facultyService.fetchData(this.facultyProfile, 'getprofile/fetchProfile').subscribe({
-      next: (res : Profile) => {
+  ngOnInit(): void {
+    this.getProfile()
+  }
+  getProfile() {
+    this.facultyService.fetchData<Profile>('getprofile/fetchProfile').subscribe({
+      next: (res) => {
         this.facultyProfile.profile_image = res.profile_image
         this.facultyProfile.first_name = res.first_name
         this.facultyProfile.last_name = res.last_name
@@ -74,8 +74,8 @@ export class TopnavComponent implements OnInit{
         this.facultyProfile.profile_image = mainPort + this.facultyProfile.profile_image;
         this.isLoading = false
       }
-      });
-    }
+    });
+  }
 
   @Output() setToggle = new EventEmitter<string>();
 
@@ -85,14 +85,14 @@ export class TopnavComponent implements OnInit{
   selector: 'app-logout',
   standalone: true,
   imports: [CommonModule,
-            MatInputModule,
-            MatSelectModule,
-            MatFormFieldModule],
+    MatInputModule,
+    MatSelectModule,
+    MatFormFieldModule],
   templateUrl: './topnav.logout.html'
 })
-export class TopnavLogout{
-  constructor(private router: Router, public dialogRef: MatDialogRef<TopnavLogout>){}
-  logout(){
+export class TopnavLogout {
+  constructor(private router: Router, public dialogRef: MatDialogRef<TopnavLogout>) { }
+  logout() {
     this.router.navigate(['/']);
     this.dialogRef.close()
   }
