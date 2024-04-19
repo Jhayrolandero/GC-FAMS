@@ -31,7 +31,7 @@ export class FacultyEducationComponent {
   }
 
   getEducation(){
-    this.facultyRequest.fetchData(this.education, 'education').subscribe({
+    this.facultyRequest.fetchData('education').subscribe({
       next: (next: any) => {
         this.education = next;},
       error: (error) => {console.log(error)},

@@ -13,6 +13,12 @@ import jspdf from 'jspdf';
 import { forkJoin } from 'rxjs';
 import { MessageComponent } from '../../components/message/message.component';
 import { CvDropdownComponent } from "./Profile Dropdown/cv-dropdown.component";
+import { AddFormsComponent } from '../../components/faculty/add-forms/add-forms.component';
+import { FacultyCertificationsComponent } from './Profile Components/faculty-certifications/faculty-certifications.component';
+import { FacultyEducationComponent } from './Profile Components/faculty-education/faculty-education.component';
+import { FacultyExperienceComponent } from './Profile Components/faculty-experience/faculty-experience.component';
+import { FacultyExpertiseComponent } from './Profile Components/faculty-expertise/faculty-expertise.component';
+import { FacultyProjectsComponent } from './Profile Components/faculty-projects/faculty-projects.component';
 @Component({
   selector: 'app-profile',
   standalone: true,
@@ -28,7 +34,8 @@ import { CvDropdownComponent } from "./Profile Dropdown/cv-dropdown.component";
     FacultyExperienceComponent,
     FacultyExpertiseComponent,
     AddFormsComponent,
-    FacultyProjectsComponent
+    FacultyProjectsComponent,
+    CvDropdownComponent
   ]
 
 })
@@ -50,8 +57,8 @@ export class ProfileComponent {
 
   getProfileScheduleResume() {
     forkJoin({
-      profileRequest: this.facultyService.fetchData(this.facultyProfile, 'getprofile/fetchProfile'),
-      scheduleRequest: this.facultyService.fetchData(this.schedules, 'getschedules/fetchFaculty'),
+      profileRequest: this.facultyService.fetchData<Profile>('getprofile/fetchProfile'),
+      scheduleRequest: this.facultyService.fetchData<Schedule[]>('getschedules/fetchFaculty'),
     }).subscribe({
       next: (({
         profileRequest,

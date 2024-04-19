@@ -27,7 +27,7 @@ export class FacultyCertificationsComponent {
 
   getCertificate(){
 
-    this.facultyRequest.fetchData(this.certifications, 'certificate').subscribe({
+    this.facultyRequest.fetchData('certificate').subscribe({
       next: (next: any) => {
         this.certifications = next;},
       error: (error) => {console.log(error)},
