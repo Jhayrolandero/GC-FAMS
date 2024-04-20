@@ -1,0 +1,9 @@
+<!-- @if (isLoading$ | async) {
+  <app-loading-screen></app-loading-screen>
+} @else {
+  <ng-template *ngIf="(commexs$ | async) as commexs">
+    @for(commex of commexs; track commex) {
+      <div>{{commex.commex_details}}</div>
+    }
+  </ng-template>
+} -->
