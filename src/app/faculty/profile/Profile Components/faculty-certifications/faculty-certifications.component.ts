@@ -1,8 +1,10 @@
 import { Certifications } from '../../../../services/Interfaces/certifications';
 import { CommonModule } from '@angular/common';
 import { Component, Input, SimpleChanges } from '@angular/core';
-import { FacultyRequestService } from '../../../../services/faculty/faculty-request.service';
 import { mainPort } from '../../../../app.component';
+import { loadCert } from '../../../../state/certs/cert.actions';
+import { Store } from '@ngrx/store';
+import { selectAllCerts } from '../../../../state/certs/cert.selector';
 @Component({
   selector: 'app-faculty-certifications',
   standalone: true,
@@ -12,37 +14,14 @@ import { mainPort } from '../../../../app.component';
 })
 export class FacultyCertificationsComponent { 
   @Input() certRefresh: boolean = false;
-  certifications?: Certifications[];
+  public certifications$ = this.store.select(selectAllCerts);
   
-  constructor(private facultyRequest: FacultyRequestService){
-
-    this.getCertificate();
-  }
+  constructor(private store: Store){}
 
   //Checks if certRefresh has been poked. Triggers cert fetch re-request
   ngOnChanges(changes: SimpleChanges): void {
     console.log("Refreshing certificate...");
-    this.getCertificate();
   }
-
-  getCertificate(){
-
-    this.facultyRequest.fetchData('certificate').subscribe({
-      next: (next: any) => {
-        this.certifications = next;},
-      error: (error) => {console.log(error)},
-      complete: () => {
-        this.certifications?.forEach(this.parseImageLink);
-        console.log(this.certifications);
-      }
-    });
-  }
-
-  //Adds mainPort to all header image links.
-  parseImageLink(i: Certifications){
-    i.cert_image = mainPort + i.cert_image;
-  }
-
 }
 
 

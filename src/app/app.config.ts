@@ -5,7 +5,10 @@ import { provideClientHydration } from '@angular/platform-browser';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { loggingInterceptor } from './services/auth.interceptor';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { provideStore } from '@ngrx/store';
+import { provideState, provideStore } from '@ngrx/store';
+import { provideEffects } from '@ngrx/effects';
+import { certReducer } from './state/certs/cert.reducer';
+import { CertEffects } from './state/certs/cert.effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -14,5 +17,9 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withInterceptors([loggingInterceptor])),
     provideAnimationsAsync(),
     provideAnimationsAsync(),
-    provideStore()]
+    provideStore(),
+    provideEffects(CertEffects),
+    provideStore(),
+    provideState({ name: 'cert', reducer:certReducer }),
+]
 };

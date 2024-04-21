@@ -1,11 +1,11 @@
-<div *ngIf="certifications?.length == 0">
+<div *ngIf="certifications$ == undefined">
     <p class="font-Poppins font-semibold text-[2rem] text-blue text-center m-10">No existing records!</p>
 </div>
 
 <div
   class="mobileS:columns-1 tablet:columns-2 laptop:columns-4 gap-3 w-full p-3 px-5"
 >
-    <div *ngFor="let cert of certifications" class="my-3 relative shadow-main rounded-[15px] bg-white overflow-hidden duration-300 hover:scale-[102%] hover:shadow-xl hover:duration-300">
+    <div *ngFor="let cert of certifications$ | async" class="my-3 relative shadow-main rounded-[15px] bg-white overflow-hidden duration-300 hover:scale-[102%] hover:shadow-xl hover:duration-300">
         <div class="absolute h-[100%] w-[100%] bg-white opacity-0 hover:opacity-90 hover:duration-300 duration-300">
             <p>{{cert.cert_name}}</p>
             <p>{{cert.cert_details}}</p>
