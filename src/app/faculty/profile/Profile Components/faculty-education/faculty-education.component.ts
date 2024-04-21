@@ -20,23 +20,11 @@ export class FacultyEducationComponent {
 
   public education$ = this.store.select(selectAllEduc);
   
-  constructor(private facultyRequest: FacultyRequestService, public dialog: MatDialog, private store: Store){
-    // this.getEducation();
-  }
+  constructor(
+    private facultyRequest: FacultyRequestService, 
+    public dialog: MatDialog, 
+    private store: Store){}
 
-  //Checks if certRefresh has been poked. Triggers cert fetch re-request
-  // ngOnChanges(changes: SimpleChanges): void {
-  //   console.log("Refreshing Educational Experience...");
-  //   this.getEducation();
-  // }
-
-  // getEducation(){
-  //   this.facultyRequest.fetchData('education').subscribe({
-  //     next: (next: any) => {
-  //       this.education = next;},
-  //     error: (error) => {console.log(error)},
-  //   });
-  // }
 
   editEducation(value: EducationalAttainment){
     this.editEvent.emit(value);

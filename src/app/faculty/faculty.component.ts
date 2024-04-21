@@ -10,7 +10,7 @@ import {MatButtonModule} from '@angular/material/button';
 import { MessageComponent } from '../components/message/message.component';
 import {FormsModule} from '@angular/forms';
 import {MatCheckboxModule} from '@angular/material/checkbox';
-import { loadCert, loadEduc } from '../state/cv/cv.actions';
+import { loadCert, loadEduc, loadProfile } from '../state/cv/cv.actions';
 import { Store } from '@ngrx/store';
 
 @Component({
@@ -36,6 +36,7 @@ export class FacultyComponent {
   opened: boolean = true;
 
   constructor(private store: Store){
+    store.dispatch(loadProfile());
     store.dispatch(loadCert());
     store.dispatch(loadEduc());
   }

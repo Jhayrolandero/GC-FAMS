@@ -6,6 +6,8 @@ import { MatInputModule } from '@angular/material/input';
 import { CommonModule } from '@angular/common';
 import { Component, Inject } from '@angular/core';
 import { FacultyRequestService } from '../../../../services/faculty/faculty-request.service';
+import { Store } from '@ngrx/store';
+import { loadEduc } from '../../../../state/cv/cv.actions';
 
 @Component({
     selector: 'app-faculty-certifications-form',
@@ -29,9 +31,8 @@ import { FacultyRequestService } from '../../../../services/faculty/faculty-requ
     constructor(
       public dialogRef: MatDialogRef<EducationalAttainmentFormComponent>, 
       private facultyRequest: FacultyRequestService,
-      @Inject(MAT_DIALOG_DATA) public data: any){
-        // console.log(this.data.length);
-      }
+      private store: Store,
+      @Inject(MAT_DIALOG_DATA) public data: any){}
 
   
     onNoClick(): void {
@@ -43,14 +44,21 @@ import { FacultyRequestService } from '../../../../services/faculty/faculty-requ
           this.facultyRequest.postData(this.educForm, 'addEduc').subscribe({
             next: (next: any) => {console.log(next);},
             error: (error) => {console.log(error)},
-            complete: () => {this.onNoClick();}
+            complete: () => {
+              this.store.dispatch(loadEduc());
+              this.onNoClick();
+            }
           });
         }
         else{
           this.facultyRequest.patchData(this.educForm, 'editEduc/' + this.data.educattainment_ID).subscribe({
             next: (next: any) => {console.log(next);},
             error: (error) => {console.log(error)},
-            complete: () => {this.onNoClick();}
+            complete: () => {
+              this.store.dispatch(loadEduc());
+              this.onNoClick();
+
+            }
           });
         }
     }

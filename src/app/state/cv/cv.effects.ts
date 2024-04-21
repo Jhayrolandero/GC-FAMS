@@ -6,6 +6,7 @@ import { Injectable } from "@angular/core";
 import { Certifications } from "../../services/Interfaces/certifications";
 import { mainPort } from "../../app.component";
 import { EducationalAttainment } from "../../services/Interfaces/educational-attainment";
+import { Profile } from "../../services/Interfaces/profile";
 
 @Injectable()
 
@@ -17,6 +18,18 @@ export class CvEffects{
         private actions$: Actions,
         private facultyService: FacultyRequestService
     ) {}
+
+    loadProfile$ = createEffect(() => this.actions$.pipe(
+        ofType(CvActions.loadProfile),
+        switchMap(() => this.facultyService.fetchData('getprofile/fetchProfile')
+            .pipe(
+                tap((profile) => console.log('Profile has loaded:', profile)),
+                map((profile) => CvActions.loadProfileSuccess({profile: profile as Profile})),
+                catchError((error) => of(CvActions.loadProfileFailure({ error } )))
+            )
+        )
+    ));
+    
 
     loadEduc$ = createEffect(() => this.actions$.pipe(
         ofType(CvActions.loadEduc),

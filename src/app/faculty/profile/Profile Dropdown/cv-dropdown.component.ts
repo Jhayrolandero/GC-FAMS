@@ -9,6 +9,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { FacultyCertificationsFormComponent } from '../Profile Forms/Certification Form/faculty-certifications-form.component';
 import { EducationalAttainmentFormComponent } from '../Profile Forms/Educattainment Form/educational-attainment-form.component';
 import { CvDeleteForm } from '../Profile Forms/Delete Form/cv-delete-form.component';
+import { Store } from '@ngrx/store';
+import { loadEduc } from '../../../state/cv/cv.actions';
 
 
 @Component({
@@ -24,10 +26,9 @@ export class CvDropdownComponent {
   //Rotated state of icon
   rotated = true;
 
-  //A somewhat hacky solution to trigger refresh on each cv component
-
-
-  constructor(public dialog: MatDialog){}
+  constructor(
+    public dialog: MatDialog,
+    public store: Store){}
 
   rotate(){
     this.rotated = !this.rotated;
@@ -40,7 +41,7 @@ export class CvDropdownComponent {
     }).afterClosed().subscribe(result => {
       switch (result) {
         case 0:
-          
+          this.store.dispatch(loadEduc());
           break;
 
         case 1:
