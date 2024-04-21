@@ -17,10 +17,9 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(),
     provideHttpClient(withInterceptors([loggingInterceptor])),
     provideAnimationsAsync(),
-    provideAnimationsAsync(),
     provideStore(),
     provideEffects(CommexsEffects),
-    provideState({ name: 'commex', reducer: commexReducer }),
+    provideState({ name: 'commexs', reducer: commexReducer }),
     provideStoreDevtools({
       maxAge: 25, // Retains last 25 states
       logOnly: !isDevMode(), // Restrict extension to log-only mode

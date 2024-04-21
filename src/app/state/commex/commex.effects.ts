@@ -16,7 +16,7 @@ export class CommexsEffects {
     private facultyService: FacultyRequestService
   ) {
 
-    this.fetchCommex$ = this.facultyService.fetchData<CommunityExtension[]>('getcommex?t=all`')
+    this.fetchCommex$ = this.facultyService.fetchData<CommunityExtension[]>('getcommex?t=all')
   }
 
 
