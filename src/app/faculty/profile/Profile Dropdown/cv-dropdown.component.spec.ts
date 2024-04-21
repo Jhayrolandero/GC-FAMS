@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ManageCommunityComponent } from './manage-community.component';
+import { CvDropdownComponent } from './cv-dropdown.component';
 
-describe('ManageCommunityComponent', () => {
-  let component: ManageCommunityComponent;
-  let fixture: ComponentFixture<ManageCommunityComponent>;
+describe('CvDropdownComponent', () => {
+  let component: CvDropdownComponent;
+  let fixture: ComponentFixture<CvDropdownComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ManageCommunityComponent]
+      imports: [CvDropdownComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(ManageCommunityComponent);
+    fixture = TestBed.createComponent(CvDropdownComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

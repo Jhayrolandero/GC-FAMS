@@ -18,18 +18,18 @@
 
         <label
           for="switch"
-          label1="All Commex"
-          label2="My Commex"
+          label1="My Commex"
+          label2="All Commex"
           class="relative w-8/12 max-w-52 py-4 bg-white rounded-[25px] after:py-1 after:absolute after:w-1/2 after:h-full after:rounded-full after:bg-blue after:top-0 after:left-0 after:transition-all after:duration-150 after:content-[attr(label1)] after:text-center after:font-bold peer-checked:after:left-1/2 peer-checked:after:content-[attr(label2)] after:flex after:justify-center after:items-center after:text-white"
         >
           <span
             class="select-none absolute top-0 inset-x-1/2 right-0 text-blue text-center font-bold py-1 flex justify-center items-center h-full"
-            >My Commex</span
+            >All Commex</span
           >
 
           <span
             class="select-none absolute top-0 inset-x-1/2 left-0 text-blue text-center font-bold py-1 flex justify-center items-center h-full"
-            >All Commex</span
+            >My Commex</span
           >
         </label>
       </div>
@@ -65,11 +65,14 @@
       </p>
       <div class="flex flex-col flex-wrap justify-end flex-1 gap-2">
         <hr class=" text-black text-[0.5rem] bg-black">
-        <div class="flex gap-2" (mouseenter)="toggleVisible(commexs[0].commex_ID)" (mouseleave)="toggleHide()" >
-            <span><i class="fa-solid fa-users"></i></span><p>{{commexs[0].attendee}}</p>
+        <div class="flex gap-2">
+            <div
+            (mouseenter)="toggleVisible(commexs[0].commex_ID)"
+            (mouseleave)="toggleHide()"
+            ><i class="fa-solid fa-users"></i><span>{{commexs[0].attendee}}</span></div>
           <div class="relative">
-            <!-- [attendees]="attendees[0]" -->
             <app-tooltip
+            [attendees]="attendee"
             [isVisible]="isVisible"
             [id]="commexs[0].commex_ID"
             [activeID]="activeID"
@@ -88,8 +91,7 @@
 
   <app-other-commex>
     <div
-      *ngFor="let commex of commexs; let i = index"
-      [ngStyle]="{'slide': !isLoading}"
+      *ngFor="let commex of commexs; let i = index" 
     >
       <div *ngIf="i != 0" class="bg-white rounded-xl shadow-main flex flex-col gap-2 duration-300 hover:scale-[102%] hover:shadow-xl hover:duration-300 break-inside-avoid mb-2 overflow-hidden">
         <div class="bg-red-300">
@@ -107,13 +109,15 @@
           </p>
           <div class="flex flex-col flex-wrap justify-end flex-1 gap-2">
             <hr class=" text-black text-[0.5rem] bg-black">
-            <div class="flex gap-2" (mouseenter)="toggleVisible(commex.commex_ID)" (mouseleave)="toggleHide()" >
+            <div class="flex gap-2"
+                (mouseenter)="toggleVisible(commex.commex_ID)"
+                (mouseleave)="toggleHide()" >
               <div class="flex flex-row">
                 <span><i class="fa-solid fa-users"></i></span><p>{{commex.attendee}}</p>
               </div>
               <div class="relative">
-                <!-- [attendees]="attendees[i]" -->
                 <app-tooltip
+                [attendees]="attendee"
                 [isVisible]="isVisible"
                 [id]="commex.commex_ID"
                 [activeID]="activeID"

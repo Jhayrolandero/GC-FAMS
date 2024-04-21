@@ -21,6 +21,13 @@ import { TooltipComponent } from '../../components/tooltip/tooltip.component';
 import { Attendee } from '../../services/Interfaces/attendee';
 import { Observable, Subscription, map, mergeAll, mergeMap, toArray } from 'rxjs';
 import { Dictionary } from '../../services/Interfaces/dictionary';
+import { Response } from '../../services/Interfaces/response';
+import { AttendeeCount } from '../../services/Interfaces/attendeeCount';
+import { MessageService } from '../../services/message.service';
+import { Store } from '@ngrx/store';
+import { CommexState } from '../../services/Interfaces/commexState';
+import * as CommexActions from '../../state/commex/commex.action';
+import { MatStepperModule } from '@angular/material/stepper';
 
 @Component({
   selector: 'app-commex-form',
@@ -37,14 +44,17 @@ import { Dictionary } from '../../services/Interfaces/dictionary';
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
+    MatStepperModule
   ],
   templateUrl: 'commex-form.component.html',
   styleUrl: 'commex-form.component.css'
 })
 export class CommexFormComponent {
 
-  constructor(private facultyPostService: FacultyRequestService,
+  constructor(
+    private facultyPostService: FacultyRequestService,
     public dialogRef: MatDialogRef<CommexFormComponent>,
+    private store: Store<{ commexs: CommexState }>
   ) { }
 
   commexForm = new FormGroup({
@@ -54,19 +64,23 @@ export class CommexFormComponent {
     commex_date: new FormControl(''),
   })
 
+  // attendeeForm = new
+
   onNoClick(): void {
     this.dialogRef.close();
   }
 
   submitForm() {
-    // console.log(this.commexForm);
+
     const formData = this.facultyPostService.formDatanalize(this.commexForm);
-    // console.log(formData.get("commex_title"))
-    this.facultyPostService.postData(formData, 'addCommex').subscribe({
-      next: (next: any) => { console.log(next); },
-      error: (error) => { console.log(error) },
-      complete: () => { this.onNoClick(); }
-    });
+    this.store.dispatch(CommexActions.postCommex({ commex: formData }))
+    // // console.log(this.commexForm);
+    // // console.log(formData.get("commex_title"))
+    // this.facultyPostService.postData(formData, 'addCommex').subscribe({
+    //   next: (next: any) => { console.log(next); },
+    //   error: (error) => { console.log(error) },
+    //   complete: () => { this.onNoClick(); }
+    // });
   }
 
   imageURL?: string = undefined;
@@ -105,7 +119,11 @@ export class CommexFormComponent {
   styleUrl: './community-extensions.component.css'
 })
 export class CommunityExtensionsComponent {
-  constructor(private facultyService: FacultyRequestService, public dialog: MatDialog) { }
+  constructor(
+    private facultyService: FacultyRequestService,
+    public dialog: MatDialog,
+    private messageService: MessageService
+  ) { }
 
   tempPort = mainPort;
   isLoading: boolean = true;
@@ -114,33 +132,73 @@ export class CommunityExtensionsComponent {
   commexs: CommunityExtension[] = [];
   collegeCommexs: CommunityExtension[] = [];
   facultyCommexs: CommunityExtension[] = [];
-  // attendees: Attendee[][] = []
   attendees: Dictionary<Attendee[]>[] = []
-
+  attendee: Attendee[] = []
   isVisible: boolean = false
   activeID: number | null = null
-  attendeeFetch!: Subscription
-  noAttendee: number[] = []
   mainPort: string = mainPort;
   switch: 'faculty' | 'college' = 'faculty';
 
-  attendeeFetch$ = (id: number): Observable<Attendee[]> => {
-    return this.facultyService.fetchData<Attendee[]>(`attendee/${id}`)
-  }
-
-  ngOnInit(): void {
-    this.getCommex();
-  }
-  // temporary solution i will make this lazy loaded in the future
-  getCommex(): void {
-    this.facultyService.fetchData<CommunityExtension[]>('getcommex?t=faculty').pipe(
-      mergeAll(),
-      mergeMap(commex => this.fetchAttendee<number>(commex.commex_ID).pipe(map(attendee => ({ ...commex, attendee: attendee })))),
-      toArray()
-    ).subscribe({
-      next: (res) => this.commexs = res,
+  attendeeFetch$ = (id: number): Subscription => {
+    return this.facultyService.fetchData<Response<Attendee[]>>(`attendee/${id}`).subscribe({
+      next: res => this.attendees.push({ [id]: res.data }),
       error: err => console.log(err),
       complete: () => {
+        this.attendee = this.attendees.find(mem => mem[id])![id]
+        this.isAttendeeLoading = false
+        console.log(this.attendees)
+      }
+    });
+  }
+
+  currFetch$!: Subscription
+
+  ngOnInit(): void {
+    this.getCommex(this.switch);
+  }
+  // temporary solution i will make this lazy loaded in the future
+  getCommex(view: 'college' | 'faculty'): void {
+
+    let uri = ''
+    switch (view) {
+      case 'faculty':
+        uri = 'getcommex?t=faculty'
+        break
+      case 'college':
+        uri = 'getcommex/1?t=college'
+        break
+    }
+
+
+    this.facultyService.fetchData<CommunityExtension[]>(uri).pipe(
+      mergeAll(),
+      mergeMap(commex => this.fetchAttendee<Response<AttendeeCount[]>>(commex.commex_ID)
+        .pipe(map(attendee => ({ ...commex, attendee: attendee.data[0].count })))),
+      toArray()
+    ).subscribe({
+      next: (res) => {
+
+        switch (view) {
+          case 'faculty':
+            this.facultyCommexs = res
+            break
+          case 'college':
+            this.collegeCommexs = res
+            break
+        }
+      },
+      error: err => console.log(err),
+      complete: () => {
+
+        switch (view) {
+          case 'faculty':
+            this.commexs = this.facultyCommexs
+            break
+          case 'college':
+            this.commexs = this.collegeCommexs
+            break
+        }
+        // this.commexs = this.facultyCommexs
         this.dateSorter();
         this.commexs.forEach(this.parseImageLink);
         this.isLoading = false
@@ -166,52 +224,67 @@ export class CommunityExtensionsComponent {
 
   openDialog() {
     this.dialog.open(CommexFormComponent).afterClosed().subscribe(result => {
-      this.getCommex();
+      // this.getCommex(this.switch);
+      this.checkCache()
     });
   }
 
-
   toggleVisible(id: number) {
+
+    const exist = this.attendees.some(attendee => id in attendee);
+
+    if (!exist) {
+      this.currFetch$ = this.attendeeFetch$(id)
+    } else {
+      this.attendee = this.attendees.find(mem => mem[id])![id]
+    }
+
     this.isVisible = true
-
-    this.attendeeFetch$(id).subscribe({
-      next: res => this.attendees.push({ [id]: res }),
-      error: err => console.log(err),
-      complete: () => {
-        this.isAttendeeLoading = false
-        console.log(this.attendees)
-      }
-    });
-    // this.attendeeFetch = this.facultyService.fetchData(this.attendees, `attendee/${id}`).subscribe({
-    //   next: (res: any) => {
-    //     if (res.code == 200) {
-    //       this.attendees = res.data
-    //     }
-    //   },
-    //   error: (error) => console.log(error),
-    //   complete: () => {
-    //     this.isAttendeeLoading = false;
-    //   }
-    // })
-
     this.activeID = id
   }
 
   toggleHide() {
+    console.log("Unsub...")
+
+    this.currFetch$.unsubscribe()
+
+
     this.isVisible = false
     this.activeID = null
-    // this.attendees = []
+    this.attendee = []
     this.isAttendeeLoading = true;
-    // this.attendeeFetch.unsubscribe()
   }
 
   toggleView() {
+
+
     if (this.switch === 'faculty') {
       this.switch = 'college'
+
     } else {
       this.switch = 'faculty'
     }
 
-    console.log(this.switch)
+
+    this.checkCache()
+  }
+
+  // not really a cache just a copy of state
+  checkCache() {
+    if (this.collegeCommexs.length == 0 || this.facultyCommexs.length == 0) {
+      this.messageService.sendMessage(`Fetching ${this.switch}`, 0)
+      this.getCommex(this.switch);
+      return
+    }
+
+
+    switch (this.switch) {
+      case 'faculty':
+        this.commexs = this.facultyCommexs
+        break
+      case 'college':
+        this.commexs = this.collegeCommexs
+        break
+    }
   }
 }

@@ -4,26 +4,21 @@ import { Schedule } from '../../services/admin/schedule';
 import { Router } from '@angular/router';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { mainPort } from '../../app.component';
-import { FacultyEducationComponent } from '../../components/faculty/faculty-profile/faculty-education/faculty-education.component';
-import { FacultyCertificationsComponent } from '../../components/faculty/faculty-profile/faculty-certifications/faculty-certifications.component';
-import { FacultyExpertiseComponent } from '../../components/faculty/faculty-profile/faculty-expertise/faculty-expertise.component';
-import { FacultyExperienceComponent } from '../../components/faculty/faculty-profile/faculty-experience/faculty-experience.component';
 import { FacultyRequestService } from '../../services/faculty/faculty-request.service';
 import { Resume } from '../../services/Interfaces/resume';
 import { HttpClient } from '@angular/common/http';
-import { AddFormsComponent } from '../../components/faculty/add-forms/add-forms.component';
 import { LoadingScreenComponent } from '../../components/loading-screen/loading-screen.component';
-import { EducationalAttainment } from '../../services/Interfaces/educational-attainment';
-import { Certifications } from '../../services/Interfaces/certifications';
-import { IndustryExperience } from '../../services/Interfaces/industry-experience';
-import { FacultyProjectsComponent } from '../../components/faculty/faculty-profile/faculty-projects/faculty-projects.component';
-import { Project } from '../../services/Interfaces/project';
 import html2canvas from 'html2canvas';
 import jspdf from 'jspdf';
-import { Expertise } from '../../services/Interfaces/expertise';
 import { forkJoin } from 'rxjs';
-import { error } from 'console';
 import { MessageComponent } from '../../components/message/message.component';
+import { CvDropdownComponent } from "./Profile Dropdown/cv-dropdown.component";
+import { AddFormsComponent } from '../../components/faculty/add-forms/add-forms.component';
+import { FacultyCertificationsComponent } from './Profile Components/faculty-certifications/faculty-certifications.component';
+import { FacultyEducationComponent } from './Profile Components/faculty-education/faculty-education.component';
+import { FacultyExperienceComponent } from './Profile Components/faculty-experience/faculty-experience.component';
+import { FacultyExpertiseComponent } from './Profile Components/faculty-expertise/faculty-expertise.component';
+import { FacultyProjectsComponent } from './Profile Components/faculty-projects/faculty-projects.component';
 @Component({
   selector: 'app-profile',
   standalone: true,
@@ -39,103 +34,37 @@ import { MessageComponent } from '../../components/message/message.component';
     FacultyExperienceComponent,
     FacultyExpertiseComponent,
     AddFormsComponent,
-    FacultyProjectsComponent
+    FacultyProjectsComponent,
+    CvDropdownComponent
   ]
+
 })
 export class ProfileComponent {
-  tempPort = mainPort;
   isLoading: boolean = true
   facultyProfile!: Profile;
-  resume?: Resume;
   schedules: Schedule[] = [];
-  //Edit form preset
-  educValue?: EducationalAttainment;
-  certValue?: Certifications;
-  expValue?: IndustryExperience;
-  specValue?: Expertise;
-  projValue?: Project;
 
-  //Dropdown toggle
-  educToggle = true;
-  certToggle = true;
-  expToggle = true;
-  specToggle = true;
-  projToggle = true;
-  formType = '';
+  rotated = false;
+  components: string[] = ["Educational Attainment", "Certifications", "Industry Experience", "Projects", "Expertise"]
 
   //CV form toggle
   cvToggle = false;
 
-  constructor(private facultyService: FacultyRequestService, private router: Router, private http: HttpClient) {
-    this.getProfileScheduleResume()
-    // this.getResume();
+
+  constructor(private facultyService: FacultyRequestService, private router: Router, private http: HttpClient){
+      this.getProfileScheduleResume()
   }
-
-  setForm(value: string) {
-    this.formType = value;
-
-    //Refreshed passed form value for edit.
-    this.educValue = undefined;
-    this.certValue = undefined;
-    this.expValue = undefined;
-    this.projValue = undefined;
-    this.specValue = undefined;
-
-    //Refreshes resume get.
-    this.getProfileScheduleResume()
-  }
-
-  setEducValueForm(value: EducationalAttainment) {
-    this.educValue = value;
-  }
-
-  setCertValueForm(value: Certifications) {
-    this.certValue = value;
-  }
-
-  setExpValueForm(value: IndustryExperience) {
-    this.expValue = value;
-  }
-
-  setSpecValueForm(value: Expertise) {
-    this.specValue = value;
-  }
-
-  setProjValueForm(value: Project) {
-    this.projValue = value;
-  }
-
-  certificate!: Certifications[]
-  experience!: IndustryExperience[]
-  education!: EducationalAttainment[]
-  expertise!: Expertise[]
-  project!: Project[]
 
   getProfileScheduleResume() {
     forkJoin({
       profileRequest: this.facultyService.fetchData<Profile>('getprofile/fetchProfile'),
       scheduleRequest: this.facultyService.fetchData<Schedule[]>('getschedules/fetchFaculty'),
-      certificateRequest: this.facultyService.fetchData<Certifications[]>('certificate'),
-      experienceRequest: this.facultyService.fetchData<IndustryExperience[]>('experience'),
-      educationRequest: this.facultyService.fetchData<EducationalAttainment[]>('education'),
-      projectRequest: this.facultyService.fetchData<Project[]>('project'),
-      expertiseRequest: this.facultyService.fetchData<Expertise[]>('expertise'),
     }).subscribe({
       next: (({
         profileRequest,
-        scheduleRequest,
-        certificateRequest,
-        experienceRequest,
-        educationRequest,
-        projectRequest,
-        expertiseRequest }) => {
-        this.facultyProfile = profileRequest
-        this.schedules = scheduleRequest
-        this.certificate = certificateRequest
-        this.experience = experienceRequest
-        this.education = educationRequest
-        this.project = projectRequest
-        this.expertise = expertiseRequest
+        scheduleRequest}) => {
+          this.facultyProfile = profileRequest
+          this.schedules = scheduleRequest
       }),
       error: (error) => {
         console.log(error)
@@ -144,7 +73,6 @@ export class ProfileComponent {
       complete: () => {
         this.facultyProfile.profile_image = mainPort + this.facultyProfile.profile_image;
         this.facultyProfile.cover_image = mainPort + this.facultyProfile.cover_image;
-        console.log(this.project);
         this.isLoading = false
       }
     })
@@ -185,29 +113,13 @@ export class ProfileComponent {
     this.router.navigate(['cv']);
   }
 
+  rotate(){
+    this.rotated = !this.rotated;
+  }
+
 
   toggle(drop: string) {
     switch (drop) {
-      case 'ed':
-        this.educToggle = !this.educToggle;
-        break;
-
-      case 'cr':
-        this.certToggle = !this.certToggle;
-        break;
-
-      case 'ex':
-        this.expToggle = !this.expToggle;
-        break;
-
-      case 'pr':
-        this.projToggle = !this.projToggle;
-        break;
-
-      case 'sp':
-        this.specToggle = !this.specToggle;
-        break;
-
       case 'cv':
         this.cvToggle = !this.cvToggle;
         break;

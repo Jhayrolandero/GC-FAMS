@@ -2,7 +2,6 @@ import { Routes } from '@angular/router';
 import { authGuard } from './services/auth.guard';
 import { AdminComponent } from './admin/admin.component';
 import { FacultyComponent } from './faculty/faculty.component';
-
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'faculty', redirectTo: '/faculty/curriculum-vitae', pathMatch: 'full' },
@@ -19,14 +18,14 @@ export const routes: Routes = [
       { path: 'analytics', loadComponent: () => import('./faculty/analytics/analytics.component').then(m => m.AnalyticsComponent) },
       { path: 'schedule', loadComponent: () => import('./faculty/schedule/schedule.component').then(m => m.ScheduleComponent) },
       { path: 'community', loadComponent: () => import('./faculty/community-extensions/community-extensions.component').then(m => m.CommunityExtensionsComponent) },
-      { path: 'evaluation', loadComponent: () => import('./faculty/evaluation/evaluation.component').then(m => m.EvaluationComponent) },
+      { path: 'evaluation', loadComponent: () => import('./faculty/evaluation/evaluation.component').then(m => m.EvaluationComponent) }
     ], canActivateChild: [authGuard]
   },
   {
     path: 'admin', component: AdminComponent, children: [
       { path: 'manage-faculty', loadComponent: () => import('./admin/manage-faculty/manage-faculty.component').then(m => m.ManageFacultyComponent) },
+      { path: 'commex', loadComponent: () => import('./admin/commex/commex.component').then(m => m.CommexComponent) },
       { path: 'program-analytics', loadComponent: () => import('./admin/manage-analytics/manage-analytics.component').then(m => m.ManageAnalyticsComponent) },
-      { path: 'community', loadComponent: () => import('./faculty/community-extensions/community-extensions.component').then(m => m.CommunityExtensionsComponent) },
     ], canActivateChild: [authGuard]
   },
   { path: 'cv', loadComponent: () => import('./components/cv/cv.component').then(m => m.CvComponent) },
