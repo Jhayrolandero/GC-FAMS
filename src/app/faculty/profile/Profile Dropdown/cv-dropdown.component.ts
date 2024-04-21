@@ -25,7 +25,7 @@ export class CvDropdownComponent {
   rotated = true;
 
   //A somewhat hacky solution to trigger refresh on each cv component
-  refresher = [true,true,true,true,true];
+
 
   constructor(public dialog: MatDialog){}
 
@@ -38,7 +38,18 @@ export class CvDropdownComponent {
     const deleteForm = this.dialog.open(CvDeleteForm, {
       data: deleteData
     }).afterClosed().subscribe(result => {
-      this.refresher[result] = !this.refresher[result];
+      switch (result) {
+        case 0:
+          
+          break;
+
+        case 1:
+          
+          break;
+      
+        default:
+          break;
+      }
     })
   }
 
@@ -48,15 +59,11 @@ export class CvDropdownComponent {
       case "Educational Attainment":
         const educRef = this.dialog.open(EducationalAttainmentFormComponent, {
           data: editData
-        }).afterClosed().subscribe(result => {
-          this.refresher[0] = !this.refresher[0];
-        })
+        });
         break;
 
       case "Certifications":
-        const certRef = this.dialog.open(FacultyCertificationsFormComponent).afterClosed().subscribe(result => {
-          this.refresher[1] = !this.refresher[1];
-        })
+        const certRef = this.dialog.open(FacultyCertificationsFormComponent);
         break;
 
 

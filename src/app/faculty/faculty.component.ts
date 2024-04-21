@@ -10,6 +10,8 @@ import {MatButtonModule} from '@angular/material/button';
 import { MessageComponent } from '../components/message/message.component';
 import {FormsModule} from '@angular/forms';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import { loadCert, loadEduc } from '../state/cv/cv.actions';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-faculty',
@@ -32,6 +34,11 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 export class FacultyComponent {
   sideBarToggle = true;
   opened: boolean = true;
+
+  constructor(private store: Store){
+    store.dispatch(loadCert());
+    store.dispatch(loadEduc());
+  }
 
   toggle() {
     this.sideBarToggle = !this.sideBarToggle;

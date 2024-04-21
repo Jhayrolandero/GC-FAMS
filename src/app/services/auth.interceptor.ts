@@ -12,7 +12,6 @@ export function loggingInterceptor(req: HttpRequest<unknown>, next: HttpHandlerF
       'Authorization': `Bearer ${authToken}`,
     },
   });
-  console.log(req);
   return next(req);
 }
 

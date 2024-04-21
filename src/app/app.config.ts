@@ -7,8 +7,8 @@ import { loggingInterceptor } from './services/auth.interceptor';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideState, provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
-import { certReducer } from './state/certs/cert.reducer';
-import { CertEffects } from './state/certs/cert.effects';
+import { certReducer, educReducer } from './state/cv/cv.reducer';
+import { CvEffects } from './state/cv/cv.effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -17,9 +17,10 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withInterceptors([loggingInterceptor])),
     provideAnimationsAsync(),
     provideAnimationsAsync(),
+
     provideStore(),
-    provideEffects(CertEffects),
-    provideStore(),
-    provideState({ name: 'cert', reducer:certReducer }),
+    provideEffects(CvEffects),
+    provideState({ name: 'cert', reducer: certReducer }),
+    provideState({ name: 'educ', reducer: educReducer})
 ]
 };
