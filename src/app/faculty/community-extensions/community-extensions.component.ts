@@ -24,6 +24,11 @@ import { Dictionary } from '../../services/Interfaces/dictionary';
 import { Response } from '../../services/Interfaces/response';
 import { AttendeeCount } from '../../services/Interfaces/attendeeCount';
 import { MessageService } from '../../services/message.service';
+import { Store } from '@ngrx/store';
+import { CommexState } from '../../services/Interfaces/commexState';
+import * as CommexActions from '../../state/commex/commex.action';
+import { MatStepperModule } from '@angular/material/stepper';
+
 @Component({
   selector: 'app-commex-form',
   standalone: true,
@@ -39,14 +44,17 @@ import { MessageService } from '../../services/message.service';
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
+    MatStepperModule
   ],
   templateUrl: 'commex-form.component.html',
   styleUrl: 'commex-form.component.css'
 })
 export class CommexFormComponent {
 
-  constructor(private facultyPostService: FacultyRequestService,
+  constructor(
+    private facultyPostService: FacultyRequestService,
     public dialogRef: MatDialogRef<CommexFormComponent>,
+    private store: Store<{ commexs: CommexState }>
   ) { }
 
   commexForm = new FormGroup({
@@ -56,19 +64,23 @@ export class CommexFormComponent {
     commex_date: new FormControl(''),
   })
 
+  // attendeeForm = new
+
   onNoClick(): void {
     this.dialogRef.close();
   }
 
   submitForm() {
-    // console.log(this.commexForm);
+
     const formData = this.facultyPostService.formDatanalize(this.commexForm);
-    // console.log(formData.get("commex_title"))
-    this.facultyPostService.postData(formData, 'addCommex').subscribe({
-      next: (next: any) => { console.log(next); },
-      error: (error) => { console.log(error) },
-      complete: () => { this.onNoClick(); }
-    });
+    this.store.dispatch(CommexActions.postCommex({ commex: formData }))
+    // // console.log(this.commexForm);
+    // // console.log(formData.get("commex_title"))
+    // this.facultyPostService.postData(formData, 'addCommex').subscribe({
+    //   next: (next: any) => { console.log(next); },
+    //   error: (error) => { console.log(error) },
+    //   complete: () => { this.onNoClick(); }
+    // });
   }
 
   imageURL?: string = undefined;

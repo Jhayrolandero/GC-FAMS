@@ -10,3 +10,15 @@ export const getCommexSuccess = createAction('[Commex] Fetch Commex Success',
 export const getCommexFailure = createAction('[Commex] Fetch Commex Failure',
   props<{ error: string }>()
 )
+
+export const postCommex = createAction('[Commex] Post Commex',
+  props<{ commex: FormData }>()
+)
+
+export const postCommexSuccess = createAction('[Commex] Post Commex Success',
+  props<{ commex: CommunityExtension }>()
+)
+
+export const postCommexFailure = createAction('[Commex] Post Commex Failure',
+  props<{ error: string }>()
+)

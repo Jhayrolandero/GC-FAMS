@@ -1,6 +1,7 @@
 import { createReducer, on } from "@ngrx/store";
 import { CommexState } from "../../services/Interfaces/commexState";
 import * as CommexActions from "./commex.action";
+
 export const initialState: CommexState = {
   isLoading: false,
   commexs: [],
@@ -19,6 +20,11 @@ export const commexReducer = createReducer(
     ...state,
     isLoading: true,
     error: action.error
-  }))
-
+  })),
+  on(CommexActions.postCommexSuccess, (state, action) => (
+    {
+      ...state,
+      commexs: [...state.commexs, action.commex]
+    }
+  ))
 )

@@ -9,6 +9,8 @@ import { LoadingScreenComponent } from '../../components/loading-screen/loading-
 import { CommonModule } from '@angular/common';
 import { OtherCommexComponent } from '../../faculty/community-extensions/other-commex/other-commex.component';
 import { TooltipComponent } from '../../components/tooltip/tooltip.component';
+import { MatDialog } from '@angular/material/dialog';
+import { CommexFormComponent } from '../../faculty/community-extensions/community-extensions.component';
 
 @Component({
   selector: 'app-commex',
@@ -28,7 +30,10 @@ export class CommexComponent {
   commexs$: Observable<CommunityExtension[]>
   latestCommex$: Observable<CommunityExtension>
   isLoading$: Observable<boolean>
-  constructor(private store: Store<{ commexs: CommexState }>) {
+  constructor(
+    private store: Store<{ commexs: CommexState }>,
+    public dialog: MatDialog,
+  ) {
 
     this.commexs$ = this.store.pipe(select(CommexsSelector.parsedCommexSelector))
     this.isLoading$ = this.store.pipe(select(CommexsSelector.isLoadingSelector))
@@ -39,4 +44,9 @@ export class CommexComponent {
   ngOnInit() {
     this.store.dispatch(CommexActions.getCommex())
   }
+
+  openDialog() {
+    this.dialog.open(CommexFormComponent)
+  }
+
 }
