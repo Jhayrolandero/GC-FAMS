@@ -24,14 +24,14 @@
     class="flex mobileS:justify-center tablet:justify-start items-center z-10 mobileS:w-full tablet:w-1/2"
   >
     <div
-      class="bg-blue p-5 rounded-[25px] tablet:w-10/12 laptop:w-8/12 max-w-screen-md"
+      class="bg-blue p-5 rounded-[15px] tablet:w-10/12 laptop:w-8/12 max-w-screen-md"
     >
       <p class="p-3 pt-0 text-center text-3xl  font-Poppins font-bold">Welcome Faculty Members!</p>
 
       <form
         (ngSubmit)="onLogin()"
         [formGroup]="loginForm"
-        class="flex flex-col justify-center items-center bg-white2 p-7 rounded-[25px] gap-5"
+        class="flex flex-col justify-center items-center bg-white2 p-7 rounded-[15px] gap-5"
       >
         <input type="checkbox" id="switch" class="hidden peer"/>
 
@@ -51,9 +51,8 @@
           >
         </label> -->
 
-          <p *ngIf="validForm == false" class="text-red-400 font-Roboto font-semibold p-0">The email or password is incorrect.</p>
 
-          <div class="flex flex-row px-5 py-2 rounded-md w-full shadow-lg bg-white">
+          <div class="flex flex-row px-5 py-2 rounded-[15px] w-full shadow-lg bg-white">
             <svg class="w-7 h-7 text-gray-800 dark:text-red" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
               <path fill-rule="evenodd" d="M12 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4h-4Z" clip-rule="evenodd"/>
             </svg>
@@ -67,7 +66,7 @@
               >
           </div>
 
-          <div class="flex flex-row px-5 py-2 rounded-md w-full shadow-lg bg-white">
+          <div class="flex flex-row px-5 py-2 rounded-[15px] w-full shadow-lg bg-white">
             <svg class="w-7 h-7 text-gray-800 dark:text-red" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
               <path fill-rule="evenodd" d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7c0-1.1.9-2 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6c.6 0 1 .4 1 1v3a1 1 0 1 1-2 0v-3c0-.6.4-1 1-1Z" clip-rule="evenodd"/>
             </svg>
@@ -92,6 +91,7 @@
             </svg>
 
           </div>
+          <p *ngIf="validForm == false" class="text-red-400 font-Roboto font-semibold p-0">The email or password is incorrect.</p>
 
           <a href="" class="text-end text-blue justify-self-end select-none"
             >Forgot Password?</a

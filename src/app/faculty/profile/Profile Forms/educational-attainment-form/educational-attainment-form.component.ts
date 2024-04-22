@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
 import { Component, Inject } from '@angular/core';
 import { FacultyRequestService } from '../../../../services/faculty/faculty-request.service';
 import { Store } from '@ngrx/store';
-import { loadEduc } from '../../../../state/cv/cv.actions';
+import { loadEduc } from '../../../../state/faculty-state/faculty-state.actions';
 
 @Component({
     selector: 'app-faculty-certifications-form',

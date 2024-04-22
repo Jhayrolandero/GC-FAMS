@@ -6,7 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FacultyRequestService } from '../../../../services/faculty/faculty-request.service';
-import { loadCert } from '../../../../state/cv/cv.actions';
+import { loadCert } from '../../../../state/faculty-state/faculty-state.actions';
 import { Store } from '@ngrx/store';
 
 @Component({

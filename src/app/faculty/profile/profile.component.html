@@ -1,4 +1,4 @@
-<app-loading-screen *ngIf="isLoading"></app-loading-screen>
+<app-loading-screen *ngIf="!(facultyProfile$ | async) as facultyProfile"></app-loading-screen>
 <div
   *ngIf="facultyProfile$ | async as facultyProfile"
   class="p-5 flex flex-col max-w-full flex-initial gap-3 text-blue overflow-x-hidden"

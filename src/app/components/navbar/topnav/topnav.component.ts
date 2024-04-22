@@ -6,7 +6,7 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog'
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { selectAllProfile } from '../../../state/cv/cv.selector';
+import { selectAllProfile } from '../../../state/faculty-state/faculty-state.selector';
 import { Store } from '@ngrx/store';
 
 @Component({
@@ -27,15 +27,17 @@ export class TopnavComponent {
 
   constructor(
     private store: Store,
-    public dialog: MatDialog) { }
+    public dialog: MatDialog,
+    private router: Router) { }
 
   triggerToggle() {
     this.setToggle.emit();
   }
 
   openDialog(): void {
-    console.log("Checking dialogue");
-    this.dialog.open(TopnavLogout);
+    this.router.navigate(['/']);
+    // console.log("Checking dialogue");
+    // this.dialog.open(TopnavLogout);
   }
 
   @Output() setToggle = new EventEmitter<string>();

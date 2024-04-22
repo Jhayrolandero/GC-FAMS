@@ -66,13 +66,13 @@
             <app-faculty-certifications *ngIf="rotated"></app-faculty-certifications>
         }
         @case("Industry Experience"){
-            <!-- <app-faculty-experience *ngIf="rotated"></app-faculty-experience> -->
+            <app-faculty-experience (deleteEvent)="deleteDialog($event)" (editEvent)="openDialog('Industry Experience', $event)" *ngIf="rotated"></app-faculty-experience>
         }
         @case("Projects"){
-            <!-- <app-faculty-projects *ngIf="rotated"></app-faculty-projects> -->
+            <app-faculty-projects (deleteEvent)="deleteDialog($event)" (editEvent)="openDialog('Projects', $event)" *ngIf="rotated"></app-faculty-projects>
         }
         @case("Expertise"){
-            <!-- <app-faculty-expertise *ngIf="rotated"></app-faculty-expertise> -->
+            <app-faculty-expertise (deleteEvent)="deleteDialog($event)" (editEvent)="openDialog('Expertise', $event)" *ngIf="rotated"></app-faculty-expertise>
         }
     }
     

@@ -18,7 +18,7 @@ import { FacultyEducationComponent } from './Profile Components/faculty-educatio
 import { FacultyExperienceComponent } from './Profile Components/faculty-experience/faculty-experience.component';
 import { FacultyExpertiseComponent } from './Profile Components/faculty-expertise/faculty-expertise.component';
 import { FacultyProjectsComponent } from './Profile Components/faculty-projects/faculty-projects.component';
-import { selectAllProfile } from '../../state/cv/cv.selector';
+import { selectAllProfile } from '../../state/faculty-state/faculty-state.selector';
 import { Store } from '@ngrx/store';
 @Component({
   selector: 'app-profile',
@@ -53,27 +53,7 @@ export class ProfileComponent {
     private facultyService: FacultyRequestService, 
     private store: Store,
     private router: Router, 
-    private http: HttpClient){
-      this.getProfileScheduleResume()
-  }
-
-  getProfileScheduleResume() {
-    forkJoin({
-      scheduleRequest: this.facultyService.fetchData<Schedule[]>('getschedules/fetchFaculty'),
-    }).subscribe({
-      next: (({
-        scheduleRequest}) => {
-          this.schedules = scheduleRequest
-      }),
-      error: (error) => {
-        console.log(error)
-        this.router.navigate(['/']);
-      },
-      complete: () => {
-        this.isLoading = false
-      }
-    })
-  }
+    private http: HttpClient){}
 
   getCv() {
     // const url = this.router.serializeUrl(this.router.createUrlTree(['cv']));

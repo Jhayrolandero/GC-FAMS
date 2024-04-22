@@ -3,9 +3,9 @@ import { authGuard } from './services/auth.guard';
 import { AdminComponent } from './admin/admin.component';
 import { FacultyComponent } from './faculty/faculty.component';
 import { provideEffects } from '@ngrx/effects';
-import { CvEffects } from './state/cv/cv.effects';
+import { CvEffects } from './state/faculty-state/faculty-state.effects';
 import { provideState } from '@ngrx/store';
-import { certReducer } from './state/cv/cv.reducer';
+import { certReducer } from './state/faculty-state/faculty-state.reducer';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },

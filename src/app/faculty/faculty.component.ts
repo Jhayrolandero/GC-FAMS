@@ -5,12 +5,12 @@ import { AnalyticsComponent } from './analytics/analytics.component';
 import { TopnavComponent } from '../components/navbar/topnav/topnav.component';
 import { CommonModule } from '@angular/common';
 import { LoadingScreenComponent } from '../components/loading-screen/loading-screen.component';
-import {MatSidenavModule} from '@angular/material/sidenav';
-import {MatButtonModule} from '@angular/material/button';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatButtonModule } from '@angular/material/button';
 import { MessageComponent } from '../components/message/message.component';
-import {FormsModule} from '@angular/forms';
-import {MatCheckboxModule} from '@angular/material/checkbox';
-import { loadCert, loadEduc, loadProfile } from '../state/cv/cv.actions';
+import { FormsModule } from '@angular/forms';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { loadCert, loadEduc, loadExp, loadExpertise, loadProfile, loadProj } from '../state/faculty-state/faculty-state.actions';
 import { Store } from '@ngrx/store';
 
 @Component({
@@ -39,6 +39,9 @@ export class FacultyComponent {
     store.dispatch(loadProfile());
     store.dispatch(loadCert());
     store.dispatch(loadEduc());
+    store.dispatch(loadExp());
+    store.dispatch(loadProj());
+    store.dispatch(loadExpertise());
   }
 
   toggle() {
