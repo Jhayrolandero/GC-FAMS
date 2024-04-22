@@ -42,7 +42,7 @@ export class CommexComponent {
 
 
   ngOnInit() {
-    this.store.dispatch(CommexActions.getCommex())
+    this.store.dispatch(CommexActions.getCommex({ uri: 'getcommex?t=faculty' }))
   }
 
   openDialog() {

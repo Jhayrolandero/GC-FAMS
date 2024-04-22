@@ -1,41 +1,44 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
-import { Action } from "@ngrx/store";
+import { Action, Store } from "@ngrx/store";
 import { FacultyRequestService } from "../../services/faculty/faculty-request.service";
 import * as CommexActions from "./commex.action";
-import { Observable, catchError, exhaustMap, map, mergeMap, of } from "rxjs";
+import { Observable, catchError, exhaustMap, from, map, merge, mergeMap, of } from "rxjs";
 import { CommunityExtension } from "../../services/Interfaces/community-extension";
 import { error } from "console";
+import { getAttendeeNumber } from "../attendee/attendee.action";
+import { AttendeeNumberState } from "../../services/Interfaces/attendeeState";
 
 @Injectable()
 
 export class CommexsEffects {
 
-  fetchCommex$: Observable<CommunityExtension[]>
   // postCommex$: Observable<CommunityExtension>
   constructor(
     private actions$: Actions,
-    private facultyService: FacultyRequestService
+    private facultyService: FacultyRequestService,
+    private attendeeStore: Store<{ attendees: AttendeeNumberState }>
+
   ) {
-    this.fetchCommex$ = this.facultyService.fetchData<CommunityExtension[]>('getcommex?t=all')
+    // this.fetchCommex$ = (uri: string) => this.facultyService.fetchData<CommunityExtension[]>('getcommex?t=faculty')
     // this.postCommex$ = this.facultyService.postData<CommunityExtension>(action.commex, 'getCommex')
   }
 
+  fetchCommex$ = (URI: string): Observable<CommunityExtension[]> => {
+    return this.facultyService.fetchData<CommunityExtension[]>(URI)
+  }
 
   getCommexs = createEffect(() => this.actions$.pipe(
     ofType(CommexActions.getCommex),
-    exhaustMap(() => {
-      return this.fetchCommex$.
-        pipe(map(commexs => CommexActions.getCommexSuccess({ commexs })),
-          catchError(error =>
-            of(
-              CommexActions.getCommexFailure({
-                error: error.message
-              })
-            )
-          ))
+    exhaustMap((action) => {
+      return this.fetchCommex$(action.uri).
+        pipe(
+          map(commexs => CommexActions.getCommexSuccess({ commexs })),
+          catchError(error => of(CommexActions.getCommexFailure({ error: error.message }))),
+        )
     })
   ))
+
 
   postCommex$ = createEffect(() => {
     return this.actions$.pipe(

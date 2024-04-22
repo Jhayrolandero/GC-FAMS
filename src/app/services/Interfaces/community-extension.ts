@@ -5,5 +5,5 @@ export interface CommunityExtension {
   commex_details: string,
   commex_header_img: string,
   commex_date: string,
-  attendee: number
+  attendee_count: number
 }
