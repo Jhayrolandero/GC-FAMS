@@ -1,4 +1,4 @@
-<mat-stepper #stepper>
+<mat-stepper orientation="horizontal" linear #stepper>
   <mat-step [stepControl]="commexForm">
     <div class="w-[750px] bg-white rounded-[15px] shadow-lg opacity-100 overflow-hidden">
         <div class="w-full bg-blue h-[38px] flex items-center justify-between">
@@ -75,16 +75,28 @@
             </div>
 
             <div class="flex justify-end">
-                <input
+                <!-- <input
                 type="submit"
                 value="Add"
                 class="bg-blue rounded-full py-2 px-7 mt-2 max-w-min font-semibold text-white"
-                />
+                /> -->
+                <button mat-button matStepperNext type="button">Next</button>
             </div>
         </form>
     </div>
   </mat-step>
+  <mat-step [stepControl]="attendeeForm">
+    <ng-template matStepLabel>Attendees</ng-template>
+    <form action="" [formGroup]="attendeeForm">
+      <input type="text" placeholder="attendee">
+    </form>
+  </mat-step>
   <mat-step>
-
+    <ng-template matStepLabel>Done</ng-template>
+    <p>You are now done.</p>
+    <div>
+      <button mat-button matStepperPrevious>Back</button>
+      <button mat-button (click)="stepper.reset()">Reset</button>
+    </div>
   </mat-step>
 </mat-stepper>

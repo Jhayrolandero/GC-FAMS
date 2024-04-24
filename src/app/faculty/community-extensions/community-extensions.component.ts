@@ -19,15 +19,19 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { TooltipComponent } from '../../components/tooltip/tooltip.component';
 import { Attendee } from '../../services/Interfaces/attendee';
-import { Observable, Subscription, map, mergeAll, mergeMap, toArray } from 'rxjs';
+import { Observable, Subscription, concatMap, from, map, mergeAll, mergeMap, of, toArray } from 'rxjs';
 import { Dictionary } from '../../services/Interfaces/dictionary';
 import { Response } from '../../services/Interfaces/response';
 import { AttendeeCount } from '../../services/Interfaces/attendeeCount';
 import { MessageService } from '../../services/message.service';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { CommexState } from '../../services/Interfaces/commexState';
 import * as CommexActions from '../../state/commex/commex.action';
 import { MatStepperModule } from '@angular/material/stepper';
+import * as CommexsSelector from '../../state/commex/commex.selector';
+import * as AttendeeActions from '../../state/attendee/attendee.action';
+import { AttendeeNumberState } from '../../services/Interfaces/attendeeState';
+import { error } from 'console';
 
 @Component({
   selector: 'app-commex-form',
@@ -57,13 +61,24 @@ export class CommexFormComponent {
     private store: Store<{ commexs: CommexState }>
   ) { }
 
+
   commexForm = new FormGroup({
-    commex_title: new FormControl(''),
-    commex_details: new FormControl(''),
+    commex_title: new FormControl('', [
+      Validators.required
+    ]),
+    commex_details: new FormControl('', [
+      Validators.required
+    ]),
     commex_header_img: new FormControl<File | null>(null),
-    commex_date: new FormControl(''),
+    commex_date: new FormControl('', [
+      Validators.required
+    ]),
   })
 
+  attendeeForm = new FormGroup({
+    commex_ID: new FormControl(0),
+    faculty_ID: new FormControl(0)
+  })
   // attendeeForm = new
 
   onNoClick(): void {
@@ -119,25 +134,64 @@ export class CommexFormComponent {
   styleUrl: './community-extensions.component.css'
 })
 export class CommunityExtensionsComponent {
+
+  commexs$: Observable<CommunityExtension[]>
+  latestCommex$: Observable<CommunityExtension>
+  isLoading$: Observable<boolean>
+
   constructor(
     private facultyService: FacultyRequestService,
     public dialog: MatDialog,
+    private store: Store<{ commexs: CommexState }>,
+    private attendeeStore: Store<{ attendees: AttendeeNumberState }>,
     private messageService: MessageService
-  ) { }
+  ) {
+    this.commexs$ = this.store.pipe(select(CommexsSelector.parsedCommexSelector))
+    this.isLoading$ = this.store.pipe(select(CommexsSelector.isLoadingSelector))
+    this.latestCommex$ = this.store.pipe(select(CommexsSelector.latestCommexSelector))
 
+  }
+
+  fetchAttendeeNumber$ = (id: number) => {
+    this.attendeeStore.dispatch(AttendeeActions.getAttendeeNumber({ id: id }))
+  }
+  ngOnInit(): void {
+    this.store.dispatch(CommexActions.getCommex({ uri: 'getcommex?t=faculty' }))
+
+    this.commexs$.pipe(
+      mergeMap(commexs => from(commexs).pipe(
+        map(commex => this.attendeeStore.dispatch(AttendeeActions.getAttendeeNumber({ id: commex.commex_ID })))
+      ))
+    ).subscribe()
+  }
   tempPort = mainPort;
-  isLoading: boolean = true;
   isAttendeeLoading: boolean = true;
   formToggle: boolean = false;
-  commexs: CommunityExtension[] = [];
   collegeCommexs: CommunityExtension[] = [];
   facultyCommexs: CommunityExtension[] = [];
   attendees: Dictionary<Attendee[]>[] = []
   attendee: Attendee[] = []
   isVisible: boolean = false
   activeID: number | null = null
-  mainPort: string = mainPort;
   switch: 'faculty' | 'college' = 'faculty';
+
+
+
+  attendeeFetch() {
+    this.commexs$
+      .pipe(
+        concatMap((res) =>
+          from(res).pipe(
+            map((val) =>
+              this.attendeeStore.dispatch(AttendeeActions.getAttendeeNumber({ id: val.commex_ID }))
+            )
+          )
+        )
+      )
+      .subscribe({
+        error: (error) => console.log(error),
+      });
+  }
 
   attendeeFetch$ = (id: number): Subscription => {
     return this.facultyService.fetchData<Response<Attendee[]>>(`attendee/${id}`).subscribe({
@@ -153,79 +207,64 @@ export class CommunityExtensionsComponent {
 
   currFetch$!: Subscription
 
-  ngOnInit(): void {
-    this.getCommex(this.switch);
-  }
   // temporary solution i will make this lazy loaded in the future
-  getCommex(view: 'college' | 'faculty'): void {
+  // getCommex(view: 'college' | 'faculty'): void {
 
-    let uri = ''
-    switch (view) {
-      case 'faculty':
-        uri = 'getcommex?t=faculty'
-        break
-      case 'college':
-        uri = 'getcommex/1?t=college'
-        break
-    }
+  //   let uri = ''
+  //   switch (view) {
+  //     case 'faculty':
+  //       uri = 'getcommex?t=faculty'
+  //       break
+  //     case 'college':
+  //       uri = 'getcommex/1?t=college'
+  //       break
+  //   }
 
 
-    this.facultyService.fetchData<CommunityExtension[]>(uri).pipe(
-      mergeAll(),
-      mergeMap(commex => this.fetchAttendee<Response<AttendeeCount[]>>(commex.commex_ID)
-        .pipe(map(attendee => ({ ...commex, attendee: attendee.data[0].count })))),
-      toArray()
-    ).subscribe({
-      next: (res) => {
+  //   this.facultyService.fetchData<CommunityExtension[]>(uri).pipe(
+  //     mergeAll(),
+  //     mergeMap(commex => this.fetchAttendee<Response<AttendeeCount[]>>(commex.commex_ID)
+  //       .pipe(map(attendee => ({ ...commex, attendee: attendee.data[0].count })))),
+  //     toArray()
+  //   ).subscribe({
+  //     next: (res) => {
 
-        switch (view) {
-          case 'faculty':
-            this.facultyCommexs = res
-            break
-          case 'college':
-            this.collegeCommexs = res
-            break
-        }
-      },
-      error: err => console.log(err),
-      complete: () => {
+  //       switch (view) {
+  //         case 'faculty':
+  //           this.facultyCommexs = res
+  //           break
+  //         case 'college':
+  //           this.collegeCommexs = res
+  //           break
+  //       }
+  //     },
+  //     error: err => console.log(err),
+  //     complete: () => {
 
-        switch (view) {
-          case 'faculty':
-            this.commexs = this.facultyCommexs
-            break
-          case 'college':
-            this.commexs = this.collegeCommexs
-            break
-        }
-        // this.commexs = this.facultyCommexs
-        this.dateSorter();
-        this.commexs.forEach(this.parseImageLink);
-        this.isLoading = false
-      }
-    })
-  }
+  //       switch (view) {
+  //         case 'faculty':
+  //           this.commexs = this.facultyCommexs
+  //           break
+  //         case 'college':
+  //           this.commexs = this.collegeCommexs
+  //           break
+  //       }
+  //       // this.commexs = this.facultyCommexs
+  //       this.dateSorter();
+  //       this.commexs.forEach(this.parseImageLink);
+  //       this.isLoading = false
+  //     }
+  //   })
+  // }
 
   fetchAttendee<T>(id: number): Observable<T> {
     return this.facultyService.fetchData<T>(`attendee/${id}?q=number`);
   }
 
-  //Adds mainPort to all header image links.
-  parseImageLink(i: CommunityExtension) {
-    i.commex_header_img = mainPort + i.commex_header_img;
-  }
-
-  dateSorter() {
-    this.commexs.sort(function (a, b) {
-      return new Date(b.commex_date).valueOf() - new Date(a.commex_date).valueOf();
-    })
-    console.log(this.commexs);
-  }
-
   openDialog() {
     this.dialog.open(CommexFormComponent).afterClosed().subscribe(result => {
       // this.getCommex(this.switch);
-      this.checkCache()
+      // this.checkCache()
     });
   }
 
@@ -255,36 +294,36 @@ export class CommunityExtensionsComponent {
     this.isAttendeeLoading = true;
   }
 
-  toggleView() {
+  // toggleView() {
 
 
-    if (this.switch === 'faculty') {
-      this.switch = 'college'
+  //   if (this.switch === 'faculty') {
+  //     this.switch = 'college'
 
-    } else {
-      this.switch = 'faculty'
-    }
+  //   } else {
+  //     this.switch = 'faculty'
+  //   }
 
 
-    this.checkCache()
-  }
+  //   this.checkCache()
+  // }
 
   // not really a cache just a copy of state
-  checkCache() {
-    if (this.collegeCommexs.length == 0 || this.facultyCommexs.length == 0) {
-      this.messageService.sendMessage(`Fetching ${this.switch}`, 0)
-      this.getCommex(this.switch);
-      return
-    }
+  // checkCache() {
+  //   if (this.collegeCommexs.length == 0 || this.facultyCommexs.length == 0) {
+  //     this.messageService.sendMessage(`Fetching ${this.switch}`, 0)
+  //     this.getCommex(this.switch);
+  //     return
+  //   }
 
 
-    switch (this.switch) {
-      case 'faculty':
-        this.commexs = this.facultyCommexs
-        break
-      case 'college':
-        this.commexs = this.collegeCommexs
-        break
-    }
-  }
+  //   switch (this.switch) {
+  //     case 'faculty':
+  //       this.commexs = this.facultyCommexs
+  //       break
+  //     case 'college':
+  //       this.commexs = this.collegeCommexs
+  //       break
+  //   }
+  // }
 }
