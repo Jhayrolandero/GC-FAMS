@@ -2,7 +2,6 @@ import { createSelector } from "@ngrx/store";
 import { CommexState } from "../../services/Interfaces/commexState";
 import { CommunityExtension } from "../../services/Interfaces/community-extension";
 import { mainPort } from "../../app.component";
-import { cp } from "fs";
 
 
 interface AppState {

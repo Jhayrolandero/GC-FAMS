@@ -1,10 +1,6 @@
 @if( isLoading$ | async) {
   <app-loading-screen></app-loading-screen>
   } @else {
-    <!-- @for(commex of commexs$ | async; track commex) {
-      <div>{{commex.commex_details}}</div>
-    } -->
-
       <div class="p-5 flex flex-col gap-3 text-blue">
         <div
         class="bg-white shadow-main bg-opacity-70 w-full rounded-[15px] flex flex-col tablet:flex-row tablet:justify-between items-center px-5"
@@ -51,23 +47,28 @@
             <p class="">
               {{ latestCommex.commex_details }}
             </p>
-            <!-- <div class="flex flex-col flex-wrap justify-end flex-1 gap-2">
+            <div class="flex flex-col flex-wrap justify-end flex-1 gap-2">
               <hr class=" text-black text-[0.5rem] bg-black">
-              <div class="flex gap-2">
-                  <div
-                  (mouseenter)="toggleVisible(commexs[0].commex_ID)"
-                  (mouseleave)="toggleHide()"
-                  ><i class="fa-solid fa-users"></i><span>{{commexs[0].attendee}}</span></div>
-                <div class="relative">
+              <div class="flex gap-2"
+              >
+              <!-- (mouseleave)="toggleHide()" -->
+              <!-- (mouseenter)="toggleVisible(commexs[0].commex_ID)" -->
+                    @if( attendeeLoading$ | async ) {
+                      ...loading
+                    } @else {
+                      <span><i class="fa-solid fa-users"></i></span><p>{{ attendeesNumber[latestCommex.commex_ID] }}</p>
+                    }
+                </div>
+                <!-- div class="relative">
                   <app-tooltip
                   [attendees]="attendee"
                   [isVisible]="isVisible"
                   [id]="commexs[0].commex_ID"
                   [activeID]="activeID"
                   ></app-tooltip>
-                </div>
+                </div> -->
               </div>
-            </div> -->
+            </div>
           </div>
         </div>
 
@@ -98,11 +99,14 @@
               <div class="flex flex-col flex-wrap justify-end flex-1 gap-2">
                 <hr class=" text-black text-[0.5rem] bg-black">
                 <div class="flex gap-2"
-                    (mouseenter)="toggleVisible(commex.commex_ID)"
-                    (mouseleave)="toggleHide()" >
-                  <div class="flex flex-row">
-                    <span><i class="fa-solid fa-users"></i></span><p>{{commex.attendee_count}}</p>
-                  </div>
+                >
+                <!-- (mouseenter)="toggleVisible(commex.commex_ID)"
+                (mouseleave)="toggleHide()"  -->
+                    @if( attendeeLoading$ | async ) {
+                      ...loading
+                    } @else {
+                      <span><i class="fa-solid fa-users"></i></span><p>{{ attendeesNumber[commex.commex_ID] }}</p>
+                    }
                   <!-- <div class="relative">
                     <app-tooltip
                     [attendees]="attendee"
@@ -120,7 +124,7 @@
           </div>
         </div>
       </app-other-commex>
-    </div>
+    <!-- </div> -->
 
 
   }

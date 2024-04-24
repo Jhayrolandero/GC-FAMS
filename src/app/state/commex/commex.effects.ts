@@ -7,7 +7,7 @@ import { Observable, catchError, exhaustMap, from, map, merge, mergeMap, of } fr
 import { CommunityExtension } from "../../services/Interfaces/community-extension";
 import { error } from "console";
 import { getAttendeeNumber } from "../attendee/attendee.action";
-import { AttendeeNumberState } from "../../services/Interfaces/attendeeState";
+import { AttendeeNumberState } from "../../services/Interfaces/attendeeNumberState";
 
 @Injectable()
 

@@ -30,8 +30,10 @@ import * as CommexActions from '../../state/commex/commex.action';
 import { MatStepperModule } from '@angular/material/stepper';
 import * as CommexsSelector from '../../state/commex/commex.selector';
 import * as AttendeeActions from '../../state/attendee/attendee.action';
-import { AttendeeNumberState } from '../../services/Interfaces/attendeeState';
+import { AttendeeNumberState } from '../../services/Interfaces/attendeeNumberState';
 import { error } from 'console';
+import * as AttendeeSelector from '../../state/attendee/attendee.selector';
+import { AttendeeState } from '../../services/Interfaces/attendeeState';
 
 @Component({
   selector: 'app-commex-form',
@@ -138,17 +140,26 @@ export class CommunityExtensionsComponent {
   commexs$: Observable<CommunityExtension[]>
   latestCommex$: Observable<CommunityExtension>
   isLoading$: Observable<boolean>
-
+  // attendeeNumber$: Observable<Dictionary<number>>
+  attendeeLoading$: Observable<boolean>
+  // attendeeLoading$: Observable<boolean>
+  attendeesNumber: Dictionary<number> = {}
   constructor(
     private facultyService: FacultyRequestService,
     public dialog: MatDialog,
     private store: Store<{ commexs: CommexState }>,
     private attendeeStore: Store<{ attendees: AttendeeNumberState }>,
+    private attendeeNameStore: Store<{ attendeesName: AttendeeState }>,
     private messageService: MessageService
   ) {
+
+    this.attendeeLoading$ = this.attendeeStore.pipe(select(AttendeeSelector.attendeeLoadingSelector))
     this.commexs$ = this.store.pipe(select(CommexsSelector.parsedCommexSelector))
     this.isLoading$ = this.store.pipe(select(CommexsSelector.isLoadingSelector))
     this.latestCommex$ = this.store.pipe(select(CommexsSelector.latestCommexSelector))
+    this.attendeeLoading$ = this.attendeeStore.pipe(select(AttendeeSelector.attendeeLoadingSelector))
+    // this.attendeeNumber$ = this.attendeeStore.pipe(select(AttendeeSelector.attendeeNumberSelector))
+    this.attendeeNameStore.dispatch(AttendeeActions.getAttendee({ id: 14 }))
 
   }
 
@@ -163,6 +174,19 @@ export class CommunityExtensionsComponent {
         map(commex => this.attendeeStore.dispatch(AttendeeActions.getAttendeeNumber({ id: commex.commex_ID })))
       ))
     ).subscribe()
+
+
+    this.attendeeStore.pipe(select(AttendeeSelector.attendeeNumberSelector)).subscribe({
+      next: res => {
+        this.attendeesNumber = { ...this.attendeesNumber, ...res }
+        console.log(res)
+        console.log(this.attendeesNumber)
+        console.log(this.attendeesNumber[14])
+      },
+      error: err => console.log(err),
+      complete: () => console.log(this.attendeesNumber)
+    })
+
   }
   tempPort = mainPort;
   isAttendeeLoading: boolean = true;
@@ -205,7 +229,6 @@ export class CommunityExtensionsComponent {
     });
   }
 
-  currFetch$!: Subscription
 
   // temporary solution i will make this lazy loaded in the future
   // getCommex(view: 'college' | 'faculty'): void {
@@ -268,31 +291,31 @@ export class CommunityExtensionsComponent {
     });
   }
 
-  toggleVisible(id: number) {
+  // toggleVisible(id: number) {
 
-    const exist = this.attendees.some(attendee => id in attendee);
+  //   const exist = this.attendees.some(attendee => id in attendee);
 
-    if (!exist) {
-      this.currFetch$ = this.attendeeFetch$(id)
-    } else {
-      this.attendee = this.attendees.find(mem => mem[id])![id]
-    }
+  //   if (!exist) {
+  //     this.currFetch$ = this.attendeeFetch$(id)
+  //   } else {
+  //     this.attendee = this.attendees.find(mem => mem[id])![id]
+  //   }
 
-    this.isVisible = true
-    this.activeID = id
-  }
+  //   this.isVisible = true
+  //   this.activeID = id
+  // }
 
-  toggleHide() {
-    console.log("Unsub...")
+  // toggleHide() {
+  //   console.log("Unsub...")
 
-    this.currFetch$.unsubscribe()
+  //   this.currFetch$.unsubscribe()
 
 
-    this.isVisible = false
-    this.activeID = null
-    this.attendee = []
-    this.isAttendeeLoading = true;
-  }
+  //   this.isVisible = false
+  //   this.activeID = null
+  //   this.attendee = []
+  //   this.isAttendeeLoading = true;
+  // }
 
   // toggleView() {
 
