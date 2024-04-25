@@ -12,6 +12,9 @@ export const getCommexSuccess = createAction('[Commex] Fetch Commex Success',
 export const getCommexFailure = createAction('[Commex] Fetch Commex Failure',
   props<{ error: string }>()
 )
+export const setLoading = createAction('[Commex] Set Load',
+  props<{ status: boolean }>()
+)
 
 export const getCollegeCommex = createAction('[College Commex] Fetch Commex',
   props<{ uri: string }>()
@@ -22,6 +25,10 @@ export const getCollegeCommexSuccess = createAction('[College Commex] Fetch Comm
 
 export const getCollegeCommexFailure = createAction('[College Commex] Fetch Commex Failure',
   props<{ error: string }>()
+)
+
+export const setCollegeLoading = createAction('[College Commex] Set Load',
+  props<{ status: boolean }>()
 )
 
 export const postCommex = createAction('[Commex] Post Commex',

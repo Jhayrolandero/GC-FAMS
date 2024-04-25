@@ -135,11 +135,6 @@ export class CommexFormComponent {
 })
 export class CommunityExtensionsComponent {
 
-  commexs$: Observable<CommunityExtension[]>
-  latestCommex$: Observable<CommunityExtension>
-  isLoading$: Observable<boolean>
-  attendeeLoading$: Observable<boolean>
-  attendeesNumber: Dictionary<number> = {}
   constructor(
     private facultyService: FacultyRequestService,
     public dialog: MatDialog,
@@ -150,13 +145,15 @@ export class CommunityExtensionsComponent {
   ) {
 
     this.attendeeLoading$ = this.attendeeStore.pipe(select(AttendeeSelector.attendeeLoadingSelector))
-    // this.commexs$ = this.commexCollegeStore.pipe(select(CommexsSelector.parsedCollegeCommexSelector))
-    // this.isLoading$ = this.commexCollegeStore.pipe(select(CommexsSelector.isLoadingCollegeCommexSelector))
-    // this.latestCommex$ = this.commexCollegeStore.pipe(select(CommexsSelector.latestCollegeCommexSelector))
     this.commexs$ = this.commexFacultyStore.pipe(select(CommexsSelector.parsedCommexSelector))
     this.isLoading$ = this.commexFacultyStore.pipe(select(CommexsSelector.isLoadingSelector))
     this.latestCommex$ = this.commexFacultyStore.pipe(select(CommexsSelector.latestCommexSelector))
   }
+  commexs$: Observable<CommunityExtension[]>
+  latestCommex$: Observable<CommunityExtension>
+  isLoading$: Observable<boolean>
+  attendeeLoading$: Observable<boolean>
+  attendeesNumber: Dictionary<number> = {}
 
   fetchAttendeeNumber$ = (id: number) => {
     this.attendeeStore.dispatch(AttendeeActions.getAttendeeNumber({ id: id }))
@@ -165,11 +162,8 @@ export class CommunityExtensionsComponent {
     this.commexFacultyStore.dispatch(CommexActions.getCommex({ uri: 'getcommex?t=faculty' }))
     this.commexCollegeStore.dispatch(CommexActions.getCollegeCommex({ uri: 'getcommex/1?t=college' }))
 
-    this.commexs$.pipe(
-      mergeMap(commexs => from(commexs).pipe(
-        map(commex => this.attendeeStore.dispatch(AttendeeActions.getAttendeeNumber({ id: commex.commex_ID })))
-      ))
-    ).subscribe()
+
+    this.attendeeNumberFetch()
 
 
     this.attendeeStore.pipe(select(AttendeeSelector.attendeeNumberSelector)).subscribe({
@@ -193,6 +187,21 @@ export class CommunityExtensionsComponent {
   switch: 'faculty' | 'college' = 'faculty';
 
 
+  attendeeNumberFetch(): Subscription {
+    this.commexs$.pipe(
+      mergeMap(commexs => from(commexs).pipe(
+        map(commex => this.attendeeStore.dispatch(AttendeeActions.getAttendeeNumber({ id: commex.commex_ID })))
+      ))
+    ).subscribe()
+
+    return this.attendeeStore.pipe(select(AttendeeSelector.attendeeNumberSelector)).subscribe({
+      next: res => {
+        this.attendeesNumber = { ...this.attendeesNumber, ...res }
+      },
+      error: err => console.log(err),
+      complete: () => console.log(this.attendeesNumber)
+    })
+  }
 
   attendeeFetch() {
     this.commexs$
@@ -222,57 +231,6 @@ export class CommunityExtensionsComponent {
     });
   }
 
-
-  // temporary solution i will make this lazy loaded in the future
-  // getCommex(view: 'college' | 'faculty'): void {
-
-  //   let uri = ''
-  //   switch (view) {
-  //     case 'faculty':
-  //       uri = 'getcommex?t=faculty'
-  //       break
-  //     case 'college':
-  //       uri = 'getcommex/1?t=college'
-  //       break
-  //   }
-
-
-  //   this.facultyService.fetchData<CommunityExtension[]>(uri).pipe(
-  //     mergeAll(),
-  //     mergeMap(commex => this.fetchAttendee<Response<AttendeeCount[]>>(commex.commex_ID)
-  //       .pipe(map(attendee => ({ ...commex, attendee: attendee.data[0].count })))),
-  //     toArray()
-  //   ).subscribe({
-  //     next: (res) => {
-
-  //       switch (view) {
-  //         case 'faculty':
-  //           this.facultyCommexs = res
-  //           break
-  //         case 'college':
-  //           this.collegeCommexs = res
-  //           break
-  //       }
-  //     },
-  //     error: err => console.log(err),
-  //     complete: () => {
-
-  //       switch (view) {
-  //         case 'faculty':
-  //           this.commexs = this.facultyCommexs
-  //           break
-  //         case 'college':
-  //           this.commexs = this.collegeCommexs
-  //           break
-  //       }
-  //       // this.commexs = this.facultyCommexs
-  //       this.dateSorter();
-  //       this.commexs.forEach(this.parseImageLink);
-  //       this.isLoading = false
-  //     }
-  //   })
-  // }
-
   fetchAttendee<T>(id: number): Observable<T> {
     return this.facultyService.fetchData<T>(`attendee/${id}?q=number`);
   }
@@ -301,10 +259,7 @@ export class CommunityExtensionsComponent {
 
   toggleHide() {
     console.log("Unsub...")
-
     this.currFetch$.unsubscribe()
-
-
     this.isVisible = false
     this.activeID = null
     this.attendee = []
@@ -319,33 +274,16 @@ export class CommunityExtensionsComponent {
       this.commexs$ = this.commexCollegeStore.pipe(select(CommexsSelector.parsedCollegeCommexSelector))
       this.isLoading$ = this.commexCollegeStore.pipe(select(CommexsSelector.isLoadingCollegeCommexSelector))
       this.latestCommex$ = this.commexCollegeStore.pipe(select(CommexsSelector.latestCollegeCommexSelector))
+      this.attendeeNumberFetch()
+
     } else {
       this.switch = 'faculty'
       this.commexs$ = this.commexFacultyStore.pipe(select(CommexsSelector.parsedCommexSelector))
       this.isLoading$ = this.commexFacultyStore.pipe(select(CommexsSelector.isLoadingSelector))
       this.latestCommex$ = this.commexFacultyStore.pipe(select(CommexsSelector.latestCommexSelector))
+      // this.attendeeNumberFetch()
+
     }
-
-
-    // this.checkCache()
   }
 
-  // not really a cache just a copy of state
-  // checkCache() {
-  //   if (this.collegeCommexs.length == 0 || this.facultyCommexs.length == 0) {
-  //     this.messageService.sendMessage(`Fetching ${this.switch}`, 0)
-  //     this.getCommex(this.switch);
-  //     return
-  //   }
-
-
-  //   switch (this.switch) {
-  //     case 'faculty':
-  //       this.commexs = this.facultyCommexs
-  //       break
-  //     case 'college':
-  //       this.commexs = this.collegeCommexs
-  //       break
-  //   }
-  // }
 }

@@ -14,10 +14,15 @@ export const getAttendeeNumberFailure = createAction('[Attendee] Fetch Attendee 
   props<{ error: string }>()
 )
 
+export const setLoading = createAction('[Attendee] Set Load',
+  props<{ status: boolean }>()
+)
 
 export const getAttendee = createAction('[Attendee] Fetch Attendee',
   props<{ id: number }>()
 )
+
+
 
 export const getAttendeeSuccess = createAction('[Attendee] Fetch Attendee',
   props<{ attendees: Dictionary<Attendee[]> }>()

@@ -25,7 +25,7 @@ export const commexReducer = createReducer(
   })),
   on(CommexActions.getCommexFailure, (state, action) => ({
     ...state,
-    isLoading: true,
+    isLoading: false,
     error: action.error
   })),
   on(CommexActions.postCommexSuccess, (state, action) => (
@@ -33,7 +33,11 @@ export const commexReducer = createReducer(
       ...state,
       commexs: [...state.commexs, action.commex]
     }
-  ))
+  )),
+  on(CommexActions.setLoading, (state, action) => ({
+    ...state,
+    isLoading: action.status
+  }))
 )
 
 export const collegeCommexReducer = createReducer(
@@ -46,7 +50,11 @@ export const collegeCommexReducer = createReducer(
   })),
   on(CommexActions.getCollegeCommexFailure, (state, action) => ({
     ...state,
-    isLoading: true,
+    isLoading: false,
     error: action.error
+  })),
+  on(CommexActions.setCollegeLoading, (state, action) => ({
+    ...state,
+    isLoading: action.status
   }))
 )

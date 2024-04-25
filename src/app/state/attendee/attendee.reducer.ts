@@ -32,6 +32,10 @@ export const attendeeNumberReducer = createReducer(
     ...state,
     isLoading: false,
     error: action.error
+  })),
+  on(AttendeeActions.setLoading, (state, action) => ({
+    ...state,
+    isLoading: action.status
   }))
 )
 

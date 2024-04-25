@@ -1,11 +1,14 @@
 import { Injectable } from "@angular/core";
-import { Observable, catchError, exhaustMap, map, mergeMap, of } from "rxjs";
+import { EMPTY, Observable, catchError, exhaustMap, map, mergeMap, of, tap, withLatestFrom } from "rxjs";
 import { Attendee } from "../../services/Interfaces/attendee";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { FacultyRequestService } from "../../services/faculty/faculty-request.service";
 import * as AttendeeActions from "./attendee.action";
 import { AttendeeCount } from "../../services/Interfaces/attendeeCount";
 import { Response } from "../../services/Interfaces/response";
+import { Store } from "@ngrx/store";
+import { AttendeeNumberState } from "../../services/Interfaces/attendeeNumberState";
+import { attendeeNumberSelector } from "./attendee.selector";
 @Injectable()
 
 
@@ -14,7 +17,8 @@ export class AttendeeEffects {
 
   constructor(
     private actions$: Actions,
-    private facultyService: FacultyRequestService
+    private facultyService: FacultyRequestService,
+    private attendeeStore: Store<{ attendees: AttendeeNumberState }>,
   ) { }
 
   fetchAttendeeNumber$ = (id: number): Observable<Response<AttendeeCount[]>> => {
@@ -27,11 +31,20 @@ export class AttendeeEffects {
 
   getAttendeeNumber = createEffect(() => this.actions$.pipe(
     ofType(AttendeeActions.getAttendeeNumber),
-    mergeMap((action) => {
-      return this.fetchAttendeeNumber$(action.id).
-        pipe(map(attendees => AttendeeActions.getAttendeeNumberSuccess({ attendees: { [action.id]: attendees.data[0].count } })),
-          catchError(err => of(AttendeeActions.getAttendeeNumberFailure({ error: err.message })))
-        )
+    withLatestFrom(this.attendeeStore.select(attendeeNumberSelector)),
+    mergeMap(([action, attendeesNumber]) => {
+
+      if (JSON.stringify(attendeesNumber) === "{}") {
+
+        return this.fetchAttendeeNumber$(action.id).
+          pipe(
+            tap(() => console.log(attendeesNumber)),
+            map(attendees => AttendeeActions.getAttendeeNumberSuccess({ attendees: { [action.id]: attendees.data[0].count } })),
+            catchError(err => of(AttendeeActions.getAttendeeNumberFailure({ error: err.message })))
+          )
+      }
+      this.attendeeStore.dispatch(AttendeeActions.setLoading({ status: false }))
+      return EMPTY
     })
   ))
 
