@@ -1,7 +1,7 @@
-<div *ngIf="education?.length == 0">
+<div *ngIf="!(education$ | async)?.length">
     <p class="font-Poppins font-semibold text-[2rem] text-blue text-center m-10">No existing records!</p>
 </div>
-<div *ngFor="let educ of education" class="mainParent bg-white items-center pt-4">
+<div *ngFor="let educ of education$ | async" class="mainParent bg-white items-center pt-4">
     <div class="flex flex-row">
         <div class="select-none w-full mx-10 hover:pl-4 hover:duration-300 duration-300">
             <div class="flex flex-row justify-between">

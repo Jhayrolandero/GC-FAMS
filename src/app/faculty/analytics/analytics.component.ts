@@ -39,7 +39,7 @@ export class AnalyticsComponent implements OnInit {
   constructor(
     private facultyService: FacultyRequestService,
     private router: Router,
-    private evaluationService: EvaluationService
+    private evaluationService: EvaluationService,
   ) {
   }
 

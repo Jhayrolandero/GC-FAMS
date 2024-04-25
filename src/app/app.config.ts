@@ -12,6 +12,8 @@ import { collegeCommexReducer, commexReducer } from './state/commex/commex.reduc
 import { CommexsEffects } from './state/commex/commex.effects';
 import { attendeeNumberReducer, attendeeReducer } from './state/attendee/attendee.reducer';
 import { AttendeeEffects } from './state/attendee/attendee.effects';
+import { certReducer, educReducer, expReducer, expertiseReducer, profileReducer, projReducer } from './state/faculty-state/faculty-state.reducer';
+import { CvEffects } from './state/faculty-state/faculty-state.effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -31,7 +33,14 @@ export const appConfig: ApplicationConfig = {
       trace: false, //  If set to true, will include stack trace for every dispatched action, so you can see it in trace tab jumping directly to that part of code
       traceLimit: 75, // maximum stack trace frames to be stored (in case trace option was provided as true)
       connectInZone: true // If set to true, the connection is established within the Angular zone
-    })
+    }),
+    provideEffects(CvEffects),
+    provideState({ name: 'profile', reducer: profileReducer }),
+    provideState({ name: 'cert', reducer: certReducer }),
+    provideState({ name: 'educ', reducer: educReducer }),
+    provideState({ name: 'exp', reducer: expReducer }),
+    provideState({ name: 'proj', reducer: projReducer }),
+    provideState({ name: 'expertise', reducer: expertiseReducer })
   ]
 };
 

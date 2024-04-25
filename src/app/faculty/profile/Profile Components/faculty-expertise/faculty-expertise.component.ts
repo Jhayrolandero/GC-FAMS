@@ -1,9 +1,10 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
-import { mainPort } from '../../../../app.component';
-import { FormControl, FormGroup } from '@angular/forms';
 import { Expertise } from '../../../../services/Interfaces/expertise';
+import { FacultyRequestService } from '../../../../services/faculty/faculty-request.service';
+import { MatDialog } from '@angular/material/dialog';
+import { Store } from '@ngrx/store';
+import { selectAllExpertise } from '../../../../state/faculty-state/faculty-state.selector';
 
 @Component({
   selector: 'app-faculty-expertise',
@@ -13,21 +14,22 @@ import { Expertise } from '../../../../services/Interfaces/expertise';
   styleUrl: './faculty-expertise.component.css'
 })
 export class FacultyExpertiseComponent {
-  @Input() expertise?: Expertise[];
-  @Output() setSpecEdit = new EventEmitter<Expertise>();
-  @Output() setType = new EventEmitter<string>();
+  @Output() editEvent = new EventEmitter<any>();
+  @Output() deleteEvent = new EventEmitter<any>();
 
-  //Send selected resume info on form component
-  sendValueParams(value: Expertise) {
-    this.setSpecEdit.emit(value);
+  public expertise$ = this.store.select(selectAllExpertise);
+  
+  constructor(
+    private facultyRequest: FacultyRequestService, 
+    public dialog: MatDialog, 
+    private store: Store){}
+
+
+  editExpertise(value: Expertise){
+    this.editEvent.emit(value);
   }
 
-  //Change form type.
-  changeType(value: string) {
-    this.setType.emit(value);
+  deleteExpertise(id: number){
+    this.deleteEvent.emit(['deleteSpec/' + id, 4]);
   }
-  
-  
-  showCrud = false;
-  tempPort = mainPort;
 }

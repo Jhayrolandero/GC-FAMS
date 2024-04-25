@@ -1,10 +1,10 @@
 <div class="w-[600px] bg-white rounded-[15px] shadow-lg opacity-100 overflow-hidden">
     <div class="w-full bg-blue h-[38px] flex items-center justify-between">
         @if (data.length == 0) {
-            <p class="font-Poppins font-semibold text-white ml-5">Add Educational Attainment</p>
+            <p class="font-Poppins font-semibold text-white ml-5">Add Expertise</p>
         }
         @else {
-            <p class="font-Poppins font-semibold text-white ml-5">Edit Educational Attainment</p>
+            <p class="font-Poppins font-semibold text-white ml-5">Edit Expertise</p>
         }
         <svg (click)="onNoClick()" class="mr-3" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g clip-path="url(#clip0_1148_386)">
@@ -16,77 +16,31 @@
             </clipPath>
             </defs>
         </svg>
-    </div>+
-    <form (ngSubmit)="submitForm()" [formGroup]="educForm" class="m-5 border-2 p-3">
-        <p class="font-Roboto font-medium text-[1.1rem]">Educational Level</p>
-        <select
-        type="text"
-        placeholder="Add Educational Title"
-        id="educ_level"
-        [ngModel]="data.educ_level"
-        formControlName="educ_level"
-        class="w-full border-2 px-2 font-Roboto font-regular text-[1.1rem] rounded-[5px] text-black py-1"
-        >
-            <option>Doctorate Degree</option>
-            <option>Master's Degree</option>
-            <option>Bachelor's Degree</option>
-            <option>Associate's Degree</option>
-        </select>
-
-        <p class="font-Roboto font-medium text-[1.1rem]">Educational Attainment</p>
+    </div>
+    <form (ngSubmit)="submitForm()" [formGroup]="specForm" class="m-5 border-2 p-3">
+        <p class="font-Roboto font-medium text-[1.1rem]">Expertise Name</p>
         <input
         type="text"
-        placeholder="Add Educational Title"
-        id="educ_title"
-        [ngModel]="data.educ_title"
-        formControlName="educ_title"
+        placeholder="Add Expertise Name"
+        id="expertise_name"
+        formControlName="expertise_name"
+        [ngModel]="data?.expertise_name"
         class="w-full border-2 px-2 font-Roboto font-regular text-[1.1rem] rounded-[5px] text-black py-1"
         >
 
-        <p class="font-Roboto font-medium text-[1.1rem] mt-4">School or Institution</p>
+        <p class="font-Roboto font-medium text-[1.1rem] mt-4">Confidence</p>
         <input
-        type="text"
-        placeholder="Add School or Institution"
-        id="educ_school"
-        [ngModel]="data.educ_school"
-        formControlName="educ_school"
-        class="w-full border-2 px-2 font-Roboto font-regular text-[1.1rem] rounded-[5px] text-black py-1"
-        >
-
-        <p class="font-Roboto font-medium text-[1.1rem] mt-4">Achievements <span class="font-Roboto font-medium text-[1.1rem] italic">(optional)</span></p>
-
-        <input
+        [ngModel]="data?.expertise_confidence"
         type="text"
         placeholder=""
-        id="educ_details"
-        [ngModel]="data.educ_details"
-        formControlName="educ_details"
-        class="w-full border-2 px-2 font-Roboto font-regular text-[1.1rem] rounded-[5px] text-black py-1"
-        >
-
-        <p class="font-Roboto font-medium text-[1.1rem] mt-4">Date Started</p>
-        <input
-        type="date"
-        placeholder=""
-        id="year_start"
-        [ngModel]="data.year_start"
-        formControlName="year_start"
-        class="w-full border-2 px-2 font-Roboto font-regular text-[1.1rem] rounded-[5px] text-black py-1"
-        >
-
-        <p class="font-Roboto font-medium text-[1.1rem] mt-4">Date Achieved</p>
-        <input
-        type="date"
-        placeholder=""
-        id="year_end"
-        [ngModel]="data.year_end"
-        formControlName="year_end"
+        id="expertise_confidence"
+        formControlName="expertise_confidence"
         class="w-full border-2 px-2 font-Roboto font-regular text-[1.1rem] rounded-[5px] text-black py-1"
         >
         <div class="flex justify-end">
             <input
             type="submit"
-            value="Submit"
+            value="Add"
             class="bg-blue rounded-full py-2 px-7 mt-2 max-w-min font-semibold text-white"
             />
         </div>

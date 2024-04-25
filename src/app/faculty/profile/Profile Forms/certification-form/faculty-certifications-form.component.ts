@@ -6,6 +6,8 @@ import { MatInputModule } from '@angular/material/input';
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FacultyRequestService } from '../../../../services/faculty/faculty-request.service';
+import { loadCert } from '../../../../state/faculty-state/faculty-state.actions';
+import { Store } from '@ngrx/store';
 
 @Component({
     selector: 'app-faculty-certifications-form',
@@ -17,8 +19,12 @@ import { FacultyRequestService } from '../../../../services/faculty/faculty-requ
   })
   
   export class FacultyCertificationsFormComponent { 
-    constructor(public dialogRef: MatDialogRef<FacultyCertificationsFormComponent>, private facultyRequest: FacultyRequestService){}
-  
+    constructor(
+      public dialogRef: MatDialogRef<FacultyCertificationsFormComponent>, 
+      private facultyRequest: FacultyRequestService,
+      private store: Store
+    ){}
+
     certForm = new FormGroup({
       cert_name: new FormControl(''),
       cert_details: new FormControl(''),
@@ -36,9 +42,11 @@ import { FacultyRequestService } from '../../../../services/faculty/faculty-requ
   
       const formData = this.facultyRequest.formDatanalize(this.certForm);
       this.facultyRequest.postData(formData, 'addCert').subscribe({
-        next: (next: any) => {console.log(next);},
         error: (error) => {console.log(error)},
-        complete: () => {this.onNoClick();}
+        complete: () => {
+          this.store.dispatch(loadCert());
+          this.onNoClick();
+        }
       });
     }
   
