@@ -9,10 +9,26 @@
       <div
       class="bg-white shadow-main bg-opacity-70 w-full rounded-[15px] flex flex-col tablet:flex-row tablet:justify-between items-center px-5"
     >
-    <h1 class="font-Poppins font-semibold text-[2.5rem] py-2">
+      <h1 class="font-Poppins font-semibold text-[2.5rem] py-2">
         Community Extensions
       </h1>
       <div class="flex flex-row space-x-4">
+                <!-- HERE LIES PEAK -->
+        <label
+          for="switch"
+          class="relative w w-8/12 py-4 bg-white rounded-[25px] after:py-1 after:absolute after:w-1/2 after:h-full after:rounded-full after:bg-blue after:top-0 after:left-0 after:transition-all after:duration-150 after:content-['Dean'] after:text-center after:font-bold peer-checked:after:left-1/2 peer-checked:after:content-['Faculty']"
+        >
+          <span
+            class="select-none absolute top-0 inset-x-1/2 right-0 text-blue text-center font-bold py-1"
+            >Faculty</span
+          >
+
+          <span
+            class="select-none absolute top-0 inset-x-1/2 left-0 text-blue text-center font-bold py-1"
+            >Dean</span
+          >
+        </label>
+
         <button
           (click)="openDialog()" class="bg-gradient-to-r from-blue to-greenBar text-white font-Poppins font-semibold w-[125px] h-[40px] rounded-full shadow-xl hover:scale-[102%] hover:duration-300 duration-300"
         >

@@ -7,12 +7,18 @@ import { mainPort } from "../../app.component";
 interface AppState {
   commexs: CommexState
 }
+
+interface CollegeCommexState {
+  collegeCommexs: CommexState
+}
 export const selectFeature = (state: AppState) => state.commexs
 
+export const selectCollegeCommexFeature = (state: CollegeCommexState) => state.collegeCommexs
 
 export const isLoadingSelector = createSelector(selectFeature,
   (state) => state.isLoading
 )
+
 
 export const commexSelector = createSelector(selectFeature,
   (state) => state.commexs
@@ -27,6 +33,17 @@ export const parsedCommexSelector = createSelector(selectFeature,
 )
 
 export const latestCommexSelector = createSelector(selectFeature,
+  (state) => latestCommex(state.commexs, mainPort)
+)
+export const isLoadingCollegeCommexSelector = createSelector(selectCollegeCommexFeature,
+  (state) => state.isLoading
+)
+
+export const parsedCollegeCommexSelector = createSelector(selectCollegeCommexFeature,
+  (state) => parsedCommex(state.commexs, mainPort)
+)
+
+export const latestCollegeCommexSelector = createSelector(selectCollegeCommexFeature,
   (state) => latestCommex(state.commexs, mainPort)
 )
 

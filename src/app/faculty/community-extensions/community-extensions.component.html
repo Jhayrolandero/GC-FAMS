@@ -8,7 +8,26 @@
       <h1 class="font-Poppins font-semibold text-[2.5rem] py-2">
           Community Extensions
         </h1>
-        <div class="flex flex-row space-x-4">
+        <div class="flex flex-row space-x-4 flex-1">
+          <div class="flex-1 flex justify-end items-end">
+            <input type="checkbox" id="switch" class="hidden peer" (click)="toggleView()"/>
+            <label
+              for="switch"
+              label1="My Commex"
+              label2="All Commex"
+              class="relative w-8/12 max-w-52 py-4 bg-white rounded-[25px] after:py-1 after:absolute after:w-1/2 after:h-full after:rounded-full after:bg-blue after:top-0 after:left-0 after:transition-all after:duration-150 after:content-[attr(label1)] after:text-center after:font-bold peer-checked:after:left-1/2 peer-checked:after:content-[attr(label2)] after:flex after:justify-center after:items-center after:text-white"
+            >
+              <span
+                class="select-none absolute top-0 inset-x-1/2 right-0 text-blue text-center font-bold py-1 flex justify-center items-center h-full"
+                >All Commex</span
+              >
+
+              <span
+                class="select-none absolute top-0 inset-x-1/2 left-0 text-blue text-center font-bold py-1 flex justify-center items-center h-full"
+                >My Commex</span
+              >
+            </label>
+          </div>
           <button
             (click)="openDialog()" class="bg-gradient-to-r from-blue to-greenBar text-white font-Poppins font-semibold w-[125px] h-[40px] rounded-full shadow-xl hover:scale-[102%] hover:duration-300 duration-300"
           >
@@ -50,23 +69,23 @@
             <div class="flex flex-col flex-wrap justify-end flex-1 gap-2">
               <hr class=" text-black text-[0.5rem] bg-black">
               <div class="flex gap-2"
+              (mouseleave)="toggleHide()"
+              (mouseenter)="toggleVisible(latestCommex.commex_ID)"
               >
-              <!-- (mouseleave)="toggleHide()" -->
-              <!-- (mouseenter)="toggleVisible(commexs[0].commex_ID)" -->
                     @if( attendeeLoading$ | async ) {
                       ...loading
                     } @else {
                       <span><i class="fa-solid fa-users"></i></span><p>{{ attendeesNumber[latestCommex.commex_ID] }}</p>
                     }
                 </div>
-                <!-- div class="relative">
+                <div class="relative">
                   <app-tooltip
                   [attendees]="attendee"
                   [isVisible]="isVisible"
-                  [id]="commexs[0].commex_ID"
+                  [id]="latestCommex.commex_ID"
                   [activeID]="activeID"
                   ></app-tooltip>
-                </div> -->
+                </div>
               </div>
             </div>
           </div>
@@ -99,22 +118,23 @@
               <div class="flex flex-col flex-wrap justify-end flex-1 gap-2">
                 <hr class=" text-black text-[0.5rem] bg-black">
                 <div class="flex gap-2"
+                (mouseenter)="toggleVisible(commex.commex_ID)"
+                (mouseleave)="toggleHide()"
                 >
-                <!-- (mouseenter)="toggleVisible(commex.commex_ID)"
-                (mouseleave)="toggleHide()"  -->
+
                     @if( attendeeLoading$ | async ) {
                       ...loading
                     } @else {
                       <span><i class="fa-solid fa-users"></i></span><p>{{ attendeesNumber[commex.commex_ID] }}</p>
                     }
-                  <!-- <div class="relative">
+                  <div class="relative">
                     <app-tooltip
                     [attendees]="attendee"
                     [isVisible]="isVisible"
                     [id]="commex.commex_ID"
                     [activeID]="activeID"
                     ></app-tooltip>
-                  </div> -->
+                  </div>
                 </div>
               </div>
             </div>
@@ -124,7 +144,4 @@
           </div>
         </div>
       </app-other-commex>
-    <!-- </div> -->
-
-
   }

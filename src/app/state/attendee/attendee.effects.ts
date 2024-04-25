@@ -39,7 +39,7 @@ export class AttendeeEffects {
     ofType(AttendeeActions.getAttendee),
     mergeMap((action) => {
       return this.fetchAttendee$(action.id).
-        pipe(map(attendees => AttendeeActions.getAttendeeSuccess({ attendees: { [action.id]: attendees.data[0] } })),
+        pipe(map(attendees => AttendeeActions.getAttendeeSuccess({ attendees: { [action.id]: attendees.data } })),
           catchError(err => of(AttendeeActions.getAttendeeFailure({ error: err.message })))
         )
     })

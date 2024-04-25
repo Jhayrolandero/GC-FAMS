@@ -20,7 +20,7 @@ export const getAttendee = createAction('[Attendee] Fetch Attendee',
 )
 
 export const getAttendeeSuccess = createAction('[Attendee] Fetch Attendee',
-  props<{ attendees: Dictionary<Attendee> }>()
+  props<{ attendees: Dictionary<Attendee[]> }>()
 )
 
 export const getAttendeeFailure = createAction('[Attendee] Fetch Attendee',

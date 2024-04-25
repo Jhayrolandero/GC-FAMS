@@ -39,6 +39,17 @@ export class CommexsEffects {
     })
   ))
 
+  getCollegeCommexs = createEffect(() => this.actions$.pipe(
+    ofType(CommexActions.getCollegeCommex),
+    exhaustMap((action) => {
+      return this.fetchCommex$(action.uri).
+        pipe(
+          map(commexs => CommexActions.getCollegeCommexSuccess({ commexs })),
+          catchError(error => of(CommexActions.getCollegeCommexFailure({ error: error.message }))),
+        )
+    })
+  ))
+
 
   postCommex$ = createEffect(() => {
     return this.actions$.pipe(

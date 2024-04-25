@@ -13,6 +13,17 @@ export const getCommexFailure = createAction('[Commex] Fetch Commex Failure',
   props<{ error: string }>()
 )
 
+export const getCollegeCommex = createAction('[College Commex] Fetch Commex',
+  props<{ uri: string }>()
+)
+export const getCollegeCommexSuccess = createAction('[College Commex] Fetch Commex Success',
+  props<{ commexs: CommunityExtension[] }>()
+)
+
+export const getCollegeCommexFailure = createAction('[College Commex] Fetch Commex Failure',
+  props<{ error: string }>()
+)
+
 export const postCommex = createAction('[Commex] Post Commex',
   props<{ commex: FormData }>()
 )

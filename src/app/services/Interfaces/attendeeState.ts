@@ -3,6 +3,6 @@ import { Dictionary } from "./dictionary";
 
 export interface AttendeeState {
   isLoading: boolean;
-  attendees: Dictionary<Attendee>;
+  attendees: Dictionary<Attendee[]>;
   error: string | null
 }

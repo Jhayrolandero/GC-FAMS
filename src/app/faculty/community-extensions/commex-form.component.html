@@ -1,7 +1,7 @@
 <mat-stepper orientation="horizontal" linear #stepper>
   <mat-step [stepControl]="commexForm">
     <div class="w-[750px] bg-white rounded-[15px] shadow-lg opacity-100 overflow-hidden">
-        <div class="w-full bg-blue h-[38px] flex items-center justify-between">
+        <!-- <div class="w-full bg-blue h-[38px] flex items-center justify-between">
             <p class="font-Poppins font-semibold text-white ml-5">Add Community Extensions</p>
             <svg (click)="onNoClick()" class="mr-3" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g clip-path="url(#clip0_1148_386)">
@@ -13,7 +13,7 @@
                 </clipPath>
                 </defs>
             </svg>
-        </div>
+        </div> -->
         <form (ngSubmit)="submitForm()" [formGroup]="commexForm" class="p-5">
           <ng-template matStepLabel>Community Extension Form</ng-template>
             <div class="flex flex-row w-full  justify-between gap-4">
