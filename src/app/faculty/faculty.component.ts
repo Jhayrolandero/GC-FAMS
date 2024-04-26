@@ -10,7 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MessageComponent } from '../components/message/message.component';
 import { FormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { loadCert, loadEduc, loadExp, loadExpertise, loadProfile, loadProj } from '../state/faculty-state/faculty-state.actions';
+import { loadCert, loadEduc, loadEval, loadExp, loadExpertise, loadProfile, loadProj } from '../state/faculty-state/faculty-state.actions';
 import { Store } from '@ngrx/store';
 
 @Component({
@@ -42,6 +42,7 @@ export class FacultyComponent {
     store.dispatch(loadExp());
     store.dispatch(loadProj());
     store.dispatch(loadExpertise());
+    store.dispatch(loadEval());
   }
 
   toggle() {

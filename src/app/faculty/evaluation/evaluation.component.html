@@ -19,7 +19,7 @@
   >
     <div class="flex flex-row w-full justify-between gap-2 mt-5 px-5">
       <p
-        *ngFor="let evalItem of evaluation"
+        *ngFor="let evalItem of evaluation$ | async"
         class="hover:font-bold transition-all cursor-pointer font-Poppins justify-between mx-3 text-[1rem]"
         (click)="selectEvalSem(evalItem.evaluation_ID)"
       >

@@ -6,6 +6,7 @@ import { Profile } from "../../services/Interfaces/profile";
 import { IndustryExperience } from "../../services/Interfaces/industry-experience";
 import { Project } from "../../services/Interfaces/project";
 import { Expertise } from "../../services/Interfaces/expertise";
+import { Evaluation } from "../../services/Interfaces/evaluation";
 
 export interface ProfileState {
     profile?: Profile;
@@ -29,6 +30,10 @@ export interface ProjState{
 
 export interface ExpertiseState{
     expertises: Expertise[];
+}
+
+export interface EvaluationState{
+    evals: Evaluation[];
 }
 
 
@@ -57,6 +62,9 @@ export const initialExpertiseState: ExpertiseState = {
     expertises: []
 }
 
+export const initialEvaluationState: EvaluationState = {
+    evals: []
+}
 
 export const profileReducer = createReducer(
     initialProfileState,
@@ -132,6 +140,19 @@ export const expertiseReducer = createReducer(
         expertises: expertises
     })),
     on(CertActions.loadExpertiseFailure, (state) => ({
+        ...state,
+    }))
+)
+
+export const evaluationReducer = createReducer(
+    initialEvaluationState,
+
+    on(CertActions.loadEval, (state) => ({ ...state})),
+    on(CertActions.loadEvalSuccess, (state, { evals }) => ({
+        ...state,
+        evals: evals
+    })),
+    on(CertActions.loadEvalFailure, (state) => ({
         ...state,
     }))
 )

@@ -7,7 +7,7 @@ import { loggingInterceptor } from './services/auth.interceptor';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideState, provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
-import { certReducer, educReducer, expReducer, expertiseReducer, profileReducer, projReducer } from './state/faculty-state/faculty-state.reducer';
+import { certReducer, educReducer, evaluationReducer, expReducer, expertiseReducer, profileReducer, projReducer } from './state/faculty-state/faculty-state.reducer';
 import { CvEffects } from './state/faculty-state/faculty-state.effects';
 
 export const appConfig: ApplicationConfig = {
@@ -25,7 +25,7 @@ export const appConfig: ApplicationConfig = {
     provideState({ name: 'educ', reducer: educReducer}),
     provideState({ name: 'exp', reducer: expReducer}),
     provideState({ name: 'proj', reducer: projReducer}),
-    provideState({ name: 'expertise', reducer: expertiseReducer})
-    
-]
+    provideState({ name: 'expertise', reducer: expertiseReducer}),
+    provideState({ name: 'eval', reducer: evaluationReducer})
+  ]
 };

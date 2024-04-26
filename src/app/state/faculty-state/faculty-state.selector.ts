@@ -1,5 +1,5 @@
 import { createSelector, createFeatureSelector } from "@ngrx/store";
-import { CertState, EducState, ExpState, ExpertiseState, ProfileState, ProjState } from "./faculty-state.reducer";
+import { CertState, EducState, EvaluationState, ExpState, ExpertiseState, ProfileState, ProjState } from "./faculty-state.reducer";
 
 export const selectProfileState = createFeatureSelector<ProfileState>('profile');
 export const selectEducState = createFeatureSelector<EducState>('educ');
@@ -7,6 +7,7 @@ export const selectCertState = createFeatureSelector<CertState>('cert');
 export const selectExpState = createFeatureSelector<ExpState>('exp');
 export const selectProjState = createFeatureSelector<ProjState>('proj');
 export const selectExpertiseState = createFeatureSelector<ExpertiseState>('expertise');
+export const selectEvaluationState = createFeatureSelector<EvaluationState>('eval');
 
 
 export const selectAllProfile = createSelector(
@@ -37,4 +38,9 @@ export const selectAllProj = createSelector(
 export const selectAllExpertise = createSelector(
     selectExpertiseState,
     (state: ExpertiseState) => state.expertises
+);
+
+export const selectAllEvaluation = createSelector(
+    selectEvaluationState,
+    (state: EvaluationState) => state.evals
 );

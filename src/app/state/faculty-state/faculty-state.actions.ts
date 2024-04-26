@@ -5,6 +5,7 @@ import { Profile } from "../../services/Interfaces/profile";
 import { IndustryExperience } from "../../services/Interfaces/industry-experience";
 import { Project } from "../../services/Interfaces/project";
 import { Expertise } from "../../services/Interfaces/expertise";
+import { Evaluation } from "../../services/Interfaces/evaluation";
 
 
 export const loadProfile = createAction('[Profile Global] Load Profile');
@@ -71,3 +72,17 @@ export const loadExpertiseFailure = createAction(
     '[Expertise Global] Expertise Load Success',
     props<{ error: string }>()
 );
+
+export const loadEval = createAction('[Evaluation Global] Load Evaluation');
+export const loadEvalSuccess = createAction(
+    '[Evaluation Global] Evaluation Load Success',
+    props<{ evals: Evaluation[] }>()
+);
+export const loadEvalFailure = createAction(
+    '[Evaluation Global] Evaluation Load Success',
+    props<{ error: string }>()
+);
+
+export function loadEvaluation(loadEvaluation: any): import("rxjs").OperatorFunction<import("@ngrx/store").Action, any> {
+    throw new Error("Function not implemented.");
+}
