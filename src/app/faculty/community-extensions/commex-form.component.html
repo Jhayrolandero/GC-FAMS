@@ -1,4 +1,4 @@
-<mat-stepper orientation="horizontal" linear #stepper>
+<mat-stepper orientation="horizontal"  #stepper>
   <mat-step [stepControl]="commexForm">
     <div class="w-[750px] bg-white rounded-[15px] shadow-lg opacity-100 overflow-hidden">
         <!-- <div class="w-full bg-blue h-[38px] flex items-center justify-between">
@@ -85,10 +85,16 @@
         </form>
     </div>
   </mat-step>
+  <!-- Attendee -->
   <mat-step [stepControl]="attendeeForm">
     <ng-template matStepLabel>Attendees</ng-template>
     <form action="" [formGroup]="attendeeForm">
-      <input type="text" placeholder="attendee">
+      <label for="vehicle1"> I have a bike</label><br>
+      <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+      <label for="vehicle2"> I have a car</label><br>
+      <input type="checkbox" id="vehicle2" name="vehicle2" value="Car">
+      <label for="vehicle3"> I have a boat</label><br>
+      <input type="checkbox" id="vehicle3" name="vehicle3" value="Boat">
     </form>
   </mat-step>
   <mat-step>

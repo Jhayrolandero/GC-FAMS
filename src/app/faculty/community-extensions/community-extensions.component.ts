@@ -19,7 +19,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { TooltipComponent } from '../../components/tooltip/tooltip.component';
 import { Attendee } from '../../services/Interfaces/attendee';
-import { Observable, Subscription, concatMap, from, map, mergeAll, mergeMap, of, toArray } from 'rxjs';
+import { Observable, Subscription, concatMap, first, from, map, merge, mergeAll, mergeMap, of, tap, toArray } from 'rxjs';
 import { Dictionary } from '../../services/Interfaces/dictionary';
 import { Response } from '../../services/Interfaces/response';
 import { AttendeeCount } from '../../services/Interfaces/attendeeCount';
@@ -32,6 +32,9 @@ import * as CommexsSelector from '../../state/commex/commex.selector';
 import * as AttendeeActions from '../../state/attendee/attendee.action';
 import { AttendeeNumberState } from '../../services/Interfaces/attendeeNumberState';
 import * as AttendeeSelector from '../../state/attendee/attendee.selector';
+import { ProfileState } from '../../state/faculty-state/faculty-state.reducer';
+import * as ProfileSelectors from '../../state/faculty-state/faculty-state.selector';
+import { Profile } from '../../services/Interfaces/profile';
 
 @Component({
   selector: 'app-commex-form',
@@ -141,38 +144,44 @@ export class CommunityExtensionsComponent {
     private commexFacultyStore: Store<{ commexs: CommexState }>,
     private attendeeStore: Store<{ attendees: AttendeeNumberState }>,
     private commexCollegeStore: Store<{ collegeCommexs: CommexState }>,
+    private profileStore: Store<{ profile: ProfileState }>,
     private messageService: MessageService
   ) {
 
     this.attendeeLoading$ = this.attendeeStore.pipe(select(AttendeeSelector.attendeeLoadingSelector))
-    this.commexs$ = this.commexFacultyStore.pipe(select(CommexsSelector.parsedCommexSelector))
+    this.commexs$ = merge(
+      this.commexFacultyStore.pipe(select(CommexsSelector.parsedCommexSelector)),
+      this.commexCollegeStore.pipe(select(CommexsSelector.parsedCollegeCommexSelector))
+    )
     this.isLoading$ = this.commexFacultyStore.pipe(select(CommexsSelector.isLoadingSelector))
     this.latestCommex$ = this.commexFacultyStore.pipe(select(CommexsSelector.latestCommexSelector))
+    this.profileCollege$ = this.profileStore.pipe(select(ProfileSelectors.selectAllProfile))
   }
   commexs$: Observable<CommunityExtension[]>
   latestCommex$: Observable<CommunityExtension>
   isLoading$: Observable<boolean>
   attendeeLoading$: Observable<boolean>
   attendeesNumber: Dictionary<number> = {}
+  profileCollege$: Observable<Profile>
 
   fetchAttendeeNumber$ = (id: number) => {
     this.attendeeStore.dispatch(AttendeeActions.getAttendeeNumber({ id: id }))
   }
   ngOnInit(): void {
     this.commexFacultyStore.dispatch(CommexActions.getCommex({ uri: 'getcommex?t=faculty' }))
-    this.commexCollegeStore.dispatch(CommexActions.getCollegeCommex({ uri: 'getcommex/1?t=college' }))
 
+
+    // this.commexCollegeStore.dispatch(CommexActions.getCollegeCommex({ uri: `getcommex/${}?t=college` }))
 
     this.attendeeNumberFetch()
 
+    // Switch the view depending on state
+    if (this.switch === "faculty") {
+      this.commexs$ = this.commexFacultyStore.pipe(select(CommexsSelector.parsedCommexSelector))
+    } else {
+      this.commexs$ = this.commexCollegeStore.pipe(select(CommexsSelector.parsedCollegeCommexSelector))
 
-    this.attendeeStore.pipe(select(AttendeeSelector.attendeeNumberSelector)).subscribe({
-      next: res => {
-        this.attendeesNumber = { ...this.attendeesNumber, ...res }
-      },
-      error: err => console.log(err),
-      complete: () => console.log(this.attendeesNumber)
-    })
+    }
 
   }
   tempPort = mainPort;
@@ -188,6 +197,9 @@ export class CommunityExtensionsComponent {
 
 
   attendeeNumberFetch(): Subscription {
+
+    console.log("Halo :D")
+
     this.commexs$.pipe(
       mergeMap(commexs => from(commexs).pipe(
         map(commex => this.attendeeStore.dispatch(AttendeeActions.getAttendeeNumber({ id: commex.commex_ID })))
@@ -203,23 +215,9 @@ export class CommunityExtensionsComponent {
     })
   }
 
-  attendeeFetch() {
-    this.commexs$
-      .pipe(
-        concatMap((res) =>
-          from(res).pipe(
-            map((val) =>
-              this.attendeeStore.dispatch(AttendeeActions.getAttendeeNumber({ id: val.commex_ID }))
-            )
-          )
-        )
-      )
-      .subscribe({
-        error: (error) => console.log(error),
-      });
-  }
 
-  attendeeFetch$ = (id: number): Subscription => {
+
+  attendeeNameFetch$ = (id: number): Subscription => {
     return this.facultyService.fetchData<Response<Attendee[]>>(`attendee/${id}`).subscribe({
       next: res => this.attendees.push({ [id]: res.data }),
       error: err => console.log(err),
@@ -248,7 +246,7 @@ export class CommunityExtensionsComponent {
     const exist = this.attendees.some(attendee => id in attendee);
 
     if (!exist) {
-      this.currFetch$ = this.attendeeFetch$(id)
+      this.currFetch$ = this.attendeeNameFetch$(id)
     } else {
       this.attendee = this.attendees.find(mem => mem[id])![id]
     }
@@ -271,18 +269,21 @@ export class CommunityExtensionsComponent {
 
     if (this.switch === 'faculty') {
       this.switch = 'college'
+
+      this.profileCollege$.pipe(first()).subscribe(
+        res => {
+          this.commexCollegeStore.dispatch(CommexActions.getCollegeCommex({ uri: `getcommex/${res.college_ID}?t=college` }))
+        }
+      )
       this.commexs$ = this.commexCollegeStore.pipe(select(CommexsSelector.parsedCollegeCommexSelector))
       this.isLoading$ = this.commexCollegeStore.pipe(select(CommexsSelector.isLoadingCollegeCommexSelector))
       this.latestCommex$ = this.commexCollegeStore.pipe(select(CommexsSelector.latestCollegeCommexSelector))
       this.attendeeNumberFetch()
-
     } else {
       this.switch = 'faculty'
       this.commexs$ = this.commexFacultyStore.pipe(select(CommexsSelector.parsedCommexSelector))
       this.isLoading$ = this.commexFacultyStore.pipe(select(CommexsSelector.isLoadingSelector))
       this.latestCommex$ = this.commexFacultyStore.pipe(select(CommexsSelector.latestCommexSelector))
-      // this.attendeeNumberFetch()
-
     }
   }
 
