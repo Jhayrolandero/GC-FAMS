@@ -11,6 +11,7 @@ import { IndustryExperience } from "../../services/Interfaces/industry-experienc
 import { Project } from "../../services/Interfaces/project";
 import { Expertise } from "../../services/Interfaces/expertise";
 import { Evaluation } from "../../services/Interfaces/evaluation";
+import { CertificationsFaculty } from "../../services/Interfaces/certifications-faculty";
 
 @Injectable()
 
@@ -51,11 +52,7 @@ export class CvEffects{
         switchMap(() => this.facultyService.fetchData('certificate')
             .pipe(
                 tap((certs) => console.log('Certificates has loaded:', certs)),
-                map((certs) => {
-                    (certs as Certifications[]).forEach((cert: Certifications) => this.parseImageLink(cert));
-                    return certs;
-                }),
-                map((certs) => CvActions.loadCertSuccess({certs: certs as Certifications[]})),
+                map((certs) => CvActions.loadCertSuccess({certs: certs as [CertificationsFaculty[], Certifications[]]})),
                 catchError((error) => of(CvActions.loadCertsFailure({ error } )))
             )
         )
@@ -94,32 +91,6 @@ export class CvEffects{
         )
     ));
 
-    // loadCerts$ = createEffect(() => this.actions$.pipe(
-    //     ofType(CvActions.loadCert),
-    //     switchMap(() => this.facultyService.fetchData('certificate')
-    //         .pipe(
-    //             tap((certs) => console.log('Certificates has loaded:', certs)),
-    //             map((certs) => {
-    //                 (certs as Certifications[]).forEach((cert: Certifications) => this.parseImageLink(cert));
-    //                 return certs;
-    //             }),
-    //             map((certs) => CvActions.loadCertSuccess({certs: certs as Certifications[]})),
-    //             catchError((error) => of(CvActions.loadCertsFailure({ error } )))
-    //         )
-    //     )
-    // ));
-
-    // loadEvaluation$ = createEffect(() => this.actions$.pipe(
-    //     ofType(CvActions.loadEval),
-    //     switchMap(() => this.facultyService.fetchData('getevaluation/fetchEvaluation')
-    //         .pipe(
-    //             tap((evals) => console.log('Evaluation has loaded:', evals)),
-    //             map((evals) => CvActions.loadEvalSuccess({evals: evals as Evaluation[]})),
-    //             catchError((error) => of(CvActions.loadEvalFailure({ error } )))
-    //         )
-    //     )
-    // ));
-
     loadEvaluation$ = createEffect(() => this.actions$.pipe(
         ofType(CvActions.loadEval),
         switchMap(() => this.facultyService.fetchData<Evaluation[]>('getevaluation/fetchEvaluation')
@@ -143,9 +114,5 @@ export class CvEffects{
             )
         )
     ));
-
-    parseImageLink(i: Certifications){
-        i.cert_image = mainPort + i.cert_image;
-    }
 }
 

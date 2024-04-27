@@ -1,10 +1,8 @@
-import { Certifications } from '../../../../services/Interfaces/certifications';
 import { CommonModule } from '@angular/common';
 import { Component, Input, SimpleChanges } from '@angular/core';
 import { mainPort } from '../../../../app.component';
-import { loadCert } from '../../../../state/faculty-state/faculty-state.actions';
 import { Store } from '@ngrx/store';
-import { selectAllCerts } from '../../../../state/faculty-state/faculty-state.selector';
+import { selectAllCerts, selectAllExistCerts } from '../../../../state/faculty-state/faculty-state.selector';
 @Component({
   selector: 'app-faculty-certifications',
   standalone: true,
@@ -14,6 +12,8 @@ import { selectAllCerts } from '../../../../state/faculty-state/faculty-state.se
 })
 export class FacultyCertificationsComponent { 
   public certifications$ = this.store.select(selectAllCerts);
+  public existCertifications$ = this.store.select(selectAllExistCerts);
+  public port = mainPort;
   constructor(private store: Store){}
 }
 

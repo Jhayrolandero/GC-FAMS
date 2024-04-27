@@ -1,4 +1,4 @@
-<div class="w-[700px] bg-white rounded-[15px] shadow-lg opacity-100 overflow-hidden">
+<div class="w-[800px] bg-white rounded-[15px] shadow-lg opacity-100 overflow-hidden">
     <div class="w-full bg-blue h-[38px] flex items-center justify-between">
         <p class="font-Poppins font-semibold text-white ml-5">Add Certifications</p>
         <svg (click)="onNoClick()" class="mr-3" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -12,80 +12,174 @@
             </defs>
         </svg>
     </div>
-    <form (ngSubmit)="submitForm()" [formGroup]="certForm" class="m-5 border-2 p-3">
-        <div class="flex flex-row gap-x-3">
-            <div>
-                <p class="font-Roboto font-medium text-[1.1rem]">Header Image</p>
-                <label for="dropzone-file">
-                    
-                    <div class="border-2 rounded-[5px] w-[310px] h-[210px] flex flex-col justify-center items-center overflow-hidden">
-                        <img *ngIf="imageURL != undefined" [src]="imageURL">
-                        <svg width="40" height="40" viewBox="0 0 51 50" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                          <rect x="0.5" width="50" height="50" fill="url(#pattern0_1441_3830)"/>
-                          <defs>
-                          <pattern id="pattern0_1441_3830" patternContentUnits="objectBoundingBox" width="1" height="1">
-                          <use xlink:href="#image0_1441_3830" transform="scale(0.0111111)"/>
-                          </pattern>
-                          <image id="image0_1441_3830" width="90" height="90" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFoAAABaCAYAAAA4qEECAAAACXBIWXMAAAsTAAALEwEAmpwYAAAFLElEQVR4nO2dy2vcVRTHLzRzzyQVXVofoFL9B6yCoOWXc2ai6ULURRR8YbW6aSFasa2rEZq555cRwRRc+C904XNR0T9AkUhtu3GjuPCBjyR1ZQaapJw7pYs0Q6bJff1m7gcOhDCZub9vztzfPeeee35KZTKZTCaTyWQymUxmQGbO7hlrmIeB2q8BmQ6Q+QzQXNTIPwPxMiB3rREv29+hudh7Dc/L34wV8w/Jewz6cSPFeFHercm8CchfAvJ/QLyxK0NzGdB8oYlnx2nuLjXSPPLBeB3NSxr5G0Be27W4/UW/otF8XSd+URWtuhoZitYt4mkaze/exO1jmvhvQH5PNcvb1NBy4OOaRn4H0CyFFngLL1/SxG/LmNQwUaf2QSC+FF3gG8z8BA1uqspTtOqa+CMgsx5f1L5ir2syZ9T0AqgqAgXfq4m/iy8kDzid8A9QmPtVlZCvo5NlGoUWW5aFTKoKaOJngPj/6KLRjj27W2uY51TKAPIbXtfEFEzsNcD26ypFNLWfluAgukjkTuwals+qlJB5DdCsRheHnIvdBTSPqxTQzfkHKnnjo5u5QXb2x1V5egHssii2GOTdFqOus3vBSDDPWtXEJyeKzj4x+TnkdGWDmnhhdaCID7mriZ/cPAaYLJ8It5Q06/XJdhFW5aI1BsgXYoocR2y+FDQRZbNwwaaL8tC246HyUKhpRCO/FS6fjPxvbE+O5dly7aKB8o29CSUmcnCxJZcdIO35R4oihxRbk/lTtuKUL+rIL6csckixa1g+r3xhN1ITFzmU2Br5nPKBbNt7SxqhW5GDiI285qWUwdZdRFzC7RS/Sz9zTLnGFrdUxJODeTaaT5T7SNBcrpInB/LsZaflZ71aOLfeoIlPqsBoLE+5vo4a8gFnAwTiI64HOFF09qnA7KX27R6mj8POBtir6qy+0OPN+TudC02GnQ0QiD93PnVgeUoFRqN5171H86fOBuglJYrcFbEnDs7doTwjn2FF7tVVO/ZoPu9soJr4Vw8D3LgZ6ze22OPSyL84EzqFClCVqtBk/nEotJev3MYwCC1r8yw0VU7oPHVAiKkj3ww51M0w0I43VXCOdrm88xGwwLAI7TKD5yMEh2ER2m0ILqdYs9CwtQavJJ0mhSHx6BrNPehMaEluA/FKFpo3C73i/Ny5nK3OQrPnrazeWno2C82bPfqon6R5xDMqqg/R/vlornjbvJAuAVlo9ltAI0jbhyw0+y8Js0WOEdo/QGJTh/cix6BF6JSw0A1zXHln6v29khocVaF1qEJ0QQqxR1Zo4lkVDCkRI/NjyAuc2GK33Fa4hhU67GGh4MffSDypfSJEidc2x98eDSry9QslcybYhaIURbZPSOAk1jvQGXDTGM2HKuoRZeLFcF7FcQz5ezXT0vGEtsmmzn7nJb2UlK3A1On7VApAgycr3XWG+npyF6icUimhJ/mpYWuMoolnVIpIe5zhaPVjxGGOqJSxLX+qPI2gWU2uxc82rX+qeINckfuNqhJ1PH2PJvNtAuJtDGiL8Vv67JTpBegFNSbplpk2GIm9TnZBvVk+lkJZ2Q2GfCFaWO2NojUmTUVipFg3m4zBZuGK1pgaWqYkny2Nuvm34AKj+cs26p5u3apGhqJVrzXMC5rMV14DHdt6ns/ZPb6Raj2/BZJrlgPscpTMPpli9wIvX3uvozHOM1aDmbN7pJ4NkF8F5FKqgaQG+dqjQJauPx5E2sf3Hhly3r6m99rDthYuPx4kk8lkMplMJpPJZNTAXAWEe8+zB6Wo2gAAAABJRU5ErkJggg=="/>
-                          </defs>
-                        </svg>
-                        <p class="text-black font-Roboto">Choose an image file</p>
-                          
-                    </div>
-                </label>
-                <input
-                id="dropzone-file"
-                type="file"
-                class="hidden"
-                (change)="PreviewImage($event)"
-                accept="image/*"
-                />
-            </div>
 
-            <div class="w-full">
-                <p class="font-Roboto font-medium text-[1.1rem]">Certification Title</p>
-                <input
-                type="text"
-                placeholder="Add Certification Title"
-                id="cert_name"
-                formControlName="cert_name"
-                class="w-full border-2 px-2 font-Roboto font-regular text-[1.1rem] rounded-[5px] text-black py-1"
-                >
-        
-                <p class="font-Roboto font-medium text-[1.1rem] mt-4">Institution</p>
-                <input
-                type="text"
-                placeholder="Add Certification Corporation"
-                id="cert_corporation"
-                formControlName="cert_corporation"
-                class="w-full border-2 px-2 font-Roboto font-regular text-[1.1rem] rounded-[5px] text-black py-1"
-                >
-        
-                <p class="font-Roboto font-medium text-[1.1rem] mt-4">Certification Detail<span class="font-Roboto font-medium text-[1.1rem] italic">(optional)</span></p>
-                <input
-                type="text"
-                placeholder=""
-                id="cert_details"
-                formControlName="cert_details"
-                class="w-full border-2 px-2 font-Roboto font-regular text-[1.1rem] rounded-[5px] text-black py-1"
-                >
-        
-                <p class="font-Roboto font-medium text-[1.1rem] mt-4">Date Achieved</p>
-                <input
-                type="date"
-                placeholder=""
-                id="accomplished_date"
-                formControlName="accomplished_date"
-                class="w-full border-2 px-2 font-Roboto font-regular text-[1.1rem] rounded-[5px] text-black py-1"
-                >
+    <div class="m-5">
+        <p class="font-Roboto font-medium text-[1.1rem]">Select from existing certifications on college:</p>
+        <select
+        type="text"
+        placeholder="Existing certifications"
+        id="cert_exist"
+        class="w-full border-2 px-2 font-Roboto font-regular text-[1.1rem] rounded-[5px] text-black py-1"
+        (change)="existCertSelect($event)"
+        >
+            <option [value]="-1">Create New Certificate</option>
+            <br>
+            <hr>
+            <br>
+            <option *ngFor="let cert of certifications$ | async; let i = index" [value]="cert.cert_ID">
+                {{cert.cert_name}}
+            </option>
+        </select>
+    </div>
+
+    @if (selectedExisting == true) {
+        <form (ngSubmit)="submitForm()" [formGroup]="existCertForm">
+            <div class="m-5 border-2 p-3">
+                <div class="flex flex-col gap-x-3">
+                    <p class="font-Roboto font-medium text-[1.1rem]">Header Image</p>
+                    <label for="dropzone-file">
+                        
+                        <div class="border-2 rounded-[5px] w-[full h-[210px] flex flex-col justify-center items-center overflow-hidden">
+                            <img *ngIf="imageURL != undefined" [src]="imageURL">
+                            <svg width="40" height="40" viewBox="0 0 51 50" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                <rect x="0.5" width="50" height="50" fill="url(#pattern0_1441_3830)"/>
+                                <defs>
+                                <pattern id="pattern0_1441_3830" patternContentUnits="objectBoundingBox" width="1" height="1">
+                                <use xlink:href="#image0_1441_3830" transform="scale(0.0111111)"/>
+                                </pattern>
+                                <image id="image0_1441_3830" width="90" height="90" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFoAAABaCAYAAAA4qEECAAAACXBIWXMAAAsTAAALEwEAmpwYAAAFLElEQVR4nO2dy2vcVRTHLzRzzyQVXVofoFL9B6yCoOWXc2ai6ULURRR8YbW6aSFasa2rEZq555cRwRRc+C904XNR0T9AkUhtu3GjuPCBjyR1ZQaapJw7pYs0Q6bJff1m7gcOhDCZub9vztzfPeeee35KZTKZTCaTyWQymUxmQGbO7hlrmIeB2q8BmQ6Q+QzQXNTIPwPxMiB3rREv29+hudh7Dc/L34wV8w/Jewz6cSPFeFHercm8CchfAvJ/QLyxK0NzGdB8oYlnx2nuLjXSPPLBeB3NSxr5G0Be27W4/UW/otF8XSd+URWtuhoZitYt4mkaze/exO1jmvhvQH5PNcvb1NBy4OOaRn4H0CyFFngLL1/SxG/LmNQwUaf2QSC+FF3gG8z8BA1uqspTtOqa+CMgsx5f1L5ir2syZ9T0AqgqAgXfq4m/iy8kDzid8A9QmPtVlZCvo5NlGoUWW5aFTKoKaOJngPj/6KLRjj27W2uY51TKAPIbXtfEFEzsNcD26ypFNLWfluAgukjkTuwals+qlJB5DdCsRheHnIvdBTSPqxTQzfkHKnnjo5u5QXb2x1V5egHssii2GOTdFqOus3vBSDDPWtXEJyeKzj4x+TnkdGWDmnhhdaCID7mriZ/cPAaYLJ8It5Q06/XJdhFW5aI1BsgXYoocR2y+FDQRZbNwwaaL8tC246HyUKhpRCO/FS6fjPxvbE+O5dly7aKB8o29CSUmcnCxJZcdIO35R4oihxRbk/lTtuKUL+rIL6csckixa1g+r3xhN1ITFzmU2Br5nPKBbNt7SxqhW5GDiI285qWUwdZdRFzC7RS/Sz9zTLnGFrdUxJODeTaaT5T7SNBcrpInB/LsZaflZ71aOLfeoIlPqsBoLE+5vo4a8gFnAwTiI64HOFF09qnA7KX27R6mj8POBtir6qy+0OPN+TudC02GnQ0QiD93PnVgeUoFRqN5171H86fOBuglJYrcFbEnDs7doTwjn2FF7tVVO/ZoPu9soJr4Vw8D3LgZ6ze22OPSyL84EzqFClCVqtBk/nEotJev3MYwCC1r8yw0VU7oPHVAiKkj3ww51M0w0I43VXCOdrm88xGwwLAI7TKD5yMEh2ER2m0ILqdYs9CwtQavJJ0mhSHx6BrNPehMaEluA/FKFpo3C73i/Ny5nK3OQrPnrazeWno2C82bPfqon6R5xDMqqg/R/vlornjbvJAuAVlo9ltAI0jbhyw0+y8Js0WOEdo/QGJTh/cix6BF6JSw0A1zXHln6v29khocVaF1qEJ0QQqxR1Zo4lkVDCkRI/NjyAuc2GK33Fa4hhU67GGh4MffSDypfSJEidc2x98eDSry9QslcybYhaIURbZPSOAk1jvQGXDTGM2HKuoRZeLFcF7FcQz5ezXT0vGEtsmmzn7nJb2UlK3A1On7VApAgycr3XWG+npyF6icUimhJ/mpYWuMoolnVIpIe5zhaPVjxGGOqJSxLX+qPI2gWU2uxc82rX+qeINckfuNqhJ1PH2PJvNtAuJtDGiL8Vv67JTpBegFNSbplpk2GIm9TnZBvVk+lkJZ2Q2GfCFaWO2NojUmTUVipFg3m4zBZuGK1pgaWqYkny2Nuvm34AKj+cs26p5u3apGhqJVrzXMC5rMV14DHdt6ns/ZPb6Raj2/BZJrlgPscpTMPpli9wIvX3uvozHOM1aDmbN7pJ4NkF8F5FKqgaQG+dqjQJauPx5E2sf3Hhly3r6m99rDthYuPx4kk8lkMplMJpPJZNTAXAWEe8+zB6Wo2gAAAABJRU5ErkJggg=="/>
+                                </defs>
+                            </svg>
+                            <p class="text-black font-Roboto">Choose an image file</p>
+                                
+                        </div>
+                    </label>
+                    <input
+                    id="dropzone-file"
+                    type="file"
+                    class="hidden"
+                    (change)="PreviewImage($event)"
+                    accept="image/*"
+                    />
+
+
+                    <p class="font-Roboto font-medium text-[1.1rem] mt-4">Date Achieved</p>
+                    <input
+                    type="date"
+                    placeholder=""
+                    id="accomplished_date"
+                    formControlName="accomplished_date"
+                    class="w-full border-2 px-2 font-Roboto font-regular text-[1.1rem] rounded-[5px] text-black py-1"
+                    >
+
+                </div>
+                <div class="flex justify-end">
+                    <input
+                    type="submit"
+                    value="Add"
+                    class="bg-blue rounded-full py-2 px-7 mt-2 max-w-min font-semibold text-white"
+                    />
+                </div>
             </div>
-        </div>
-        <div class="flex justify-end">
-            <input
-            type="submit"
-            value="Add"
-            class="bg-blue rounded-full py-2 px-7 mt-2 max-w-min font-semibold text-white"
-            />
-        </div>
-    </form>
+        </form>
+    }
+
+    @else {
+        <form (ngSubmit)="submitForm()" [formGroup]="newCertForm">
+            <div class="m-5 border-2 p-3">
+                <div class="flex flex-row gap-x-3">
+                    <div>
+                        <p class="font-Roboto font-medium text-[1.1rem]">Header Image</p>
+                        <label for="dropzone-file">
+                            
+                            <div class="border-2 rounded-[5px] w-[310px] h-[210px] flex flex-col justify-center items-center overflow-hidden">
+                                <img *ngIf="imageURL != undefined" [src]="imageURL">
+                                <svg width="40" height="40" viewBox="0 0 51 50" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                  <rect x="0.5" width="50" height="50" fill="url(#pattern0_1441_3830)"/>
+                                  <defs>
+                                  <pattern id="pattern0_1441_3830" patternContentUnits="objectBoundingBox" width="1" height="1">
+                                  <use xlink:href="#image0_1441_3830" transform="scale(0.0111111)"/>
+                                  </pattern>
+                                  <image id="image0_1441_3830" width="90" height="90" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFoAAABaCAYAAAA4qEECAAAACXBIWXMAAAsTAAALEwEAmpwYAAAFLElEQVR4nO2dy2vcVRTHLzRzzyQVXVofoFL9B6yCoOWXc2ai6ULURRR8YbW6aSFasa2rEZq555cRwRRc+C904XNR0T9AkUhtu3GjuPCBjyR1ZQaapJw7pYs0Q6bJff1m7gcOhDCZub9vztzfPeeee35KZTKZTCaTyWQymUxmQGbO7hlrmIeB2q8BmQ6Q+QzQXNTIPwPxMiB3rREv29+hudh7Dc/L34wV8w/Jewz6cSPFeFHercm8CchfAvJ/QLyxK0NzGdB8oYlnx2nuLjXSPPLBeB3NSxr5G0Be27W4/UW/otF8XSd+URWtuhoZitYt4mkaze/exO1jmvhvQH5PNcvb1NBy4OOaRn4H0CyFFngLL1/SxG/LmNQwUaf2QSC+FF3gG8z8BA1uqspTtOqa+CMgsx5f1L5ir2syZ9T0AqgqAgXfq4m/iy8kDzid8A9QmPtVlZCvo5NlGoUWW5aFTKoKaOJngPj/6KLRjj27W2uY51TKAPIbXtfEFEzsNcD26ypFNLWfluAgukjkTuwals+qlJB5DdCsRheHnIvdBTSPqxTQzfkHKnnjo5u5QXb2x1V5egHssii2GOTdFqOus3vBSDDPWtXEJyeKzj4x+TnkdGWDmnhhdaCID7mriZ/cPAaYLJ8It5Q06/XJdhFW5aI1BsgXYoocR2y+FDQRZbNwwaaL8tC246HyUKhpRCO/FS6fjPxvbE+O5dly7aKB8o29CSUmcnCxJZcdIO35R4oihxRbk/lTtuKUL+rIL6csckixa1g+r3xhN1ITFzmU2Br5nPKBbNt7SxqhW5GDiI285qWUwdZdRFzC7RS/Sz9zTLnGFrdUxJODeTaaT5T7SNBcrpInB/LsZaflZ71aOLfeoIlPqsBoLE+5vo4a8gFnAwTiI64HOFF09qnA7KX27R6mj8POBtir6qy+0OPN+TudC02GnQ0QiD93PnVgeUoFRqN5171H86fOBuglJYrcFbEnDs7doTwjn2FF7tVVO/ZoPu9soJr4Vw8D3LgZ6ze22OPSyL84EzqFClCVqtBk/nEotJev3MYwCC1r8yw0VU7oPHVAiKkj3ww51M0w0I43VXCOdrm88xGwwLAI7TKD5yMEh2ER2m0ILqdYs9CwtQavJJ0mhSHx6BrNPehMaEluA/FKFpo3C73i/Ny5nK3OQrPnrazeWno2C82bPfqon6R5xDMqqg/R/vlornjbvJAuAVlo9ltAI0jbhyw0+y8Js0WOEdo/QGJTh/cix6BF6JSw0A1zXHln6v29khocVaF1qEJ0QQqxR1Zo4lkVDCkRI/NjyAuc2GK33Fa4hhU67GGh4MffSDypfSJEidc2x98eDSry9QslcybYhaIURbZPSOAk1jvQGXDTGM2HKuoRZeLFcF7FcQz5ezXT0vGEtsmmzn7nJb2UlK3A1On7VApAgycr3XWG+npyF6icUimhJ/mpYWuMoolnVIpIe5zhaPVjxGGOqJSxLX+qPI2gWU2uxc82rX+qeINckfuNqhJ1PH2PJvNtAuJtDGiL8Vv67JTpBegFNSbplpk2GIm9TnZBvVk+lkJZ2Q2GfCFaWO2NojUmTUVipFg3m4zBZuGK1pgaWqYkny2Nuvm34AKj+cs26p5u3apGhqJVrzXMC5rMV14DHdt6ns/ZPb6Raj2/BZJrlgPscpTMPpli9wIvX3uvozHOM1aDmbN7pJ4NkF8F5FKqgaQG+dqjQJauPx5E2sf3Hhly3r6m99rDthYuPx4kk8lkMplMJpPJZNTAXAWEe8+zB6Wo2gAAAABJRU5ErkJggg=="/>
+                                  </defs>
+                                </svg>
+                                <p class="text-black font-Roboto">Choose an image file</p>
+                                  
+                            </div>
+                        </label>
+                        <input
+                        id="dropzone-file"
+                        type="file"
+                        class="hidden"
+                        (change)="PreviewImage($event)"
+                        accept="image/*"
+                        />
+        
+        
+                        <p class="font-Roboto font-medium text-[1.1rem] mt-4">Certification Detail<span class="font-Roboto font-medium text-[1.1rem] italic">(optional)</span></p>
+                        <input
+                        type="text"
+                        placeholder=""
+                        id="cert_details"
+                        formControlName="cert_details"
+                        class="w-full border-2 px-2 font-Roboto font-regular text-[1.1rem] rounded-[5px] text-black py-1"
+                        >
+                    </div>
+        
+                    <div class="w-full">
+                        <p class="font-Roboto font-medium text-[1.1rem]">Certificate Type</p>
+                        <select
+                        type="text"
+                        placeholder="Add Certification Type"
+                        id="cert_type"
+                        formControlName="cert_type"
+                        class="w-full border-2 px-2 font-Roboto font-regular text-[1.1rem] rounded-[5px] text-black py-1"
+                        >
+                            <option>Achievement</option>
+                            <option>Completion</option>
+                            <option>Appreciation</option>
+                            <option>Recognition</option>
+                            <option>Participation</option>
+                        </select>
+        
+        
+                        <p class="font-Roboto font-medium text-[1.1rem]">Certification Title</p>
+                        <input
+                        type="text"
+                        placeholder="Add Certification Title"
+                        id="cert_name"
+                        formControlName="cert_name"
+                        class="w-full border-2 px-2 font-Roboto font-regular text-[1.1rem] rounded-[5px] text-black py-1"
+                        >
+                
+                        <p class="font-Roboto font-medium text-[1.1rem] mt-4">Institution</p>
+                        <input
+                        type="text"
+                        placeholder="Add Certification Corporation"
+                        id="cert_corporation"
+                        formControlName="cert_corporation"
+                        class="w-full border-2 px-2 font-Roboto font-regular text-[1.1rem] rounded-[5px] text-black py-1"
+                        >
+                
+                        <p class="font-Roboto font-medium text-[1.1rem] mt-4">Date Achieved</p>
+                        <input
+                        type="date"
+                        placeholder=""
+                        id="accomplished_date"
+                        formControlName="accomplished_date"
+                        class="w-full border-2 px-2 font-Roboto font-regular text-[1.1rem] rounded-[5px] text-black py-1"
+                        >
+                    </div>
+                </div>
+                <div class="flex justify-end">
+                    <input
+                    type="submit"
+                    value="Add"
+                    class="bg-blue rounded-full py-2 px-7 mt-2 max-w-min font-semibold text-white"
+                    />
+                </div>
+            </div>
+        </form>
+    }
+
 </div>

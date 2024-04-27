@@ -15,7 +15,8 @@
                     </svg>
                 </div>
             </div>
-            <p class="font-Roboto font-medium text-black text-[1.3rem]">{{ educ.educ_school }}</p>
+            <p class="font-Roboto font-regular text-blue text-[1.3rem]">{{ educ.educ_school }} ( {{educ.year_start | date: "YYYY"}}-{{educ.year_end | date: "YYYY"}} )</p>
+            <hr>
             <p class="ml-5 font-Roboto font-regular text-black text-[1.2rem]">{{ educ.educ_details }}</p>
         </div>
     </div>

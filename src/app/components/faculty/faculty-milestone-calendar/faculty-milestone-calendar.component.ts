@@ -44,7 +44,7 @@ export class FacultyMilestoneCalendarComponent {
   //Creates a 52-week formatted calendar of all dates in the current year.
   constructor(private facultyService: FacultyRequestService) {
     this.calendarBuild();
-    this.getMilestones();
+    // this.getMilestones();
   }
 
   eventParser(type: string, name: string, place: string) {
@@ -77,30 +77,30 @@ export class FacultyMilestoneCalendarComponent {
   }
 
   //Fetches all milestones
-  getMilestones() {
-    forkJoin({
-      certRequest: this.facultyService.fetchData<Certifications[]>('certificate'),
-      experienceRequest: this.facultyService.fetchData<IndustryExperience[]>('experience'),
-      educationRequest: this.facultyService.fetchData<EducationalAttainment[]>('education'),
-      projectRequest: this.facultyService.fetchData<Project[]>('project'),
-      commexRequest: this.facultyService.fetchData<CommunityExtension[]>('getcommex/fetchCommex')
-    })
-      .subscribe({
-        next: (({ certRequest, experienceRequest, educationRequest, projectRequest, commexRequest }) => {
-          this.certifications = certRequest;
-          this.industryExp = experienceRequest;
-          this.educAttainment = educationRequest;
-          this.projects = projectRequest;
-          this.commex = commexRequest;
-        }),
-        complete: () => {
-          this.certifications.forEach((cert) => { this.addEvent(new Date(cert.accomplished_date), this.eventParser("Certification", cert.cert_name, cert.cert_corporation)) });
-          this.educAttainment.forEach((educ) => { this.addEvent(new Date(educ.year_end), this.eventParser("Educational Attainment", educ.educ_title, educ.educ_school)) });
-          this.projects.forEach((proj) => { this.addEvent(new Date(proj.project_date), this.eventParser("Project", proj.project_name, "")) });
-          this.commex.forEach((comm) => { this.addEvent(new Date(comm.commex_date), this.eventParser("Community Extension", comm.commex_title, "")) });
-        }
-      })
-  }
+  // getMilestones() {
+  //   forkJoin({
+  //     certRequest: this.facultyService.fetchData<Certifications[]>('certificate'),
+  //     experienceRequest: this.facultyService.fetchData<IndustryExperience[]>('experience'),
+  //     educationRequest: this.facultyService.fetchData<EducationalAttainment[]>('education'),
+  //     projectRequest: this.facultyService.fetchData<Project[]>('project'),
+  //     commexRequest: this.facultyService.fetchData<CommunityExtension[]>('getcommex/fetchCommex')
+  //   })
+  //     .subscribe({
+  //       next: (({ certRequest, experienceRequest, educationRequest, projectRequest, commexRequest }) => {
+  //         this.certifications = certRequest;
+  //         this.industryExp = experienceRequest;
+  //         this.educAttainment = educationRequest;
+  //         this.projects = projectRequest;
+  //         this.commex = commexRequest;
+  //       }),
+  //       complete: () => {
+  //         this.certifications.forEach((cert) => { this.addEvent(new Date(cert.accomplished_date), this.eventParser("Certification", cert.cert_name, cert.cert_corporation)) });
+  //         this.educAttainment.forEach((educ) => { this.addEvent(new Date(educ.year_end), this.eventParser("Educational Attainment", educ.educ_title, educ.educ_school)) });
+  //         this.projects.forEach((proj) => { this.addEvent(new Date(proj.project_date), this.eventParser("Project", proj.project_name, "")) });
+  //         this.commex.forEach((comm) => { this.addEvent(new Date(comm.commex_date), this.eventParser("Community Extension", comm.commex_title, "")) });
+  //       }
+  //     })
+  // }
 
   //Builds calendar
   calendarBuild() {

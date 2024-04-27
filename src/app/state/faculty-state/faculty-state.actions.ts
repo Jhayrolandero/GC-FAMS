@@ -1,11 +1,12 @@
 import { createAction, props } from "@ngrx/store";
-import { Certifications } from "../../services/Interfaces/certifications";
 import { EducationalAttainment } from "../../services/Interfaces/educational-attainment";
 import { Profile } from "../../services/Interfaces/profile";
 import { IndustryExperience } from "../../services/Interfaces/industry-experience";
 import { Project } from "../../services/Interfaces/project";
 import { Expertise } from "../../services/Interfaces/expertise";
 import { Evaluation } from "../../services/Interfaces/evaluation";
+import { CertificationsFaculty } from "../../services/Interfaces/certifications-faculty";
+import { Certifications } from "../../services/Interfaces/certifications";
 
 
 export const loadProfile = createAction('[Profile Global] Load Profile');
@@ -14,7 +15,7 @@ export const loadProfileSuccess = createAction(
     props<{ profile: Profile }>()
 );
 export const loadProfileFailure = createAction(
-    '[Profile Global] Profile Load Success',
+    '[Profile Global] Profile Load Failed',
     props<{ error: string }>()
 );
 
@@ -25,7 +26,7 @@ export const loadEducSuccess = createAction(
     props<{ educs: EducationalAttainment[] }>()
 );
 export const loadEducFailure = createAction(
-    '[Education Global] Education Load Success',
+    '[Education Global] Education Load Failed',
     props<{ error: string }>()
 );
 
@@ -33,10 +34,10 @@ export const loadEducFailure = createAction(
 export const loadCert = createAction('[Certificate Global] Load Certificate');
 export const loadCertSuccess = createAction(
     '[Certificate Global] Certificate Load Success',
-    props<{ certs: Certifications[] }>()
+    props<{ certs: [CertificationsFaculty[], Certifications[]] }>()
 );
 export const loadCertsFailure = createAction(
-    '[Certificate Global] Certificate Load Success',
+    '[Certificate Global] Certificate Load Failed',
     props<{ error: string }>()
 );
 
@@ -47,7 +48,7 @@ export const loadExpSuccess = createAction(
     props<{ exps: IndustryExperience[] }>()
 );
 export const loadExpFailure = createAction(
-    '[Experience Global] Experience Load Success',
+    '[Experience Global] Experience Load Failed',
     props<{ error: string }>()
 );
 
@@ -58,7 +59,7 @@ export const loadProjSuccess = createAction(
     props<{ proj: Project[] }>()
 );
 export const loadProjFailure = createAction(
-    '[Project Global] Project Load Success',
+    '[Project Global] Project Load Failed',
     props<{ error: string }>()
 );
 
@@ -69,7 +70,7 @@ export const loadExpertiseSuccess = createAction(
     props<{ expertises: Expertise[] }>()
 );
 export const loadExpertiseFailure = createAction(
-    '[Expertise Global] Expertise Load Success',
+    '[Expertise Global] Expertise Load Failed',
     props<{ error: string }>()
 );
 
@@ -79,10 +80,6 @@ export const loadEvalSuccess = createAction(
     props<{ evals: Evaluation[] }>()
 );
 export const loadEvalFailure = createAction(
-    '[Evaluation Global] Evaluation Load Success',
+    '[Evaluation Global] Evaluation Load Failed',
     props<{ error: string }>()
 );
-
-export function loadEvaluation(loadEvaluation: any): import("rxjs").OperatorFunction<import("@ngrx/store").Action, any> {
-    throw new Error("Function not implemented.");
-}

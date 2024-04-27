@@ -12,7 +12,6 @@ import jspdf from 'jspdf';
 import { forkJoin } from 'rxjs';
 import { MessageComponent } from '../../components/message/message.component';
 import { CvDropdownComponent } from "./Profile Dropdown/cv-dropdown.component";
-import { AddFormsComponent } from '../../components/faculty/add-forms/add-forms.component';
 import { FacultyCertificationsComponent } from './Profile Components/faculty-certifications/faculty-certifications.component';
 import { FacultyEducationComponent } from './Profile Components/faculty-education/faculty-education.component';
 import { FacultyExperienceComponent } from './Profile Components/faculty-experience/faculty-experience.component';
@@ -34,7 +33,6 @@ import { Store } from '@ngrx/store';
     FacultyCertificationsComponent,
     FacultyExperienceComponent,
     FacultyExpertiseComponent,
-    AddFormsComponent,
     FacultyProjectsComponent,
     CvDropdownComponent
   ]

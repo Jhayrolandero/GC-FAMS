@@ -8,6 +8,8 @@ import { Component } from '@angular/core';
 import { FacultyRequestService } from '../../../../services/faculty/faculty-request.service';
 import { loadCert } from '../../../../state/faculty-state/faculty-state.actions';
 import { Store } from '@ngrx/store';
+import { selectAllCerts } from '../../../../state/faculty-state/faculty-state.selector';
+import { Certifications } from '../../../../services/Interfaces/certifications';
 
 @Component({
     selector: 'app-faculty-certifications-form',
@@ -19,16 +21,28 @@ import { Store } from '@ngrx/store';
   })
   
   export class FacultyCertificationsFormComponent { 
+    public certifications$ = this.store.select(selectAllCerts);
+    public selectedExisting: boolean = false;
+
     constructor(
       public dialogRef: MatDialogRef<FacultyCertificationsFormComponent>, 
       private facultyRequest: FacultyRequestService,
       private store: Store
     ){}
 
-    certForm = new FormGroup({
+    newCertForm = new FormGroup({
+      college_ID: new FormControl(0),
       cert_name: new FormControl(''),
+      cert_type: new FormControl(''),
+      cert_abbrev: new FormControl(''),
       cert_details: new FormControl(''),
       cert_corporation: new FormControl(''),
+      accomplished_date: new FormControl(''),
+      cert_image: new FormControl<File | null>(null)
+    })
+
+    existCertForm = new FormGroup({
+      cert_ID: new FormControl(''),
       accomplished_date: new FormControl(''),
       cert_image: new FormControl<File | null>(null)
     })
@@ -36,12 +50,37 @@ import { Store } from '@ngrx/store';
     onNoClick(): void {
       this.dialogRef.close();
     }
+
+    existCertSelect(event: any){
+      if(event.target.value == -1){
+        this.selectedExisting = false;
+        return;
+      }
+
+      this.selectedExisting = true;
+      this.existCertForm.patchValue({
+        cert_ID: event.target.value
+      });
+    }
   
     submitForm(){
-      console.log(this.certForm);
+      let submitType;
+      let formType;
+
+      if(this.selectedExisting == true){
+        submitType = 'addFacultyCert';
+        formType = this.existCertForm;
+      }
+      else{
+        submitType = 'addNewCert';
+        formType = this.newCertForm;
+      }
+
+      console.log(submitType);
   
-      const formData = this.facultyRequest.formDatanalize(this.certForm);
-      this.facultyRequest.postData(formData, 'addCert').subscribe({
+      const formData = this.facultyRequest.formDatanalize(formType);
+      this.facultyRequest.postData(formData, submitType).subscribe({
+        next(value) {console.log(value);},
         error: (error) => {console.log(error)},
         complete: () => {
           this.store.dispatch(loadCert());
@@ -60,12 +99,14 @@ import { Store } from '@ngrx/store';
           const reader = new FileReader();
           reader.onload = () => {
               this.imageURL = reader.result as string;
-              this.certForm.patchValue({
+              this.existCertForm.patchValue({
+                cert_image: file
+              })
+              this.newCertForm.patchValue({
                 cert_image: file
               })
           };
           reader.readAsDataURL(file);
       }
-      console.log(this.certForm);
     }
   }
