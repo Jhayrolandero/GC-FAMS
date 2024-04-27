@@ -75,7 +75,7 @@ export class CommexsEffects {
         return this.facultyService.
           postData2<CommunityExtension>(action.commex, 'addCommex').pipe(
             map(commex => CommexActions.postCommexSuccess({ commex })),
-            catchError(err => of(CommexActions.postCommexFailure({ error: err.message })))
+            catchError(err => of(CommexActions.postCommexFailure({ error: err })))
           )
       })
     )

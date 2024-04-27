@@ -6,7 +6,7 @@ import * as CommexActions from "./commex.action";
 export const initialState: CommexState = {
   isLoading: false,
   commexs: [],
-  error: null
+  error: ''
 }
 // For Colleges
 export const initialCollegeXCommexState: CommexState = {

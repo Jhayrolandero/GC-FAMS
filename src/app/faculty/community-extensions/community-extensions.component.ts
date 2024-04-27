@@ -58,8 +58,8 @@ import { Profile } from '../../services/Interfaces/profile';
 })
 export class CommexFormComponent {
 
-  attendeeForm;
-
+  commexForm;
+  commexformData: FormData
   constructor(
     private facultyPostService: FacultyRequestService,
     public dialogRef: MatDialogRef<CommexFormComponent>,
@@ -68,16 +68,26 @@ export class CommexFormComponent {
     private ngZone: NgZone
 
   ) {
-    this.attendeeForm = this._fb.group({
+    this.commexForm = this._fb.group({
+      commex_title: new FormControl('', [
+        Validators.required
+      ]),
+      commex_details: new FormControl('', [
+        Validators.required
+      ]),
+      commex_header_img: new FormControl<File | null>(null),
+      commex_date: new FormControl('', [
+        Validators.required
+      ]),
       attendees: this._fb.array([])
     })
 
-    this.attendeeFormData = new FormData()
+
+    this.commexformData = new FormData()
   }
 
-  attendeeFormData: FormData
   onCheckChange(e: any, attendeeObj: { faculty_ID: number, college_ID: number }) {
-    const formArray: FormArray = this.attendeeForm.get('attendees') as FormArray;
+    const formArray: FormArray = this.commexForm.get('attendees') as FormArray;
 
     if (e.target.checked) {
       formArray.push(new FormControl(attendeeObj));
@@ -97,37 +107,62 @@ export class CommexFormComponent {
       });
     }
 
-    this.attendeeFormData.delete("id[]")
+    this.commexformData.delete("attendees[]")
 
 
     formArray.value.forEach((val: any) => {
-      this.attendeeFormData.append("id[]", JSON.stringify(val))
+      this.commexformData.append("attendees[]", JSON.stringify(val))
     })
 
-    console.log(this.attendeeFormData.getAll("id[]"))
+    console.log(this.commexformData.getAll("attendees[]"))
   }
 
   submitAttendee() {
-    this.facultyPostService.postData(this.attendeeFormData, "attendee").subscribe({
-      next: res => console.log(res),
-      error: err => console.log(err),
-      complete: () => console.log("complete"),
+
+    const formArray: FormArray = this.commexForm.get('attendees') as FormArray;
+
+
+    console.log(
+      this.commexForm.controls['attendees'].value
+    )
+
+    this.commexformData = this.facultyPostService.formDatanalize(this.commexForm);
+
+
+    formArray.value.forEach((val: any) => {
+      this.commexformData.append("attendees[]", JSON.stringify(val))
     })
+    // console.log(formData)
+
+    this.store.dispatch(CommexActions.postCommex({ commex: this.commexformData }))
+
+    // this.facultyPostService.postData(this.commexformData, "addCommex").subscribe({
+    //   next: res => console.log(res),
+    //   error: err => console.log(err),
+    //   complete: () => console.log("complete"),
+    // })
+
+    // console.log(formData)
+    // this.facultyPostService.postData(this.attendeeFormData, "attendee").subscribe({
+    //   next: res => console.log(res),
+    //   error: err => console.log(err),
+    //   complete: () => console.log("complete"),
+    // })
   }
 
 
-  commexForm = new FormGroup({
-    commex_title: new FormControl('', [
-      Validators.required
-    ]),
-    commex_details: new FormControl('', [
-      Validators.required
-    ]),
-    commex_header_img: new FormControl<File | null>(null),
-    commex_date: new FormControl('', [
-      Validators.required
-    ]),
-  })
+  // commexForm = new FormGroup({
+  //   commex_title: new FormControl('', [
+  //     Validators.required
+  //   ]),
+  //   commex_details: new FormControl('', [
+  //     Validators.required
+  //   ]),
+  //   commex_header_img: new FormControl<File | null>(null),
+  //   commex_date: new FormControl('', [
+  //     Validators.required
+  //   ]),
+  // })
 
 
 
