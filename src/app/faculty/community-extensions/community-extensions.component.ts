@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { CommunityExtension } from '../../services/Interfaces/community-extension';
 import { OtherCommexComponent } from './other-commex/other-commex.component';
 import { CommonModule, NgFor, NgIf, SlicePipe } from '@angular/common';
@@ -14,7 +14,7 @@ import {
   MatDialogClose,
 } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { TooltipComponent } from '../../components/tooltip/tooltip.component';
@@ -58,11 +58,62 @@ import { Profile } from '../../services/Interfaces/profile';
 })
 export class CommexFormComponent {
 
+  attendeeForm;
+
   constructor(
     private facultyPostService: FacultyRequestService,
     public dialogRef: MatDialogRef<CommexFormComponent>,
-    private store: Store<{ commexs: CommexState }>
-  ) { }
+    private store: Store<{ commexs: CommexState }>,
+    private _fb: FormBuilder,
+    private ngZone: NgZone
+
+  ) {
+    this.attendeeForm = this._fb.group({
+      attendees: this._fb.array([])
+    })
+
+    this.attendeeFormData = new FormData()
+  }
+
+  attendeeFormData: FormData
+  onCheckChange(e: any, attendeeObj: { faculty_ID: number, college_ID: number }) {
+    const formArray: FormArray = this.attendeeForm.get('attendees') as FormArray;
+
+    if (e.target.checked) {
+      formArray.push(new FormControl(attendeeObj));
+      // Add a new control in the arrayForm
+    } else {
+      let i: number = 0;
+
+      formArray.controls.forEach((ctrl: any) => {
+        if (JSON.stringify(ctrl.value) === JSON.stringify(attendeeObj)) {
+          // Remove the unselected element from the arrayForm
+          console.log("removed");
+          formArray.removeAt(i);
+          return;
+        }
+
+        i++;
+      });
+    }
+
+    this.attendeeFormData.delete("id[]")
+
+
+    formArray.value.forEach((val: any) => {
+      this.attendeeFormData.append("id[]", JSON.stringify(val))
+    })
+
+    console.log(this.attendeeFormData.getAll("id[]"))
+  }
+
+  submitAttendee() {
+    this.facultyPostService.postData(this.attendeeFormData, "attendee").subscribe({
+      next: res => console.log(res),
+      error: err => console.log(err),
+      complete: () => console.log("complete"),
+    })
+  }
 
 
   commexForm = new FormGroup({
@@ -78,11 +129,7 @@ export class CommexFormComponent {
     ]),
   })
 
-  attendeeForm = new FormGroup({
-    commex_ID: new FormControl(0),
-    faculty_ID: new FormControl(0)
-  })
-  // attendeeForm = new
+
 
   onNoClick(): void {
     this.dialogRef.close();
