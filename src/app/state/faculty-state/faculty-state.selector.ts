@@ -4,8 +4,8 @@ import { ProfileState } from "./faculty-state.reducer";
 export const selectProfileState = createFeatureSelector<ProfileState>('profile');
 
 export const selectAllProfile = createSelector(
-    selectProfileState,
-    (state: ProfileState) => state.profile
+  selectProfileState,
+  (state: ProfileState) => state.profile
 );
 
 export const selectAllEduc = createSelector(

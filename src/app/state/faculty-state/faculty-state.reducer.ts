@@ -34,7 +34,7 @@ export const initialProfileState: ProfileState = {
 }
 
 export const profileReducer = createReducer(
-    initialProfileState,
+  initialProfileState,
 
     on(CertActions.loadProfile, (state) => ({ ...state})),
     on(CertActions.loadProfileSuccess, (state, { profile }) => ({

@@ -23,6 +23,13 @@ export class FacultyRequestService {
     return this.http.get<T>(mainPort + '/GC-FaMS-API/API/' + endpoint);
   }
 
+
+  postData2<T>(data: FormData, endpoint: string): Observable<T> {
+    return this.http.post<T>(mainPort + '/GC-FaMS-API/API/' + endpoint, data);
+    // catch (error) {
+    //   return this.http.post(mainPort + '/GC-FaMS-API/API/' + endpoint, data);
+    // }
+  }
   postData(data: any, endpoint: string) {
     try {
       console.log("Postdata initial req");
