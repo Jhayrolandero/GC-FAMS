@@ -14,7 +14,7 @@ import { attendeeNumberReducer, attendeeReducer } from './state/attendee/attende
 import { AttendeeEffects } from './state/attendee/attendee.effects';
 import { certReducer, educReducer, expReducer, expertiseReducer, profileReducer, projReducer } from './state/faculty-state/faculty-state.reducer';
 import { CvEffects } from './state/faculty-state/faculty-state.effects';
-
+import { provideMomentDateAdapter } from '@angular/material-moment-adapter'
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
@@ -40,7 +40,8 @@ export const appConfig: ApplicationConfig = {
     provideState({ name: 'educ', reducer: educReducer }),
     provideState({ name: 'exp', reducer: expReducer }),
     provideState({ name: 'proj', reducer: projReducer }),
-    provideState({ name: 'expertise', reducer: expertiseReducer })
+    provideState({ name: 'expertise', reducer: expertiseReducer }),
+    provideMomentDateAdapter(undefined, { strict: true })
   ]
 };
 

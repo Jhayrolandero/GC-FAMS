@@ -36,6 +36,7 @@ import { ProfileState } from '../../state/faculty-state/faculty-state.reducer';
 import * as ProfileSelectors from '../../state/faculty-state/faculty-state.selector';
 import { Profile } from '../../services/Interfaces/profile';
 import { Faculty } from '../../services/Interfaces/faculty';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 @Component({
   selector: 'app-commex-form',
   standalone: true,
@@ -208,7 +209,9 @@ export class CommexFormComponent {
     CommexFormComponent,
     TooltipComponent,
     NgIf,
-    FormsModule],
+    FormsModule,
+    MatFormFieldModule,
+    MatDatepickerModule],
   templateUrl: './community-extensions.component.html',
   styleUrl: './community-extensions.component.css'
 })
