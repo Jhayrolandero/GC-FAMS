@@ -19,6 +19,8 @@ import { FacultyExpertiseComponent } from './Profile Components/faculty-expertis
 import { FacultyProjectsComponent } from './Profile Components/faculty-projects/faculty-projects.component';
 import { selectAllProfile, selectCourseSched, selectCourses } from '../../state/faculty-state/faculty-state.selector';
 import { Store } from '@ngrx/store';
+import { CourseFormComponent } from './Profile Forms/course-form/course-form.component';
+import { MatDialog } from '@angular/material/dialog';
 @Component({
   selector: 'app-profile',
   standalone: true,
@@ -52,11 +54,16 @@ export class ProfileComponent {
   constructor(
     private facultyService: FacultyRequestService, 
     private store: Store,
+    public dialog: MatDialog,
     private router: Router, 
     private http: HttpClient){}
 
   getCv() {
     this.router.navigate(['cv']);
+  }
+
+  openDialogue(){
+    const courseRef = this.dialog.open(CourseFormComponent);
   }
 
   rotate(){

@@ -73,7 +73,7 @@
             <div class="flex flex-row justify-between">
                 <p class="text-[1.6rem] font-Roboto font-semibold">Courses Handled</p>
                 <div>
-                    <div class="w-[80px] h-[28px] rounded-[15px] bg-blue hover:shadow-main hover:scale-[102%] hover:duration-300 duration:300 flex justify-center items-center">
+                    <div (click)="openDialogue()" class="w-[80px] h-[28px] rounded-[15px] bg-blue hover:shadow-main hover:scale-[102%] hover:duration-300 duration:300 flex justify-center items-center">
                     <svg width="25" height="25" viewBox="0 0 30 31" fill="none" xmlns="http://www.w3.org/2000/svg" >
                       <g clip-path="url(#clip0_984_350)">
                         <path fill-rule="evenodd" clip-rule="evenodd" d="M11.25 6.75C11.25 6.08696 11.5134 5.45107 11.9822 4.98223C12.4511 4.51339 13.087 4.25 13.75 4.25H16.25C16.913 4.25 17.5489 4.51339 18.0178 4.98223C18.4866 5.45107 18.75 6.08696 18.75 6.75V11.75H23.75C24.413 11.75 25.0489 12.0134 25.5178 12.4822C25.9866 12.9511 26.25 13.587 26.25 14.25V16.75C26.25 17.413 25.9866 18.0489 25.5178 18.5178C25.0489 18.9866 24.413 19.25 23.75 19.25H18.75V24.25C18.75 24.913 18.4866 25.5489 18.0178 26.0178C17.5489 26.4866 16.913 26.75 16.25 26.75H13.75C13.087 26.75 12.4511 26.4866 11.9822 26.0178C11.5134 25.5489 11.25 24.913 11.25 24.25V19.25H6.25C5.58696 19.25 4.95107 18.9866 4.48223 18.5178C4.01339 18.0489 3.75 17.413 3.75 16.75V14.25C3.75 13.587 4.01339 12.9511 4.48223 12.4822C4.95107 12.0134 5.58696 11.75 6.25 11.75H11.25V6.75Z" fill="#FFFFFF"/>
@@ -95,7 +95,7 @@
                 <p class="w-[10%] text-greenBar font-Roboto font-bold text-[0.9rem]">Unit</p>
                 <p class="w-[10%] text-greenBar font-Roboto font-bold text-[0.9rem]">Count</p>
             </div>
-            <div class="grid gap-y-2">
+            <div class="grid gap-y-2 h-[150px]  overflow-y-scroll">
                 <div *ngFor="let cert of certFaculty$ | async" class="w-full rounded-[10px] bg-blue shadow-main flex flex-row px-5 py-[7px]">
                     <p class="w-[20%] text-white font-Roboto font-medium text-[0.8rem]">{{ cert.course_code }}</p>
                     <p class="w-[60%] text-white font-Roboto font-medium text-[0.8rem]">{{ cert.course_name }}</p>
