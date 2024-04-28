@@ -1,15 +1,18 @@
 import { createReducer, on } from "@ngrx/store";
 import { CommexState } from "../../services/Interfaces/commexState";
 import * as CommexActions from "./commex.action";
+import { state } from "@angular/animations";
 
 // For Faculty
 export const initialState: CommexState = {
+  postLoading: false,
   isLoading: false,
   commexs: [],
   error: ''
 }
 // For Colleges
 export const initialCollegeXCommexState: CommexState = {
+  postLoading: false,
   isLoading: false,
   commexs: [],
   error: null
@@ -28,10 +31,19 @@ export const commexReducer = createReducer(
     isLoading: false,
     error: action.error
   })),
+  on(CommexActions.postCommex, (state) => ({ ...state, postLoading: true })),
   on(CommexActions.postCommexSuccess, (state, action) => (
     {
       ...state,
-      commexs: [...state.commexs, action.commex]
+      commexs: [...state.commexs, action.commex],
+      postLoading: false
+    }
+  )),
+  on(CommexActions.postCommexFailure, (state, action) => (
+    {
+      ...state,
+      postLoading: false,
+      error: action.error
     }
   )),
   on(CommexActions.setLoading, (state, action) => ({

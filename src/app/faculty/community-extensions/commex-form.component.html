@@ -105,7 +105,14 @@
           </label>
           }
         }
-        <button (click)="submitAttendee()">Submit</button>
+        <button
+        (click)="submitAttendee()"
+        [disabled]="postLoading$ | async">Submit
+
+        @if(postLoading$ | async) {
+          <span><i class="fa-duotone fa-spinner-third animate-spin"></i></span>
+        }
+        </button>
       </ng-container>
       <ng-template #loading>
         <div *ngIf="!data.error">

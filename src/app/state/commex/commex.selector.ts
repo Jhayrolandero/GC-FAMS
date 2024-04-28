@@ -18,7 +18,9 @@ export const selectCollegeCommexFeature = (state: CollegeCommexState) => state.c
 export const isLoadingSelector = createSelector(selectFeature,
   (state) => state.isLoading
 )
-
+export const postLoadingSelector = createSelector(selectFeature,
+  (state) => state.postLoading
+)
 
 export const commexSelector = createSelector(selectFeature,
   (state) => state.commexs

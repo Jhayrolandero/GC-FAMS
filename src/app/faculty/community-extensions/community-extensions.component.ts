@@ -64,12 +64,13 @@ export class CommexFormComponent {
   fetchAttendee$: Observable<Faculty[]> = this.facultyService.fetchData<Faculty[]>("faculty");
   fetchAttendeeError$: Observable<Error> = this.fetchAttendee$.pipe(catchError((err) => of(err)));
   profile$: Observable<Profile>
-
+  postLoading$: Observable<boolean>
   constructor(
     private facultyService: FacultyRequestService,
     public dialogRef: MatDialogRef<CommexFormComponent>,
     private store: Store<{ commexs: CommexState }>,
     private profileStore: Store<{ profile: ProfileState }>,
+    private commexFacultyStore: Store<{ commexs: CommexState }>,
     private _fb: FormBuilder
   ) {
     this.commexForm = this._fb.group({
@@ -90,7 +91,7 @@ export class CommexFormComponent {
     this.commexformData = new FormData()
 
     this.profile$ = this.profileStore.pipe(select(ProfileSelectors.selectAllProfile))
-
+    this.postLoading$ = this.commexFacultyStore.pipe(select(CommexsSelector.postLoadingSelector))
   }
 
   onCheckChange(e: any, attendeeObj: { faculty_ID: number, college_ID: number }) {

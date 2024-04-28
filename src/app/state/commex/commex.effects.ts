@@ -10,7 +10,7 @@ import { getAttendeeNumber } from "../attendee/attendee.action";
 import { AttendeeNumberState } from "../../services/Interfaces/attendeeNumberState";
 import { CommexState } from "../../services/Interfaces/commexState";
 import { parsedCollegeCommexSelector, parsedCommexSelector } from "./commex.selector";
-
+import { MessageService } from "../../services/message.service";
 @Injectable()
 
 export class CommexsEffects {
@@ -21,6 +21,7 @@ export class CommexsEffects {
     private facultyService: FacultyRequestService,
     private commexFacultyStore: Store<{ commexs: CommexState }>,
     private commexCollegeStore: Store<{ collegeCommexs: CommexState }>,
+    private messageService: MessageService
   ) {
   }
 
@@ -71,11 +72,19 @@ export class CommexsEffects {
   postCommex$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(CommexActions.postCommex),
+      tap(() => this.messageService.sendMessage("Posting Commex", 0)),
       exhaustMap((action) => {
         return this.facultyService.
           postData2<CommunityExtension>(action.commex, 'addCommex').pipe(
-            map(commex => CommexActions.postCommexSuccess({ commex })),
-            catchError(err => of(CommexActions.postCommexFailure({ error: err })))
+            map(commex => {
+              this.messageService.sendMessage("Commex post successfully!", 1)
+              return CommexActions.postCommexSuccess({ commex })
+            }
+            ),
+            catchError(err => {
+              this.messageService.sendMessage("Error in posting commex!", -1)
+              return of(CommexActions.postCommexFailure({ error: err }))
+            })
           )
       })
     )
