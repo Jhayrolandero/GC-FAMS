@@ -10,31 +10,31 @@ export const selectExpertiseState = createFeatureSelector<ExpertiseState>('exper
 
 
 export const selectAllProfile = createSelector(
-    selectProfileState,
-    (state: ProfileState) => state.profile
+  selectProfileState,
+  (state: ProfileState) => state.profile
 );
 
 export const selectAllEduc = createSelector(
-    selectEducState,
-    (state: EducState) => state.educs
+  selectEducState,
+  (state: EducState) => state.educs
 );
 
 export const selectAllCerts = createSelector(
-    selectCertState,
-    (state: CertState) => state.certs
+  selectCertState,
+  (state: CertState) => state.certs
 );
 
 export const selectAllExp = createSelector(
-    selectExpState,
-    (state: ExpState) => state.exps
+  selectExpState,
+  (state: ExpState) => state.exps
 );
 
 export const selectAllProj = createSelector(
-    selectProjState,
-    (state: ProjState) => state.proj
+  selectProjState,
+  (state: ProjState) => state.proj
 );
 
 export const selectAllExpertise = createSelector(
-    selectExpertiseState,
-    (state: ExpertiseState) => state.expertises
+  selectExpertiseState,
+  (state: ExpertiseState) => state.expertises
 );

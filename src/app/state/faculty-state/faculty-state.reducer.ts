@@ -8,130 +8,156 @@ import { Project } from "../../services/Interfaces/project";
 import { Expertise } from "../../services/Interfaces/expertise";
 
 export interface ProfileState {
-    profile?: Profile;
+  profile: Profile;
 }
 
 export interface CertState {
-    certs: Certifications[];
+  certs: Certifications[];
 }
 
-export interface EducState{
-    educs: EducationalAttainment[];
+export interface EducState {
+  educs: EducationalAttainment[];
 }
 
-export interface ExpState{
-    exps: IndustryExperience[];
+export interface ExpState {
+  exps: IndustryExperience[];
 }
 
-export interface ProjState{
-    proj: Project[];
+export interface ProjState {
+  proj: Project[];
 }
 
-export interface ExpertiseState{
-    expertises: Expertise[];
+export interface ExpertiseState {
+  expertises: Expertise[];
 }
 
 
 
 export const initialProfileState: ProfileState = {
-    profile: undefined
+  profile: {
+    faculty_ID: -1,
+    college_ID: -1,
+    college_name: '',
+    college_abbrev: '',
+    teaching_position: '',
+    isAdmin: false,
+    first_name: '',
+    last_name: '',
+    birthdate: new Date(),
+    age: -1,
+    citizenship: '',
+    civil_status: '',
+    sex: '',
+    email: '',
+    employment_status: false,
+    phone_number: '',
+    middle_name: '',
+    ext_name: '',
+    region: '',
+    province: '',
+    language: '',
+    city: '',
+    barangay: '',
+    profile_image: '',
+    cover_image: ''
+  }
 }
 
 export const initialEducState: EducState = {
-    educs: []
+  educs: []
 }
 
 export const initialCertState: CertState = {
-    certs: []
+  certs: []
 };
 
 export const initialExpState: ExpState = {
-    exps: []
+  exps: []
 }
 
 export const initialProjState: ProjState = {
-    proj: []
+  proj: []
 }
 
 export const initialExpertiseState: ExpertiseState = {
-    expertises: []
+  expertises: []
 }
 
 
 export const profileReducer = createReducer(
-    initialProfileState,
+  initialProfileState,
 
-    on(CertActions.loadProfile, (state) => ({ ...state})),
-    on(CertActions.loadProfileSuccess, (state, { profile }) => ({
-        ...state,
-        profile: profile
-    })),
-    on(CertActions.loadProfileFailure, (state) => ({
-        ...state,
-    }))
+  on(CertActions.loadProfile, (state) => ({ ...state })),
+  on(CertActions.loadProfileSuccess, (state, { profile }) => ({
+    ...state,
+    profile: profile
+  })),
+  on(CertActions.loadProfileFailure, (state) => ({
+    ...state,
+  }))
 )
 
 export const educReducer = createReducer(
-    initialEducState,
+  initialEducState,
 
-    on(CertActions.loadEduc, (state) => ({ ...state})),
-    on(CertActions.loadEducSuccess, (state, { educs }) => ({
-        ...state,
-        educs: educs
-    })),
-    on(CertActions.loadEducFailure, (state) => ({
-        ...state,
-    }))
+  on(CertActions.loadEduc, (state) => ({ ...state })),
+  on(CertActions.loadEducSuccess, (state, { educs }) => ({
+    ...state,
+    educs: educs
+  })),
+  on(CertActions.loadEducFailure, (state) => ({
+    ...state,
+  }))
 )
 
 export const certReducer = createReducer(
-    initialCertState,
+  initialCertState,
 
-    on(CertActions.loadCert, (state) => ({ ...state})),
-    on(CertActions.loadCertSuccess, (state, { certs }) => ({
-        ...state,
-        certs: certs
-    })),
-    on(CertActions.loadCertsFailure, (state) => ({
-        ...state,
-    }))
+  on(CertActions.loadCert, (state) => ({ ...state })),
+  on(CertActions.loadCertSuccess, (state, { certs }) => ({
+    ...state,
+    certs: certs
+  })),
+  on(CertActions.loadCertsFailure, (state) => ({
+    ...state,
+  }))
 )
 
 export const expReducer = createReducer(
-    initialExpState,
+  initialExpState,
 
-    on(CertActions.loadExp, (state) => ({ ...state})),
-    on(CertActions.loadExpSuccess, (state, { exps }) => ({
-        ...state,
-        exps: exps
-    })),
-    on(CertActions.loadExpFailure, (state) => ({
-        ...state,
-    }))
+  on(CertActions.loadExp, (state) => ({ ...state })),
+  on(CertActions.loadExpSuccess, (state, { exps }) => ({
+    ...state,
+    exps: exps
+  })),
+  on(CertActions.loadExpFailure, (state) => ({
+    ...state,
+  }))
 )
 
 export const projReducer = createReducer(
-    initialProjState,
+  initialProjState,
 
-    on(CertActions.loadProj, (state) => ({ ...state})),
-    on(CertActions.loadProjSuccess, (state, { proj }) => ({
-        ...state,
-        proj: proj
-    })),
-    on(CertActions.loadProjFailure, (state) => ({
-        ...state,
-    }))
+  on(CertActions.loadProj, (state) => ({ ...state })),
+  on(CertActions.loadProjSuccess, (state, { proj }) => ({
+    ...state,
+    proj: proj
+  })),
+  on(CertActions.loadProjFailure, (state) => ({
+    ...state,
+  }))
 )
 
 export const expertiseReducer = createReducer(
-    initialExpertiseState,
+  initialExpertiseState,
 
-    on(CertActions.loadExpertise, (state) => ({ ...state})),
-    on(CertActions.loadExpertiseSuccess, (state, { expertises }) => ({
-        ...state,
-        expertises: expertises
-    })),
-    on(CertActions.loadExpertiseFailure, (state) => ({
-        ...state,
-    }))
+  on(CertActions.loadExpertise, (state) => ({ ...state })),
+  on(CertActions.loadExpertiseSuccess, (state, { expertises }) => ({
+    ...state,
+    expertises: expertises
+  })),
+  on(CertActions.loadExpertiseFailure, (state) => ({
+    ...state,
+  }))
 )

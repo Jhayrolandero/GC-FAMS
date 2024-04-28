@@ -71,3 +71,15 @@ export const loadExpertiseFailure = createAction(
     '[Expertise Global] Expertise Load Success',
     props<{ error: string }>()
 );
+
+
+export const loadFaculties = createAction('[Faculty] Load Faculty');
+
+export const loadFacultiesSuccess = createAction(
+    '[Faculty] Faculty Load Success',
+    props<{ profile: Profile }>()
+);
+export const loadFacultiesFailure = createAction(
+    '[Faculty] Profile Load Success',
+    props<{ error: string }>()
+);
