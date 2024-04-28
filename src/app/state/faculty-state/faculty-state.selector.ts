@@ -14,10 +14,6 @@ export const selectAllProfile = createSelector(
   (state: ProfileState) => state.profile
 );
 
-export const selectProfileCollege = createSelector(
-  selectProfileState,
-  (state) => state.profile.college_ID
-)
 export const selectAllEduc = createSelector(
   selectEducState,
   (state: EducState) => state.educs

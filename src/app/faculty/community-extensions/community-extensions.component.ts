@@ -19,7 +19,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { TooltipComponent } from '../../components/tooltip/tooltip.component';
 import { Attendee } from '../../services/Interfaces/attendee';
-import { Observable, Subscription, concatMap, first, from, map, merge, mergeAll, mergeMap, of, tap, toArray } from 'rxjs';
+import { Observable, Subscription, catchError, concatMap, first, from, map, merge, mergeAll, mergeMap, of, tap, toArray } from 'rxjs';
 import { Dictionary } from '../../services/Interfaces/dictionary';
 import { Response } from '../../services/Interfaces/response';
 import { AttendeeCount } from '../../services/Interfaces/attendeeCount';
@@ -35,7 +35,7 @@ import * as AttendeeSelector from '../../state/attendee/attendee.selector';
 import { ProfileState } from '../../state/faculty-state/faculty-state.reducer';
 import * as ProfileSelectors from '../../state/faculty-state/faculty-state.selector';
 import { Profile } from '../../services/Interfaces/profile';
-
+import { Faculty } from '../../services/Interfaces/faculty';
 @Component({
   selector: 'app-commex-form',
   standalone: true,
@@ -58,15 +58,19 @@ import { Profile } from '../../services/Interfaces/profile';
 })
 export class CommexFormComponent {
 
+  mainPort: string = mainPort
   commexForm;
   commexformData: FormData
+  fetchAttendee$: Observable<Faculty[]> = this.facultyService.fetchData<Faculty[]>("faculty");
+  fetchAttendeeError$: Observable<Error> = this.fetchAttendee$.pipe(catchError((err) => of(err)));
+  profile$: Observable<Profile>
+
   constructor(
-    private facultyPostService: FacultyRequestService,
+    private facultyService: FacultyRequestService,
     public dialogRef: MatDialogRef<CommexFormComponent>,
     private store: Store<{ commexs: CommexState }>,
-    private _fb: FormBuilder,
-    private ngZone: NgZone
-
+    private profileStore: Store<{ profile: ProfileState }>,
+    private _fb: FormBuilder
   ) {
     this.commexForm = this._fb.group({
       commex_title: new FormControl('', [
@@ -84,6 +88,9 @@ export class CommexFormComponent {
 
 
     this.commexformData = new FormData()
+
+    this.profile$ = this.profileStore.pipe(select(ProfileSelectors.selectAllProfile))
+
   }
 
   onCheckChange(e: any, attendeeObj: { faculty_ID: number, college_ID: number }) {
@@ -126,28 +133,14 @@ export class CommexFormComponent {
       this.commexForm.controls['attendees'].value
     )
 
-    this.commexformData = this.facultyPostService.formDatanalize(this.commexForm);
+    this.commexformData = this.facultyService.formDatanalize(this.commexForm);
 
 
     formArray.value.forEach((val: any) => {
       this.commexformData.append("attendees[]", JSON.stringify(val))
     })
-    // console.log(formData)
 
     this.store.dispatch(CommexActions.postCommex({ commex: this.commexformData }))
-
-    // this.facultyPostService.postData(this.commexformData, "addCommex").subscribe({
-    //   next: res => console.log(res),
-    //   error: err => console.log(err),
-    //   complete: () => console.log("complete"),
-    // })
-
-    // console.log(formData)
-    // this.facultyPostService.postData(this.attendeeFormData, "attendee").subscribe({
-    //   next: res => console.log(res),
-    //   error: err => console.log(err),
-    //   complete: () => console.log("complete"),
-    // })
   }
 
 
@@ -172,11 +165,11 @@ export class CommexFormComponent {
 
   submitForm() {
 
-    const formData = this.facultyPostService.formDatanalize(this.commexForm);
+    const formData = this.facultyService.formDatanalize(this.commexForm);
     this.store.dispatch(CommexActions.postCommex({ commex: formData }))
     // // console.log(this.commexForm);
     // // console.log(formData.get("commex_title"))
-    // this.facultyPostService.postData(formData, 'addCommex').subscribe({
+    // this.facultyService.postData(formData, 'addCommex').subscribe({
     //   next: (next: any) => { console.log(next); },
     //   error: (error) => { console.log(error) },
     //   complete: () => { this.onNoClick(); }
