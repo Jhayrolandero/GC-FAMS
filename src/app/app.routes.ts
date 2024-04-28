@@ -17,7 +17,6 @@ export const routes: Routes = [
       { path: 'curriculum-vitae', loadComponent: () => import('./faculty/profile/profile.component').then(m => m.ProfileComponent),
       },
       { path: 'analytics', loadComponent: () => import('./faculty/analytics/analytics.component').then(m => m.AnalyticsComponent) },
-      { path: 'schedule', loadComponent: () => import('./faculty/schedule/schedule.component').then(m => m.ScheduleComponent) },
       { path: 'community', loadComponent: () => import('./faculty/community-extensions/community-extensions.component').then(m => m.CommunityExtensionsComponent) },
       { path: 'evaluation', loadComponent: () => import('./faculty/evaluation/evaluation.component').then(m => m.EvaluationComponent) },
     ], canActivateChild: [authGuard],

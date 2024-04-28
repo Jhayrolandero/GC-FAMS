@@ -10,8 +10,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MessageComponent } from '../components/message/message.component';
 import { FormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { loadCert, loadEduc, loadEval, loadExp, loadExpertise, loadProfile, loadProj } from '../state/faculty-state/faculty-state.actions';
-import { Store } from '@ngrx/store';
+import { loadCert, loadCourse, loadEduc, loadEval, loadExp, loadExpertise, loadProfile, loadProj } from '../state/faculty-state/faculty-state.actions';
+import { Store, StoreModule } from '@ngrx/store';
 
 @Component({
   selector: 'app-faculty',
@@ -38,6 +38,7 @@ export class FacultyComponent {
   constructor(private store: Store){
     store.dispatch(loadProfile());
     store.dispatch(loadCert());
+    store.dispatch(loadCourse());
     store.dispatch(loadEduc());
     store.dispatch(loadExp());
     store.dispatch(loadProj());

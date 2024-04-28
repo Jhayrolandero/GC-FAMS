@@ -8,6 +8,8 @@ import { Expertise } from "../../services/Interfaces/expertise";
 import { Evaluation } from "../../services/Interfaces/evaluation";
 import { CertificationsFaculty } from "../../services/Interfaces/certifications-faculty";
 import { Certifications } from "../../services/Interfaces/certifications";
+import { Courses } from "../../services/Interfaces/courses";
+import { CoursesFaculty } from "../../services/Interfaces/courses-faculty";
 
 export interface ProfileState {
     profile?: Profile;
@@ -17,31 +19,8 @@ export interface ProfileState {
     proj: Project[];
     expertises: Expertise[];
     evals: Evaluation[];
+    courses: [CoursesFaculty[], Courses[]];
 }
-
-// export interface CertState {
-//     certs: Certifications[];
-// }
-
-// export interface EducState{
-//     educs: EducationalAttainment[];
-// }
-
-// export interface ExpState{
-//     exps: IndustryExperience[];
-// }
-
-// export interface ProjState{
-//     proj: Project[];
-// }
-
-// export interface ExpertiseState{
-//     expertises: Expertise[];
-// }
-
-// export interface EvaluationState{
-//     evals: Evaluation[];
-// }
 
 export const initialProfileState: ProfileState = {
     profile: undefined,
@@ -50,32 +29,9 @@ export const initialProfileState: ProfileState = {
     exps: [],
     proj: [],
     expertises: [],
-    evals: []
+    evals: [],
+    courses: [[], []]
 }
-
-// export const initialEducState: EducState = {
-//     educs: []
-// }
-
-// export const initialCertState: CertState = {
-//     certs: []
-// };
-
-// export const initialExpState: ExpState = {
-//     exps: []
-// }
-
-// export const initialProjState: ProjState = {
-//     proj: []
-// }
-
-// export const initialExpertiseState: ExpertiseState = {
-//     expertises: []
-// }
-
-// export const initialEvaluationState: EvaluationState = {
-//     evals: []
-// }
 
 export const profileReducer = createReducer(
     initialProfileState,
@@ -127,5 +83,13 @@ export const profileReducer = createReducer(
         ...state,
         evals: evals
     })),
-    on(CertActions.loadEvalFailure, (state) => ({...state,}))
+    on(CertActions.loadEvalFailure, (state) => ({...state,})),
+
+
+    on(CertActions.loadCourse, (state) => ({ ...state})),
+    on(CertActions.loadCourseSuccess, (state, { courses }) => ({
+        ...state,
+        courses: courses
+    })),
+    on(CertActions.loadCourseFailure, (state) => ({...state,}))
 )

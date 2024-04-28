@@ -12,6 +12,8 @@ import { Project } from "../../services/Interfaces/project";
 import { Expertise } from "../../services/Interfaces/expertise";
 import { Evaluation } from "../../services/Interfaces/evaluation";
 import { CertificationsFaculty } from "../../services/Interfaces/certifications-faculty";
+import { CoursesFaculty } from "../../services/Interfaces/courses-faculty";
+import { Courses } from "../../services/Interfaces/courses";
 
 @Injectable()
 
@@ -57,6 +59,18 @@ export class CvEffects{
             )
         )
     ));
+
+    loadCourses$ = createEffect(() => this.actions$.pipe(
+        ofType(CvActions.loadCourse),
+        switchMap(() => this.facultyService.fetchData('getSchedules')
+            .pipe(
+                tap((courses) => console.log('Courses has loaded:', courses)),
+                map((courses) => CvActions.loadCourseSuccess({courses: courses as [CoursesFaculty[], Courses[]]})),
+                catchError((error) => of(CvActions.loadCourseFailure({ error } )))
+            )
+        )
+    ));
+
 
     loadExp$ = createEffect(() => this.actions$.pipe(
         ofType(CvActions.loadExp),

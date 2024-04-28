@@ -23,6 +23,17 @@ export const selectAllCerts = createSelector(
     (state: ProfileState) => state.certs[1]
 );
 
+export const selectCourseSched = createSelector(
+    selectProfileState,
+    (state: ProfileState) => state.courses[0]
+);
+
+export const selectCourses = createSelector(
+    selectProfileState,
+    (state: ProfileState) => state.courses[1]
+);
+
+
 export const selectAllExp = createSelector(
     selectProfileState,
     (state: ProfileState) => state.exps

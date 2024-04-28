@@ -17,7 +17,7 @@ import { FacultyEducationComponent } from './Profile Components/faculty-educatio
 import { FacultyExperienceComponent } from './Profile Components/faculty-experience/faculty-experience.component';
 import { FacultyExpertiseComponent } from './Profile Components/faculty-expertise/faculty-expertise.component';
 import { FacultyProjectsComponent } from './Profile Components/faculty-projects/faculty-projects.component';
-import { selectAllProfile } from '../../state/faculty-state/faculty-state.selector';
+import { selectAllProfile, selectCourseSched, selectCourses } from '../../state/faculty-state/faculty-state.selector';
 import { Store } from '@ngrx/store';
 @Component({
   selector: 'app-profile',
@@ -42,6 +42,8 @@ export class ProfileComponent {
   isLoading: boolean = true;
   port = mainPort;
   public facultyProfile$ = this.store.select(selectAllProfile);
+  public certFaculty$ = this.store.select(selectCourseSched);
+  public certs$ = this.store.select(selectCourses);
   schedules: Schedule[] = [];
 
   rotated = false;
@@ -54,8 +56,6 @@ export class ProfileComponent {
     private http: HttpClient){}
 
   getCv() {
-    // const url = this.router.serializeUrl(this.router.createUrlTree(['cv']));
-    // window.open(url, '_blank');
     this.router.navigate(['cv']);
   }
 

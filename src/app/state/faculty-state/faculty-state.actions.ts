@@ -7,6 +7,8 @@ import { Expertise } from "../../services/Interfaces/expertise";
 import { Evaluation } from "../../services/Interfaces/evaluation";
 import { CertificationsFaculty } from "../../services/Interfaces/certifications-faculty";
 import { Certifications } from "../../services/Interfaces/certifications";
+import { Courses } from "../../services/Interfaces/courses";
+import { CoursesFaculty } from "../../services/Interfaces/courses-faculty";
 
 
 export const loadProfile = createAction('[Profile Global] Load Profile');
@@ -81,5 +83,15 @@ export const loadEvalSuccess = createAction(
 );
 export const loadEvalFailure = createAction(
     '[Evaluation Global] Evaluation Load Failed',
+    props<{ error: string }>()
+);
+
+export const loadCourse = createAction('[Course Global] Load Course');
+export const loadCourseSuccess = createAction(
+    '[Course Global] Course Load Success',
+    props<{ courses: [CoursesFaculty[], Courses[]] }>()
+);
+export const loadCourseFailure = createAction(
+    '[Course Global] Course Load Failed',
     props<{ error: string }>()
 );
