@@ -9,6 +9,8 @@ import { Message } from '../services/Interfaces/message';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { Store } from '@ngrx/store';
+import { loadProfile } from '../state/faculty-state/faculty-state.actions';
 @Component({
   selector: 'app-admin',
   standalone: true,
@@ -28,6 +30,10 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 export class AdminComponent {
   sideBarToggle = true;
   opened: boolean = true;
+
+  constructor(public store: Store){
+    store.dispatch(loadProfile());
+  }
 
   toggle(){
     this.sideBarToggle = !this.sideBarToggle;
