@@ -250,9 +250,6 @@ export class CommunityExtensionsComponent {
 
 
   attendeeNumberFetch(): Subscription {
-
-    console.log("Halo :D")
-
     this.commexs$.pipe(
       mergeMap(commexs => from(commexs).pipe(
         map(commex => this.attendeeStore.dispatch(AttendeeActions.getAttendeeNumber({ id: commex.commex_ID })))

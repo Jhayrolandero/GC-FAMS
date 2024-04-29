@@ -32,7 +32,6 @@ export class SidebarComponent {
 
   onSelect(index: number) {
     this.selectedBar = index + "";
-    console.log(this.selectedBar);
   }
 
 

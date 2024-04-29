@@ -38,7 +38,7 @@ export class CommexsEffects {
       if (commexes.length <= 0) {
         return this.fetchCommex$(action.uri).
           pipe(
-            tap(() => console.log("Hello")),
+            tap((commexes) => console.log('Community Extension has loaded:', commexes)),
             map(commexs => CommexActions.getCommexSuccess({ commexs })),
             catchError(error => of(CommexActions.getCommexFailure({ error: error.message }))),
           )

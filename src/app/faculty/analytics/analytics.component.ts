@@ -32,101 +32,11 @@ type ScoreCategory = {
   templateUrl: './analytics.component.html',
   styleUrl: './analytics.component.css'
 })
-export class AnalyticsComponent implements OnInit {
+export class AnalyticsComponent {
   schedules: Schedule[] = [];
   unit = 0;
 
   constructor(
-    private facultyService: FacultyRequestService,
     private router: Router,
-    private evaluationService: EvaluationService,
-  ) {
-  }
-
-  isLoading: boolean = true;
-  selectedSem: Evaluation = {
-    evaluation_ID: 0,
-    faculty_ID: 0,
-    semester: 0,
-    evaluation_year: 0,
-    param1_score: 0,
-    param2_score: 0,
-    param3_score: 0,
-    param4_score: 0,
-    param5_score: 0,
-    param6_score: 0,
-    evalAverage: 0
-  }
-  facultyProfile!: Profile;
-  evaluation: Evaluation[] = []
-  evalScoreCategory: ScoreCategory[] = [
-    { name: "", value: 0, bgColor: "" },
-    { name: "", value: 0, bgColor: "" },
-    { name: "", value: 0, bgColor: "" },
-    { name: "", value: 0, bgColor: "" },
-    { name: "", value: 0, bgColor: "" },
-    { name: "", value: 0, bgColor: "" }
-  ]
-
-  ngOnInit(): void {
-    this.getEvaluationAndProfile();
-    this.getSchedule();
-  }
-
-  getSchedule() {
-    //Fetches the schedule data based on passed selected date
-    this.facultyService.fetchData<Schedule[]>('getschedules/fetchFaculty').subscribe({
-      next: value => {
-        this.schedules = value;
-        this.countUnit()
-      },
-      error: err => { if (err.status == 403) { this.router.navigate(['/']); } }
-    });
-  }
-
-  countUnit() {
-    this.schedules.forEach(schedule => {
-      console.log(schedule);
-      this.unit = this.unit + schedule.unit;
-    })
-  }
-
-  getEvaluationAndProfile() {
-    forkJoin({
-      evaluationRequest: this.facultyService.fetchData<Evaluation[]>('getevaluation/fetchEvaluation'),
-      profileRequest: this.facultyService.fetchData<Profile>('getprofile/fetchProfile')
-    }).subscribe({
-      next: (({ evaluationRequest, profileRequest }) => {
-        this.evaluation = evaluationRequest
-        this.facultyProfile = profileRequest
-      }),
-      error: (error) => {
-        console.log(error);
-        this.router.navigate(['/'])
-      },
-      complete: () => {
-        this.facultyProfile.profile_image = mainPort + this.facultyProfile.profile_image;
-        this.facultyProfile.cover_image = mainPort + this.facultyProfile.cover_image;
-
-        this.evaluation = this.evaluation.map((evalItem) => {
-          return {
-            ...evalItem,
-            "evalAverage": this.evaluationService.averageEvaluation(
-              +evalItem.param1_score,
-              +evalItem.param2_score,
-              +evalItem.param3_score,
-              +evalItem.param4_score
-            )
-          }
-        })
-        this.selectedSem = this.evaluation[this.evaluation.length - 1]
-        this.setEvalScore()
-        this.isLoading = false
-      }
-    })
-  }
-
-  setEvalScore() {
-    this.evalScoreCategory = this.evaluationService.selectEvalSem(this.selectedSem.evaluation_ID, this.evaluation)
-  }
+  ) {}
 }
