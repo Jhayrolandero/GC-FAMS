@@ -64,7 +64,7 @@ export class CommexFormComponent {
   commexformData: FormData
   fetchAttendee$: Observable<Faculty[]> = this.facultyService.fetchData<Faculty[]>("faculty");
   fetchAttendeeError$: Observable<Error> = this.fetchAttendee$.pipe(catchError((err) => of(err)));
-  profile$: Observable<Profile>
+  profile$: Observable<Profile | undefined>
   postLoading$: Observable<boolean>
   constructor(
     private facultyService: FacultyRequestService,
@@ -145,37 +145,13 @@ export class CommexFormComponent {
     this.store.dispatch(CommexActions.postCommex({ commex: this.commexformData }))
   }
 
-
-  // commexForm = new FormGroup({
-  //   commex_title: new FormControl('', [
-  //     Validators.required
-  //   ]),
-  //   commex_details: new FormControl('', [
-  //     Validators.required
-  //   ]),
-  //   commex_header_img: new FormControl<File | null>(null),
-  //   commex_date: new FormControl('', [
-  //     Validators.required
-  //   ]),
-  // })
-
-
-
   onNoClick(): void {
     this.dialogRef.close();
   }
 
   submitForm() {
-
     const formData = this.facultyService.formDatanalize(this.commexForm);
     this.store.dispatch(CommexActions.postCommex({ commex: formData }))
-    // // console.log(this.commexForm);
-    // // console.log(formData.get("commex_title"))
-    // this.facultyService.postData(formData, 'addCommex').subscribe({
-    //   next: (next: any) => { console.log(next); },
-    //   error: (error) => { console.log(error) },
-    //   complete: () => { this.onNoClick(); }
-    // });
   }
 
   imageURL?: string = undefined;
@@ -197,6 +173,9 @@ export class CommexFormComponent {
     console.log(this.commexForm);
   }
 }
+
+
+
 
 @Component({
   selector: 'app-community-extensions',
@@ -241,17 +220,12 @@ export class CommunityExtensionsComponent {
   isLoading$: Observable<boolean>
   attendeeLoading$: Observable<boolean>
   attendeesNumber: Dictionary<number> = {}
-  profileCollege$: Observable<Profile>
+  profileCollege$: Observable<Profile | undefined>
 
   fetchAttendeeNumber$ = (id: number) => {
     this.attendeeStore.dispatch(AttendeeActions.getAttendeeNumber({ id: id }))
   }
   ngOnInit(): void {
-    this.commexFacultyStore.dispatch(CommexActions.getCommex({ uri: 'getcommex?t=faculty' }))
-
-
-    // this.commexCollegeStore.dispatch(CommexActions.getCollegeCommex({ uri: `getcommex/${}?t=college` }))
-
     this.attendeeNumberFetch()
 
     // Switch the view depending on state
@@ -351,7 +325,7 @@ export class CommunityExtensionsComponent {
 
       this.profileCollege$.pipe(first()).subscribe(
         res => {
-          this.commexCollegeStore.dispatch(CommexActions.getCollegeCommex({ uri: `getcommex/${res.college_ID}?t=college` }))
+          this.commexCollegeStore.dispatch(CommexActions.getCollegeCommex({ uri: `getcommex/${res?.college_ID}?t=college` }))
         }
       )
       this.commexs$ = this.commexCollegeStore.pipe(select(CommexsSelector.parsedCollegeCommexSelector))

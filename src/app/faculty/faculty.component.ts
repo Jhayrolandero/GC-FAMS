@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { loadCert, loadCourse, loadEduc, loadEval, loadExp, loadExpertise, loadProfile, loadProj } from '../state/faculty-state/faculty-state.actions';
 import { Store, StoreModule } from '@ngrx/store';
+import { getCommex } from '../state/commex/commex.action';
 
 @Component({
   selector: 'app-faculty',
@@ -44,6 +45,7 @@ export class FacultyComponent {
     store.dispatch(loadProj());
     store.dispatch(loadExpertise());
     store.dispatch(loadEval());
+    store.dispatch(getCommex({ uri: 'getcommex?t=faculty' }))
   }
 
   toggle() {
