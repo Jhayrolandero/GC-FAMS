@@ -15,6 +15,8 @@ import { AttendeeEffects } from './state/attendee/attendee.effects';
 import { profileReducer } from './state/faculty-state/faculty-state.reducer';
 import { CvEffects } from './state/faculty-state/faculty-state.effects';
 import { provideMomentDateAdapter } from '@angular/material-moment-adapter'
+import { DeanEffects } from './state/dean-state/dean-state.effects';
+import { profileDeanReducer } from './state/dean-state/dean-state.reducer';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
@@ -34,8 +36,9 @@ export const appConfig: ApplicationConfig = {
       traceLimit: 75, // maximum stack trace frames to be stored (in case trace option was provided as true)
       connectInZone: true // If set to true, the connection is established within the Angular zone
     }),
-    provideEffects(CvEffects),
+    provideEffects(CvEffects, DeanEffects),
     provideState({ name: 'profile', reducer: profileReducer }),
+    provideState({ name: 'dean', reducer: profileDeanReducer }),
     provideMomentDateAdapter(undefined, { strict: true })
   ]
 };

@@ -1,19 +1,19 @@
 
 <div
-  class="bg-white shadow-lg bg-opacity-70 w-full  flex flex-col px-5 gap-2"
+  class="shadow-main w-full  flex flex-col p-5 gap-3"
 >
   <div
-    class="bg-white shadow-lg bg-opacity-70 w-full rounded-[25px] flex flex-col tablet:flex-row tablet:justify-between items-center px-5"
+    class="bg-white shadow-main bg-opacity-70 w-full rounded-[15px] flex flex-col tablet:flex-row tablet:justify-between items-center px-5"
   >
     <h1 class="font-Poppins font-semibold text-[2.5rem] py-2 text-blue">
       Faculty Management
     </h1>
     <button
     (click)="openForm()"
-    class="bg-gradient-to-r from-blue to-greenBar text-white font-Poppins font-semibold w-[125px] h-[40px] rounded-full shadow-xl hover:scale-[102%] hover:duration-300 duration-300"
-  >
-    +Add
-  </button>
+    class="bg-gradient-to-r from-blue to-greenBar text-white font-Poppins font-semibold w-[125px] h-[40px] rounded-full shadow-main hover:scale-[102%] hover:duration-300 duration-300"
+    >
+      +Add
+    </button>
   </div>
 
   <app-faculty-section [refresh]="refresh" (refreshEmitter)="refresh = $event"
