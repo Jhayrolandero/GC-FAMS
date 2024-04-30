@@ -26,6 +26,10 @@ export const commexSelector = createSelector(selectFeature,
   (state) => state.commexs
 )
 
+export const filterCommexSelector = (startDate: string, endDate: string) => createSelector(selectFeature,
+  (state) => parsedCommex(filterDateRange(startDate, endDate, state.commexs), mainPort)
+)
+
 export const errorSelector = createSelector(selectFeature,
   (state) => state.error
 )
@@ -43,6 +47,9 @@ export const isLoadingCollegeCommexSelector = createSelector(selectCollegeCommex
 
 export const parsedCollegeCommexSelector = createSelector(selectCollegeCommexFeature,
   (state) => parsedCommex(state.commexs, mainPort)
+)
+export const filterCollegeCommexSelector = (startDate: string, endDate: string) => createSelector(selectCollegeCommexFeature,
+  (state) => parsedCommex(filterDateRange(startDate, endDate, state.commexs), mainPort)
 )
 
 export const latestCollegeCommexSelector = createSelector(selectCollegeCommexFeature,
@@ -79,4 +86,20 @@ function latestCommex(commexs: CommunityExtension[], mainPort: string) {
   }
 
   return latestCommex
+}
+
+const filterCommexByDate = (commexs: CommunityExtension[], startDate: Date, endDate: Date) => {
+  return commexs.filter(commex => {
+    const date = new Date(commex.commex_date);
+    return !isNaN(date.getTime()) && date >= startDate && date <= endDate;
+  });
+};
+
+function filterDateRange(startDateStr: string, endDateStr: string, commexs: CommunityExtension[]) {
+  const startDate = new Date(startDateStr);
+  const endDate = new Date(endDateStr);
+
+
+  const filteredCommexs = filterCommexByDate(commexs, startDate, endDate);
+  return filteredCommexs;
 }

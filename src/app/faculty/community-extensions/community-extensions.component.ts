@@ -247,7 +247,8 @@ export class CommunityExtensionsComponent {
   isVisible: boolean = false
   activeID: number | null = null
   switch: 'faculty' | 'college' = 'faculty';
-
+  startDate: string = ''
+  endDate: string = ''
 
   attendeeNumberFetch(): Subscription {
     this.commexs$.pipe(
@@ -337,4 +338,36 @@ export class CommunityExtensionsComponent {
     }
   }
 
+
+  setStartDate(date: Date) {
+    const stringified = JSON.stringify(date);
+    const dob = stringified.substring(1, 11);
+    this.startDate = dob
+    this.filterCommexSelection()
+  }
+
+
+  setEndDate(date: Date) {
+    const stringified = JSON.stringify(date);
+    const dob = stringified.substring(1, 11);
+    this.endDate = dob
+    this.filterCommexSelection()
+  }
+
+  filterCommexSelection() {
+    if (!this.startDate && !this.endDate) return
+
+
+    switch (this.switch) {
+      case "college":
+        this.commexs$ = this.commexCollegeStore.pipe(select(CommexsSelector.filterCollegeCommexSelector(this.startDate, this.endDate)))
+        break;
+      case "faculty":
+        this.commexs$ = this.commexFacultyStore.pipe(select(CommexsSelector.filterCommexSelector(this.startDate, this.endDate)))
+        break;
+    }
+    // } else{
+    //   this.commexs$ = this.commexFacultyStore
+    // }
+  }
 }
