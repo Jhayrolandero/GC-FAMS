@@ -50,8 +50,8 @@
           *ngIf="(latestCommex$ | async) as latestCommex"
           class="bg-white shadow-main w-full rounded-[15px] flex flex-row overflow-hidden hover:scale-[101%] hover:duration-300 duration-300"
           >
-          <div *ngIf="latestCommex.commex_header_img != 'http://localhost:8080'" class="bg-red-400 w-[25%] h-[280px]">
-            <img [src]="latestCommex.commex_header_img" class="h-full w-full object-cover" />
+          <div *ngIf="latestCommex.commex_header_img != tempPort" class="bg-red-400 w-[25%] h-[280px] flex justify-center items-center">
+            <img [src]="latestCommex.commex_header_img" class="w-full aspect-video" />
           </div>
           <div class="p-4 w-[75%] flex flex-col gap-2">
             <h1 class="font-Poppins font-semibold text-[1.5rem]">
@@ -118,8 +118,8 @@
             *ngFor="let commex of commexs$ | async; let i = index"
           >
             <div *ngIf="i != 0" class="bg-white rounded-xl shadow-main flex flex-col gap-2 duration-300 hover:scale-[102%] hover:shadow-xl hover:duration-300 break-inside-avoid mb-2 overflow-hidden">
-              <div class="bg-red-300">
-                <img [src]="commex.commex_header_img" alt="" />
+              <div *ngIf="commex.commex_header_img != tempPort" class="bg-red-300 flex justify-center items-center">
+                <img [src]="commex.commex_header_img" alt="" class="w-full aspect-video"/>
               </div>
               <div class="p-3">
                 <h4 class="text-xl font-bold">{{ commex.commex_title }}</h4>

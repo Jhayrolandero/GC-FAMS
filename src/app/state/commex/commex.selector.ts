@@ -99,6 +99,11 @@ function filterDateRange(startDateStr: string, endDateStr: string, commexs: Comm
   const startDate = new Date(startDateStr);
   const endDate = new Date(endDateStr);
 
+  if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+    // throw new Error('Invalid start or end date');
+    return commexs;
+  }
+
 
   const filteredCommexs = filterCommexByDate(commexs, startDate, endDate);
   return filteredCommexs;

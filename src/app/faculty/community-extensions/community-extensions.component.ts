@@ -190,7 +190,9 @@ export class CommexFormComponent {
     NgIf,
     FormsModule,
     MatFormFieldModule,
-    MatDatepickerModule],
+    MatDatepickerModule,
+    NgIf
+  ],
   templateUrl: './community-extensions.component.html',
   styleUrl: './community-extensions.component.css'
 })
@@ -355,8 +357,8 @@ export class CommunityExtensionsComponent {
   }
 
   filterCommexSelection() {
-    if (!this.startDate && !this.endDate) return
 
+    if (!this.startDate || !this.endDate) return
 
     switch (this.switch) {
       case "college":
@@ -366,8 +368,5 @@ export class CommunityExtensionsComponent {
         this.commexs$ = this.commexFacultyStore.pipe(select(CommexsSelector.filterCommexSelector(this.startDate, this.endDate)))
         break;
     }
-    // } else{
-    //   this.commexs$ = this.commexFacultyStore
-    // }
   }
 }
