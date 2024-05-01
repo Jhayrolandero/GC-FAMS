@@ -15,6 +15,7 @@ import { CertificationsFaculty } from "../../services/Interfaces/certifications-
 import { CoursesFaculty } from "../../services/Interfaces/courses-faculty";
 import { Courses } from "../../services/Interfaces/courses";
 import { Faculty } from "../../services/Interfaces/faculty";
+import { CommunityExtension } from "../../services/Interfaces/community-extension";
 
 @Injectable()
 
@@ -109,11 +110,11 @@ export class DeanEffects{
 
     loadCommex$ = createEffect(() => this.actions$.pipe(
         ofType(CvActions.loadCollegeCommex),
-        switchMap(() => this.facultyService.fetchData('expertise-college')
+        switchMap(() => this.facultyService.fetchData('getcommex/1?t=college')
             .pipe(
-                tap((expertises) => console.log('Expertise has loaded:', expertises)),
-                map((expertises) => CvActions.loadCollegeExpertiseSuccess({expertises: expertises as Expertise[]})),
-                catchError((error) => of(CvActions.loadCollegeExpertiseFailure({ error } )))
+                tap((commex) => console.log('College Commex has loaded:', commex)),
+                map((commex) => CvActions.loadCollegeCommexSuccess({commex: commex as CommunityExtension[]})),
+                catchError((error) => of(CvActions.loadCollegeCommexFailure({ error } )))
             )
         )
     ));

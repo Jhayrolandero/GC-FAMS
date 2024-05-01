@@ -57,6 +57,7 @@ export class CommexsEffects {
 
         return this.fetchCommex$(action.uri).
           pipe(
+            tap((commexes) => console.log('College Community Extension has loaded:', commexes)),
             map(commexs => CommexActions.getCollegeCommexSuccess({ commexs })),
             catchError(error => of(CommexActions.getCollegeCommexFailure({ error: error.message }))),
           )

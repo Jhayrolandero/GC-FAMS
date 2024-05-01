@@ -106,7 +106,7 @@ export class FacultyFormComponent implements OnInit {
   }
 
   editMode: boolean = false;
-  isLoading: boolean = true
+  isLoading: boolean = false
   selectedCollege: number = -1;
   selectedEmployeeType: number = -1;
   selectedEmployeePosition: string = '';

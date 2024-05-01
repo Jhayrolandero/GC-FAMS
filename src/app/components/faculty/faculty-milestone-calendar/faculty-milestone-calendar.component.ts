@@ -9,7 +9,7 @@ import { CommunityExtension } from '../../../services/Interfaces/community-exten
 import { FacultyRequestService } from '../../../services/faculty/faculty-request.service';
 import { forkJoin, map } from 'rxjs';
 import { Store, select } from '@ngrx/store';
-import { selectAllCollegeEduc } from '../../../state/dean-state/dean-state.selector';
+import { selectAllCollegeEduc, selectAllExistCerts, selectCollegeCommex } from '../../../state/dean-state/dean-state.selector';
 import { getCollegeCommex } from '../../../state/commex/commex.action';
 import { parsedCollegeCommexSelector } from '../../../state/commex/commex.selector';
 
@@ -51,19 +51,21 @@ export class FacultyMilestoneCalendarComponent implements OnInit{
 
     }
     else{
-        //         this.certifications.forEach((cert) => { this.addEvent(new Date(cert.accomplished_date), this.eventParser("Certification", cert.cert_name, cert.cert_corporation)) });
-  //         this.educAttainment.forEach((educ) => { this.addEvent(new Date(educ.year_end), this.eventParser("Educational Attainment", educ.educ_title, educ.educ_school)) });
-  //         this.projects.forEach((proj) => { this.addEvent(new Date(proj.project_date), this.eventParser("Project", proj.project_name, "")) });
-  //         this.commex.forEach((comm) => { this.addEvent(new Date(comm.commex_date), this.eventParser("Community Extension", comm.commex_title, "")) });
       this.store.select(selectAllCollegeEduc).subscribe(data => {
         data.forEach(educ => 
           this.addEvent(new Date(educ.year_end), this.eventParser("Educational Attainment", educ.educ_title, educ.educ_school)))
       });
-      let commexs$ = this.commexCollegeStore.pipe(select(parsedCollegeCommexSelector))
-      commexs$.subscribe((data: any) => {
-        console.log("LOL: " + data);
-      })
 
+      this.store.select(selectCollegeCommex).subscribe(data => {
+        data.forEach(commex =>
+          this.addEvent(new Date(commex.commex_date), this.eventParser("Community Extension", commex.commex_title, "")))
+      });
+
+      this.store.select(selectAllExistCerts).subscribe(data => {
+        data.forEach(certs =>
+          this.addEvent(new Date(certs.accomplished_date), this.eventParser("Certifications", certs.cert_name, certs.cert_corporation))
+        )
+      });
 
       
       // .pipe(map((data: EducationalAttainment[]) => data.forEach(educ => this.addEvent(new Date(educ.year_end), this.eventParser("Educational Attainment", educ.educ_title, educ.educ_school)))))

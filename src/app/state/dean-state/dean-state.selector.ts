@@ -15,12 +15,7 @@ export const selectAllCollegeEduc = createSelector(
 
 export const selectAllExistCerts = createSelector(
     selectDeanState,
-    (state: DeanState) => state.certs[0]
-);
-
-export const selectAllCerts = createSelector(
-    selectDeanState,
-    (state: DeanState) => state.certs[1]
+    (state: DeanState) => state.certs
 );
 
 export const selectCourseSched = createSelector(
@@ -56,6 +51,6 @@ export const selectAllEvaluation = createSelector(
 
 export const selectCollegeCommex = createSelector(
     selectDeanState,
-    (state: DeanState) => state.evals
+    (state: DeanState) => state.commex
 );
           
