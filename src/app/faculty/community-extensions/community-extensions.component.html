@@ -153,15 +153,22 @@
                         ></app-tooltip>
                       </span>
                     </div>
-                    <button class=" bg-blue text-white px-2 py-1 rounded-lg">
-
-                      <!-- @if(isAttended(commex.commex_ID) | async) {
-                        Attended
-                      } @else {
+                    <!-- check first if loading before joining -->
+                    @if(commex.commex_ID in attended){
+                      <button class=" bg-blue text-white px-2 py-1 rounded-lg">
+                        Loading...
+                      </button>
+                    }@else {
+                      @if(attended[commex.commex_ID].isAttended == 1) {
+                        <button class=" bg-blue text-white px-2 py-1 rounded-lg">
+                          Attended
+                        </button>
+                    }  @else {
+                      <button class=" bg-blue text-white px-2 py-1 rounded-lg">
                         Attend
-                      } -->
-
-                    </button>
+                      </button>
+                    }
+                  }
                   </div>
                 </div>
               </div>

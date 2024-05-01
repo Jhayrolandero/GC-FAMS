@@ -37,6 +37,7 @@ import * as ProfileSelectors from '../../state/faculty-state/faculty-state.selec
 import { Profile } from '../../services/Interfaces/profile';
 import { Faculty } from '../../services/Interfaces/faculty';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { AttendedState, AttendedStatus } from '../../services/Interfaces/attendedState';
 @Component({
   selector: 'app-commex-form',
   standalone: true,
@@ -203,7 +204,7 @@ export class CommunityExtensionsComponent {
     public dialog: MatDialog,
     private commexFacultyStore: Store<{ commexs: CommexState }>,
     private attendeeStore: Store<{ attendees: AttendeeNumberState }>,
-    private attendedStore: Store<{ attended: AttendeeNumberState }>,
+    private attendedStore: Store<{ attended: AttendedState }>,
     private commexCollegeStore: Store<{ collegeCommexs: CommexState }>,
     private profileStore: Store<{ profile: ProfileState }>,
     private messageService: MessageService
@@ -217,14 +218,16 @@ export class CommunityExtensionsComponent {
     this.isLoading$ = this.commexFacultyStore.pipe(select(CommexsSelector.isLoadingSelector))
     this.latestCommex$ = this.commexFacultyStore.pipe(select(CommexsSelector.latestCommexSelector))
     this.profileCollege$ = this.profileStore.pipe(select(ProfileSelectors.selectAllProfile))
+    this.isAttendedLoading$ = this.attendedStore.pipe(select(AttendeeSelector.attendedLoadingSelector))
 
   }
   commexs$: Observable<CommunityExtension[]>
   latestCommex$: Observable<CommunityExtension>
   isLoading$: Observable<boolean>
+  isAttendedLoading$: Observable<boolean>
   attendeeLoading$: Observable<boolean>
   attendeesNumber: Dictionary<number> = {}
-  attended: Dictionary<number> = {}
+  attended: Dictionary<AttendedStatus> = {}
   profileCollege$: Observable<Profile | undefined>
   profileCollegeID: number = 0
   profileFacultyID: number = 0
@@ -234,6 +237,7 @@ export class CommunityExtensionsComponent {
   ngOnInit(): void {
 
     this.attendeeNumberFetch()
+    this.attendedFetch()
 
     // Switch the view depending on state
     if (this.switch === "faculty") {
@@ -281,17 +285,23 @@ export class CommunityExtensionsComponent {
     })
   }
 
-  attendedFetch(): Subscription {
+  attendedFetch() {
 
+    console.log("Hallo :D")
     this.commexs$.pipe(
       mergeMap(commexs => from(commexs).pipe(
-        map(commex => this.attendeeStore.dispatch(AttendeeActions.getAttended({ commex_ID: commex.commex_ID, faculty_ID: this.profileFacultyID })))
+        map(commex => this.attendeeStore.dispatch(AttendeeActions.getAttended({ commex_ID: commex.commex_ID, faculty_ID: 3 })))
       ))
     ).subscribe()
 
+
     // Fix this error
     return this.attendedStore.pipe(select(AttendeeSelector.attendedSelector)).subscribe({
-
+      next: res => {
+        this.attended = { ...this.attended, ...res }
+      },
+      error: err => console.log(err),
+      complete: () => console.log(this.attended)
     })
 
   }

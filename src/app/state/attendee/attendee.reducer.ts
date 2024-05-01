@@ -3,6 +3,7 @@ import { AttendeeNumberState } from "../../services/Interfaces/attendeeNumberSta
 import * as AttendeeActions from "./attendee.action";
 import { AttendeeState } from "../../services/Interfaces/attendeeState";
 import { create } from "domain";
+import { AttendedState } from "../../services/Interfaces/attendedState";
 
 export const initialAttendeeNumberState: AttendeeNumberState = {
   isLoading: false,
@@ -16,9 +17,9 @@ export const initialAttendeeState: AttendeeState = {
   error: null
 }
 
-export const initialAttendedState: AttendeeNumberState = {
+export const initialAttendedState: AttendedState = {
   isLoading: false,
-  attendees: {},
+  attended: {},
   error: null
 }
 
@@ -27,21 +28,23 @@ export const attendedReducer = createReducer(
   initialAttendedState,
   on(AttendeeActions.getAttended, (state) => ({
     ...state,
-    isLoading: true
+    isLoading: true,
+    attended: { isLoading: true }
   })),
   on(AttendeeActions.getAttendedSuccess, (state, action) => ({
     ...state,
     isLoading: false,
-    attendees: {
-      ...state.attendees,
-      ...action.attended
-    }
+    attended: { ...state.attended, ...action.attended }
   })),
   on(AttendeeActions.getAttendedFailure, (state, action) => ({
     ...state,
     isLoading: false,
     error: action.error
-  }))
+  })),
+  on(AttendeeActions.setAttendedLoading, (state, action) => ({
+    ...state,
+    isLoading: action.isLoading,
+  })),
 )
 
 
@@ -53,7 +56,6 @@ export const attendeeNumberReducer = createReducer(
   })),
   on(AttendeeActions.getAttendeeNumberSuccess, (state, action) => ({
     ...state,
-    isLoading: false,
     attendees: {
       ...state.attendees,
       ...action.attendees

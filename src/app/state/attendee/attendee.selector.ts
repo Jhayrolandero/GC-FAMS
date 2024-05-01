@@ -2,18 +2,19 @@ import { createSelector } from "@ngrx/store";
 import { AttendeeNumberState } from "../../services/Interfaces/attendeeNumberState";
 import { Attendee } from "../../services/Interfaces/attendee";
 import { Dictionary } from "../../services/Interfaces/dictionary";
+import { AttendedState } from "../../services/Interfaces/attendedState";
 
 interface AppAttendeesNumberState {
   attendees: AttendeeNumberState
 }
 
-interface AttendedState {
-  attendees: AttendeeNumberState
+interface AppAttendedState {
+  attended: AttendedState
 }
 
 export const attendeeFeature = (state: AppAttendeesNumberState) => state.attendees
 
-export const attendedFeature = (state: AttendedState) => state.attendees
+export const attendedFeature = (state: AppAttendedState) => state.attended
 
 // export const attendeeNumberSelector = (props : {id : number}) => createSelector(
 //   (state) => state.attendees
@@ -31,7 +32,7 @@ export const attendeeLoadingSelector = createSelector(attendeeFeature,
 
 
 export const attendedSelector = createSelector(attendedFeature,
-  (state) => state.attendees
+  (state) => state.attended
 );
 
 

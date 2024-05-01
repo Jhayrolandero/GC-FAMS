@@ -10,6 +10,7 @@ import { Store } from "@ngrx/store";
 import { AttendeeNumberState } from "../../services/Interfaces/attendeeNumberState";
 import { attendeeNumberSelector } from "./attendee.selector";
 import { Attended } from "../../services/Interfaces/attended";
+import { AttendedState } from "../../services/Interfaces/attendedState";
 @Injectable()
 
 
@@ -20,6 +21,7 @@ export class AttendeeEffects {
     private actions$: Actions,
     private facultyService: FacultyRequestService,
     private attendeeStore: Store<{ attendees: AttendeeNumberState }>,
+    private attendedStore: Store<{ attended: AttendedState }>,
   ) { }
 
   fetchAttendeeNumber$ = (id: number): Observable<Response<AttendeeCount[]>> => {
@@ -31,7 +33,7 @@ export class AttendeeEffects {
   }
 
   fetchAttended$ = (commex_ID: number, faculty_ID: number): Observable<Response<Attended[]>> => {
-    return this.facultyService.fetchData<Response<Attended[]>>(`attendee/${faculty_ID}/commex/${commex_ID}`)
+    return this.facultyService.fetchData<Response<Attended[]>>(`attendee/${faculty_ID}/commex/${commex_ID}?q=check`)
   }
 
 
@@ -40,10 +42,17 @@ export class AttendeeEffects {
     mergeMap((action) => {
       return this.fetchAttended$(action.commex_ID, action.faculty_ID).
         pipe(
-          map(attendee => AttendeeActions.getAttendedSuccess({ attended: { [action.commex_ID]: attendee.data[0].attended } })),
-          catchError(err => of(AttendeeActions.getAttendedFailure({ error: err.message })))
+          map(attendee => AttendeeActions.getAttendedSuccess({
+            attended: {
+              [action.commex_ID]: {
+                isAttended: attendee.data[0].attended,
+                isLoading: false
+              }
+            }
+          })),
+          catchError(err => of(AttendeeActions.getAttendedFailure({ error: err.message }))),
         )
-    })
+    }),
   ))
 
 
