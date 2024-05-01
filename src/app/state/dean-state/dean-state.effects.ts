@@ -107,6 +107,17 @@ export class DeanEffects{
         )
     ));
 
+    loadCommex$ = createEffect(() => this.actions$.pipe(
+        ofType(CvActions.loadCollegeCommex),
+        switchMap(() => this.facultyService.fetchData('expertise-college')
+            .pipe(
+                tap((expertises) => console.log('Expertise has loaded:', expertises)),
+                map((expertises) => CvActions.loadCollegeExpertiseSuccess({expertises: expertises as Expertise[]})),
+                catchError((error) => of(CvActions.loadCollegeExpertiseFailure({ error } )))
+            )
+        )
+    ));
+
     loadEvaluation$ = createEffect(() => this.actions$.pipe(
         ofType(CvActions.loadCollegeEval),
         switchMap(() => this.facultyService.fetchData<Evaluation[]>('evaluation-college')

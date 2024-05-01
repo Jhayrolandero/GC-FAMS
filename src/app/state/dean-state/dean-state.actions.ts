@@ -10,6 +10,7 @@ import { Certifications } from "../../services/Interfaces/certifications";
 import { Courses } from "../../services/Interfaces/courses";
 import { CoursesFaculty } from "../../services/Interfaces/courses-faculty";
 import { Faculty } from "../../services/Interfaces/faculty";
+import { CommunityExtension } from "../../services/Interfaces/community-extension";
 
 
 export const loadCollegeProfile = createAction('[Profile College Global] Load Profile');
@@ -94,5 +95,16 @@ export const loadCollegeCourseSuccess = createAction(
 );
 export const loadCollegeCourseFailure = createAction(
     '[Course College Global] Course Load Failed',
+    props<{ error: string }>()
+);
+
+
+export const loadCollegeCommex = createAction('[Commex College Global] Load Commex');
+export const loadCollegeCommexSuccess = createAction(
+    '[Commex College Global] Commex Load Success',
+    props<{ commex: CommunityExtension[]}>()
+);
+export const loadCollegeCommexFailure = createAction(
+    '[Commex College Global] Commex Load Failed',
     props<{ error: string }>()
 );

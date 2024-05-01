@@ -12,6 +12,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { Store } from '@ngrx/store';
 import { loadProfile } from '../state/faculty-state/faculty-state.actions';
 import { loadCollegeCert, loadCollegeCourse, loadCollegeEduc, loadCollegeEval, loadCollegeExp, loadCollegeExpertise, loadCollegeProfile, loadCollegeProj } from '../state/dean-state/dean-state.actions';
+import { getCollegeCommex } from '../state/commex/commex.action';
 @Component({
   selector: 'app-admin',
   standalone: true,

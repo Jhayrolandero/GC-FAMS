@@ -8,7 +8,7 @@ export const selectCollegeFaculty = createSelector(
   (state: DeanState) => state.profile
 );
 
-export const selectAllEduc = createSelector(
+export const selectAllCollegeEduc = createSelector(
     selectDeanState,
     (state: DeanState) => state.educs
 );
@@ -53,3 +53,9 @@ export const selectAllEvaluation = createSelector(
     selectDeanState,
     (state: DeanState) => state.evals
 );
+
+export const selectCollegeCommex = createSelector(
+    selectDeanState,
+    (state: DeanState) => state.evals
+);
+          

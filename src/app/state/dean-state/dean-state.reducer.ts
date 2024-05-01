@@ -11,6 +11,7 @@ import { Certifications } from "../../services/Interfaces/certifications";
 import { Courses } from "../../services/Interfaces/courses";
 import { CoursesFaculty } from "../../services/Interfaces/courses-faculty";
 import { Faculty } from "../../services/Interfaces/faculty";
+import { CommunityExtension } from "../../services/Interfaces/community-extension";
 
 export interface DeanState {
     profile: Faculty[];
@@ -21,6 +22,7 @@ export interface DeanState {
     expertises: Expertise[];
     evals: Evaluation[];
     courses: [CoursesFaculty[], Courses[]];
+    commex: CommunityExtension[];
 }
 
 export const initialDeanState: DeanState = {
@@ -31,7 +33,8 @@ export const initialDeanState: DeanState = {
     proj: [],
     expertises: [],
     evals: [],
-    courses: [[], []]
+    courses: [[], []],
+    commex: []
 }
 
 export const profileDeanReducer = createReducer(
@@ -92,5 +95,12 @@ export const profileDeanReducer = createReducer(
         ...state,
         courses: courses
     })),
-    on(CertActions.loadCollegeCourseFailure, (state) => ({...state,}))
+    on(CertActions.loadCollegeCourseFailure, (state) => ({...state,})),
+
+    on(CertActions.loadCollegeCommex, (state) => ({ ...state})),
+    on(CertActions.loadCollegeCommexSuccess, (state, { commex }) => ({
+        ...state,
+        commex: commex
+    })),
+    on(CertActions.loadCollegeCommexFailure, (state) => ({...state,}))
 )
