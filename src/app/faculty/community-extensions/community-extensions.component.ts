@@ -203,6 +203,7 @@ export class CommunityExtensionsComponent {
     public dialog: MatDialog,
     private commexFacultyStore: Store<{ commexs: CommexState }>,
     private attendeeStore: Store<{ attendees: AttendeeNumberState }>,
+    private attendedStore: Store<{ attended: AttendeeNumberState }>,
     private commexCollegeStore: Store<{ collegeCommexs: CommexState }>,
     private profileStore: Store<{ profile: ProfileState }>,
     private messageService: MessageService
@@ -216,18 +217,22 @@ export class CommunityExtensionsComponent {
     this.isLoading$ = this.commexFacultyStore.pipe(select(CommexsSelector.isLoadingSelector))
     this.latestCommex$ = this.commexFacultyStore.pipe(select(CommexsSelector.latestCommexSelector))
     this.profileCollege$ = this.profileStore.pipe(select(ProfileSelectors.selectAllProfile))
+
   }
   commexs$: Observable<CommunityExtension[]>
   latestCommex$: Observable<CommunityExtension>
   isLoading$: Observable<boolean>
   attendeeLoading$: Observable<boolean>
   attendeesNumber: Dictionary<number> = {}
+  attended: Dictionary<number> = {}
   profileCollege$: Observable<Profile | undefined>
-
+  profileCollegeID: number = 0
+  profileFacultyID: number = 0
   fetchAttendeeNumber$ = (id: number) => {
     this.attendeeStore.dispatch(AttendeeActions.getAttendeeNumber({ id: id }))
   }
   ngOnInit(): void {
+
     this.attendeeNumberFetch()
 
     // Switch the view depending on state
@@ -235,8 +240,16 @@ export class CommunityExtensionsComponent {
       this.commexs$ = this.commexFacultyStore.pipe(select(CommexsSelector.parsedCommexSelector))
     } else {
       this.commexs$ = this.commexCollegeStore.pipe(select(CommexsSelector.parsedCollegeCommexSelector))
-
     }
+    this.profileCollege$.pipe(first()).subscribe(
+      res => {
+
+        this.profileCollegeID = res!.college_ID
+        this.profileFacultyID = res!.faculty_ID
+        // this.commexCollegeStore.dispatch(CommexActions.getCollegeCommex({ uri: `getcommex/${res?.college_ID}?t=college` }))
+      }
+    )
+
 
   }
   tempPort = mainPort;
@@ -268,7 +281,24 @@ export class CommunityExtensionsComponent {
     })
   }
 
+  attendedFetch(): Subscription {
 
+    this.commexs$.pipe(
+      mergeMap(commexs => from(commexs).pipe(
+        map(commex => this.attendeeStore.dispatch(AttendeeActions.getAttended({ commex_ID: commex.commex_ID, faculty_ID: this.profileFacultyID })))
+      ))
+    ).subscribe()
+
+    // Fix this error
+    return this.attendedStore.pipe(select(AttendeeSelector.attendedSelector)).subscribe({
+
+    })
+
+  }
+
+  isAttended = (commex_ID: number) => {
+    return this.facultyService.fetchData<Response<number>>(`attendee/${this.profileFacultyID}/commex/${commex_ID}`)
+  }
 
   attendeeNameFetch$ = (id: number): Subscription => {
     return this.facultyService.fetchData<Response<Attendee[]>>(`attendee/${id}`).subscribe({

@@ -10,7 +10,7 @@ import { provideEffects } from '@ngrx/effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { collegeCommexReducer, commexReducer } from './state/commex/commex.reducer';
 import { CommexsEffects } from './state/commex/commex.effects';
-import { attendeeNumberReducer, attendeeReducer } from './state/attendee/attendee.reducer';
+import { attendedReducer, attendeeNumberReducer, attendeeReducer } from './state/attendee/attendee.reducer';
 import { AttendeeEffects } from './state/attendee/attendee.effects';
 import { profileReducer } from './state/faculty-state/faculty-state.reducer';
 import { CvEffects } from './state/faculty-state/faculty-state.effects';
@@ -26,6 +26,7 @@ export const appConfig: ApplicationConfig = {
     provideState({ name: 'commexs', reducer: commexReducer }),
     provideState({ name: 'collegeCommexs', reducer: collegeCommexReducer }),
     provideState({ name: 'attendees', reducer: attendeeNumberReducer }),
+    provideState({ name: 'attended', reducer: attendedReducer }),
     provideStoreDevtools({
       maxAge: 25, // Retains last 25 states
       logOnly: !isDevMode(), // Restrict extension to log-only mode

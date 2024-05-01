@@ -14,6 +14,19 @@ export const getAttendeeNumberFailure = createAction('[Attendee] Fetch Attendee 
   props<{ error: string }>()
 )
 
+export const getAttended = createAction('[Commex Attended] Fetch Commex Attended',
+  props<{ commex_ID: number, faculty_ID: number }>()
+)
+
+export const getAttendedSuccess = createAction('[Commex Attended] Fetch Commex Attended Success',
+  props<{ attended: Dictionary<number> }>()
+)
+
+export const getAttendedFailure = createAction('[Commex Attended] Fetch Commex Attended Failure',
+  props<{ error: string }>()
+)
+
+
 export const setLoading = createAction('[Attendee] Set Load',
   props<{ status: boolean }>()
 )

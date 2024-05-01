@@ -133,23 +133,35 @@
                 </p>
                 <div class="flex flex-col flex-wrap justify-end flex-1 gap-2">
                   <hr class=" text-black text-[0.5rem] bg-black">
-                  <div class="flex gap-2"
-                  (mouseenter)="toggleVisible(commex.commex_ID)"
-                  (mouseleave)="toggleHide()"
-                  >
-                      @if( attendeeLoading$ | async ) {
-                        ...loading
-                      } @else {
-                        <span><i class="fa-solid fa-users"></i></span><p>{{ attendeesNumber[commex.commex_ID] }}</p>
-                      }
-                    <div class="relative">
-                      <app-tooltip
-                      [attendees]="attendee"
-                      [isVisible]="isVisible"
-                      [id]="commex.commex_ID"
-                      [activeID]="activeID"
-                      ></app-tooltip>
+                  <div class="flex justify-between">
+                    <div
+                    class="flex gap-2"
+                    (mouseenter)="toggleVisible(commex.commex_ID)"
+                    (mouseleave)="toggleHide()"
+                    >
+                        @if( attendeeLoading$ | async ) {
+                          ...loading
+                        } @else {
+                          <span><i class="fa-solid fa-users"></i></span><p>{{ attendeesNumber[commex.commex_ID] }}</p>
+                        }
+                      <span class="relative">
+                        <app-tooltip
+                        [attendees]="attendee"
+                        [isVisible]="isVisible"
+                        [id]="commex.commex_ID"
+                        [activeID]="activeID"
+                        ></app-tooltip>
+                      </span>
                     </div>
+                    <button class=" bg-blue text-white px-2 py-1 rounded-lg">
+
+                      <!-- @if(isAttended(commex.commex_ID) | async) {
+                        Attended
+                      } @else {
+                        Attend
+                      } -->
+
+                    </button>
                   </div>
                 </div>
               </div>

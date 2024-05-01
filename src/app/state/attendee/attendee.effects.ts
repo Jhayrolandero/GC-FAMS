@@ -9,6 +9,7 @@ import { Response } from "../../services/Interfaces/response";
 import { Store } from "@ngrx/store";
 import { AttendeeNumberState } from "../../services/Interfaces/attendeeNumberState";
 import { attendeeNumberSelector } from "./attendee.selector";
+import { Attended } from "../../services/Interfaces/attended";
 @Injectable()
 
 
@@ -28,6 +29,24 @@ export class AttendeeEffects {
   fetchAttendee$ = (id: number): Observable<Response<Attendee[]>> => {
     return this.facultyService.fetchData<Response<Attendee[]>>(`attendee/${id}`)
   }
+
+  fetchAttended$ = (commex_ID: number, faculty_ID: number): Observable<Response<Attended[]>> => {
+    return this.facultyService.fetchData<Response<Attended[]>>(`attendee/${faculty_ID}/commex/${commex_ID}`)
+  }
+
+
+  getAttended = createEffect(() => this.actions$.pipe(
+    ofType(AttendeeActions.getAttended),
+    mergeMap((action) => {
+      return this.fetchAttended$(action.commex_ID, action.faculty_ID).
+        pipe(
+          map(attendee => AttendeeActions.getAttendedSuccess({ attended: { [action.commex_ID]: attendee.data[0].attended } })),
+          catchError(err => of(AttendeeActions.getAttendedFailure({ error: err.message })))
+        )
+    })
+  ))
+
+
 
   getAttendeeNumber = createEffect(() => this.actions$.pipe(
     ofType(AttendeeActions.getAttendeeNumber),
