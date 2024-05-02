@@ -61,7 +61,7 @@ export class DeanEffects{
 
     loadCourses$ = createEffect(() => this.actions$.pipe(
         ofType(CvActions.loadCollegeCourse),
-        switchMap(() => this.facultyService.fetchData('schedules-college')
+        switchMap(() => this.facultyService.fetchData('schedules?t=college')
             .pipe(
                 tap((courses) => console.log('Courses has loaded:', courses)),
                 map((courses) => CvActions.loadCollegeCourseSuccess({courses: courses as [CoursesFaculty[], Courses[]]})),

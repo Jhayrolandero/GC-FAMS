@@ -62,7 +62,7 @@ export class CvEffects{
 
     loadCourses$ = createEffect(() => this.actions$.pipe(
         ofType(CvActions.loadCourse),
-        switchMap(() => this.facultyService.fetchData('schedules')
+        switchMap(() => this.facultyService.fetchData('schedules?t=faculty')
             .pipe(
                 tap((courses) => console.log('Courses has loaded:', courses)),
                 map((courses) => CvActions.loadCourseSuccess({courses: courses as [CoursesFaculty[], Courses[]]})),

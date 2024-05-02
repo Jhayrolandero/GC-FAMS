@@ -28,17 +28,17 @@
 
     <div class="w-full flex flex-row gap-3">
         <div class="bg-white shadow-main rounded-[15px] overflow-hidden flex flex-col flex-1 justify-center items-center py-3">
-            <p class="text-greenBar text-[5rem] font-Poppins font-bold leading-[90%]">4.3</p>
+            <p  class="text-greenBar text-[5rem] font-Poppins font-bold leading-[90%]" [textContent]="evaluationYearAverage$ | async | number: '1.1-1'"></p>
             <p class="text-center text-blue text-[1.2rem] font-Poppins font-semibold">CCS Average
                 Faculty<br>Evaluation Score</p>
         </div>
         <div class="bg-white shadow-main rounded-[15px] overflow-hidden flex flex-col flex-1 justify-center items-center py-3">
-            <p class="text-greenBar text-[5rem] font-Poppins font-bold leading-[90%]">4.3</p>
+            <p class="text-greenBar text-[5rem] font-Poppins font-bold leading-[90%]" [textContent]="unitFacultyAverage$ | async | number: '1.1-1'"></p>
             <p class="text-center text-blue text-[1.2rem] font-Poppins font-semibold">Average Class Units
                 <br>per Faculty</p>
         </div>
         <div class="bg-white shadow-main rounded-[15px] overflow-hidden flex flex-col flex-1 justify-center items-center py-3">
-            <p class="text-greenBar text-[5rem] font-Poppins font-bold leading-[90%]">4.3</p>
+            <p class="text-greenBar text-[5rem] font-Poppins font-bold leading-[90%]" [textContent]="certCountAverage$ | async | number: '1.1-1'"></p>
             <p class="text-center text-blue text-[1.2rem] font-Poppins font-semibold">Average Faculty
                 <br>Total Certificate Count</p>
         </div>

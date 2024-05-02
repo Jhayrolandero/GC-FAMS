@@ -51,6 +51,7 @@ export class FacultyMilestoneCalendarComponent implements OnInit{
 
     }
     else{
+      //Admin loading for calendar. opens a subscription for each observable and places each of their dates and data into the calendar.
       this.store.select(selectAllCollegeEduc).subscribe(data => {
         data.forEach(educ => 
           this.addEvent(new Date(educ.year_end), this.eventParser("Educational Attainment", educ.educ_title, educ.educ_school)))
@@ -66,9 +67,6 @@ export class FacultyMilestoneCalendarComponent implements OnInit{
           this.addEvent(new Date(certs.accomplished_date), this.eventParser("Certifications", certs.cert_name, certs.cert_corporation))
         )
       });
-
-      
-      // .pipe(map((data: EducationalAttainment[]) => data.forEach(educ => this.addEvent(new Date(educ.year_end), this.eventParser("Educational Attainment", educ.educ_title, educ.educ_school)))))
     }
   }
 

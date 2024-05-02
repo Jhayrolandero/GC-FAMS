@@ -43,6 +43,7 @@ export class AdminComponent {
     store.dispatch(loadCollegeExpertise());
     store.dispatch(loadCollegeEval());
     store.dispatch(loadCollegeCommex());
+    store.dispatch(loadCollegeCourse());
   }
 
   toggle(){
