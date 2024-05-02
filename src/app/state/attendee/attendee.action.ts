@@ -1,7 +1,6 @@
 import { createAction, props } from "@ngrx/store";
 import { Dictionary } from "../../services/Interfaces/dictionary";
 import { Attendee } from "../../services/Interfaces/attendee";
-import { AttendedStatus } from "../../services/Interfaces/attendedState";
 
 export const getAttendeeNumber = createAction('[Attendee] Fetch Attendee Number',
   props<{ id: number }>()
@@ -21,7 +20,7 @@ export const getAttended = createAction('[Commex Attended] Fetch Commex Attended
 )
 
 export const getAttendedSuccess = createAction('[Commex Attended] Fetch Commex Attended Success',
-  props<{ attended: Dictionary<AttendedStatus> }>()
+  props<{ attended: Dictionary<number> }>()
 )
 
 export const getAttendedFailure = createAction('[Commex Attended] Fetch Commex Attended Failure',
@@ -29,7 +28,7 @@ export const getAttendedFailure = createAction('[Commex Attended] Fetch Commex A
 )
 
 export const setAttendedLoading = createAction('[Commex Attended] Fetch Commex Attended Done',
-  props<{ isLoading: boolean }>()
+  props<{ status: boolean }>()
 )
 
 export const setLoading = createAction('[Attendee] Set Load',

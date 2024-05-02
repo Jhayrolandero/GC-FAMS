@@ -43,7 +43,7 @@ export const attendedReducer = createReducer(
   })),
   on(AttendeeActions.setAttendedLoading, (state, action) => ({
     ...state,
-    isLoading: action.isLoading,
+    isLoading: action.status,
   })),
 )
 
@@ -59,7 +59,8 @@ export const attendeeNumberReducer = createReducer(
     attendees: {
       ...state.attendees,
       ...action.attendees
-    }
+    },
+    isLoading: false,
   })),
   on(AttendeeActions.getAttendeeNumberFailure, (state, action) => ({
     ...state,

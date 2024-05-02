@@ -154,12 +154,12 @@
                       </span>
                     </div>
                     <!-- check first if loading before joining -->
-                    @if(commex.commex_ID in attended){
+                    @if(isAttendedLoading$ | async){
                       <button class=" bg-blue text-white px-2 py-1 rounded-lg">
                         Loading...
                       </button>
                     }@else {
-                      @if(attended[commex.commex_ID].isAttended == 1) {
+                      @if(attended[commex.commex_ID] == 1) {
                         <button class=" bg-blue text-white px-2 py-1 rounded-lg">
                           Attended
                         </button>

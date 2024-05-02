@@ -37,7 +37,7 @@ import * as ProfileSelectors from '../../state/faculty-state/faculty-state.selec
 import { Profile } from '../../services/Interfaces/profile';
 import { Faculty } from '../../services/Interfaces/faculty';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { AttendedState, AttendedStatus } from '../../services/Interfaces/attendedState';
+import { AttendedState } from '../../services/Interfaces/attendedState';
 @Component({
   selector: 'app-commex-form',
   standalone: true,
@@ -227,7 +227,7 @@ export class CommunityExtensionsComponent {
   isAttendedLoading$: Observable<boolean>
   attendeeLoading$: Observable<boolean>
   attendeesNumber: Dictionary<number> = {}
-  attended: Dictionary<AttendedStatus> = {}
+  attended: Dictionary<number> = {}
   profileCollege$: Observable<Profile | undefined>
   profileCollegeID: number = 0
   profileFacultyID: number = 0
@@ -372,6 +372,7 @@ export class CommunityExtensionsComponent {
       this.isLoading$ = this.commexCollegeStore.pipe(select(CommexsSelector.isLoadingCollegeCommexSelector))
       this.latestCommex$ = this.commexCollegeStore.pipe(select(CommexsSelector.latestCollegeCommexSelector))
       this.attendeeNumberFetch()
+      this.attendedFetch()
     } else {
       this.switch = 'faculty'
       this.commexs$ = this.commexFacultyStore.pipe(select(CommexsSelector.parsedCommexSelector))

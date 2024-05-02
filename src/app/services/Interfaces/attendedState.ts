@@ -3,12 +3,8 @@ import { Dictionary } from "./dictionary";
 
 export interface AttendedState {
   isLoading: boolean;
-  attended: Dictionary<AttendedStatus>;
+  attended: Dictionary<number>;
   error: string | null
 }
 
 
-export interface AttendedStatus {
-  isAttended: number;
-  isLoading: boolean
-}

@@ -3,7 +3,7 @@ import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { Action, Store } from "@ngrx/store";
 import { FacultyRequestService } from "../../services/faculty/faculty-request.service";
 import * as CommexActions from "./commex.action";
-import { EMPTY, Observable, catchError, exhaustMap, filter, from, map, merge, mergeMap, of, tap, withLatestFrom } from "rxjs";
+import { EMPTY, Observable, catchError, concatMap, exhaustMap, filter, from, map, merge, mergeMap, of, tap, withLatestFrom } from "rxjs";
 import { CommunityExtension } from "../../services/Interfaces/community-extension";
 import { error } from "console";
 import { getAttendeeNumber } from "../attendee/attendee.action";
@@ -33,7 +33,7 @@ export class CommexsEffects {
     ofType(CommexActions.getCommex),
     tap(() => console.log("Hallo :D")),
     withLatestFrom(this.commexFacultyStore.select(parsedCommexSelector)),
-    exhaustMap(([action, commexes]) => {
+    concatMap(([action, commexes]) => {
 
       if (commexes.length <= 0) {
         return this.fetchCommex$(action.uri).
@@ -52,7 +52,7 @@ export class CommexsEffects {
   getCollegeCommexs = createEffect(() => this.actions$.pipe(
     ofType(CommexActions.getCollegeCommex),
     withLatestFrom(this.commexCollegeStore.select(parsedCollegeCommexSelector)),
-    exhaustMap(([action, commexes]) => {
+    concatMap(([action, commexes]) => {
       if (commexes.length <= 0) {
 
         return this.fetchCommex$(action.uri).

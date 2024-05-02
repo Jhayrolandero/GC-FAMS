@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { EMPTY, Observable, catchError, exhaustMap, filter, map, mergeMap, of, tap, withLatestFrom } from "rxjs";
+import { EMPTY, Observable, catchError, concatMap, exhaustMap, filter, map, mergeMap, of, tap, withLatestFrom } from "rxjs";
 import { Attendee } from "../../services/Interfaces/attendee";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { FacultyRequestService } from "../../services/faculty/faculty-request.service";
@@ -8,7 +8,7 @@ import { AttendeeCount } from "../../services/Interfaces/attendeeCount";
 import { Response } from "../../services/Interfaces/response";
 import { Store } from "@ngrx/store";
 import { AttendeeNumberState } from "../../services/Interfaces/attendeeNumberState";
-import { attendeeNumberSelector } from "./attendee.selector";
+import { attendedSelector, attendeeNumberSelector } from "./attendee.selector";
 import { Attended } from "../../services/Interfaces/attended";
 import { AttendedState } from "../../services/Interfaces/attendedState";
 @Injectable()
@@ -37,25 +37,43 @@ export class AttendeeEffects {
   }
 
 
+  // getAttended = createEffect(() => this.actions$.pipe(
+  //   ofType(AttendeeActions.getAttended),
+  //   concatMap((action) => {
+  //     return this.fetchAttended$(action.commex_ID, action.faculty_ID).
+  //       pipe(
+  //         map(attendee => AttendeeActions.getAttendedSuccess({ attended: { [action.commex_ID]: attendee.data[0].attended } })),
+  //         catchError(err => of(AttendeeActions.getAttendedFailure({ error: err.message }))),
+  //       )
+  //   }),
+  // ))
+
   getAttended = createEffect(() => this.actions$.pipe(
     ofType(AttendeeActions.getAttended),
-    mergeMap((action) => {
-      return this.fetchAttended$(action.commex_ID, action.faculty_ID).
-        pipe(
-          map(attendee => AttendeeActions.getAttendedSuccess({
-            attended: {
-              [action.commex_ID]: {
-                isAttended: attendee.data[0].attended,
-                isLoading: false
-              }
-            }
-          })),
-          catchError(err => of(AttendeeActions.getAttendedFailure({ error: err.message }))),
+    withLatestFrom(this.attendedStore.select(attendedSelector)),
+    concatMap(([action, attended]) => {
+      if (!(action.commex_ID in attended)) {
+        return this.fetchAttended$(action.commex_ID, action.faculty_ID).pipe(
+          map(attendee => AttendeeActions.getAttendedSuccess({ attended: { [action.commex_ID]: attendee.data[0].attended } })),
+          catchError(err => of(AttendeeActions.getAttendedFailure({ error: err.message })))
         )
-    }),
+      } else {
+        this.attendeeStore.dispatch(AttendeeActions.setAttendedLoading({ status: false }))
+        return EMPTY
+      }
+    })
   ))
+  // getAttended = createEffect(() => this.actions$.pipe(
+  //   ofType(AttendeeActions.getAttended),
+  //   withLatestFrom(this.attendedStore.select(attendedSelector)),
+  //   concatMap(([action, attended]) => {
 
-
+  //       return this.fetchAttended$(action.commex_ID, action.faculty_ID).pipe(
+  //         map(attendee => AttendeeActions.getAttendedSuccess({ attended: { [action.commex_ID]: attendee.data[0].attended } })),
+  //         catchError(err => of(AttendeeActions.getAttendedFailure({ error: err.message })))
+  //       )
+  //   })
+  // ))
 
   getAttendeeNumber = createEffect(() => this.actions$.pipe(
     ofType(AttendeeActions.getAttendeeNumber),
