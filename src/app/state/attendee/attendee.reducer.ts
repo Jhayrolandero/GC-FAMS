@@ -4,7 +4,7 @@ import * as AttendeeActions from "./attendee.action";
 import { AttendeeState } from "../../services/Interfaces/attendeeState";
 import { create } from "domain";
 import { AttendedState } from "../../services/Interfaces/attendedState";
-
+import { Dictionary } from "../../services/Interfaces/dictionary";
 export const initialAttendeeNumberState: AttendeeNumberState = {
   isLoading: false,
   attendees: {},
@@ -70,6 +70,14 @@ export const attendeeNumberReducer = createReducer(
   on(AttendeeActions.setLoading, (state, action) => ({
     ...state,
     isLoading: action.status
+  })),
+  on(AttendeeActions.leaveCommexSuccess, (state, action) => ({
+    ...state,
+    attendees: reduceAttendeeNumber(state.attendees, action.commex_ID)
+    // attendees: {
+    //   ...state.attendees,
+    //   ...action.
+    // }
   }))
 )
 
@@ -94,3 +102,18 @@ export const attendeeReducer = createReducer(
   }))
 )
 
+function reduceAttendeeNumber(attendee: Dictionary<number>, commex_ID: number) {
+  const attendeeCopy = { ...attendee }
+  let reduceDict = attendeeCopy[commex_ID]
+  reduceDict -= 1
+  attendeeCopy[commex_ID] = reduceDict
+  return attendeeCopy
+}
+
+/*
+const updatedAttendee = { ...attendee }; // Create a copy of the input object
+const currentCount = updatedAttendee[commex_ID] || 0; // Get current count or default to 0
+const updatedCount = Math.max(0, currentCount - 1); // Ensure count does not go below 0
+updatedAttendee[commex_ID] = updatedCount; // Update the value in the copied object
+return updatedAttendee; // Return the updated object
+*/

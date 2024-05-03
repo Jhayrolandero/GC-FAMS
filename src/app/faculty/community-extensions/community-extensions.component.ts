@@ -287,7 +287,6 @@ export class CommunityExtensionsComponent {
 
   attendedFetch() {
 
-    console.log("Hallo :D")
     this.commexs$.pipe(
       mergeMap(commexs => from(commexs).pipe(
         map(commex => this.attendeeStore.dispatch(AttendeeActions.getAttended({ commex_ID: commex.commex_ID, faculty_ID: 3 })))
@@ -409,5 +408,13 @@ export class CommunityExtensionsComponent {
         this.commexs$ = this.commexFacultyStore.pipe(select(CommexsSelector.filterCommexSelector(this.startDate, this.endDate)))
         break;
     }
+  }
+
+  leaveCommex(commex_ID: number) {
+    this.attendeeStore.dispatch(AttendeeActions.leaveCommex({ commex_ID: commex_ID, faculty_ID: 3 }))
+  }
+
+  attendCommex(commex_ID: number) {
+
   }
 }

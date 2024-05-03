@@ -160,11 +160,17 @@
                       </button>
                     }@else {
                       @if(attended[commex.commex_ID] == 1) {
-                        <button class=" bg-blue text-white px-2 py-1 rounded-lg">
-                          Attended
-                        </button>
+                        <button
+                        class=" bg-blue text-white px-2 py-1 rounded-lg"
+                        (click)="leaveCommex(commex.commex_ID)"
+                        >
+                        Attended
+                      </button>
                     }  @else {
-                      <button class=" bg-blue text-white px-2 py-1 rounded-lg">
+                      <button
+                      class=" bg-blue text-white px-2 py-1 rounded-lg"
+                      (click)="attendCommex(commex.commex_ID)"
+                      >
                         Attend
                       </button>
                     }
