@@ -5,7 +5,7 @@ import { FacultyMilestoneCalendarComponent } from "../../components/faculty/facu
 import { PieChartComponent } from '../../components/charts/pie-chart/pie-chart.component';
 import { LineGraphComponent } from '../../components/charts/line-graph/line-graph.component';
 import { Store } from '@ngrx/store';
-import { facultyCertsCountAverage, facultyCourseUnitAverage, yearEvaluationAverage } from '../../state/dean-state/dean-state.selector';
+import { facultyCertsCountAverage, facultyCourseUnitAverage, selectCollegeFacultyCount, yearEvaluationAverage } from '../../state/dean-state/dean-state.selector';
 
 @Component({
     selector: 'app-manage-analytics',
@@ -16,6 +16,8 @@ import { facultyCertsCountAverage, facultyCourseUnitAverage, yearEvaluationAvera
 })
 export class ManageAnalyticsComponent implements OnInit{
   isLoading: boolean = true;
+  facultyCount$ = this.store.select(selectCollegeFacultyCount);
+
   evaluationYearAverage$ = this.store.select(yearEvaluationAverage);
   unitFacultyAverage$ = this.store.select(facultyCourseUnitAverage);
   certCountAverage$ = this.store.select(facultyCertsCountAverage);

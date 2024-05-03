@@ -13,7 +13,7 @@
         </h1>
         <div class="flex flex-row">
             <div class="w-[220px] bg-white rounded-[15px] shadow-main flex flex-col items-center py-5">
-                <p class="text-blue text-[7rem] font-Poppins font-bold leading-[90%]">22</p>
+                <p class="text-blue text-[7rem] font-Poppins font-bold leading-[90%]" [textContent]="facultyCount$ | async"></p>
                 <p class="text-blue font-Poppins font-bold text-[1.2rem]">Faculty Members</p>
     
                 <div class="bg-blue rounded-[15px] shadow-main py-2 px-3 mt-3">

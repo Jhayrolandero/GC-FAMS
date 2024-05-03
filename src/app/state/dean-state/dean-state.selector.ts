@@ -7,10 +7,22 @@ const currentYear: number  = date.getFullYear();
 
 export const selectDeanState = createFeatureSelector<DeanState>('dean');
 
+export const selectAllCollege = createSelector(
+    selectDeanState,
+    (state: DeanState) => state.colleges
+  );
+
+
 export const selectCollegeFaculty = createSelector(
   selectDeanState,
   (state: DeanState) => state.profile
 );
+
+export const selectCollegeFacultyCount = createSelector(
+    selectDeanState,
+    (state: DeanState) => state.profile.length
+  );
+
 
 export const selectAllCollegeEduc = createSelector(
     selectDeanState,
@@ -67,7 +79,7 @@ export const facultyCourseUnitAverage = createSelector(
             }
         });
 
-        return Object.values(unitByFaculty).reduce((acc, curr) => acc + curr, 0) / Object.keys(unitByFaculty).length;
+        return Object.values(unitByFaculty).reduce((acc, curr) => acc + curr, 0) / state.profile.length
     }
 );
 
@@ -106,6 +118,7 @@ export const selectAllEvaluation = createSelector(
 );
 
 //Gets the averaged out evaluation of the entire college in a year.
+//Fix formula later so it calculates relative to the entire college faculty instead of only existing evaluations.
 export const yearEvaluationAverage = createSelector(
     selectDeanState,
     (state: DeanState) => {

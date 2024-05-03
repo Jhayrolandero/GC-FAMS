@@ -11,6 +11,18 @@ import { Courses } from "../../services/Interfaces/courses";
 import { CoursesFaculty } from "../../services/Interfaces/courses-faculty";
 import { Faculty } from "../../services/Interfaces/faculty";
 import { CommunityExtension } from "../../services/Interfaces/community-extension";
+import { College } from "../../services/Interfaces/college";
+
+export const loadCollege = createAction('[College Global] Load College');
+export const loadCollegeSuccess = createAction(
+    '[College Global] College Load Success',
+    props<{ colleges: College[] }>()
+);
+export const loadCollegeFailure = createAction(
+    '[College Global] College Load Failed',
+    props<{ error: string }>()
+);
+
 
 
 export const loadCollegeProfile = createAction('[Profile College Global] Load Profile');

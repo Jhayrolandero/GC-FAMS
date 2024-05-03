@@ -17,6 +17,9 @@ import { LoadingScreenComponent } from '../../loading-screen/loading-screen.comp
 import { Faculty } from '../../../services/Interfaces/faculty';
 import { forkJoin } from 'rxjs';
 import { text } from 'stream/consumers';
+import { Store } from '@ngrx/store';
+import { selectAllCollege } from '../../../state/dean-state/dean-state.selector';
+import { loadCollegeProfile } from '../../../state/dean-state/dean-state.actions';
 export interface program {
   map(arg0: (item: any) => any): any;
   'program_id': number;
@@ -47,26 +50,19 @@ export interface program {
 export class FacultyFormComponent implements OnInit {
 
   @Output() newItemEvent = new EventEmitter();
-
+  colleges$ = this.store.select(selectAllCollege);
 
   constructor(
     private adminService: AdminFetcherService,
     private messageService: MessageService,
     public facultyService: FacultyRequestService,
     private dialogRef: MatDialogRef<FacultyFormComponent>,
+    public store: Store,
     @Inject(MAT_DIALOG_DATA) public data?: { faculty: Faculty }) {
     this.editMode = !!data?.faculty
   }
 
   ngOnInit(): void {
-
-
-    console.log(this.facultyService.colleges)
-    // Caching
-    if (this.facultyService.colleges.length > 0) {
-      this.getCollege()
-    }
-
     if (this.editMode) {
       this.facultyInfo.patchValue({
         first_name: this.data!.faculty.first_name,
@@ -294,20 +290,11 @@ export class FacultyFormComponent implements OnInit {
           this.messageService.sendMessage("An unexpected Error has occurred!", -1)
         },
         complete: () => {
+          this.store.dispatch(loadCollegeProfile());
           this.dialogRef.close({ added: true })
         }
       })
     }
-  }
-
-
-  getCollege(): void {
-    this.adminService.fetchCollege().subscribe({
-      next: (next) => this.facultyService.colleges = next,
-      error: (error) => console.log(error),
-      complete: () => this.isLoading = false
-    }
-    )
   }
 
 

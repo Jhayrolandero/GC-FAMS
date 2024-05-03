@@ -16,6 +16,7 @@ import { CoursesFaculty } from "../../services/Interfaces/courses-faculty";
 import { Courses } from "../../services/Interfaces/courses";
 import { Faculty } from "../../services/Interfaces/faculty";
 import { CommunityExtension } from "../../services/Interfaces/community-extension";
+import { College } from "../../services/Interfaces/college";
 
 @Injectable()
 
@@ -24,6 +25,17 @@ export class DeanEffects{
         private actions$: Actions,
         private facultyService: FacultyRequestService
     ) {}
+
+    loadColleges$ = createEffect(() => this.actions$.pipe(
+        ofType(CvActions.loadCollege),
+        switchMap(() => this.facultyService.fetchData('fetchCollege')
+            .pipe(
+                tap((colleges) => console.log('College has loaded:', colleges)),
+                map((colleges) => CvActions.loadCollegeSuccess({colleges: colleges as College[]})),
+                catchError((error) => of(CvActions.loadCollegeFailure({ error } )))
+            )
+        )
+    ));
 
     loadProfile$ = createEffect(() => this.actions$.pipe(
         ofType(CvActions.loadCollegeProfile),
