@@ -40,12 +40,33 @@ export class AttendeeEffects {
     return this.facultyService.deleteData(`attendee/${faculty_ID}/commex/${commex_ID}`)
   }
 
+  joinCommex$ = (formData: FormData) => {
+    return this.facultyService.postData(formData, `test`)
+  }
+
+  postAttendee = createEffect(() => this.actions$.pipe(
+    ofType(AttendeeActions.joinCommex),
+    mergeMap((action) => {
+      return this.joinCommex$(action.formData).pipe(
+        map(() => {
+          this.attendeeStore.dispatch(AttendeeActions.getAttendedSuccess({ attended: { [action.commex_ID]: 1 } }))
+          return AttendeeActions.joinCommexSuccess({ commex_ID: action.commex_ID })
+          // return AttendeeActions.getAttendedSuccess({ attended: { [action.commex_ID]: 1 } })
+        }),
+        catchError(err => of(AttendeeActions.joinCommexFailure({ error: err.message })))
+      )
+    })
+  ))
+
+
   deleteAttendee = createEffect(() => this.actions$.pipe(
     ofType(AttendeeActions.leaveCommex),
     mergeMap((action) => {
       return this.leaveCommex$(action.commex_ID, action.faculty_ID).pipe(
-        take(1),
-        map(() => AttendeeActions.leaveCommexSuccess({ commex_ID: action.commex_ID })),
+        map(() => {
+          this.attendeeStore.dispatch(AttendeeActions.getAttendedSuccess({ attended: { [action.commex_ID]: 0 } }))
+          return AttendeeActions.leaveCommexSuccess({ commex_ID: action.commex_ID })
+        }),
         catchError(err => of(AttendeeActions.leaveCommexFailure({ error: err.message })))
       )
     })

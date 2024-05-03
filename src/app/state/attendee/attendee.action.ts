@@ -61,3 +61,15 @@ export const leaveCommexSuccess = createAction('[Attendee Leave] Leave Commex Su
 export const leaveCommexFailure = createAction('[Attendee Leave] Leave Commex Failure',
   props<{ error: string }>()
 )
+
+export const joinCommex = createAction('[Commex Join] Join Commex',
+  props<{ commex_ID: number, formData: FormData }>()
+)
+
+export const joinCommexSuccess = createAction('[Attendee Join] Join Commex Success',
+  props<{ commex_ID: number }>()
+)
+
+export const joinCommexFailure = createAction('[Attendee Join] Join Commex Failure',
+  props<{ error: string }>()
+)

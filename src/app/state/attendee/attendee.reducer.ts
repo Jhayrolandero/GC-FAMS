@@ -74,10 +74,10 @@ export const attendeeNumberReducer = createReducer(
   on(AttendeeActions.leaveCommexSuccess, (state, action) => ({
     ...state,
     attendees: reduceAttendeeNumber(state.attendees, action.commex_ID)
-    // attendees: {
-    //   ...state.attendees,
-    //   ...action.
-    // }
+  })),
+  on(AttendeeActions.joinCommexSuccess, (state, action) => ({
+    ...state,
+    attendees: incrementAttendeeNumber(state.attendees, action.commex_ID)
   }))
 )
 
@@ -107,6 +107,14 @@ function reduceAttendeeNumber(attendee: Dictionary<number>, commex_ID: number) {
   let reduceDict = attendeeCopy[commex_ID]
   reduceDict -= 1
   attendeeCopy[commex_ID] = reduceDict
+  return attendeeCopy
+}
+
+function incrementAttendeeNumber(attendee: Dictionary<number>, commex_ID: number) {
+  const attendeeCopy = { ...attendee }
+  let incDict = attendeeCopy[commex_ID]
+  incDict += 1
+  attendeeCopy[commex_ID] = incDict
   return attendeeCopy
 }
 

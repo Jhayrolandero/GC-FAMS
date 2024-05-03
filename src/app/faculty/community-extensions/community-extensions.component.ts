@@ -416,5 +416,15 @@ export class CommunityExtensionsComponent {
 
   attendCommex(commex_ID: number) {
 
+    const attendCommex = new FormData()
+
+    const attendeeForm = { commex_ID, faculty_ID: 3 }
+
+
+    // console.log(attendeeForm)
+    attendCommex.append("attendees[]", JSON.stringify(attendeeForm))
+
+    this.attendeeStore.dispatch(AttendeeActions.joinCommex({ commex_ID: commex_ID, formData: attendCommex }))
+
   }
 }
