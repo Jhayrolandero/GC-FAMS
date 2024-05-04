@@ -50,8 +50,8 @@
   [(ngModel)]="searchQuery"
   (ngModelChange)="filterName()"
   type="text"
-  placeholder="SEARCH FACULTY"
-  class="flex-1 rounded-[15px] py-1 m-5 px-5 shadow-inner placeholder:text-center placeholder:font-bold border-2 border-skate-200 w-1/4 max-w-[400px] min-w-[200px]"
+  placeholder="Search Faculty"
+  class="flex-1 rounded-[5px] py-1 m-5 px-5 shadow-inner placeholder:text-center placeholder:font-semibold border-2 border-skate-200 w-1/4 max-w-[400px] min-w-[200px]"
   />
 
   <div class="grid justify-items-start grid-cols-4 gap-5 p-5">
@@ -90,7 +90,7 @@
           <mat-menu #menu="matMenu">
             <ng-template matMenuContent>
             <button mat-menu-item>Reset Password</button>
-            <button mat-menu-item (click)="openForm(faculty)">Edit</button>
+            <button mat-menu-item (click)="editFaculty(faculty)">Edit</button>
             <button mat-menu-item (click)="deleteForm(faculty.faculty_ID)">Delete</button>
             <!-- <button mat-menu-item (click)="deleteFaculty(faculty.id)">Delete</button> -->
             </ng-template>

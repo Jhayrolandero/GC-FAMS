@@ -1,5 +1,5 @@
-
 <div
+  *ngIf="!showAdd"
   class="shadow-main w-full  flex flex-col p-5 gap-3"
 >
   <div
@@ -9,13 +9,19 @@
       Faculty Management
     </h1>
     <button
-    (click)="openForm()"
+    (click)="switchShow()"
     class="bg-gradient-to-r from-blue to-greenBar text-white font-Poppins font-semibold w-[125px] h-[40px] rounded-full shadow-main hover:scale-[102%] hover:duration-300 duration-300"
     >
       +Add
     </button>
   </div>
 
-  <app-faculty-section [refresh]="refresh" (refreshEmitter)="refresh = $event"
+  <app-faculty-section
+  (editDataEvent)="editFaculty($event)"
   ></app-faculty-section>
 </div>
+
+<app-add-faculty 
+*ngIf="showAdd"
+(switchShowAdd)="switchShow()"
+[editData]="editData"></app-add-faculty>
