@@ -65,7 +65,7 @@
                 <i class="fa-solid fa-ellipsis-vertical"></i>
               </button>
               <mat-menu #menu="matMenu">
-                <button mat-menu-item>Delete Commex</button>
+                <button mat-menu-item (click)="openConfirm(latestCommex.commex_ID)">Delete Commex</button>
                 <button mat-menu-item>Edit Commex</button>
               </mat-menu>
             }
@@ -172,7 +172,7 @@
                     <i class="fa-solid fa-ellipsis-vertical"></i>
                   </button>
                   <mat-menu #menu="matMenu">
-                    <button mat-menu-item>Delete Commex</button>
+                    <button mat-menu-item (click)="openConfirm(commex.commex_ID)">Delete Commex</button>
                     <button mat-menu-item>Edit Commex</button>
                   </mat-menu>
                   }

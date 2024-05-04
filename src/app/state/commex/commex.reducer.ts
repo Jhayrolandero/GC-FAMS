@@ -2,20 +2,24 @@ import { createReducer, on } from "@ngrx/store";
 import { CommexState } from "../../services/Interfaces/commexState";
 import * as CommexActions from "./commex.action";
 import { state } from "@angular/animations";
+import { Dictionary } from "../../services/Interfaces/dictionary";
+import { CommunityExtension } from "../../services/Interfaces/community-extension";
 
 // For Faculty
 export const initialState: CommexState = {
   postLoading: false,
   isLoading: false,
   commexs: [],
-  error: ''
+  error: '',
+  deleteLoading: false
 }
 // For Colleges
 export const initialCollegeXCommexState: CommexState = {
   postLoading: false,
   isLoading: false,
   commexs: [],
-  error: null
+  error: null,
+  deleteLoading: false
 }
 
 export const commexReducer = createReducer(
@@ -49,7 +53,23 @@ export const commexReducer = createReducer(
   on(CommexActions.setLoading, (state, action) => ({
     ...state,
     isLoading: action.status
-  }))
+  })),
+  on(CommexActions.deleteCommex, (state) => ({
+    ...state,
+    deleteLoading: true
+  })),
+  on(CommexActions.deleteCommexSuccess, (state, action) => ({
+    ...state,
+    commexs: removeCommex(state.commexs, action.commex_ID),
+    deleteLoading: false
+  })),
+  on(CommexActions.deleteCommexFailure, (state, action) => (
+    {
+      ...state,
+      deleteLoading: false,
+      error: action.error
+    }
+  )),
 )
 
 export const collegeCommexReducer = createReducer(
@@ -70,3 +90,8 @@ export const collegeCommexReducer = createReducer(
     isLoading: action.status
   }))
 )
+
+
+function removeCommex(commexs: CommunityExtension[], commex_ID: number) {
+  return commexs.filter(commex => commex.commex_ID !== commex_ID);
+}

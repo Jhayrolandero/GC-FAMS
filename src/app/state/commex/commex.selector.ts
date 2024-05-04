@@ -22,6 +22,9 @@ export const postLoadingSelector = createSelector(selectFeature,
   (state) => state.postLoading
 )
 
+export const deleteLoadingSelector = createSelector(selectFeature,
+  (state) => state.deleteLoading
+)
 export const commexSelector = createSelector(selectFeature,
   (state) => state.commexs
 )

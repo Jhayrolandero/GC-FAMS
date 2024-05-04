@@ -1,0 +1,6 @@
+<h4>Are you sure you want to delete this commex?</h4>
+<button
+(click)="deleteCommex(data.commex_ID)"
+[disabled]="isLoading$ | async"
+>Yes @if(isLoading$ | async) { Loading... }</button>
+<button (click)="onNoClick()">No</button>

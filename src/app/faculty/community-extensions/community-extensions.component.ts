@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { CommunityExtension } from '../../services/Interfaces/community-extension';
 import { OtherCommexComponent } from './other-commex/other-commex.component';
 import { CommonModule, NgFor, NgIf, SlicePipe } from '@angular/common';
@@ -12,6 +12,7 @@ import {
   MatDialogContent,
   MatDialogActions,
   MatDialogClose,
+  MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { FormArray, FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -434,5 +435,48 @@ export class CommunityExtensionsComponent {
     // reset the attendees to fetch new
     delete this.attendees[commex_ID]
 
+  }
+
+
+  openConfirm(commex_ID: number): void {
+    this.dialog.open(ConfirmDeleteComponent, {
+      data: { commex_ID },
+    });
+  }
+}
+@Component({
+  selector: 'confirm-delete',
+  templateUrl: 'confirm-delete.component.html',
+  standalone: true,
+  imports: [
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule,
+    MatButtonModule,
+    MatDialogTitle,
+    MatDialogContent,
+    MatDialogActions,
+    MatDialogClose,
+    CommonModule
+  ],
+})
+
+export class ConfirmDeleteComponent {
+  constructor(
+    public dialogRef: MatDialogRef<ConfirmDeleteComponent>,
+    private commexFacultyStore: Store<{ commexs: CommexState }>,
+    @Inject(MAT_DIALOG_DATA) public data: { commex_ID: number }) {
+
+    this.isLoading$ = this.commexFacultyStore.select(CommexsSelector.deleteLoadingSelector)
+  }
+
+  isLoading$: Observable<boolean>
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+  deleteCommex(commex_ID: number) {
+    this.commexFacultyStore.dispatch(CommexActions.deleteCommex({ commex_ID }))
   }
 }
