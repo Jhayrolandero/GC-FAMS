@@ -35,7 +35,7 @@
   </div>
 </div>
 
-@if( isLoading$ | async) {
+@if( (isLoading$ | async) || (isProfileLoading$ | async)) {
   <app-loading-screen></app-loading-screen>
   } @else {
       <div class="p-5 flex flex-col gap-3 text-blue">
@@ -54,9 +54,22 @@
             <img [src]="latestCommex.commex_header_img" class="w-full aspect-video" />
           </div>
           <div class="p-4 w-[75%] flex flex-col gap-2">
-            <h1 class="font-Poppins font-semibold text-[1.5rem]">
-              {{ latestCommex.commex_title }}
-            </h1>
+            <div class="flex gap-2 justify-between items-center">
+              <h1 class="font-Poppins font-semibold text-[1.5rem]">
+                {{ latestCommex.commex_title }}
+              </h1>
+              @if(attended[latestCommex.commex_ID] == 1) {
+              <button
+              mat-button [matMenuTriggerFor]="menu"
+              class="w-[5%] max-w-3">
+                <i class="fa-solid fa-ellipsis-vertical"></i>
+              </button>
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item>Delete Commex</button>
+                <button mat-menu-item>Edit Commex</button>
+              </mat-menu>
+            }
+            </div>
             <div class="flex flex-row opacity-70">
               <img
                 src="../../../assets/faculty-dashboard/BlueVector.png"
@@ -70,25 +83,50 @@
               {{ latestCommex.commex_details }}
             </p>
             <div class="flex flex-col flex-wrap justify-end flex-1 gap-2">
-              <hr class=" text-black text-[0.5rem] bg-black">
-              <div class="flex gap-2"
-              (mouseleave)="toggleHide()"
-              (mouseenter)="toggleVisible(latestCommex.commex_ID)"
+                <hr class=" text-black text-[0.5rem] bg-black">
+          <div class="flex justify-between">
+            <div
+            class="flex gap-2"
+            (mouseenter)="toggleVisible(latestCommex.commex_ID)"
+            (mouseleave)="toggleHide()"
+            >
+                @if( attendeeLoading$ | async ) {
+                  ...loading
+                } @else {
+                  <span><i class="fa-solid fa-users"></i></span><p>{{ attendeesNumber[latestCommex.commex_ID] }}</p>
+                }
+              <span class="relative">
+                <app-tooltip
+                [attendees]="attendee"
+                [isVisible]="isVisible"
+                [id]="latestCommex.commex_ID"
+                [activeID]="activeID"
+                ></app-tooltip>
+              </span>
+            </div>
+            <!-- check first if loading before joining -->
+            @if(isAttendedLoading$ | async){
+              <button class=" bg-blue text-white px-2 py-1 rounded-lg">
+                Loading...
+              </button>
+            }@else {
+              @if(attended[latestCommex.commex_ID] == 1) {
+                <button
+                class=" bg-blue text-white px-2 py-1 rounded-lg"
+                (click)="leaveCommex(latestCommex.commex_ID)"
+                >
+                Attended
+              </button>
+            }  @else {
+              <button
+              class=" bg-blue text-white px-2 py-1 rounded-lg"
+              (click)="attendCommex(latestCommex.commex_ID)"
               >
-                    @if( attendeeLoading$ | async ) {
-                      ...loading
-                    } @else {
-                      <span><i class="fa-solid fa-users"></i></span><p>{{ attendeesNumber[latestCommex.commex_ID] }}</p>
-                    }
-                </div>
-                <div class="relative">
-                  <app-tooltip
-                  [attendees]="attendee"
-                  [isVisible]="isVisible"
-                  [id]="latestCommex.commex_ID"
-                  [activeID]="activeID"
-                  ></app-tooltip>
-                </div>
+                Attend
+              </button>
+            }
+          }
+          </div>
               </div>
             </div>
           </div>
@@ -122,7 +160,24 @@
                 <img [src]="commex.commex_header_img" alt="" class="w-full aspect-video"/>
               </div>
               <div class="p-3">
-                <h4 class="text-xl font-bold">{{ commex.commex_title }}</h4>
+                <div class="flex gap-2 justify-between items-center">
+                  <h4 class="font-Poppins font-semibold text-[1.5rem]">
+                    {{ commex.commex_title }}
+                  </h4>
+                  @if(attended[commex.commex_ID] == 1) {
+
+                  <button
+                  mat-button [matMenuTriggerFor]="menu"
+                  class="w-[5%] max-w-3">
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                  </button>
+                  <mat-menu #menu="matMenu">
+                    <button mat-menu-item>Delete Commex</button>
+                    <button mat-menu-item>Edit Commex</button>
+                  </mat-menu>
+                  }
+                </div>
+                <!-- <h4 class="text-xl font-bold">{{ commex.commex_title }}</h4> -->
                 <img
                   src="../../../assets/faculty-dashboard/BlueVector.png"
                   class="w-[20px] h-[20px] mr-[5px] inline-block"

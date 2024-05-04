@@ -1,4 +1,4 @@
-import { Component, NgZone } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommunityExtension } from '../../services/Interfaces/community-extension';
 import { OtherCommexComponent } from './other-commex/other-commex.component';
 import { CommonModule, NgFor, NgIf, SlicePipe } from '@angular/common';
@@ -14,15 +14,14 @@ import {
   MatDialogClose,
 } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
-import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { TooltipComponent } from '../../components/tooltip/tooltip.component';
 import { Attendee } from '../../services/Interfaces/attendee';
-import { Observable, Subscription, catchError, concatMap, first, from, map, merge, mergeAll, mergeMap, of, tap, toArray } from 'rxjs';
+import { Observable, Subscription, catchError, first, from, map, merge, mergeMap, of } from 'rxjs';
 import { Dictionary } from '../../services/Interfaces/dictionary';
 import { Response } from '../../services/Interfaces/response';
-import { AttendeeCount } from '../../services/Interfaces/attendeeCount';
 import { MessageService } from '../../services/message.service';
 import { Store, select } from '@ngrx/store';
 import { CommexState } from '../../services/Interfaces/commexState';
@@ -38,6 +37,8 @@ import { Profile } from '../../services/Interfaces/profile';
 import { Faculty } from '../../services/Interfaces/faculty';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { AttendedState } from '../../services/Interfaces/attendedState';
+import { MatMenuModule } from '@angular/material/menu';
+
 @Component({
   selector: 'app-commex-form',
   standalone: true,
@@ -192,7 +193,9 @@ export class CommexFormComponent {
     FormsModule,
     MatFormFieldModule,
     MatDatepickerModule,
-    NgIf
+    NgIf,
+    MatMenuModule,
+    MatButtonModule
   ],
   templateUrl: './community-extensions.component.html',
   styleUrl: './community-extensions.component.css'
@@ -219,12 +222,14 @@ export class CommunityExtensionsComponent {
     this.latestCommex$ = this.commexFacultyStore.pipe(select(CommexsSelector.latestCommexSelector))
     this.profileCollege$ = this.profileStore.pipe(select(ProfileSelectors.selectAllProfile))
     this.isAttendedLoading$ = this.attendedStore.pipe(select(AttendeeSelector.attendedLoadingSelector))
+    this.isProfileLoading$ = this.profileStore.pipe(select(ProfileSelectors.selectProfileLoading))
 
   }
   commexs$: Observable<CommunityExtension[]>
   latestCommex$: Observable<CommunityExtension>
   isLoading$: Observable<boolean>
   isAttendedLoading$: Observable<boolean>
+  isProfileLoading$: Observable<boolean>
   attendeeLoading$: Observable<boolean>
   attendeesNumber: Dictionary<number> = {}
   attended: Dictionary<number> = {}
@@ -261,7 +266,7 @@ export class CommunityExtensionsComponent {
   formToggle: boolean = false;
   collegeCommexs: CommunityExtension[] = [];
   facultyCommexs: CommunityExtension[] = [];
-  attendees: Dictionary<Attendee[]>[] = []
+  attendees: Dictionary<Attendee[]> = {}
   attendee: Attendee[] = []
   isVisible: boolean = false
   activeID: number | null = null
@@ -311,10 +316,13 @@ export class CommunityExtensionsComponent {
 
   attendeeNameFetch$ = (id: number): Subscription => {
     return this.facultyService.fetchData<Response<Attendee[]>>(`attendee/${id}`).subscribe({
-      next: res => this.attendees.push({ [id]: res.data }),
+      next: res => this.attendees = ({
+        ...this.attendees,
+        [id]: res.data
+      }),
       error: err => console.log(err),
       complete: () => {
-        this.attendee = this.attendees.find(mem => mem[id])![id]
+        this.attendee = this.attendees[id]
         this.isAttendeeLoading = false
         console.log(this.attendees)
       }
@@ -335,17 +343,18 @@ export class CommunityExtensionsComponent {
   currFetch$!: Subscription
   toggleVisible(id: number) {
 
-    const exist = this.attendees.some(attendee => id in attendee);
+    const exist = this.attendees.hasOwnProperty(id);
 
     if (!exist) {
       this.currFetch$ = this.attendeeNameFetch$(id)
     } else {
-      this.attendee = this.attendees.find(mem => mem[id])![id]
+      this.attendee = this.attendees[id]
     }
 
     this.isVisible = true
     this.activeID = id
   }
+
 
   toggleHide() {
     console.log("Unsub...")
@@ -412,19 +421,18 @@ export class CommunityExtensionsComponent {
 
   leaveCommex(commex_ID: number) {
     this.attendeeStore.dispatch(AttendeeActions.leaveCommex({ commex_ID: commex_ID, faculty_ID: 3 }))
+    // reset the attendees to fetch new
+    delete this.attendees[commex_ID]
   }
 
   attendCommex(commex_ID: number) {
-
     const attendCommex = new FormData()
-
     const attendeeForm = { commex_ID, faculty_ID: 3 }
 
-
-    // console.log(attendeeForm)
     attendCommex.append("attendees[]", JSON.stringify(attendeeForm))
-
     this.attendeeStore.dispatch(AttendeeActions.joinCommex({ commex_ID: commex_ID, formData: attendCommex }))
+    // reset the attendees to fetch new
+    delete this.attendees[commex_ID]
 
   }
 }
