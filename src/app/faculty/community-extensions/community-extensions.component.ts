@@ -295,7 +295,7 @@ export class CommunityExtensionsComponent {
 
     this.commexs$.pipe(
       mergeMap(commexs => from(commexs).pipe(
-        map(commex => this.attendeeStore.dispatch(AttendeeActions.getAttended({ commex_ID: commex.commex_ID, faculty_ID: 3 })))
+        map(commex => this.attendeeStore.dispatch(AttendeeActions.getAttended({ commex_ID: commex.commex_ID, faculty_ID: this.profileFacultyID })))
       ))
     ).subscribe()
 
@@ -421,14 +421,14 @@ export class CommunityExtensionsComponent {
   }
 
   leaveCommex(commex_ID: number) {
-    this.attendeeStore.dispatch(AttendeeActions.leaveCommex({ commex_ID: commex_ID, faculty_ID: 3 }))
+    this.attendeeStore.dispatch(AttendeeActions.leaveCommex({ commex_ID: commex_ID, faculty_ID: this.profileFacultyID }))
     // reset the attendees to fetch new
     delete this.attendees[commex_ID]
   }
 
   attendCommex(commex_ID: number) {
     const attendCommex = new FormData()
-    const attendeeForm = { commex_ID, faculty_ID: 3 }
+    const attendeeForm = { commex_ID, faculty_ID: this.profileFacultyID }
 
     attendCommex.append("attendees[]", JSON.stringify(attendeeForm))
     this.attendeeStore.dispatch(AttendeeActions.joinCommex({ commex_ID: commex_ID, formData: attendCommex }))
@@ -447,6 +447,7 @@ export class CommunityExtensionsComponent {
 @Component({
   selector: 'confirm-delete',
   templateUrl: 'confirm-delete.component.html',
+  styleUrl: 'confirm-delete.component.css',
   standalone: true,
   imports: [
     MatFormFieldModule,

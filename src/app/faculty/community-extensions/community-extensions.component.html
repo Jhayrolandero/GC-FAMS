@@ -35,7 +35,7 @@
   </div>
 </div>
 
-@if( (isLoading$ | async) || (isProfileLoading$ | async)) {
+@if( isLoading$ | async) {
   <app-loading-screen></app-loading-screen>
   } @else {
       <div class="p-5 flex flex-col gap-3 text-blue">
