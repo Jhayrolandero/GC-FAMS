@@ -1,4 +1,4 @@
-export interface Faculty {
+ export interface Faculty {
   faculty_ID: number,
   college_ID: number,
   first_name: string,
@@ -12,7 +12,8 @@ export interface Faculty {
   citizenship: string,
   civil_status: string,
   sex: string,
-  email: string,
+  college_abbrev: string,
+  email: string, 
   password: string,
   employment_status: number,
   phone_number: string,

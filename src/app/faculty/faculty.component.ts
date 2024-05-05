@@ -5,11 +5,14 @@ import { AnalyticsComponent } from './analytics/analytics.component';
 import { TopnavComponent } from '../components/navbar/topnav/topnav.component';
 import { CommonModule } from '@angular/common';
 import { LoadingScreenComponent } from '../components/loading-screen/loading-screen.component';
-import {MatSidenavModule} from '@angular/material/sidenav';
-import {MatButtonModule} from '@angular/material/button';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatButtonModule } from '@angular/material/button';
 import { MessageComponent } from '../components/message/message.component';
-import {FormsModule} from '@angular/forms';
-import {MatCheckboxModule} from '@angular/material/checkbox';
+import { FormsModule } from '@angular/forms';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { loadCert, loadCourse, loadEduc, loadEval, loadExp, loadExpertise, loadProfile, loadProj } from '../state/faculty-state/faculty-state.actions';
+import { Store, StoreModule } from '@ngrx/store';
+import { getCommex } from '../state/commex/commex.action';
 
 @Component({
   selector: 'app-faculty',
@@ -32,6 +35,18 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 export class FacultyComponent {
   sideBarToggle = true;
   opened: boolean = true;
+
+  constructor(private store: Store){
+    store.dispatch(loadProfile());
+    store.dispatch(loadCert());
+    store.dispatch(loadCourse());
+    store.dispatch(loadEduc());
+    store.dispatch(loadExp());
+    store.dispatch(loadProj());
+    store.dispatch(loadExpertise());
+    store.dispatch(loadEval());
+    store.dispatch(getCommex({ uri: 'getcommex?t=faculty' }))
+  }
 
   toggle() {
     this.sideBarToggle = !this.sideBarToggle;

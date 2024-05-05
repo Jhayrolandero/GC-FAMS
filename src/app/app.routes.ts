@@ -2,11 +2,13 @@ import { Routes } from '@angular/router';
 import { authGuard } from './services/auth.guard';
 import { AdminComponent } from './admin/admin.component';
 import { FacultyComponent } from './faculty/faculty.component';
+import { AddFacultyComponent } from './admin/manage-faculty/add-faculty/add-faculty.component';
+import { ManageFacultyComponent } from './admin/manage-faculty/manage-faculty.component';
+
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'faculty', redirectTo: '/faculty/curriculum-vitae', pathMatch: 'full' },
   { path: 'admin', redirectTo: '/admin/manage-faculty', pathMatch: 'full' },
-
   {
     path: 'login',
     loadComponent: () =>
@@ -14,16 +16,18 @@ export const routes: Routes = [
   },
   {
     path: 'faculty', component: FacultyComponent, children: [
-      { path: 'curriculum-vitae', loadComponent: () => import('./faculty/profile/profile.component').then(m => m.ProfileComponent) },
+      {
+        path: 'curriculum-vitae', loadComponent: () => import('./faculty/profile/profile.component').then(m => m.ProfileComponent),
+      },
       { path: 'analytics', loadComponent: () => import('./faculty/analytics/analytics.component').then(m => m.AnalyticsComponent) },
-      { path: 'schedule', loadComponent: () => import('./faculty/schedule/schedule.component').then(m => m.ScheduleComponent) },
       { path: 'community', loadComponent: () => import('./faculty/community-extensions/community-extensions.component').then(m => m.CommunityExtensionsComponent) },
-      { path: 'evaluation', loadComponent: () => import('./faculty/evaluation/evaluation.component').then(m => m.EvaluationComponent) }
-    ], canActivateChild: [authGuard]
+      { path: 'evaluation', loadComponent: () => import('./faculty/evaluation/evaluation.component').then(m => m.EvaluationComponent) },
+    ], canActivateChild: [authGuard],
   },
   {
     path: 'admin', component: AdminComponent, children: [
-      { path: 'manage-faculty', loadComponent: () => import('./admin/manage-faculty/manage-faculty.component').then(m => m.ManageFacultyComponent) },
+      { path: 'add-faculty', component: AddFacultyComponent },
+      { path: 'manage-faculty', component: ManageFacultyComponent},
       { path: 'commex', loadComponent: () => import('./admin/commex/commex.component').then(m => m.CommexComponent) },
       { path: 'program-analytics', loadComponent: () => import('./admin/manage-analytics/manage-analytics.component').then(m => m.ManageAnalyticsComponent) },
     ], canActivateChild: [authGuard]

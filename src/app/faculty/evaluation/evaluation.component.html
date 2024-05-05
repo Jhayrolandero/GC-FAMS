@@ -1,6 +1,6 @@
-<app-loading-screen *ngIf="isLoading"></app-loading-screen>
+<app-loading-screen *ngIf="!(evaluation$ | async) as facultyProfile"></app-loading-screen>
 
-<div class="p-5 flex flex-col gap-3 text-blue w-full" *ngIf="!isLoading">
+<div class="p-5 flex flex-col gap-3 text-blue w-full" *ngIf="(evaluation$ | async) as facultyProfile">
   <div
     class="bg-white shadow-main bg-opacity-70 w-full rounded-[15px] flex justify-between items-center px-5"
   >
@@ -15,11 +15,12 @@
   </div>
 
   <div
+    *ngIf="(evaluation$ | async)?.length"
     class="bg-white shadow-main bg-opacity-70 w-full rounded-[15px] flex flex-col justify-between items-center"
   >
     <div class="flex flex-row w-full justify-between gap-2 mt-5 px-5">
       <p
-        *ngFor="let evalItem of evaluation"
+        *ngFor="let evalItem of evaluation$ | async"
         class="hover:font-bold transition-all cursor-pointer font-Poppins justify-between mx-3 text-[1rem]"
         (click)="selectEvalSem(evalItem.evaluation_ID)"
       >
@@ -104,5 +105,9 @@
         </div>
       </div>
     </div>
+  </div>
+
+  <div *ngIf="!(evaluation$ | async)?.length">
+    <p>no evals??? LOL!</p>
   </div>
 </div>

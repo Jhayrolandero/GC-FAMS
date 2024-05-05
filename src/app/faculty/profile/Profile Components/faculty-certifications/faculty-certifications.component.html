@@ -1,16 +1,18 @@
-<div *ngIf="certifications?.length == 0">
+<div *ngIf="!(existCertifications$ | async)?.length">
     <p class="font-Poppins font-semibold text-[2rem] text-blue text-center m-10">No existing records!</p>
 </div>
 
 <div
   class="mobileS:columns-1 tablet:columns-2 laptop:columns-4 gap-3 w-full p-3 px-5"
 >
-    <div *ngFor="let cert of certifications" class="my-3 relative shadow-main rounded-[15px] bg-white overflow-hidden duration-300 hover:scale-[102%] hover:shadow-xl hover:duration-300">
-        <div class="absolute h-[100%] w-[100%] bg-white opacity-0 hover:opacity-90 hover:duration-300 duration-300">
-            <p>{{cert.cert_name}}</p>
-            <p>{{cert.cert_details}}</p>
-            <p>{{cert.cert_corporation}}</p>
-        </div>
-        <img [src]="cert.cert_image">
+    <div *ngFor="let cert of existCertifications$ | async; let i = index">
+        <div class="h-[220px] mb-5 relative shadow-main rounded-[15px] bg-white overflow-hidden duration-300 hover:scale-[100.5%] hover:shadow-xl hover:duration-300">
+            <div class="absolute h-[100%] w-[100%] p-5 px-7 flex flex-col justify-center  text-white text-opacity-0 bg-blue bg-opacity-0 hover:text-opacity-100 hover:bg-opacity-80 hover:duration-300 duration-300">
+                <p class="font-semibold text-[1rem]">{{cert.cert_name}}</p>
+                <p class="font-medium text-[0.8rem]">{{cert.cert_corporation}}</p>
+                <p class="font-medium mt-4 text-[0.8rem]">{{cert.cert_details}}</p>
+                <p class="font-medium mt-4 text-[0.8rem]">Date Acquired: {{ cert.accomplished_date | date: 'longDate'}}</p>
+            </div>
+            <img [src]="port + cert.cert_image" class="h-[100%] w-[100%] object-cover">
     </div>
 </div>

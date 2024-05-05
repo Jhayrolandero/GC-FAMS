@@ -6,9 +6,14 @@ import { FacultyExperienceComponent } from '../Profile Components/faculty-experi
 import { FacultyExpertiseComponent } from '../Profile Components/faculty-expertise/faculty-expertise.component';
 import { FacultyProjectsComponent } from '../Profile Components/faculty-projects/faculty-projects.component';
 import { MatDialog } from '@angular/material/dialog';
-import { FacultyCertificationsFormComponent } from '../Profile Forms/Certification Form/faculty-certifications-form.component';
-import { EducationalAttainmentFormComponent } from '../Profile Forms/Educattainment Form/educational-attainment-form.component';
-import { CvDeleteForm } from '../Profile Forms/Delete Form/cv-delete-form.component';
+import { FacultyCertificationsFormComponent } from '../Profile Forms/certification-form/faculty-certifications-form.component';
+import { EducationalAttainmentFormComponent } from '../Profile Forms/educational-attainment-form/educational-attainment-form.component';
+import { CvDeleteForm } from '../Profile Forms/delete-form/cv-delete-form.component';
+import { Store } from '@ngrx/store';
+import { loadCert, loadEduc, loadExp, loadExpertise, loadProj } from '../../../state/faculty-state/faculty-state.actions';
+import { IndustryExperienceFormComponent } from '../Profile Forms/industry-experience-form/industry-experience-form.component';
+import { ProjectsFormComponent } from '../Profile Forms/projects-form/projects-form.component';
+import { ExpertiseFormComponent } from '../Profile Forms/expertise-form/expertise-form.component';
 
 
 @Component({
@@ -24,10 +29,9 @@ export class CvDropdownComponent {
   //Rotated state of icon
   rotated = true;
 
-  //A somewhat hacky solution to trigger refresh on each cv component
-  refresher = [true,true,true,true,true];
-
-  constructor(public dialog: MatDialog){}
+  constructor(
+    public dialog: MatDialog,
+    public store: Store){}
 
   rotate(){
     this.rotated = !this.rotated;
@@ -38,7 +42,30 @@ export class CvDropdownComponent {
     const deleteForm = this.dialog.open(CvDeleteForm, {
       data: deleteData
     }).afterClosed().subscribe(result => {
-      this.refresher[result] = !this.refresher[result];
+      switch (result) {
+        case 0:
+          this.store.dispatch(loadEduc());
+          break;
+
+        case 1:
+          this.store.dispatch(loadCert());
+          break;
+
+        case 2:
+          this.store.dispatch(loadExp());
+          break;
+
+        case 3:
+          this.store.dispatch(loadProj());
+          break;
+
+        case 4:
+          this.store.dispatch(loadExpertise());
+          break;
+      
+        default:
+          break;
+      }
     })
   }
 
@@ -48,19 +75,31 @@ export class CvDropdownComponent {
       case "Educational Attainment":
         const educRef = this.dialog.open(EducationalAttainmentFormComponent, {
           data: editData
-        }).afterClosed().subscribe(result => {
-          this.refresher[0] = !this.refresher[0];
-        })
+        });
         break;
 
       case "Certifications":
-        const certRef = this.dialog.open(FacultyCertificationsFormComponent).afterClosed().subscribe(result => {
-          this.refresher[1] = !this.refresher[1];
-        })
+        const certRef = this.dialog.open(FacultyCertificationsFormComponent);
         break;
 
+      case "Industry Experience":
+        const expRef = this.dialog.open(IndustryExperienceFormComponent, {
+          data: editData
+        });
+        break;
 
-    
+      case "Projects":
+        const projRef = this.dialog.open(ProjectsFormComponent, {
+          data: editData
+        });
+        break;
+
+      case "Expertise":
+        const expertiseRef = this.dialog.open(ExpertiseFormComponent, {
+          data: editData
+        });
+        break;
+
       default:
         break;
     }

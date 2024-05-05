@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, Renderer2, ElementRef } from '@angular/core';
+import { Component, Inject, OnInit, Renderer2, ElementRef, SimpleChanges } from '@angular/core';
 import { FacultyRequestService } from '../../services/faculty/faculty-request.service';
 import { Router } from '@angular/router';
 import { Evaluation } from '../../services/Interfaces/evaluation';
@@ -19,7 +19,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { Faculty } from '../../services/Interfaces/faculty';
+import { selectAllEvaluation } from '../../state/faculty-state/faculty-state.selector';
+import { Store, select } from '@ngrx/store';
+import { loadEval } from '../../state/faculty-state/faculty-state.actions';
 
 type Series = {
   'name': string,
@@ -85,19 +87,20 @@ export class EvaluationForm {
 
   submitForm() {
     //Proceed to next semester or year
-    if (this.data.sem == 1) {
-      this.evalForm.patchValue({
-        semester: '2',
-        evaluation_year: (this.data.year) + ''
-      });
-    }
-    else {
-      this.evalForm.patchValue({
-        semester: '1',
-        evaluation_year: ((+this.data.year) + 1) + ""
-      })
-    }
+    // if (this.data.sem == 1) {
+    //   this.evalForm.patchValue({
+    //     semester: '2',
+    //     evaluation_year: (this.data.year) + ''
+    //   });
+    // }
+    // else {
+    //   this.evalForm.patchValue({
+    //     semester: '1',
+    //     evaluation_year: ((+this.data.year) + 1) + ""
+    //   })
+    // }
 
+    console.log(this.evalForm);
     //Post request on form
     this.facultyRequest.postData(this.evalForm, "addEval").subscribe({
       next: value => {
@@ -116,81 +119,68 @@ export class EvaluationForm {
   templateUrl: './evaluation.component.html',
   styleUrl: './evaluation.component.css'
 })
-export class EvaluationComponent implements OnInit {
+export class EvaluationComponent{
 
   isLoading: boolean = true;
-  evaluation: Evaluation[] = [];
+  evaluation$ = this.store.select(selectAllEvaluation);
   evalScoreCategory!: ScoreCategory[]
   selectedEvalSem!: Evaluation
   evalHistory: evalScoreHistory[] = []
   evalBar!: HTMLElement
+  
   constructor(
-    private facultyService: FacultyRequestService,
-    private router: Router,
     private evaluationService: EvaluationService,
     public dialog: MatDialog,
     private renderer: Renderer2,
-    private elementRef: ElementRef) { }
+    private elementRef: ElementRef,
+    private store: Store) { 
+      this.evaluation$.subscribe({
+        next: value => {
+          this.evalHistory = this.evaluationService.setEvalHistory(value)
+          this.selectedEvalSem = value[value.length - 1]
+          this.selectEvalSem()
+          this.isLoading = false
+        },
+      })
+    }
 
-  ngOnInit(): void {
-    this.getEvaluation();
-
-    // this.evalBar = this.elementRef.nativeElement.querySelector('.bar')
-    // this.renderer.setStyle(this.evalBar, '.bar::before', `{ width: 87.5%; }`);
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log("This is running!");
   }
 
   formToggle: boolean = false;
-
+  // this.store.select(selectAllEvaluation);
+  
   openDialog() {
-    console.log(this.evaluation[this.evaluation.length - 1]);
+    let yearVal: any;
+    let semVal: any;
+    this.evaluation$.subscribe({
+      next: value => {
+        yearVal = value[value.length-1].evaluation_year
+        semVal = value[value.length-1].semester
+      }
+    })
+
     const dialogRef = this.dialog.open(EvaluationForm, {
       data: {
-        year: this.evaluation[this.evaluation.length - 1].evaluation_year,
-        sem: this.evaluation[this.evaluation.length - 1].semester
+        year: yearVal,
+        sem: semVal
       }
       //Refreshes data after submit
     }).afterClosed().subscribe(result => {
-      this.getEvaluation();
+      this.store.dispatch(loadEval());
     });
-  }
-
-  // Initial Fetching of faculty evaluation
-  getEvaluation() {
-    this.facultyService.fetchData<Evaluation[]>('getevaluation/fetchEvaluation').subscribe({
-      next: (evalItem) => this.evaluation = evalItem,
-      error: error => {
-        if (error.status == 403) {
-          console.log(error);
-          this.router.navigate(['/']);
-        }
-      },
-      complete: () => {
-        this.evaluation = this.evaluation.map((evalItem) => {
-          return {
-            ...evalItem,
-            "evalAverage": parseFloat(((
-              +evalItem.param1_score +
-              +evalItem.param2_score +
-              +evalItem.param3_score +
-              +evalItem.param4_score +
-              +evalItem.param5_score +
-              +evalItem.param6_score
-            ) / 6).toFixed(1))
-          }
-        })
-        this.evalHistory = this.evaluationService.setEvalHistory(this.evaluation)
-        this.selectedEvalSem = this.evaluation[this.evaluation.length - 1]
-        this.selectEvalSem()
-        this.isLoading = false
-        console.log(this.selectedEvalSem)
-      }
-    })
-  }
+  }  
 
   // Select a specific evaluation history
   selectEvalSem(id?: number): void {
     if (id) {
-      let evalItem: Evaluation[] = this.evaluation.filter((evalItem: Evaluation) => evalItem.evaluation_ID == id)
+      let evalItem!: Evaluation[]
+
+      this.evaluation$.subscribe({
+        next: value => evalItem = value.filter((evalItem: Evaluation) => evalItem.evaluation_ID == id)
+      })
+      
       this.selectedEvalSem = evalItem[0]
       this.evalScoreCategory = this.evaluationService.setEvalScoreCategory(this.selectedEvalSem)
 

@@ -12,6 +12,8 @@ import { mainPort } from '../../app.component';
 import { profile } from 'console';
 import { CommonModule } from '@angular/common';
 import { Schedule } from '../../services/admin/schedule';
+import { Store } from '@ngrx/store';
+import { selectAllProfile, selectCourseSched, selectAllExistCerts, selectAllExp, selectAllProj, selectAllExpertise, selectAllEduc } from '../../state/faculty-state/faculty-state.selector';
 
 @Component({
   selector: 'app-cv',
@@ -25,87 +27,22 @@ import { Schedule } from '../../services/admin/schedule';
 
 export class CvComponent {
   tempPort = mainPort;
-  facultyProfile!: Profile;
-  resume!: Resume;
-  schedules!: Schedule[];
-  college?: string;
-  filteredSchedules = new Set();
+  profiles$ = this.store.select(selectAllProfile);
+  courses$ =this.store.select(selectCourseSched);
+  certs$ = this.store.select(selectAllExistCerts);
+  exps$ = this.store.select(selectAllExp);
+  projects$ = this.store.select(selectAllProj);
+  specs$ = this.store.select(selectAllExpertise);
+  educs$ = this.store.select(selectAllEduc);
 
-
-
-  constructor(private facultyService: FacultyRequestService, private router: Router) {
-    this.getProfile();
-    this.getSchedule();
-    this.getResume();
+  constructor(
+    public store: Store) {
   }
 
   //OPEN PRINT SCREEN AFTER RENDER, TURN THIS OFF FOR DEV PURPOSES
   // ngAfterViewInit(){
   //   window.print();
   // }
-
-  getProfile() {
-    this.facultyService.fetchData<Profile>('getprofile/fetchProfile').subscribe({
-      next: (next) => this.facultyProfile = next,
-      error: (error) => {
-        console.log(error);
-        this.router.navigate(['/']);
-      },
-      complete: () => {
-        this.facultyProfile.profile_image = mainPort + this.facultyProfile.profile_image;
-        this.facultyProfile.cover_image = mainPort + this.facultyProfile.cover_image;
-        console.log("Profile loaded.");
-      }
-    });
-  }
-
-  getSchedule() {
-    //Fetches the schedule data based on passed selected date
-    this.facultyService.fetchData<Schedule[]>('getschedules/fetchFaculty').subscribe({
-      next: value => {
-        this.schedules = value;
-        this.filterSched();
-      },
-      error: err => { if (err.status == 403) { this.router.navigate(['/']); } },
-      complete: () => console.log("Schedule loaded.")
-    });
-  }
-
-  getResume() {
-    this.facultyService.fetchData<Resume>('getresume/fetchResume').subscribe({
-      next: value => this.resume = value,
-      error: err => { console.log(err); if (err.status == 403) { this.router.navigate(['/']); } },
-      complete: () => console.log("ResumeInfo loaded.")
-    });
-  }
-
-  filterSched() {
-    this.schedules?.forEach(schedule => {
-      if (!this.filteredSchedules.has(schedule.course_name)) {
-        this.filteredSchedules.add(schedule.course_name);
-      }
-    })
-
-    this.filteredSchedules.forEach(schedule => {
-      if (typeof schedule === 'string' && /\(LEC\)/.test(schedule)) {
-        this.filteredSchedules.delete(schedule);
-      }
-
-      let tempFilt = new Set();
-
-      this.filteredSchedules.forEach(schedule => {
-        if (typeof schedule === 'string' && schedule.includes("(LAB)")) {
-          const tempItem = schedule.replace("(LAB)", "");
-          tempFilt.add(tempItem);
-        }
-        else {
-          tempFilt.add(schedule);
-        }
-      })
-      this.filteredSchedules = tempFilt;
-    });
-  }
-
 
 }
 

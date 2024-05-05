@@ -1,9 +1,11 @@
-import { Component, Input, Output, SimpleChanges } from '@angular/core';
+import { Component, Output } from '@angular/core';
 import { EducationalAttainment } from '../../../../services/Interfaces/educational-attainment';
 import { CommonModule } from '@angular/common'; 
 import { FacultyRequestService } from '../../../../services/faculty/faculty-request.service';
 import { MatDialog } from '@angular/material/dialog';
 import { EventEmitter } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { selectAllEduc } from '../../../../state/faculty-state/faculty-state.selector';
 
 @Component({
   selector: 'app-faculty-education',
@@ -13,33 +15,16 @@ import { EventEmitter } from '@angular/core';
   styleUrl: './faculty-education.component.css'
 })
 export class FacultyEducationComponent {
-  @Input() educRefresh: boolean = false;
   @Output() editEvent = new EventEmitter<any>();
   @Output() deleteEvent = new EventEmitter<any>();
 
-  education?: EducationalAttainment[];
+  public education$ = this.store.select(selectAllEduc);
   
-  constructor(private facultyRequest: FacultyRequestService, public dialog: MatDialog){
-    console.log("Education!");
-    this.getEducation();
-  }
+  constructor(
+    private facultyRequest: FacultyRequestService, 
+    public dialog: MatDialog, 
+    private store: Store){}
 
-  //Checks if certRefresh has been poked. Triggers cert fetch re-request
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log("Refreshing Educational Experience...");
-    this.getEducation();
-  }
-
-  getEducation(){
-    this.facultyRequest.fetchData('education').subscribe({
-      next: (next: any) => {
-        this.education = next;},
-      error: (error) => {console.log(error)},
-      complete: () => {
-        console.log(this.education);
-      }
-    });
-  }
 
   editEducation(value: EducationalAttainment){
     this.editEvent.emit(value);

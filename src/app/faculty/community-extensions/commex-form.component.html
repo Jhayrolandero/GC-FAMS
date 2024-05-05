@@ -1,7 +1,7 @@
-<mat-stepper orientation="horizontal" linear #stepper>
+<mat-stepper orientation="horizontal"  linear #stepper>
   <mat-step [stepControl]="commexForm">
-    <div class="w-[750px] bg-white rounded-[15px] shadow-lg opacity-100 overflow-hidden">
-        <div class="w-full bg-blue h-[38px] flex items-center justify-between">
+    <div class=" bg-transparent rounded-[15px] opacity-100 overflow-hidden w-full">
+        <!-- <div class="w-full bg-blue h-[38px] flex items-center justify-between">
             <p class="font-Poppins font-semibold text-white ml-5">Add Community Extensions</p>
             <svg (click)="onNoClick()" class="mr-3" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g clip-path="url(#clip0_1148_386)">
@@ -13,7 +13,7 @@
                 </clipPath>
                 </defs>
             </svg>
-        </div>
+        </div> -->
         <form (ngSubmit)="submitForm()" [formGroup]="commexForm" class="p-5">
           <ng-template matStepLabel>Community Extension Form</ng-template>
             <div class="flex flex-row w-full  justify-between gap-4">
@@ -85,18 +85,46 @@
         </form>
     </div>
   </mat-step>
-  <mat-step [stepControl]="attendeeForm">
+  <!-- Attendee -->
+  <mat-step [stepControl]="commexForm">
     <ng-template matStepLabel>Attendees</ng-template>
-    <form action="" [formGroup]="attendeeForm">
-      <input type="text" placeholder="attendee">
+    <form action="" [formGroup]="commexForm" (onsubmit)="submitAttendee()">
+
+    <!-- some.component.html -->
+    <ng-container *ngIf="{users: fetchAttendee$ | async, error: fetchAttendeeError$ | async, profile_ID: profile$ | async} as data">
+      <ng-container *ngIf="data.users; else loading">
+        <input type="text" placeholder="Search Attendee">
+        @for (user of data.users; track $index) {
+          @if(data.profile_ID?.faculty_ID != user.faculty_ID) {
+            <label
+            [for]="user.faculty_ID"
+            class="grid grid-cols-3 justify-items-center content-center">
+            <span><img [src]="mainPort+user.profile_image" alt="" width="50" height="50" class="aspect-square rounded-full"></span>
+            <p class="place-self-start">{{user.first_name}} {{user.middle_name}} {{user.last_name}} {{user.ext_name}}</p>
+            <input type="checkbox" [id]="user.faculty_ID" [name]="user.faculty_ID"  (change)="onCheckChange($event, {faculty_ID : user.faculty_ID, college_ID : user.college_ID})"><br>
+          </label>
+          }
+        }
+        <button
+        (click)="submitAttendee()"
+        [disabled]="postLoading$ | async">Submit
+
+        @if(postLoading$ | async) {
+          <span><i class="fa-duotone fa-spinner-third animate-spin"></i></span>
+        }
+        </button>
+      </ng-container>
+      <ng-template #loading>
+        <div *ngIf="!data.error">
+          <h4>Loading...</h4>
+        </div>
+        <div *ngIf="data.error">
+          <h4>{{data.error}}</h4>
+        </div>
+      </ng-template>
+    </ng-container>
+
+
     </form>
-  </mat-step>
-  <mat-step>
-    <ng-template matStepLabel>Done</ng-template>
-    <p>You are now done.</p>
-    <div>
-      <button mat-button matStepperPrevious>Back</button>
-      <button mat-button (click)="stepper.reset()">Reset</button>
-    </div>
   </mat-step>
 </mat-stepper>

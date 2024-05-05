@@ -2,21 +2,35 @@ import { createSelector } from "@ngrx/store";
 import { CommexState } from "../../services/Interfaces/commexState";
 import { CommunityExtension } from "../../services/Interfaces/community-extension";
 import { mainPort } from "../../app.component";
-import { cp } from "fs";
 
 
 interface AppState {
   commexs: CommexState
 }
+
+interface CollegeCommexState {
+  collegeCommexs: CommexState
+}
 export const selectFeature = (state: AppState) => state.commexs
 
+export const selectCollegeCommexFeature = (state: CollegeCommexState) => state.collegeCommexs
 
 export const isLoadingSelector = createSelector(selectFeature,
   (state) => state.isLoading
 )
+export const postLoadingSelector = createSelector(selectFeature,
+  (state) => state.postLoading
+)
 
+export const deleteLoadingSelector = createSelector(selectFeature,
+  (state) => state.deleteLoading
+)
 export const commexSelector = createSelector(selectFeature,
   (state) => state.commexs
+)
+
+export const filterCommexSelector = (startDate: string, endDate: string) => createSelector(selectFeature,
+  (state) => parsedCommex(filterDateRange(startDate, endDate, state.commexs), mainPort)
 )
 
 export const errorSelector = createSelector(selectFeature,
@@ -28,6 +42,20 @@ export const parsedCommexSelector = createSelector(selectFeature,
 )
 
 export const latestCommexSelector = createSelector(selectFeature,
+  (state) => latestCommex(state.commexs, mainPort)
+)
+export const isLoadingCollegeCommexSelector = createSelector(selectCollegeCommexFeature,
+  (state) => state.isLoading
+)
+
+export const parsedCollegeCommexSelector = createSelector(selectCollegeCommexFeature,
+  (state) => parsedCommex(state.commexs, mainPort)
+)
+export const filterCollegeCommexSelector = (startDate: string, endDate: string) => createSelector(selectCollegeCommexFeature,
+  (state) => parsedCommex(filterDateRange(startDate, endDate, state.commexs), mainPort)
+)
+
+export const latestCollegeCommexSelector = createSelector(selectCollegeCommexFeature,
   (state) => latestCommex(state.commexs, mainPort)
 )
 
@@ -54,11 +82,31 @@ function dateSorter(commexs: CommunityExtension[]) {
 
 function latestCommex(commexs: CommunityExtension[], mainPort: string) {
   const commexsCopy = dateSorter(commexs)
-
   const latestCommex = {
     ...commexsCopy[0],
     commex_header_img: mainPort + commexsCopy[0].commex_header_img
   }
 
   return latestCommex
+}
+
+const filterCommexByDate = (commexs: CommunityExtension[], startDate: Date, endDate: Date) => {
+  return commexs.filter(commex => {
+    const date = new Date(commex.commex_date);
+    return !isNaN(date.getTime()) && date >= startDate && date <= endDate;
+  });
+};
+
+function filterDateRange(startDateStr: string, endDateStr: string, commexs: CommunityExtension[]) {
+  const startDate = new Date(startDateStr);
+  const endDate = new Date(endDateStr);
+
+  if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+    // throw new Error('Invalid start or end date');
+    return commexs;
+  }
+
+
+  const filteredCommexs = filterCommexByDate(commexs, startDate, endDate);
+  return filteredCommexs;
 }
