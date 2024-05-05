@@ -36,10 +36,19 @@ export class CommexsEffects {
   deleteCommex = createEffect(() => this.actions$.pipe(
     ofType(CommexActions.deleteCommex),
     mergeMap((action) => {
-      return this.removeCommex$(action.commex_ID).pipe(
-        map(() => CommexActions.deleteCommexSuccess({ commex_ID: action.commex_ID })),
-        catchError(error => of(CommexActions.deleteCommexFailure({ error: error.message })))
-      )
+
+      if (action.view === 'faculty') {
+
+        return this.removeCommex$(action.commex_ID).pipe(
+          map(() => CommexActions.deleteCommexSuccess({ commex_ID: action.commex_ID })),
+          catchError(error => of(CommexActions.deleteCommexFailure({ error: error.message })))
+        )
+      } else {
+        return this.removeCommex$(action.commex_ID).pipe(
+          map(() => CommexActions.deleteCollegeCommexSuccess({ commex_ID: action.commex_ID })),
+          catchError(error => of(CommexActions.deleteCollegeCommexFailure({ error: error.message })))
+        )
+      }
     })
   ))
 

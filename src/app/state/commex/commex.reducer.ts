@@ -88,7 +88,19 @@ export const collegeCommexReducer = createReducer(
   on(CommexActions.setCollegeLoading, (state, action) => ({
     ...state,
     isLoading: action.status
-  }))
+  })),
+  on(CommexActions.deleteCollegeCommexSuccess, (state, action) => ({
+    ...state,
+    commexs: removeCommex(state.commexs, action.commex_ID),
+    deleteLoading: false
+  })),
+  on(CommexActions.deleteCollegeCommexFailure, (state, action) => (
+    {
+      ...state,
+      deleteLoading: false,
+      error: action.error
+    }
+  )),
 )
 
 

@@ -109,8 +109,6 @@ export class CommexFormComponent {
 
       formArray.controls.forEach((ctrl: any) => {
         if (JSON.stringify(ctrl.value) === JSON.stringify(attendeeObj)) {
-          // Remove the unselected element from the arrayForm
-          console.log("removed");
           formArray.removeAt(i);
           return;
         }
@@ -126,21 +124,12 @@ export class CommexFormComponent {
       this.commexformData.append("attendees[]", JSON.stringify(val))
     })
 
-    console.log(this.commexformData.getAll("attendees[]"))
   }
 
   submitAttendee() {
 
     const formArray: FormArray = this.commexForm.get('attendees') as FormArray;
-
-
-    console.log(
-      this.commexForm.controls['attendees'].value
-    )
-
     this.commexformData = this.facultyService.formDatanalize(this.commexForm);
-
-
     formArray.value.forEach((val: any) => {
       this.commexformData.append("attendees[]", JSON.stringify(val))
     })
@@ -268,16 +257,6 @@ export class CommunityExtensionsComponent {
     } else {
       this.commexs$ = this.commexCollegeStore.pipe(select(CommexsSelector.parsedCollegeCommexSelector))
     }
-    this.profileCollege$.pipe(first()).subscribe(
-      res => {
-
-        this.profileCollegeID = res!.college_ID
-        this.profileFacultyID = res!.faculty_ID
-        // this.commexCollegeStore.dispatch(CommexActions.getCollegeCommex({ uri: `getcommex/${res?.college_ID}?t=college` }))
-      }
-    )
-
-
   }
   tempPort = mainPort;
   isAttendeeLoading: boolean = true;
@@ -465,7 +444,7 @@ export class CommunityExtensionsComponent {
 
   openConfirm(commex_ID: number): void {
     this.dialog.open(ConfirmDeleteComponent, {
-      data: { commex_ID },
+      data: { commex_ID, view: this.switch },
     });
   }
 }
@@ -491,7 +470,7 @@ export class ConfirmDeleteComponent {
   constructor(
     public dialogRef: MatDialogRef<ConfirmDeleteComponent>,
     private commexFacultyStore: Store<{ commexs: CommexState }>,
-    @Inject(MAT_DIALOG_DATA) public data: { commex_ID: number }) {
+    @Inject(MAT_DIALOG_DATA) public data: { commex_ID: number, view: 'college' | 'faculty' }) {
 
     this.isLoading$ = this.commexFacultyStore.select(CommexsSelector.deleteLoadingSelector)
   }
@@ -502,7 +481,7 @@ export class ConfirmDeleteComponent {
     this.dialogRef.close();
   }
 
-  deleteCommex(commex_ID: number) {
-    this.commexFacultyStore.dispatch(CommexActions.deleteCommex({ commex_ID }))
+  deleteCommex() {
+    this.commexFacultyStore.dispatch(CommexActions.deleteCommex({ commex_ID: this.data.commex_ID, view: this.data.view }))
   }
 }
