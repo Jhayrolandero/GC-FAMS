@@ -216,20 +216,6 @@ export class CommunityExtensionsComponent {
     this.attended$ = this.attendedStore.pipe(select(AttendeeSelector.attendedSelector))
   }
 
-
-  /**
-   * this.attendedStore.pipe(select(AttendeeSelector.attendedSelector)).subscribe({
-      next: res => {
-        this.attended = { ...this.attended, ...res }
-      },
-      error: err => console.log(err),
-      complete: () => console.log(this.attended)
-    })
-
-   *
-   *
-   *
-   */
   commexs$: Observable<CommunityExtension[]>
 
   latestCommex$: Observable<CommunityExtension>
@@ -470,12 +456,11 @@ export class ConfirmDeleteComponent {
   constructor(
     public dialogRef: MatDialogRef<ConfirmDeleteComponent>,
     private commexFacultyStore: Store<{ commexs: CommexState }>,
+    private commexCollegeStore: Store<{ collegeCommexs: CommexState }>,
     @Inject(MAT_DIALOG_DATA) public data: { commex_ID: number, view: 'college' | 'faculty' }) {
-
-    this.isLoading$ = this.commexFacultyStore.select(CommexsSelector.deleteLoadingSelector)
   }
 
-  isLoading$: Observable<boolean>
+  isLoading$: Observable<boolean> = this.data.view === 'college' ? this.commexCollegeStore.select(CommexsSelector.deleteCollegeLoadingSelector) : this.commexFacultyStore.select(CommexsSelector.deleteLoadingSelector)
 
   onNoClick(): void {
     this.dialogRef.close();

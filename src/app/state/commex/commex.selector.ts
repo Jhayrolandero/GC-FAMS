@@ -59,6 +59,11 @@ export const latestCollegeCommexSelector = createSelector(selectCollegeCommexFea
   (state) => latestCommex(state.commexs, mainPort)
 )
 
+
+export const deleteCollegeLoadingSelector = createSelector(selectCollegeCommexFeature,
+  (state) => state.deleteLoading
+)
+
 function parsedCommex(commexs: CommunityExtension[], mainPort: string) {
   const commexsCopy = dateSorter(commexs)
 

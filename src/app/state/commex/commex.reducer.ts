@@ -101,6 +101,12 @@ export const collegeCommexReducer = createReducer(
       error: action.error
     }
   )),
+  on(CommexActions.deleteCommex, (state) => (
+    {
+      ...state,
+      deleteLoading: true,
+    }
+  )),
 )
 
 
