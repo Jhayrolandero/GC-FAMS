@@ -8,7 +8,7 @@ import { Chart } from 'chart.js/auto';
   templateUrl: './pie-chart.component.html',
   styleUrl: './pie-chart.component.css'
 })
-export class PieChartComponent{
+export class PieChartComponent {
   public chart: any;
   public chartId: string = `doughnut-${Math.random().toString(36).substr(2, 9)}`;
   @ViewChild('pieChartCanvas') private pieChartCanvas!: ElementRef<HTMLCanvasElement>;
@@ -17,11 +17,11 @@ export class PieChartComponent{
   @Input() labels: string[] = [];
 
 
-  ngAfterViewInit(){
+  ngAfterViewInit() {
     this.createChart();
   }
 
-  createChart(){
+  createChart() {
     let data = {
       labels: this.labels,
       datasets: [{
@@ -32,7 +32,7 @@ export class PieChartComponent{
     };
 
     const ctx = this.pieChartCanvas.nativeElement.getContext('2d');
-    if(ctx){
+    if (ctx) {
       this.chart = new Chart(ctx, {
         type: 'doughnut',
         data: data,
@@ -43,7 +43,7 @@ export class PieChartComponent{
               position: 'bottom'
             }
           }
-      }
+        }
       });
     }
 
