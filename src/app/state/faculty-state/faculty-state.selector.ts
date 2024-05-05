@@ -9,47 +9,52 @@ export const selectAllProfile = createSelector(
 );
 
 export const selectAllEduc = createSelector(
-    selectProfileState,
-    (state: ProfileState) => state.educs
+  selectProfileState,
+  (state: ProfileState) => state.educs
 );
 
 export const selectAllExistCerts = createSelector(
-    selectProfileState,
-    (state: ProfileState) => state.certs[0]
+  selectProfileState,
+  (state: ProfileState) => state.certs[0]
 );
 
 export const selectAllCerts = createSelector(
-    selectProfileState,
-    (state: ProfileState) => state.certs[1]
+  selectProfileState,
+  (state: ProfileState) => state.certs[1]
 );
 
 export const selectCourseSched = createSelector(
-    selectProfileState,
-    (state: ProfileState) => state.courses[0]
+  selectProfileState,
+  (state: ProfileState) => state.courses[0]
 );
 
 export const selectCourses = createSelector(
-    selectProfileState,
-    (state: ProfileState) => state.courses[1]
+  selectProfileState,
+  (state: ProfileState) => state.courses[1]
 );
 
 
 export const selectAllExp = createSelector(
-    selectProfileState,
-    (state: ProfileState) => state.exps
+  selectProfileState,
+  (state: ProfileState) => state.exps
 );
 
 export const selectAllProj = createSelector(
-    selectProfileState,
-    (state: ProfileState) => state.proj
+  selectProfileState,
+  (state: ProfileState) => state.proj
 );
 
 export const selectAllExpertise = createSelector(
-    selectProfileState,
-    (state: ProfileState) => state.expertises
+  selectProfileState,
+  (state: ProfileState) => state.expertises
 );
 
 export const selectAllEvaluation = createSelector(
-    selectProfileState,
-    (state: ProfileState) => state.evals
+  selectProfileState,
+  (state: ProfileState) => state.evals
 );
+
+export const selectProfileLoading = createSelector(
+  selectProfileState,
+  (state) => state.isLoading
+)

@@ -1,8 +1,10 @@
 import { Attendee } from "./attendee";
 import { Dictionary } from "./dictionary";
 
-export interface AttendeeNumberState {
+export interface AttendedState {
   isLoading: boolean;
-  attendees: Dictionary<number>;
-  error: Error | null
+  attended: Dictionary<number>;
+  error: string | null
 }
+
+

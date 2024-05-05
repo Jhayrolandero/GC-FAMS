@@ -5,4 +5,5 @@ export interface CommexState {
   isLoading: boolean;
   commexs: CommunityExtension[];
   error: string | null | any
+  deleteLoading: boolean;
 }
