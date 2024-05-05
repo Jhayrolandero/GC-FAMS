@@ -28,7 +28,7 @@ export class CvEffects{
 
     loadProfile$ = createEffect(() => this.actions$.pipe(
         ofType(CvActions.loadProfile),
-        switchMap(() => this.facultyService.fetchData('getprofile/fetchProfile')
+        switchMap(() => this.facultyService.fetchData('profile')
             .pipe(
                 tap((profile) => console.log('Profile has loaded:', profile)),
                 map((profile) => CvActions.loadProfileSuccess({profile: profile as Profile})),
@@ -62,7 +62,7 @@ export class CvEffects{
 
     loadCourses$ = createEffect(() => this.actions$.pipe(
         ofType(CvActions.loadCourse),
-        switchMap(() => this.facultyService.fetchData('getSchedules')
+        switchMap(() => this.facultyService.fetchData('schedules?t=faculty')
             .pipe(
                 tap((courses) => console.log('Courses has loaded:', courses)),
                 map((courses) => CvActions.loadCourseSuccess({courses: courses as [CoursesFaculty[], Courses[]]})),
@@ -107,7 +107,7 @@ export class CvEffects{
 
     loadEvaluation$ = createEffect(() => this.actions$.pipe(
         ofType(CvActions.loadEval),
-        switchMap(() => this.facultyService.fetchData<Evaluation[]>('getevaluation/fetchEvaluation')
+        switchMap(() => this.facultyService.fetchData<Evaluation[]>('evaluation')
             .pipe(
                 tap((evals) => console.log('Evaluation has loaded:', evals)),
                 map((evals) => {

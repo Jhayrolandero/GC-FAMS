@@ -3,6 +3,8 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FacultyRequestService } from '../../services/faculty/faculty-request.service';
 import { MessageService } from '../../services/message.service';
 import { CommonModule } from '@angular/common';
+import { Store } from '@ngrx/store';
+import { loadCollegeProfile } from '../../state/dean-state/dean-state.actions';
 
 @Component({
   selector: 'app-dialog-box',
@@ -15,7 +17,8 @@ export class DialogBoxComponent {
   constructor(@Inject(MAT_DIALOG_DATA) public data: { faculty_ID: number },
     private facultyService: FacultyRequestService,
     private messageService: MessageService,
-    public dialogRef: MatDialogRef<DialogBoxComponent>
+    public dialogRef: MatDialogRef<DialogBoxComponent>,
+    public store: Store
   ) { }
 
   isDisable: boolean = false
@@ -33,6 +36,7 @@ export class DialogBoxComponent {
         console.log(err)
       },
       complete: () => {
+        this.store.dispatch(loadCollegeProfile());
         this.isDisable = false
         this.dialogRef.close({ deleted: true });
       }

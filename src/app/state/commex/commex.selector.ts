@@ -82,7 +82,6 @@ function dateSorter(commexs: CommunityExtension[]) {
 
 function latestCommex(commexs: CommunityExtension[], mainPort: string) {
   const commexsCopy = dateSorter(commexs)
-
   const latestCommex = {
     ...commexsCopy[0],
     commex_header_img: mainPort + commexsCopy[0].commex_header_img

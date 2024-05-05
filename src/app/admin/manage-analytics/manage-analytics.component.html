@@ -7,35 +7,102 @@
         </h1>
     </div>
 
-    <div class="w-full h-[360px] flex flex-row gap-x-3 items-center">
-        <div class="bg-white shadow-main w-full h-full rounded-[15px]">
-            <h1 class="font-Poppins font-semibold text-[2rem] py-2">
-                Milestone Calendar
-            </h1>
-            <div class="w-[20%] h-full flex flex-col gap-y-3">
-                <div
-                    class="bg-white shadow-main  h-[50%] rounded-[15px] overflow-hidden flex flex-col justify-center items-center">
-                    <p class="text-blue text-[5rem] font-Poppins font-bold leading-[90%]">22</p>
-                    <p class="text-blue font-Poppins font-bold">CCS Faculty Members</p>
+    <div class="w-full items-center bg-white bg-opacity-70 shadow-main rounded-[15px] p-5">
+        <h1 class="font-Poppins font-semibold text-[2rem]">
+            Milestone Calendar
+        </h1>
+        <div class="flex flex-row">
+            <div class="w-[220px] bg-white rounded-[15px] shadow-main flex flex-col items-center py-5">
+                <p class="text-blue text-[7rem] font-Poppins font-bold leading-[90%]" [textContent]="facultyCount$ | async"></p>
+                <p class="text-blue font-Poppins font-bold text-[1.2rem]">Faculty Members</p>
     
-                    <div class="bg-blue rounded-[15px] shadow-main py-2 px-3 mt-3">
-                        <p class="text-white text-[0.9rem] font-Poppins font-semibold">Browse CCS Curriculum Vitae</p>
-                    </div>
+                <div class="bg-blue rounded-[15px] shadow-main py-2 px-3 mt-3">
+                    <p class="text-white text-[0.7rem] font-Poppins font-semibold">Browse CCS Curriculum Vitae</p>
                 </div>
             </div>
-            <app-faculty-milestone-calendar></app-faculty-milestone-calendar>
-
+            <div class="flex flex-row flex-1 justify-center items-center">
+                <app-faculty-milestone-calendar [type]="'admin'"></app-faculty-milestone-calendar>
+            </div>
         </div>
     </div>
 
-    <div
-    class="bg-white shadow-main  h-[50%] rounded-[15px] overflow-hidden flex flex-col justify-center items-center">
-        <p class="text-center text-blue text-[1.2rem] font-Poppins font-semibold">CCS Average
-            Faculty<br>Evaluation Score</p>
-        <p class="text-greenBar text-[5rem] font-Poppins font-bold leading-[90%]">4.3</p>
+    <div class="w-full flex flex-row gap-3">
+        <div class="bg-white shadow-main rounded-[15px] overflow-hidden flex flex-col flex-1 justify-center items-center py-3">
+            <p  class="text-greenBar text-[5rem] font-Poppins font-bold leading-[90%]" [textContent]="evaluationYearAverage$ | async | number: '1.1-1'"></p>
+            <p class="text-center text-blue text-[1.2rem] font-Poppins font-semibold">CCS Average
+                Faculty<br>Evaluation Score</p>
+        </div>
+        <div class="bg-white shadow-main rounded-[15px] overflow-hidden flex flex-col flex-1 justify-center items-center py-3">
+            <p class="text-greenBar text-[5rem] font-Poppins font-bold leading-[90%]" [textContent]="unitFacultyAverage$ | async | number: '1.1-1'"></p>
+            <p class="text-center text-blue text-[1.2rem] font-Poppins font-semibold">Average Class Units
+                <br>per Faculty</p>
+        </div>
+        <div class="bg-white shadow-main rounded-[15px] overflow-hidden flex flex-col flex-1 justify-center items-center py-3">
+            <p class="text-greenBar text-[5rem] font-Poppins font-bold leading-[90%]" [textContent]="certCountAverage$ | async | number: '1.1-1'"></p>
+            <p class="text-center text-blue text-[1.2rem] font-Poppins font-semibold">Average Faculty
+                <br>Total Certificate Count</p>
+        </div>
+        <div class="bg-white shadow-main rounded-[15px] overflow-hidden flex flex-col flex-1 justify-center items-center py-3">
+            <p class="text-greenBar text-[5rem] font-Poppins font-bold leading-[90%]">4.3</p>
+            <p class="text-center text-blue text-[1.2rem] font-Poppins font-semibold">Average
+                Faculty<br>Seminars Attended</p>
+        </div>
     </div>
 
-    <div class="w-full h-[300px] flex flex-row gap-x-3 items-center">
+    <div class="w-full bg-white rounded-[15px] shadow-main p-5 pt-1">
+        <p class="text-blue font-bold text-[2rem] my-2">Educational Attainment Timeline</p>
+        <app-line-graph
+        [data]="[1,3,2,7,5,8,5]"
+        [data2]="[2,6,9,3,5,8,5]"
+        [data3]="[2,5,7,9,7,5,3]"
+        [labels]="['Gay', 'Gay', 'Gay', 'Gay', 'Gay', 'Gay', 'Gay']">
+        </app-line-graph>
+    </div>
+
+    <div class="w-full bg-white rounded-[15px] shadow-main p-5 pt-1">
+        <p class="text-blue font-bold text-[2rem] my-2">Milestones Achieved</p>
+        <app-line-graph
+        [data]="[1,3,2,7,5,8,5]"
+        [labels]="['Gay', 'Gay', 'Gay', 'Gay', 'Gay', 'Gay', 'Gay']">
+        </app-line-graph>
+    </div>
+
+    <div class="w-full bg-white rounded-[15px] shadow-main p-5 pt-1">
+        <p class="text-blue font-bold text-[2rem] my-2">Attainment Timeline</p>
+        <app-line-graph
+        [data]="[1,3,2,7,5,8,5]"
+        [labels]="['Gay', 'Gay', 'Gay', 'Gay', 'Gay', 'Gay', 'Gay']">
+        </app-line-graph>
+    </div>
+
+    <div class="w-full flex flex-row gap-3">
+        <div class="bg-white flex flex-col items-center rounded-[15px] shadow-main flex-1">
+            <p class="text-blue font-bold text-[2rem] my-2">Educational Attainment</p>
+            <app-pie-chart
+            [data]="[12,6,4]"
+            [labels]="['Bachelor Degree', 'Master Degree', 'Doctorate Degree']">
+            </app-pie-chart>
+        </div>
+
+        <div class="bg-white flex flex-col items-center rounded-[15px] shadow-main flex-1">
+            <p class="text-blue font-bold text-[2rem] my-2">Certificate Type</p>
+            <app-pie-chart
+            [data]="[12,6,4,2,7]"
+            [labels]="['Bachelor Degree', 'Master Degree', 'Doctorate Degree']">
+            </app-pie-chart>
+        </div>
+
+        <div class="bg-white flex flex-col items-center rounded-[15px] shadow-main flex-1">
+            <p class="text-blue font-bold text-[2rem] my-2">Employment Status</p>
+            <app-pie-chart
+            [data]="[12,6]"
+            [labels]="['Full-Time', 'Part-Time']">
+            </app-pie-chart>
+        </div>
+    </div>
+
+
+    <!-- <div class="w-full h-[300px] flex flex-row gap-x-3 items-center">
 
 
         <div class="bg-white bg-opacity-70 p-3 shadow-main w-full h-full rounded-[15px]">
@@ -54,7 +121,7 @@
                             </div>
                             <p class="text-blue font-light italic">University of Herrscher</p>
                             <svg class="mr-3" width="9" height="15" viewBox="0 0 9 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M1 1L6.97112 6.35101C7.67629 6.98295 7.67629 8.01705 6.97112 8.64899L1 14" stroke="#074287" stroke-width="1.89895" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M1 1L6.97112 6.35101C7.67629 6.98295 7.67629 8.01705 6.97112 8.64899L1 14" stroke="#074287" stroke-width="29895" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                         </div>
 
@@ -65,7 +132,7 @@
                             </div>
                             <p class="text-blue font-light italic">University of Herrscher</p>
                             <svg class="mr-3" width="9" height="15" viewBox="0 0 9 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M1 1L6.97112 6.35101C7.67629 6.98295 7.67629 8.01705 6.97112 8.64899L1 14" stroke="#074287" stroke-width="1.89895" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M1 1L6.97112 6.35101C7.67629 6.98295 7.67629 8.01705 6.97112 8.64899L1 14" stroke="#074287" stroke-width="29895" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                         </div>
 
@@ -76,7 +143,7 @@
                             </div>
                             <p class="text-blue font-light italic">University of Herrscher</p>
                             <svg class="mr-3" width="9" height="15" viewBox="0 0 9 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M1 1L6.97112 6.35101C7.67629 6.98295 7.67629 8.01705 6.97112 8.64899L1 14" stroke="#074287" stroke-width="1.89895" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M1 1L6.97112 6.35101C7.67629 6.98295 7.67629 8.01705 6.97112 8.64899L1 14" stroke="#074287" stroke-width="29895" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                         </div>
                     </div>
@@ -92,7 +159,7 @@
                             </div>
                             <p class="text-blue font-light italic">University of Herrscher</p>
                             <svg class="mr-3" width="9" height="15" viewBox="0 0 9 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M1 1L6.97112 6.35101C7.67629 6.98295 7.67629 8.01705 6.97112 8.64899L1 14" stroke="#074287" stroke-width="1.89895" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M1 1L6.97112 6.35101C7.67629 6.98295 7.67629 8.01705 6.97112 8.64899L1 14" stroke="#074287" stroke-width="29895" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                         </div>
 
@@ -103,7 +170,7 @@
                             </div>
                             <p class="text-blue font-light italic">University of Herrscher</p>
                             <svg class="mr-3" width="9" height="15" viewBox="0 0 9 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M1 1L6.97112 6.35101C7.67629 6.98295 7.67629 8.01705 6.97112 8.64899L1 14" stroke="#074287" stroke-width="1.89895" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M1 1L6.97112 6.35101C7.67629 6.98295 7.67629 8.01705 6.97112 8.64899L1 14" stroke="#074287" stroke-width="29895" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                         </div>
 
@@ -114,7 +181,7 @@
                             </div>
                             <p class="text-blue font-light italic">University of Herrscher</p>
                             <svg class="mr-3" width="9" height="15" viewBox="0 0 9 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M1 1L6.97112 6.35101C7.67629 6.98295 7.67629 8.01705 6.97112 8.64899L1 14" stroke="#074287" stroke-width="1.89895" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M1 1L6.97112 6.35101C7.67629 6.98295 7.67629 8.01705 6.97112 8.64899L1 14" stroke="#074287" stroke-width="29895" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                         </div>
                     </div>
@@ -175,5 +242,5 @@
 
             </div>
         </div>
-    </div>
+    </div> -->
 </div>

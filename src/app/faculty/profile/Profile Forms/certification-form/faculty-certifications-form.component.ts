@@ -31,7 +31,6 @@ import { Certifications } from '../../../../services/Interfaces/certifications';
     ){}
 
     newCertForm = new FormGroup({
-      college_ID: new FormControl(0),
       cert_name: new FormControl(''),
       cert_type: new FormControl(''),
       cert_abbrev: new FormControl(''),
@@ -76,7 +75,7 @@ import { Certifications } from '../../../../services/Interfaces/certifications';
         formType = this.newCertForm;
       }
 
-      console.log(submitType);
+      console.log(formType);
   
       const formData = this.facultyRequest.formDatanalize(formType);
       this.facultyRequest.postData(formData, submitType).subscribe({

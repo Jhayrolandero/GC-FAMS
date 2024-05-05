@@ -4,7 +4,7 @@ import { Faculty } from '../../../services/Interfaces/faculty';
 import { College } from '../../../services/Interfaces/college';
 import { mainPort } from '../../../app.component';
 import { LoadingScreenComponent } from '../../../components/loading-screen/loading-screen.component';
-import { forkJoin } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 import { FacultyRequestService } from '../../../services/faculty/faculty-request.service';
 import { Router } from '@angular/router';
 import { FacultySkeletonComponent } from '../../../components/faculty-skeleton/faculty-skeleton.component';
@@ -15,6 +15,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { DialogBoxComponent } from '../../../components/dialog-box/dialog-box.component';
 import { FacultyFormComponent } from '../../../components/admin/faculty-form/faculty-form.component';
 import { FormsModule } from '@angular/forms';
+import { Store } from '@ngrx/store';
+import { selectCollegeFaculty } from '../../../state/dean-state/dean-state.selector';
+import { Profile } from '../../../services/Interfaces/profile';
 @Component({
   selector: 'app-faculty-section',
   standalone: true,
@@ -40,7 +43,6 @@ export class FacultySectionComponent {
   ngOnChanges() {
     // Extract changes to the input property by its name
     // let change: SimpleChange = changes['data'];
-    this.getCollegeAndFaculty()
     this.refreshEmitter.emit(false)
     // Whenever the data in the parent changes, this method gets triggered
     // You can act on the changes here. You will have both the previous
@@ -49,66 +51,17 @@ export class FacultySectionComponent {
   constructor(
     public facultyService: FacultyRequestService,
     private router: Router,
+    public store: Store,
     public dialog: MatDialog) { }
 
   // facultyMembers: FacultyMember[] = []
-  facultyMembers: Faculty[] = [];
+  facultyMembers$ = this.store.select(selectCollegeFaculty);
   colleges: College[] = [];
-  filteredArray: Faculty[] = []
+  filteredArray: Profile[] = []
   searchQuery: string = ''
   activeButton: string = ''
-  isLoading: boolean = true
-
-  ngOnInit(): void {
-    // console.log(`Cached: ${this.facultyMembers.length}`)
-    if (this.facultyMembers.length <= 0) {
-      this.getCollegeAndFaculty()
-    }
-  }
-
-  getCollegeAndFaculty() {
-    forkJoin({
-      collegeRequest: this.facultyService.fetchData<College[]>('fetchCollege'),
-      facultyRequest: this.facultyService.fetchData<Faculty[]>('faculty')
-    }).subscribe({
-      next: (({ collegeRequest, facultyRequest }) => {
-        this.facultyService.colleges = collegeRequest
-        this.facultyService.facultyMembers = facultyRequest
-      }),
-      error: (error) => {
-        console.log(error);
-        this.router.navigate(['/'])
-      },
-      complete: () => {
-        console.log(this.facultyService.facultyMembers)
-        console.log(this.facultyService.colleges)
-        this.facultyService.facultyMembers = this.facultyService.facultyMembers.map(facultyMember => {
-          return {
-            ...facultyMember,
-            profile_image: mainPort + facultyMember.profile_image
-          };
-        });
-
-        this.createFacultyMember()
-        this.filteredArray = this.facultyMembers
-        this.isLoading = false
-      }
-    })
-  }
-
-
-  createFacultyMember() {
-    this.facultyMembers = this.facultyService.facultyMembers.map((facultyMember: Faculty) => {
-      const facultyCollegeAbbrev = this.facultyService.colleges.find(
-        (college) => college.college_ID === facultyMember.college_ID
-      )?.college_abbrev || '';
-
-      return {
-        ...facultyMember,
-        college: facultyCollegeAbbrev
-      };
-    });
-  }
+  port = mainPort;
+  isLoading: boolean = false
 
   deleteForm(id: number): void {
     const dialogRef = this.dialog.open(DialogBoxComponent, {
@@ -117,13 +70,14 @@ export class FacultySectionComponent {
 
     dialogRef.afterClosed().subscribe(res => {
       if (res && res.deleted) {
-        this.getCollegeAndFaculty();
+        // this.getCollegeAndFaculty();
       }
       console.log(res)
     })
   }
 
   openForm(faculty?: Faculty): void {
+
 
     if (faculty) {
       const dialogRef = this.dialog.open(FacultyFormComponent, {
@@ -132,7 +86,7 @@ export class FacultySectionComponent {
 
       dialogRef.afterClosed().subscribe(res => {
         if (res && res.edited) {
-          this.getCollegeAndFaculty();
+          // this.getCollegeAndFaculty();
         }
         console.log(res)
       })
@@ -142,37 +96,40 @@ export class FacultySectionComponent {
   }
 
   filterCollege(keyword: string) {
-    let filter = ''
+    let collegeKey = ''
     switch (keyword.toLowerCase()) {
       case 'ccs':
-        filter = 'CCS'
+        collegeKey = 'CCS'
         break
       case 'ceas':
-        filter = 'CEAS'
+        collegeKey = 'CEAS'
         break
       case 'chtm':
-        filter = 'CHTM'
+        collegeKey = 'CHTM'
         break
       case 'cahs':
-        filter = 'CAHS'
+        collegeKey = 'CAHS'
         break
       case 'cba':
-        filter = 'CBA'
+        collegeKey = 'CBA'
         break
       default:
-        filter = ''
+        collegeKey = ''
         break
     }
 
-    if (filter === '') {
-      this.filteredArray = this.facultyMembers
+    if (collegeKey === '') {
+      this.facultyMembers$ = this.store.select(selectCollegeFaculty);
       return
     }
-    this.filteredArray = this.facultyMembers.filter((item: Faculty) => item.college === filter)
+    this.facultyMembers$ = this.store.select(selectCollegeFaculty).pipe(
+      map((data: Faculty[]) => data.filter(faculty => faculty.college_abbrev === collegeKey)))
   }
 
   filterName() {
-    this.filteredArray = this.facultyMembers.filter((item: Faculty) => item.first_name.toLowerCase().includes(this.searchQuery.toLowerCase()) || item.last_name.toLowerCase().includes(this.searchQuery.toLowerCase())
-    )
+    console.log("Filtering...");
+    this.facultyMembers$ = this.store.select(selectCollegeFaculty).pipe(
+      map((data: Faculty[]) => data.filter(faculty => faculty.first_name.toLowerCase().includes(this.searchQuery.toLowerCase()) || faculty.last_name.toLowerCase().includes(this.searchQuery.toLowerCase()))
+    ))
   }
 }
