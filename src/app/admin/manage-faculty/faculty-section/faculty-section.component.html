@@ -54,6 +54,8 @@
   class="flex-1 rounded-[5px] py-1 m-5 px-5 shadow-inner placeholder:text-center placeholder:font-semibold border-2 border-skate-200 w-1/4 max-w-[400px] min-w-[200px]"
   />
 
+
+
   <div class="grid justify-items-start grid-cols-4 gap-5 p-5">
     @if ((facultyMembers$ | async)?.length) {
       @for (faculty of facultyMembers$ | async; track faculty.first_name) {
@@ -70,8 +72,8 @@
               height="50"
             />
             <div>
-              <p>
-                {{ faculty.first_name }} {{ faculty.middle_name }}
+              <p class="font-poppins font-semibold text-blue">
+                {{ faculty.first_name }} {{ faculty.middle_name[0] }}.
                 {{ faculty.last_name }} {{ faculty.ext_name }}
               </p>
               <small class="leading-normal">{{ faculty.email }}</small>

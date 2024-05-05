@@ -45,7 +45,7 @@ export class FacultySectionComponent {
   colleges: College[] = [];
   filteredArray: Profile[] = []
   searchQuery: string = ''
-  activeButton: string = ''
+  activeButton: string = 'all'
   port = mainPort;
   isLoading: boolean = false
 

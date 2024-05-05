@@ -17,6 +17,8 @@ export class LineGraphComponent {
   @Input() data2: number[] = [];
   @Input() data3: number[] = [];
   @Input() labels: string[] = [];
+  @Input() showLegend?: boolean;
+  @Input() legendLabel: string[] = [];
 
 
   ngAfterViewInit(){
@@ -28,6 +30,7 @@ export class LineGraphComponent {
       labels: this.labels,
       datasets: [
         {
+        label: this.legendLabel[0],
         data: this.data,
         fill: true,
         tension: 0.3,
@@ -36,6 +39,7 @@ export class LineGraphComponent {
         hoverOffset: 4
         },
         {
+          label: this.legendLabel[1],
           data: this.data2,
           fill: true,
           tension: 0.3,
@@ -44,6 +48,7 @@ export class LineGraphComponent {
           hoverOffset: 4
         },
         {
+          label: this.legendLabel[2],
           data: this.data3,
           fill: true,
           tension: 0.3,
@@ -64,7 +69,8 @@ export class LineGraphComponent {
           maintainAspectRatio: false,
           plugins: {
             legend: {
-              display: false,
+              display: this.showLegend,
+              align: 'start'
             }
           }
       }
