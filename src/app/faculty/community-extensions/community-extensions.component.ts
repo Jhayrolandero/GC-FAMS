@@ -20,7 +20,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { TooltipComponent } from '../../components/tooltip/tooltip.component';
 import { Attendee } from '../../services/Interfaces/attendee';
-import { Observable, Subscription, catchError, first, from, map, merge, mergeMap, of } from 'rxjs';
+import { Observable, Subscription, catchError, first, from, map, merge, mergeMap, of, take } from 'rxjs';
 import { Dictionary } from '../../services/Interfaces/dictionary';
 import { Response } from '../../services/Interfaces/response';
 import { MessageService } from '../../services/message.service';
@@ -224,16 +224,33 @@ export class CommunityExtensionsComponent {
     this.profileCollege$ = this.profileStore.pipe(select(ProfileSelectors.selectAllProfile))
     this.isAttendedLoading$ = this.attendedStore.pipe(select(AttendeeSelector.attendedLoadingSelector))
     this.isProfileLoading$ = this.profileStore.pipe(select(ProfileSelectors.selectProfileLoading))
-
+    this.attended$ = this.attendedStore.pipe(select(AttendeeSelector.attendedSelector))
   }
+
+
+  /**
+   * this.attendedStore.pipe(select(AttendeeSelector.attendedSelector)).subscribe({
+      next: res => {
+        this.attended = { ...this.attended, ...res }
+      },
+      error: err => console.log(err),
+      complete: () => console.log(this.attended)
+    })
+
+   *
+   *
+   *
+   */
   commexs$: Observable<CommunityExtension[]>
+
   latestCommex$: Observable<CommunityExtension>
   isLoading$: Observable<boolean>
   isAttendedLoading$: Observable<boolean>
   isProfileLoading$: Observable<boolean>
   attendeeLoading$: Observable<boolean>
   attendeesNumber: Dictionary<number> = {}
-  attended: Dictionary<number> = {}
+  attended$: Observable<Dictionary<number>>;
+  // attended: Dictionary<number> = {}
   profileCollege$: Observable<Profile | undefined>
   profileCollegeID: number = 0
   profileFacultyID: number = 0
@@ -243,7 +260,7 @@ export class CommunityExtensionsComponent {
   ngOnInit(): void {
 
     this.attendeeNumberFetch()
-    this.attendedFetch()
+    // this.attendedFetch()
 
     // Switch the view depending on state
     if (this.switch === "faculty") {
@@ -291,29 +308,29 @@ export class CommunityExtensionsComponent {
     })
   }
 
-  attendedFetch() {
+  // attendedFetch() {
 
-    this.commexs$.pipe(
-      mergeMap(commexs => from(commexs).pipe(
-        map(commex => this.attendeeStore.dispatch(AttendeeActions.getAttended({ commex_ID: commex.commex_ID, faculty_ID: this.profileFacultyID })))
-      ))
-    ).subscribe()
+  //   this.commexs$.pipe(
+  //     mergeMap(commexs => from(commexs).pipe(
+  //       map(commex => this.attendeeStore.dispatch(AttendeeActions.getAttended({ commex_ID: commex.commex_ID, faculty_ID: this.profileFacultyID })))
+  //     ))
+  //   ).subscribe()
 
 
-    // Fix this error
-    return this.attendedStore.pipe(select(AttendeeSelector.attendedSelector)).subscribe({
-      next: res => {
-        this.attended = { ...this.attended, ...res }
-      },
-      error: err => console.log(err),
-      complete: () => console.log(this.attended)
-    })
+  //   // Fix this error
+  //   return this.attendedStore.pipe(select(AttendeeSelector.attendedSelector)).subscribe({
+  //     next: res => {
+  //       this.attended = { ...this.attended, ...res }
+  //     },
+  //     error: err => console.log(err),
+  //     complete: () => console.log(this.attended)
+  //   })
 
-  }
+  // }
 
-  isAttended = (commex_ID: number) => {
-    return this.facultyService.fetchData<Response<number>>(`attendee/${this.profileFacultyID}/commex/${commex_ID}`)
-  }
+  // isAttended = (commex_ID: number) => {
+  //   return this.facultyService.fetchData<Response<number>>(`attendee/${this.profileFacultyID}/commex/${commex_ID}`)
+  // }
 
   attendeeNameFetch$ = (id: number): Subscription => {
     return this.facultyService.fetchData<Response<Attendee[]>>(`attendee/${id}`).subscribe({
@@ -381,7 +398,7 @@ export class CommunityExtensionsComponent {
       this.isLoading$ = this.commexCollegeStore.pipe(select(CommexsSelector.isLoadingCollegeCommexSelector))
       this.latestCommex$ = this.commexCollegeStore.pipe(select(CommexsSelector.latestCollegeCommexSelector))
       this.attendeeNumberFetch()
-      this.attendedFetch()
+      // this.attendedFetch()
     } else {
       this.switch = 'faculty'
       this.commexs$ = this.commexFacultyStore.pipe(select(CommexsSelector.parsedCommexSelector))
@@ -428,7 +445,15 @@ export class CommunityExtensionsComponent {
 
   attendCommex(commex_ID: number) {
     const attendCommex = new FormData()
-    const attendeeForm = { commex_ID, faculty_ID: this.profileFacultyID }
+
+    let faculty_ID = undefined
+    this.profileCollege$.pipe(take(1)).subscribe(
+      res => {
+        faculty_ID = res?.faculty_ID
+        // this.commexCollegeStore.dispatch(CommexActions.getCollegeCommex({ uri: `getcommex/${res?.college_ID}?t=college` }))
+      }
+    )
+    const attendeeForm = { commex_ID, faculty_ID }
 
     attendCommex.append("attendees[]", JSON.stringify(attendeeForm))
     this.attendeeStore.dispatch(AttendeeActions.joinCommex({ commex_ID: commex_ID, formData: attendCommex }))

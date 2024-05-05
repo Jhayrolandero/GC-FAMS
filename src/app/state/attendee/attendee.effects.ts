@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { EMPTY, Observable, catchError, concatMap, exhaustMap, filter, map, mergeMap, of, take, tap, withLatestFrom } from "rxjs";
+import { EMPTY, Observable, catchError, concatMap, exhaustMap, filter, from, map, merge, mergeMap, of, take, tap, withLatestFrom } from "rxjs";
 import { Attendee } from "../../services/Interfaces/attendee";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { FacultyRequestService } from "../../services/faculty/faculty-request.service";
@@ -32,9 +32,12 @@ export class AttendeeEffects {
     return this.facultyService.fetchData<Response<Attendee[]>>(`attendee/${id}`)
   }
 
-  fetchAttended$ = (commex_ID: number, faculty_ID: number): Observable<Response<Attended[]>> => {
-    return this.facultyService.fetchData<Response<Attended[]>>(`attendee/${faculty_ID}/commex/${commex_ID}?q=check`)
+  fetchAttended$ = (commex_ID: number): Observable<Response<Attended[]>> => {
+    return this.facultyService.fetchData<Response<Attended[]>>(`attendee/${commex_ID}?q=check`)
   }
+  // fetchAttended$ = (commex_ID: number, faculty_ID: number): Observable<Response<Attended[]>> => {
+  //   return this.facultyService.fetchData<Response<Attended[]>>(`attendee/${faculty_ID}/commex/${commex_ID}?q=check`)
+  // }
 
   leaveCommex$ = (commex_ID: number, faculty_ID: number) => {
     return this.facultyService.deleteData(`attendee/${faculty_ID}/commex/${commex_ID}`)
@@ -77,7 +80,7 @@ export class AttendeeEffects {
     withLatestFrom(this.attendedStore.select(attendedSelector)),
     mergeMap(([action, attended]) => {
       if (!(action.commex_ID in attended)) {
-        return this.fetchAttended$(action.commex_ID, action.faculty_ID).pipe(
+        return this.fetchAttended$(action.commex_ID).pipe(
           map(attendee => AttendeeActions.getAttendedSuccess({ attended: { [action.commex_ID]: attendee.data[0].attended } })),
           catchError(err => of(AttendeeActions.getAttendedFailure({ error: err.message })))
         )
