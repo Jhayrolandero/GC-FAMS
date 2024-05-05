@@ -57,8 +57,6 @@ export class ProfileComponent {
     public dialog: MatDialog,
     private router: Router,
   ) {
-    store.dispatch(loadProfile());
-    console.log("Hello")
   }
 
   getCv() {

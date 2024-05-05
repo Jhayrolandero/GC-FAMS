@@ -4,5 +4,5 @@ import { Dictionary } from "./dictionary";
 export interface AttendeeNumberState {
   isLoading: boolean;
   attendees: Dictionary<number>;
-  error: string | null
+  error: Error | null
 }

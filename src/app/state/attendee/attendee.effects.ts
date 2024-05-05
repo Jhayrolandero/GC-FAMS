@@ -97,7 +97,7 @@ export class AttendeeEffects {
         return this.fetchAttendeeNumber$(action.id).
           pipe(
             map(attendees => AttendeeActions.getAttendeeNumberSuccess({ attendees: { [action.id]: attendees.data[0].count } })),
-            catchError(err => of(AttendeeActions.getAttendeeNumberFailure({ error: err.message })))
+            catchError(err => of(AttendeeActions.getAttendeeNumberFailure({ error: err })))
           )
       } else {
         this.attendeeStore.dispatch(AttendeeActions.setLoading({ status: false }))

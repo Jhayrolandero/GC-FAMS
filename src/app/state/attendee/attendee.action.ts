@@ -12,7 +12,7 @@ export const getAttendeeNumberSuccess = createAction('[Attendee] Fetch Attendee 
 )
 
 export const getAttendeeNumberFailure = createAction('[Attendee] Fetch Attendee Number Failure',
-  props<{ error: string }>()
+  props<{ error: Error }>()
 )
 
 
