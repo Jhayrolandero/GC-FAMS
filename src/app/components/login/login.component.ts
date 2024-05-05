@@ -47,7 +47,11 @@ export class LoginComponent {
       next: (res: any) => {
         //Success, wrong loginparams, and query error issue.
         if (res.code == 200) {
-          document.cookie = "token=" + res.token;
+          let expireDate = new Date();
+          expireDate.setTime(expireDate.getTime() + (10 * 60 * 1000)); 
+
+
+          document.cookie = `token=${res.token}; ${expireDate}; path=/`
           console.log("Created token: " + res.privilege);
 
           res.privilege == 0 ? this.router.navigate(['/faculty']) : this.router.navigate(['/admin']);

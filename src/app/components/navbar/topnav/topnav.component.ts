@@ -8,6 +8,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { selectAllProfile } from '../../../state/faculty-state/faculty-state.selector';
 import { Store } from '@ngrx/store';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-topnav',
@@ -24,6 +25,7 @@ export class TopnavComponent {
   isLoading: boolean = false;
   port = mainPort
   public facultyProfile$ = this.store.select(selectAllProfile);
+
 
   constructor(
     private store: Store,
@@ -54,8 +56,10 @@ export class TopnavComponent {
   templateUrl: './topnav.logout.html'
 })
 export class TopnavLogout {
+  authService = inject(AuthService);
   constructor(private router: Router, public dialogRef: MatDialogRef<TopnavLogout>) { }
   logout() {
+    this.authService.flushToken();
     this.router.navigate(['/']);
     this.dialogRef.close()
   }

@@ -1,11 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, Output } from '@angular/core';
 import { CommonModule, NgFor } from '@angular/common';
 import { LoadingScreenComponent } from '../../components/loading-screen/loading-screen.component';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import {  MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
-import { FacultyFormComponent } from '../../components/admin/faculty-form/faculty-form.component';
-import { forkJoin } from 'rxjs';
-import { FacultySectionComponent } from '../faculty-members/faculty-section/faculty-section.component';
+import { FacultySectionComponent } from './faculty-section/faculty-section.component';
+import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
+import { Faculty } from '../../services/Interfaces/faculty';
+import { EventEmitter } from '@angular/core';
+import { AddFacultyComponent } from './add-faculty/add-faculty.component';
 
 @Component({
   selector: 'app-manage-faculty',
@@ -16,7 +18,8 @@ import { FacultySectionComponent } from '../faculty-members/faculty-section/facu
     CommonModule,
     MatButtonModule,
     MatDialogModule,
-    FacultySectionComponent
+    FacultySectionComponent,
+    AddFacultyComponent
   ],
   templateUrl: './manage-faculty.component.html',
   styleUrl: './manage-faculty.component.css'
@@ -24,28 +27,23 @@ import { FacultySectionComponent } from '../faculty-members/faculty-section/facu
 
 
 export class ManageFacultyComponent {
+  showAdd: boolean = false;
+  editData?: Faculty;
 
-  constructor(public dialog: MatDialog) { }
-
-  refresh: boolean = false
-  openForm(): void {
-    const dialogRef = this.dialog.open(FacultyFormComponent);
-
-    dialogRef.afterClosed().subscribe(res => {
-      if (res && res.added) {
-        this.refresh = true
-        console.log('added now refresh')
-        // this.getCollegeAndFaculty();
-      }
-    });
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router
+  ) { 
+    this.editData = undefined;
   }
 
-  isLoading: boolean = true
+  switchShow(){
+    if(this.showAdd) this.editData = undefined;
+    this.showAdd = !this.showAdd;
+  }
 
-
-  getCollegeAndFaculty() {
-    forkJoin({
-
-    })
+  editFaculty(faculty: Faculty){
+    this.editData = faculty;
+    this.switchShow();
   }
 }

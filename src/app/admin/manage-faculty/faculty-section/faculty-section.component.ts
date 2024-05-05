@@ -4,13 +4,11 @@ import { Faculty } from '../../../services/Interfaces/faculty';
 import { College } from '../../../services/Interfaces/college';
 import { mainPort } from '../../../app.component';
 import { LoadingScreenComponent } from '../../../components/loading-screen/loading-screen.component';
-import { filter, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { FacultyRequestService } from '../../../services/faculty/faculty-request.service';
-import { Router } from '@angular/router';
 import { FacultySkeletonComponent } from '../../../components/faculty-skeleton/faculty-skeleton.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
-import { MessageService } from '../../../services/message.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogBoxComponent } from '../../../components/dialog-box/dialog-box.component';
 import { FacultyFormComponent } from '../../../components/admin/faculty-form/faculty-form.component';
@@ -36,30 +34,18 @@ import { Profile } from '../../../services/Interfaces/profile';
   styleUrl: './faculty-section.component.css'
 })
 export class FacultySectionComponent {
-
-  @Input('refresh') refresh: boolean = false
-  @Output() refreshEmitter = new EventEmitter<boolean>()
-
-  ngOnChanges() {
-    // Extract changes to the input property by its name
-    // let change: SimpleChange = changes['data'];
-    this.refreshEmitter.emit(false)
-    // Whenever the data in the parent changes, this method gets triggered
-    // You can act on the changes here. You will have both the previous
-    // value and the  current value here.
-  }
   constructor(
     public facultyService: FacultyRequestService,
-    private router: Router,
     public store: Store,
     public dialog: MatDialog) { }
 
-  // facultyMembers: FacultyMember[] = []
+  //I know there's ngrx already so no passing of data is needed, but this is  the only situation that merits the passing of a faculty edit data lol
+  @Output() editDataEvent = new EventEmitter<Faculty>();
   facultyMembers$ = this.store.select(selectCollegeFaculty);
   colleges: College[] = [];
   filteredArray: Profile[] = []
   searchQuery: string = ''
-  activeButton: string = ''
+  activeButton: string = 'all'
   port = mainPort;
   isLoading: boolean = false
 
@@ -76,23 +62,8 @@ export class FacultySectionComponent {
     })
   }
 
-  openForm(faculty?: Faculty): void {
-
-
-    if (faculty) {
-      const dialogRef = this.dialog.open(FacultyFormComponent, {
-        data: { faculty: faculty }
-      })
-
-      dialogRef.afterClosed().subscribe(res => {
-        if (res && res.edited) {
-          // this.getCollegeAndFaculty();
-        }
-        console.log(res)
-      })
-    } else {
-      this.dialog.open(FacultyFormComponent)
-    }
+  editFaculty(faculty?: Faculty): void {
+    this.editDataEvent.emit(faculty);
   }
 
   filterCollege(keyword: string) {

@@ -17,7 +17,6 @@ import { facultyCertsCountAverage, facultyCourseUnitAverage, selectCollegeFacult
 export class ManageAnalyticsComponent implements OnInit{
   isLoading: boolean = true;
   facultyCount$ = this.store.select(selectCollegeFacultyCount);
-
   evaluationYearAverage$ = this.store.select(yearEvaluationAverage);
   unitFacultyAverage$ = this.store.select(facultyCourseUnitAverage);
   certCountAverage$ = this.store.select(facultyCertsCountAverage);

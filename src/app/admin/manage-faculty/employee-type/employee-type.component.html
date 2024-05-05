@@ -12,24 +12,9 @@ class="hidden peer"
 for="{{ employment?.employmentType }}"
 class="text-blue"
 >
-  <div class="flex justify-center items-center h-[50px] w-full shadow-lg rounded-full hover:scale-[101%] hover:duration-300 duration:300"
+  <div class="flex justify-center items-center h-[50px] w-full shadow-main rounded-[15px] hover:scale-[101%] hover:duration-300 duration:300"
             [ngClass]="{'bg-blue text-white': selectedEmployeeType == employment?.empStatus}"
   >
     <p class="font-Poppins font-semibold text-[1.5rem]">{{ employment?.employmentType }}</p>
   </div>
-  <!-- <div class="mainBox rounded-[15px] h-[100px] flex items-center shadow-md hover:scale-[101%] hover:duration-300 duration-300 select-none"
-  [ngClass]="{'bg-blue text-white': selectedCollege == college?.college_ID}"
-  >
-    <div class="flex flex-row items-center py-5">
-      <div class="pl-4 pr-6 z-50">
-        <h6 class="text-[28px] font-bold font-Poppins">{{ college?.college_abbrev }}</h6>
-        <p class="text-[13px] font-bold font-Poppins z-10">{{ college?.college_name }}</p>
-      </div>
-      <img
-        [src]="'../../../../assets/college-logo-big/'+college?.college_abbrev+'.png'"
-        alt=""
-        class="h-[90px] aspect-square absolute translate-x-[120px] opacity-50"
-      />
-    </div>  
-  </div> -->
 </label>
