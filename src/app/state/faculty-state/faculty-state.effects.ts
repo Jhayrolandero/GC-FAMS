@@ -26,24 +26,23 @@ export class CvEffects {
   ) { }
 
 
-  decryptData<T>(ciphertext: Encryption): T | undefined {
+  decryptData<T>(ciphertext: Encryption): T {
     return this.cryptoJS.CryptoJSAesDecrypt<T>("ucj7XoyBfAMt/ZMF20SQ7sEzad+bKf4bha7bFBdl2HY=", ciphertext)
   }
 
   loadProfile$ = createEffect(() => this.actions$.pipe(
     ofType(CvActions.loadProfile),
     switchMap(() => this.facultyService.fetchData<Encryption>('profile').pipe(
-      map((data) => CvActions.loadProfileSuccess({ profile: this.decryptData(data) })),
+      map((data) => CvActions.loadProfileSuccess({ profile: this.decryptData<Profile>(data) })),
       catchError((error) => of(CvActions.loadProfileFailure({ error })))
     ))
   ));
 
   loadEduc$ = createEffect(() => this.actions$.pipe(
     ofType(CvActions.loadEduc),
-    switchMap(() => this.facultyService.fetchData('education')
+    switchMap(() => this.facultyService.fetchData<Encryption>('education')
       .pipe(
-        tap((educs) => console.log('Educational Attainment has loaded:', educs)),
-        map((educs) => CvActions.loadEducSuccess({ educs: educs as EducationalAttainment[] })),
+        map((data) => CvActions.loadEducSuccess({ educs: this.decryptData<EducationalAttainment[]>(data) })),
         catchError((error) => of(CvActions.loadEducFailure({ error })))
       )
     )
@@ -51,10 +50,9 @@ export class CvEffects {
 
   loadCerts$ = createEffect(() => this.actions$.pipe(
     ofType(CvActions.loadCert),
-    switchMap(() => this.facultyService.fetchData('certificate')
+    switchMap(() => this.facultyService.fetchData<Encryption>('certificate')
       .pipe(
-        tap((certs) => console.log('Certificates has loaded:', certs)),
-        map((certs) => CvActions.loadCertSuccess({ certs: certs as [CertificationsFaculty[], Certifications[]] })),
+        map((data) => CvActions.loadCertSuccess({ certs: this.decryptData<[CertificationsFaculty[], Certifications[]]>(data) })),
         catchError((error) => of(CvActions.loadCertsFailure({ error })))
       )
     )
@@ -62,22 +60,19 @@ export class CvEffects {
 
   loadCourses$ = createEffect(() => this.actions$.pipe(
     ofType(CvActions.loadCourse),
-    switchMap(() => this.facultyService.fetchData('schedules?t=faculty')
+    switchMap(() => this.facultyService.fetchData<Encryption>('schedules?t=faculty')
       .pipe(
-        tap((courses) => console.log('Courses has loaded:', courses)),
-        map((courses) => CvActions.loadCourseSuccess({ courses: courses as [CoursesFaculty[], Courses[]] })),
+        map((data) => CvActions.loadCourseSuccess({ courses: this.decryptData<[CoursesFaculty[], Courses[]]>(data) })),
         catchError((error) => of(CvActions.loadCourseFailure({ error })))
       )
     )
   ));
 
-
   loadExp$ = createEffect(() => this.actions$.pipe(
     ofType(CvActions.loadExp),
-    switchMap(() => this.facultyService.fetchData('experience')
+    switchMap(() => this.facultyService.fetchData<Encryption>('experience')
       .pipe(
-        tap((exps) => console.log('Experience has loaded:', exps)),
-        map((exps) => CvActions.loadExpSuccess({ exps: exps as IndustryExperience[] })),
+        map((data) => CvActions.loadExpSuccess({ exps: this.decryptData<IndustryExperience[]>(data) })),
         catchError((error) => of(CvActions.loadExpFailure({ error })))
       )
     )
@@ -85,10 +80,9 @@ export class CvEffects {
 
   loadProj$ = createEffect(() => this.actions$.pipe(
     ofType(CvActions.loadProj),
-    switchMap(() => this.facultyService.fetchData('project')
+    switchMap(() => this.facultyService.fetchData<Encryption>('project')
       .pipe(
-        tap((proj) => console.log('Projects has loaded:', proj)),
-        map((proj) => CvActions.loadProjSuccess({ proj: proj as Project[] })),
+        map((data) => CvActions.loadProjSuccess({ proj: this.decryptData<Project[]>(data) })),
         catchError((error) => of(CvActions.loadProjFailure({ error })))
       )
     )
@@ -96,10 +90,9 @@ export class CvEffects {
 
   loadExpertise$ = createEffect(() => this.actions$.pipe(
     ofType(CvActions.loadExpertise),
-    switchMap(() => this.facultyService.fetchData('expertise')
+    switchMap(() => this.facultyService.fetchData<Encryption>('expertise')
       .pipe(
-        tap((expertises) => console.log('Expertise has loaded:', expertises)),
-        map((expertises) => CvActions.loadExpertiseSuccess({ expertises: expertises as Expertise[] })),
+        map((data) => CvActions.loadExpertiseSuccess({ expertises: this.decryptData<Expertise[]>(data) })),
         catchError((error) => of(CvActions.loadExpertiseFailure({ error })))
       )
     )
@@ -107,10 +100,12 @@ export class CvEffects {
 
   loadEvaluation$ = createEffect(() => this.actions$.pipe(
     ofType(CvActions.loadEval),
-    switchMap(() => this.facultyService.fetchData<Evaluation[]>('evaluation')
+    switchMap(() => this.facultyService.fetchData<Encryption>('evaluation')
       .pipe(
-        tap((evals) => console.log('Evaluation has loaded:', evals)),
-        map((evals) => {
+        map((data) => {
+
+          const evals = this.decryptData<Evaluation[]>(data)
+
           const modifiedEvals = evals.map(evaluation => ({
             ...evaluation,
             evalAverage: parseFloat(((
@@ -122,6 +117,7 @@ export class CvEffects {
               +evaluation.param6_score
             ) / 6).toFixed(1))
           }));
+
           return CvActions.loadEvalSuccess({ evals: modifiedEvals });
         }),
         catchError((error) => of(CvActions.loadEvalFailure({ error })))

@@ -39,6 +39,8 @@ import { Faculty } from '../../services/Interfaces/faculty';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { AttendedState } from '../../services/Interfaces/attendedState';
 import { MatMenuModule } from '@angular/material/menu';
+import { CryptoJSService } from '../../services/crypto-js.service';
+import { Encryption } from '../../services/Interfaces/encryption';
 
 @Component({
   selector: 'app-commex-form',
@@ -200,7 +202,9 @@ export class CommunityExtensionsComponent {
     private attendedStore: Store<{ attended: AttendedState }>,
     private commexCollegeStore: Store<{ collegeCommexs: CommexState }>,
     private profileStore: Store<{ profile: ProfileState }>,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private cryptoJS: CryptoJSService
+
   ) {
 
     this.attendeeLoading$ = this.attendeeStore.pipe(select(AttendeeSelector.attendeeLoadingSelector))
@@ -273,36 +277,18 @@ export class CommunityExtensionsComponent {
     })
   }
 
-  // attendedFetch() {
-
-  //   this.commexs$.pipe(
-  //     mergeMap(commexs => from(commexs).pipe(
-  //       map(commex => this.attendeeStore.dispatch(AttendeeActions.getAttended({ commex_ID: commex.commex_ID, faculty_ID: this.profileFacultyID })))
-  //     ))
-  //   ).subscribe()
-
-
-  //   // Fix this error
-  //   return this.attendedStore.pipe(select(AttendeeSelector.attendedSelector)).subscribe({
-  //     next: res => {
-  //       this.attended = { ...this.attended, ...res }
-  //     },
-  //     error: err => console.log(err),
-  //     complete: () => console.log(this.attended)
-  //   })
-
-  // }
-
-  // isAttended = (commex_ID: number) => {
-  //   return this.facultyService.fetchData<Response<number>>(`attendee/${this.profileFacultyID}/commex/${commex_ID}`)
-  // }
+  decryptData<T>(ciphertext: Encryption): T {
+    return this.cryptoJS.CryptoJSAesDecrypt<T>("ucj7XoyBfAMt/ZMF20SQ7sEzad+bKf4bha7bFBdl2HY=", ciphertext)
+  }
 
   attendeeNameFetch$ = (id: number): Subscription => {
-    return this.facultyService.fetchData<Response<Attendee[]>>(`attendee/${id}`).subscribe({
-      next: res => this.attendees = ({
-        ...this.attendees,
-        [id]: res.data
-      }),
+    return this.facultyService.fetchData<Encryption>(`attendee/${id}`).subscribe({
+      next: res => {
+        this.attendees = ({
+          ...this.attendees,
+          [id]: this.decryptData<Response<Attendee[]>>(res).data
+        })
+      },
       error: err => console.log(err),
       complete: () => {
         this.attendee = this.attendees[id]
@@ -340,7 +326,6 @@ export class CommunityExtensionsComponent {
 
 
   toggleHide() {
-    console.log("Unsub...")
     this.currFetch$.unsubscribe()
     this.isVisible = false
     this.activeID = null

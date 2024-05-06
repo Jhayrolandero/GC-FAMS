@@ -20,7 +20,6 @@ export class CryptoJSService {
 
     var decrypted = CryptoJS.AES.decrypt(encrypted, key, { iv: iv });
 
-    console.log("Message: ", decrypted.toString(CryptoJS.enc.Utf8))
     return JSON.parse(decrypted.toString(CryptoJS.enc.Utf8)) as T
 
   }
