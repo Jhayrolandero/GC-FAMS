@@ -10,6 +10,8 @@ import { parsedCollegeCommexSelector, parsedCommexSelector } from "./commex.sele
 import { MessageService } from "../../services/message.service";
 import { AttendedState } from "../../services/Interfaces/attendedState";
 import { getAttended } from "../attendee/attendee.action";
+import { CryptoJSService } from "../../services/crypto-js.service";
+import { Encryption } from "../../services/Interfaces/encryption";
 @Injectable()
 
 export class CommexsEffects {
@@ -22,11 +24,21 @@ export class CommexsEffects {
     private commexCollegeStore: Store<{ collegeCommexs: CommexState }>,
     private messageService: MessageService,
     private attendedStore: Store<{ attended: AttendedState }>,
+    private cryptoJS: CryptoJSService
   ) {
   }
 
-  fetchCommex$ = (URI: string): Observable<CommunityExtension[]> => {
-    return this.facultyService.fetchData<CommunityExtension[]>(URI)
+
+  decryptData<T>(ciphertext: Encryption): T {
+    return this.cryptoJS.CryptoJSAesDecrypt<T>("ucj7XoyBfAMt/ZMF20SQ7sEzad+bKf4bha7bFBdl2HY=", ciphertext)
+  }
+
+  // fetchCommex$ = (URI: string): Observable<CommunityExtension[]> => {
+  //   return this.facultyService.fetchData<CommunityExtension[]>(URI)
+  // }
+
+  fetchCommex$(URI: string) {
+    return this.facultyService.fetchData<Encryption>(URI)
   }
 
   removeCommex$ = (commex_ID: number) => {
@@ -57,12 +69,12 @@ export class CommexsEffects {
     tap(() => console.log("Hallo :D")),
     withLatestFrom(this.commexFacultyStore.select(parsedCommexSelector)),
     concatMap(([action, commexes]) => {
-
       if (commexes.length <= 0) {
         return this.fetchCommex$(action.uri).
           pipe(
-            tap((commexes) => console.log('Community Extension has loaded:', commexes)),
-            map(commexs => {
+            map(data => {
+              const commexs = this.decryptData<CommunityExtension[]>(data)
+
               commexs.forEach(commex => this.attendedStore.dispatch(getAttended({ commex_ID: commex.commex_ID })))
               return CommexActions.getCommexSuccess({ commexs })
             }),
@@ -74,6 +86,27 @@ export class CommexsEffects {
       }
     })
   ))
+  // getCommexs = createEffect(() => this.actions$.pipe(
+  //   ofType(CommexActions.getCommex),
+  //   tap(() => console.log("Hallo :D")),
+  //   withLatestFrom(this.commexFacultyStore.select(parsedCommexSelector)),
+  //   concatMap(([action, commexes]) => {
+  //     if (commexes.length <= 0) {
+  //       return this.fetchCommex$(action.uri).
+  //         pipe(
+  //           // tap((commexes) => console.log('Community Extension has loaded:', commexes)),
+  //           map(data => {
+  //             // commexs.forEach(commex => this.attendedStore.dispatch(getAttended({ commex_ID: commex.commex_ID })))
+  //             // return CommexActions.getCommexSuccess({ commexs })
+  //           }),
+  //           catchError(error => of(CommexActions.getCommexFailure({ error: error.message }))),
+  //         )
+  //     } else {
+  //       this.commexFacultyStore.dispatch(CommexActions.setLoading({ status: false }))
+  //       return EMPTY
+  //     }
+  //   })
+  // ))
 
   getCollegeCommexs = createEffect(() => this.actions$.pipe(
     ofType(CommexActions.getCollegeCommex),
@@ -84,7 +117,8 @@ export class CommexsEffects {
         return this.fetchCommex$(action.uri).
           pipe(
             tap((commexes) => console.log('College Community Extension has loaded:', commexes)),
-            map(commexs => {
+            map(data => {
+              const commexs = this.decryptData<CommunityExtension[]>(data)
 
               commexs.forEach(commex => this.attendedStore.dispatch(getAttended({ commex_ID: commex.commex_ID })))
               return CommexActions.getCollegeCommexSuccess({ commexs })
@@ -98,6 +132,32 @@ export class CommexsEffects {
       }
     })
   ))
+  // getCollegeCommexs = createEffect(() => this.actions$.pipe(
+  //   ofType(CommexActions.getCollegeCommex),
+  //   withLatestFrom(this.commexCollegeStore.select(parsedCollegeCommexSelector)),
+  //   concatMap(([action, commexes]) => {
+  //     if (commexes.length <= 0) {
+
+  //       return this.fetchCommex$(action.uri).
+  //         pipe(
+  //           tap((commexes) => console.log('College Community Extension has loaded:', commexes)),
+  //           map(commexs => {
+
+  //             const commexs = this.decryptData<CommunityExtension[]>(data)
+
+
+  //             commexs.forEach(commex => this.attendedStore.dispatch(getAttended({ commex_ID: commex.commex_ID })))
+  //             return CommexActions.getCollegeCommexSuccess({ commexs })
+  //           }),
+  //           catchError(error => of(CommexActions.getCollegeCommexFailure({ error: error.message }))),
+  //         )
+  //     } else {
+
+  //       this.commexCollegeStore.dispatch(CommexActions.setCollegeLoading({ status: false }))
+  //       return EMPTY
+  //     }
+  //   })
+  // ))
 
 
   postCommex$ = createEffect(() => {

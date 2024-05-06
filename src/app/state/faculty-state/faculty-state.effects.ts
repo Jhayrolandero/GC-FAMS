@@ -37,17 +37,6 @@ export class CvEffects {
       catchError((error) => of(CvActions.loadProfileFailure({ error })))
     ))
   ));
-  // loadProfile$ = createEffect(() => this.actions$.pipe(
-  //   ofType(CvActions.loadProfile),
-  //   switchMap(() => this.facultyService.fetchData<Profile>('profile')
-  //     .pipe(
-  //       tap((profile) => console.log('Profile has loaded:', profile)),
-  //       map((profile) => CvActions.loadProfileSuccess({ profile })),
-  //       // catchError((error) => of(CvActions.loadProfileFailure({ error } )))
-  //     )
-  //   )
-  // ));
-
 
   loadEduc$ = createEffect(() => this.actions$.pipe(
     ofType(CvActions.loadEduc),
