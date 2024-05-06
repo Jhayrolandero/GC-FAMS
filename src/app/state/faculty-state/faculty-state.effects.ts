@@ -1,7 +1,7 @@
 import { FacultyRequestService } from "../../services/faculty/faculty-request.service";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import * as CvActions from "./faculty-state.actions";
-import { catchError, exhaustMap, map, of, switchMap, tap } from "rxjs";
+import { catchError, exhaustMap, map, mergeMap, of, switchMap, tap } from "rxjs";
 import { Injectable } from "@angular/core";
 import { Certifications } from "../../services/Interfaces/certifications";
 import { mainPort } from "../../app.component";
@@ -14,28 +14,39 @@ import { Evaluation } from "../../services/Interfaces/evaluation";
 import { CertificationsFaculty } from "../../services/Interfaces/certifications-faculty";
 import { CoursesFaculty } from "../../services/Interfaces/courses-faculty";
 import { Courses } from "../../services/Interfaces/courses";
+import { CryptoJSService } from "../../services/crypto-js.service";
+import { Encryption } from "../../services/Interfaces/encryption";
 
 @Injectable()
-
-
-
-
 export class CvEffects {
   constructor(
     private actions$: Actions,
-    private facultyService: FacultyRequestService
+    private facultyService: FacultyRequestService,
+    private cryptoJS: CryptoJSService
   ) { }
+
+
+  decryptData<T>(ciphertext: Encryption): T | undefined {
+    return this.cryptoJS.CryptoJSAesDecrypt<T>("ucj7XoyBfAMt/ZMF20SQ7sEzad+bKf4bha7bFBdl2HY=", ciphertext)
+  }
 
   loadProfile$ = createEffect(() => this.actions$.pipe(
     ofType(CvActions.loadProfile),
-    switchMap(() => this.facultyService.fetchData('profile')
-      .pipe(
-        tap((profile) => console.log('Profile has loaded:', profile)),
-        map((profile) => CvActions.loadProfileSuccess({ profile: profile as Profile })),
-        // catchError((error) => of(CvActions.loadProfileFailure({ error } )))
-      )
-    )
+    switchMap(() => this.facultyService.fetchData<Encryption>('profile').pipe(
+      map((data) => CvActions.loadProfileSuccess({ profile: this.decryptData(data) })),
+      catchError((error) => of(CvActions.loadProfileFailure({ error })))
+    ))
   ));
+  // loadProfile$ = createEffect(() => this.actions$.pipe(
+  //   ofType(CvActions.loadProfile),
+  //   switchMap(() => this.facultyService.fetchData<Profile>('profile')
+  //     .pipe(
+  //       tap((profile) => console.log('Profile has loaded:', profile)),
+  //       map((profile) => CvActions.loadProfileSuccess({ profile })),
+  //       // catchError((error) => of(CvActions.loadProfileFailure({ error } )))
+  //     )
+  //   )
+  // ));
 
 
   loadEduc$ = createEffect(() => this.actions$.pipe(
