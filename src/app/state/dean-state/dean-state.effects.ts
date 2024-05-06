@@ -14,21 +14,29 @@ import { Courses } from "../../services/Interfaces/courses";
 import { Faculty } from "../../services/Interfaces/faculty";
 import { CommunityExtension } from "../../services/Interfaces/community-extension";
 import { College } from "../../services/Interfaces/college";
+import { CryptoJSService } from "../../services/crypto-js.service";
+import { Encryption } from "../../services/Interfaces/encryption";
 
 @Injectable()
 
 export class DeanEffects {
   constructor(
     private actions$: Actions,
-    private facultyService: FacultyRequestService
+    private facultyService: FacultyRequestService,
+    private cryptoJS: CryptoJSService
   ) { }
+
+
+  decryptData<T>(ciphertext: Encryption): T {
+    return this.cryptoJS.CryptoJSAesDecrypt<T>("ucj7XoyBfAMt/ZMF20SQ7sEzad+bKf4bha7bFBdl2HY=", ciphertext)
+  }
+
 
   loadColleges$ = createEffect(() => this.actions$.pipe(
     ofType(CvActions.loadCollege),
-    switchMap(() => this.facultyService.fetchData('fetchCollege')
+    switchMap(() => this.facultyService.fetchData<Encryption>('fetchCollege')
       .pipe(
-        tap((colleges) => console.log('College has loaded:', colleges)),
-        map((colleges) => CvActions.loadCollegeSuccess({ colleges: colleges as College[] })),
+        map((data) => CvActions.loadCollegeSuccess({ colleges: this.decryptData<College[]>(data) })),
         catchError((error) => of(CvActions.loadCollegeFailure({ error })))
       )
     )
@@ -36,22 +44,17 @@ export class DeanEffects {
 
   loadProfile$ = createEffect(() => this.actions$.pipe(
     ofType(CvActions.loadCollegeProfile),
-    switchMap(() => this.facultyService.fetchData('faculty')
-      .pipe(
-        tap((profile) => console.log('Faculty has loaded:', profile)),
-        map((profile) => CvActions.loadCollegeProfileSuccess({ profile: profile as Faculty[] })),
-        catchError((error) => of(CvActions.loadCollegeProfileFailure({ error })))
-      )
-    )
+    switchMap(() => this.facultyService.fetchData<Encryption>('faculty').pipe(
+      map((data) => CvActions.loadCollegeProfileSuccess({ profile: this.decryptData<Faculty[]>(data) })),
+      catchError((error) => of(CvActions.loadCollegeProfileFailure({ error })))
+    ))
   ));
-
 
   loadEduc$ = createEffect(() => this.actions$.pipe(
     ofType(CvActions.loadCollegeEduc),
-    switchMap(() => this.facultyService.fetchData('education-college')
+    switchMap(() => this.facultyService.fetchData<Encryption>('education-college')
       .pipe(
-        tap((educs) => console.log('Educational Attainment has loaded:', educs)),
-        map((educs) => CvActions.loadCollegeEducSuccess({ educs: educs as EducationalAttainment[] })),
+        map((data) => CvActions.loadCollegeEducSuccess({ educs: this.decryptData<EducationalAttainment[]>(data) })),
         catchError((error) => of(CvActions.loadCollegeEducFailure({ error })))
       )
     )
@@ -59,10 +62,9 @@ export class DeanEffects {
 
   loadCerts$ = createEffect(() => this.actions$.pipe(
     ofType(CvActions.loadCollegeCert),
-    switchMap(() => this.facultyService.fetchData('certificate-college')
+    switchMap(() => this.facultyService.fetchData<Encryption>('certificate-college')
       .pipe(
-        tap((certs) => console.log('Certificates has loaded:', certs)),
-        map((certs) => CvActions.loadCollegeCertSuccess({ certs: certs as CertificationsFaculty[] })),
+        map((data) => CvActions.loadCollegeCertSuccess({ certs: this.decryptData<CertificationsFaculty[]>(data) })),
         catchError((error) => of(CvActions.loadCollegeCertsFailure({ error })))
       )
     )
@@ -70,37 +72,29 @@ export class DeanEffects {
 
   loadCourses$ = createEffect(() => this.actions$.pipe(
     ofType(CvActions.loadCollegeCourse),
-    switchMap(() => this.facultyService.fetchData('schedules?t=college')
+    switchMap(() => this.facultyService.fetchData<Encryption>('schedules?t=college')
       .pipe(
-        tap((courses) => console.log('Courses has loaded:', courses)),
-        map((courses) => CvActions.loadCollegeCourseSuccess({ courses: courses as [CoursesFaculty[], Courses[]] })),
+        map((data) => CvActions.loadCollegeCourseSuccess({ courses: this.decryptData<[CoursesFaculty[], Courses[]]>(data) })),
         catchError((error) => of(CvActions.loadCollegeCourseFailure({ error })))
       )
     )
   ));
 
-
   loadExp$ = createEffect(() => this.actions$.pipe(
     ofType(CvActions.loadCollegeExp),
-    switchMap(() => this.facultyService.fetchData('experience-college')
+    switchMap(() => this.facultyService.fetchData<Encryption>('experience-college')
       .pipe(
-        tap((exps) => console.log('Experience has loaded:', exps)),
-        map((exps) => CvActions.loadCollegeExpSuccess({ exps: exps as IndustryExperience[] })),
-        // catchError((error) => of(CvActions.loadCollegeExpFailure({ error } )))
-        catchError((error) => {
-          console.error('Error loading experience:', error);
-          return of(CvActions.loadCollegeExpFailure({ error }));
-        })
+        map((data) => CvActions.loadCollegeExpSuccess({ exps: this.decryptData<IndustryExperience[]>(data) })),
+        catchError((error) => of(CvActions.loadCollegeExpFailure({ error })))
       )
     )
   ));
 
   loadProj$ = createEffect(() => this.actions$.pipe(
     ofType(CvActions.loadCollegeProj),
-    switchMap(() => this.facultyService.fetchData('project-college')
+    switchMap(() => this.facultyService.fetchData<Encryption>('project-college')
       .pipe(
-        tap((proj) => console.log('Projects has loaded:', proj)),
-        map((proj) => CvActions.loadCollegeProjSuccess({ proj: proj as Project[] })),
+        map((data) => CvActions.loadCollegeProjSuccess({ proj: this.decryptData<Project[]>(data) })),
         catchError((error) => of(CvActions.loadCollegeProjFailure({ error })))
       )
     )
@@ -108,10 +102,9 @@ export class DeanEffects {
 
   loadExpertise$ = createEffect(() => this.actions$.pipe(
     ofType(CvActions.loadCollegeExpertise),
-    switchMap(() => this.facultyService.fetchData('expertise-college')
+    switchMap(() => this.facultyService.fetchData<Encryption>('expertise-college')
       .pipe(
-        tap((expertises) => console.log('Expertise has loaded:', expertises)),
-        map((expertises) => CvActions.loadCollegeExpertiseSuccess({ expertises: expertises as Expertise[] })),
+        map((data) => CvActions.loadCollegeExpertiseSuccess({ expertises: this.decryptData<Expertise[]>(data) })),
         catchError((error) => of(CvActions.loadCollegeExpertiseFailure({ error })))
       )
     )
@@ -119,10 +112,9 @@ export class DeanEffects {
 
   loadCommex$ = createEffect(() => this.actions$.pipe(
     ofType(CvActions.loadCollegeCommex),
-    switchMap(() => this.facultyService.fetchData('getcommex/1?t=college')
+    switchMap(() => this.facultyService.fetchData<Encryption>('getcommex/1?t=college')
       .pipe(
-        tap((commex) => console.log('College Commex has loaded:', commex)),
-        map((commex) => CvActions.loadCollegeCommexSuccess({ commex: commex as CommunityExtension[] })),
+        map((data) => CvActions.loadCollegeCommexSuccess({ commex: this.decryptData<CommunityExtension[]>(data) })),
         catchError((error) => of(CvActions.loadCollegeCommexFailure({ error })))
       )
     )
@@ -130,10 +122,12 @@ export class DeanEffects {
 
   loadEvaluation$ = createEffect(() => this.actions$.pipe(
     ofType(CvActions.loadCollegeEval),
-    switchMap(() => this.facultyService.fetchData<Evaluation[]>('evaluation-college')
+    switchMap(() => this.facultyService.fetchData<Encryption>('evaluation-college')
       .pipe(
-        tap((evals) => console.log('Evaluation has loaded:', evals)),
-        map((evals) => {
+        map((data) => {
+
+          const evals = this.decryptData<Evaluation[]>(data)
+
           const modifiedEvals = evals.map(evaluation => ({
             ...evaluation,
             evalAverage: parseFloat(((
@@ -145,6 +139,7 @@ export class DeanEffects {
               +evaluation.param6_score
             ) / 6).toFixed(1))
           }));
+
           return CvActions.loadCollegeEvalSuccess({ evals: modifiedEvals });
         }),
         catchError((error) => of(CvActions.loadCollegeEvalFailure({ error })))
