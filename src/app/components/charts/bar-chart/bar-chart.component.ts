@@ -1,21 +1,19 @@
 import { Component, ElementRef, Input, SimpleChanges, ViewChild } from '@angular/core';
-import { Chart } from 'chart.js/auto';
+import { Chart } from 'chart.js';
 
 @Component({
-  selector: 'app-line-graph',
+  selector: 'app-bar-chart',
   standalone: true,
   imports: [],
-  templateUrl: './line-graph.component.html',
-  styleUrl: './line-graph.component.css'
+  templateUrl: './bar-chart.component.html',
+  styleUrl: './bar-chart.component.css'
 })
-export class LineGraphComponent {
+export class BarChartComponent {
   public chart: any;
   public chartId: string = `doughnut-${Math.random().toString(36).substr(2, 9)}`;
-  @ViewChild('lineGraphCanvas') private lineGraphCanvas!: ElementRef<HTMLCanvasElement>;
+  @ViewChild('barGraphCanvas') private barGraphCanvas!: ElementRef<HTMLCanvasElement>;
 
   @Input() data: number[] = [];
-  @Input() data2: number[] = [];
-  @Input() data3: number[] = [];
   @Input() labels: string[] = [];
   @Input() showLegend?: boolean;
   @Input() legendLabel: string[] = [];
@@ -43,35 +41,25 @@ export class LineGraphComponent {
         tension: 0.3,
         borderColor: 'rgb(7, 66, 135)',
         backgroundColor: 'rgba(7, 66, 135, 0.2)',
+        borderWidth: 2,
+        borderRadius: 5,
         hoverOffset: 4
-        },
-        {
-          label: this.legendLabel[1],
-          data: this.data2,
-          fill: true,
-          tension: 0.3,
-          borderColor: 'rgb(30, 114, 66)',
-          backgroundColor: 'rgba(30, 114, 66, 0.2)',
-          hoverOffset: 4
-        },
-        {
-          label: this.legendLabel[2],
-          data: this.data3,
-          fill: true,
-          tension: 0.3,
-          borderColor: 'rgb(255, 122, 0)',
-          backgroundColor: 'rgba(255, 122, 0, 0.2)',
-          hoverOffset: 4
         }
     ]
     };
 
-    const ctx = this.lineGraphCanvas.nativeElement.getContext('2d');
+    const ctx = this.barGraphCanvas.nativeElement.getContext('2d');
     if(ctx){
       this.chart = new Chart(ctx, {
-        type: 'line',
+        type: 'bar',
         data: data,
         options: {
+          indexAxis: 'y',
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          },
           responsive: true, // This makes the chart responsive
           maintainAspectRatio: false,
           plugins: {

@@ -17,13 +17,15 @@ import { Courses } from "../../services/Interfaces/courses";
 import { Faculty } from "../../services/Interfaces/faculty";
 import { CommunityExtension } from "../../services/Interfaces/community-extension";
 import { College } from "../../services/Interfaces/college";
+import { Route, Router } from "@angular/router";
 
 @Injectable()
 
 export class DeanEffects{
     constructor(
         private actions$: Actions,
-        private facultyService: FacultyRequestService
+        private facultyService: FacultyRequestService,
+        private router: Router
     ) {}
 
     loadColleges$ = createEffect(() => this.actions$.pipe(
@@ -32,7 +34,14 @@ export class DeanEffects{
             .pipe(
                 tap((colleges) => console.log('College has loaded:', colleges)),
                 map((colleges) => CvActions.loadCollegeSuccess({colleges: colleges as College[]})),
-                catchError((error) => of(CvActions.loadCollegeFailure({ error } )))
+                catchError((error) => {
+                    console.error('Error loading college:', error);
+                    if(error.status === 403){
+                        console.log("Invalid JWT, routing to login page...");
+                        this.router.navigate(['/']);
+                    }
+                    return of(CvActions.loadCollegeExpFailure({ error }));
+                })
             )
         )
     ));
@@ -43,10 +52,19 @@ export class DeanEffects{
             .pipe(
                 tap((profile) => console.log('Faculty has loaded:', profile)),
                 map((profile) => CvActions.loadCollegeProfileSuccess({profile: profile as Faculty[]})),
-                catchError((error) => of(CvActions.loadCollegeProfileFailure({ error } )))
+                catchError((error) => {
+                    console.error('Error loading faculty profiles:', error);
+                    if(error.status === 403){
+                        console.log("Invalid JWT, routing to login page...");
+                        this.router.navigate(['/']);
+                    }
+                    return of(CvActions.loadCollegeExpFailure({ error }));
+                })
             )
         )
     ));
+
+
     
 
     loadEduc$ = createEffect(() => this.actions$.pipe(
@@ -55,10 +73,23 @@ export class DeanEffects{
             .pipe(
                 tap((educs) => console.log('Educational Attainment has loaded:', educs)),
                 map((educs) => CvActions.loadCollegeEducSuccess({educs: educs as EducationalAttainment[]})),
-                catchError((error) => of(CvActions.loadCollegeEducFailure({ error } )))
+                catchError((error) => {
+                    console.error('Error loading educational experience:', error);
+                    if(error.status === 403){
+                        console.log("Invalid JWT, routing to login page...");
+                        this.router.navigate(['/']);
+                    }
+                    return of(CvActions.loadCollegeExpFailure({ error }));
+                })
             )
         )
     ));
+
+    
+
+
+
+
 
     loadCerts$ = createEffect(() => this.actions$.pipe(
         ofType(CvActions.loadCollegeCert),
@@ -66,7 +97,14 @@ export class DeanEffects{
             .pipe(
                 tap((certs) => console.log('Certificates has loaded:', certs)),
                 map((certs) => CvActions.loadCollegeCertSuccess({certs: certs as CertificationsFaculty[]})),
-                catchError((error) => of(CvActions.loadCollegeCertsFailure({ error } )))
+                catchError((error) => {
+                    console.error('Error loading certificates:', error);
+                    if(error.status === 403){
+                        console.log("Invalid JWT, routing to login page...");
+                        this.router.navigate(['/']);
+                    }
+                    return of(CvActions.loadCollegeExpFailure({ error }));
+                })
             )
         )
     ));
@@ -77,7 +115,14 @@ export class DeanEffects{
             .pipe(
                 tap((courses) => console.log('Courses has loaded:', courses)),
                 map((courses) => CvActions.loadCollegeCourseSuccess({courses: courses as [CoursesFaculty[], Courses[]]})),
-                catchError((error) => of(CvActions.loadCollegeCourseFailure({ error } )))
+                catchError((error) => {
+                    console.error('Error loading courses:', error);
+                    if(error.status === 403){
+                        console.log("Invalid JWT, routing to login page...");
+                        this.router.navigate(['/']);
+                    }
+                    return of(CvActions.loadCollegeCourseFailure({ error } ))
+                })
             )
         )
     ));
@@ -92,6 +137,10 @@ export class DeanEffects{
                 // catchError((error) => of(CvActions.loadCollegeExpFailure({ error } )))
                 catchError((error) => {
                     console.error('Error loading experience:', error);
+                    if(error.status === 403){
+                        console.log("Invalid JWT, routing to login page...");
+                        this.router.navigate(['/']);
+                    }
                     return of(CvActions.loadCollegeExpFailure({ error }));
                 })
             )
@@ -104,7 +153,14 @@ export class DeanEffects{
             .pipe(
                 tap((proj) => console.log('Projects has loaded:', proj)),
                 map((proj) => CvActions.loadCollegeProjSuccess({proj: proj as Project[]})),
-                catchError((error) => of(CvActions.loadCollegeProjFailure({ error } )))
+                catchError((error) => {
+                    console.error('Error loading projects:', error);
+                    if(error.status === 403){
+                        console.log("Invalid JWT, routing to login page...");
+                        this.router.navigate(['/']);
+                    }
+                    return of(CvActions.loadCollegeExpFailure({ error }));
+                })
             )
         )
     ));
@@ -115,7 +171,14 @@ export class DeanEffects{
             .pipe(
                 tap((expertises) => console.log('Expertise has loaded:', expertises)),
                 map((expertises) => CvActions.loadCollegeExpertiseSuccess({expertises: expertises as Expertise[]})),
-                catchError((error) => of(CvActions.loadCollegeExpertiseFailure({ error } )))
+                catchError((error) => {
+                    console.error('Error loading expertise:', error);
+                    if(error.status === 403){
+                        console.log("Invalid JWT, routing to login page...");
+                        this.router.navigate(['/']);
+                    }
+                    return of(CvActions.loadCollegeExpFailure({ error }));
+                })
             )
         )
     ));
@@ -126,7 +189,14 @@ export class DeanEffects{
             .pipe(
                 tap((commex) => console.log('College Commex has loaded:', commex)),
                 map((commex) => CvActions.loadCollegeCommexSuccess({commex: commex as CommunityExtension[]})),
-                catchError((error) => of(CvActions.loadCollegeCommexFailure({ error } )))
+                catchError((error) => {
+                    console.error('Error loading commex:', error);
+                    if(error.status === 403){
+                        console.log("Invalid JWT, routing to login page...");
+                        this.router.navigate(['/']);
+                    }
+                    return of(CvActions.loadCollegeExpFailure({ error }));
+                })
             )
         )
     ));
@@ -150,7 +220,14 @@ export class DeanEffects{
                     }));
                     return CvActions.loadCollegeEvalSuccess({ evals: modifiedEvals });
                 }),
-                catchError((error) => of(CvActions.loadCollegeEvalFailure({ error })))
+                catchError((error) => {
+                    console.error('Error loading evaluation:', error);
+                    if(error.status === 403){
+                        console.log("Invalid JWT, routing to login page...");
+                        this.router.navigate(['/']);
+                    }
+                    return of(CvActions.loadCollegeExpFailure({ error }));
+                })
             )
         )
     ));

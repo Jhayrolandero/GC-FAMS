@@ -18,10 +18,25 @@ export const selectCollegeFaculty = createSelector(
   (state: DeanState) => state.profile
 );
 
+export const selectCollegeEmploymentType = createSelector(
+    selectDeanState,
+    (state: DeanState) => {
+        let employmentType: number[] = [0, 0];
+
+        state.profile.forEach(faculty => {
+            faculty.employment_status == 1 ? employmentType[1]  += 1 : employmentType[0] += 1;
+        })
+
+        return employmentType;
+    }
+  );
+
 export const selectCollegeFacultyCount = createSelector(
     selectDeanState,
     (state: DeanState) => state.profile.length
   );
+
+
 
 
 export const selectAllCollegeEduc = createSelector(
@@ -29,10 +44,94 @@ export const selectAllCollegeEduc = createSelector(
     (state: DeanState) => state.educs
 );
 
+export const selectCollegeEducTimeline = createSelector(
+    selectDeanState,
+    (state: DeanState) => {
+        const floorYear = currentYear - 16;
+        let educTimeline = [
+            Array.from({ length: 15 }, () => 0), 
+            Array.from({ length: 15 }, () => 0), 
+            Array.from({ length: 15 }, () => 0)
+        ];
+
+        state.educs.forEach(educ => {
+            const currYear = +educ.year_end.slice(0,4);
+            if(currYear >= floorYear){
+                if(educ.educ_level == "Bachelor's Degree"){
+                    for (let index = currYear - floorYear; index < 15; index++) {
+                        educTimeline[0][index] += 1;
+                    }
+                }
+                else if(educ.educ_level == "Master's Degree"){
+                    for (let index = currYear - floorYear; index < 15; index++) {
+                        educTimeline[1][index] += 1;
+                        educTimeline[0][index] -= 1;
+                    }
+                }
+                else{
+                    for (let index = currYear - floorYear; index < 15; index++) {
+                        educTimeline[2][index] += 1;
+                        educTimeline[1][index] -= 1;
+                    }
+                }
+            }
+        })
+
+        return educTimeline;
+    }
+);
+
+
+
+
+
 export const selectAllExistCerts = createSelector(
     selectDeanState,
     (state: DeanState) => state.certs
 );
+
+export const selectCertTypes = createSelector(
+    selectDeanState,
+    (state: DeanState) => {
+        let certTypes: {[key: string]: number} = {};
+
+        state.certs.forEach(cert => {
+            const educYear = (cert.accomplished_date + '').slice(0,4);
+
+            if(+educYear == currentYear){
+                if(certTypes[cert.cert_type]){
+                    certTypes[cert.cert_type] += 1;
+                }
+                else{
+                    certTypes[cert.cert_type] = 1;
+                }
+            }
+        })
+        return certTypes;
+    }
+);
+
+export const selectCommonSeminars = createSelector(
+    selectDeanState,
+    (state: DeanState) => {
+        let certNames: Map<string, number> = new Map();
+
+
+        state.certs.forEach(cert => {
+            if(certNames.has(cert.cert_name)){
+                certNames.set(cert.cert_name, certNames.get(cert.cert_name)! + 1);
+            }
+            else{
+                certNames.set(cert.cert_name, 1);
+            }
+        })
+
+        const sortedCerts = [...certNames.entries()].sort((a, b) => b[1] - a[1]);
+        return sortedCerts;
+    }
+);
+
+
 
 //Averages out total certificate count each faculty
 export const facultyCertsCountAverage = createSelector(
