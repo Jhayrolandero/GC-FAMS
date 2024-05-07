@@ -1,18 +1,18 @@
 import { Injectable } from "@angular/core";
-import { EMPTY, Observable, catchError, concatMap, exhaustMap, filter, from, map, merge, mergeMap, of, take, tap, withLatestFrom } from "rxjs";
-import { Attendee } from "../../services/Interfaces/attendee";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
-import { FacultyRequestService } from "../../services/faculty/faculty-request.service";
-import * as AttendeeActions from "./attendee.action";
-import { AttendeeCount } from "../../services/Interfaces/attendeeCount";
-import { Response } from "../../services/Interfaces/response";
 import { Store } from "@ngrx/store";
-import { AttendeeNumberState } from "../../services/Interfaces/attendeeNumberState";
-import { attendedSelector, attendeeNumberSelector } from "./attendee.selector";
+import { EMPTY, Observable, catchError, map, mergeMap, of, withLatestFrom } from "rxjs";
 import { Attended } from "../../services/Interfaces/attended";
 import { AttendedState } from "../../services/Interfaces/attendedState";
+import { Attendee } from "../../services/Interfaces/attendee";
+import { AttendeeCount } from "../../services/Interfaces/attendeeCount";
+import { AttendeeNumberState } from "../../services/Interfaces/attendeeNumberState";
 import { Encryption } from "../../services/Interfaces/encryption";
+import { Response } from "../../services/Interfaces/response";
 import { CryptoJSService } from "../../services/crypto-js.service";
+import { FacultyRequestService } from "../../services/faculty/faculty-request.service";
+import * as AttendeeActions from "./attendee.action";
+import { attendedSelector, attendeeNumberSelector } from "./attendee.selector";
 @Injectable()
 
 
@@ -116,24 +116,7 @@ export class AttendeeEffects {
 
     })
   ))
-  // getAttendeeNumber = createEffect(() => this.actions$.pipe(
-  //   ofType(AttendeeActions.getAttendeeNumber),
-  //   withLatestFrom(this.attendeeStore.select(attendeeNumberSelector)),
-  //   mergeMap(([action, attendeesNumber]) => {
-  //     // Check first if id exist
-  //     if (!(action.id in attendeesNumber)) {
-  //       return this.fetchAttendeeNumber$(action.id).
-  //         pipe(
-  //           map(attendees => AttendeeActions.getAttendeeNumberSuccess({ attendees: { [action.id]: attendees.data[0].count } })),
-  //           catchError(err => of(AttendeeActions.getAttendeeNumberFailure({ error: err })))
-  //         )
-  //     } else {
-  //       this.attendeeStore.dispatch(AttendeeActions.setLoading({ status: false }))
-  //       return EMPTY
-  //     }
 
-  //   })
-  // ))
 
   getAttendee = createEffect(() => this.actions$.pipe(
     ofType(AttendeeActions.getAttendee),
@@ -144,4 +127,6 @@ export class AttendeeEffects {
         )
     })
   ))
+
+
 }

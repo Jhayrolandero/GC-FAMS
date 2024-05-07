@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { AuthService } from '../../services/auth.service';
+import { Component, inject } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { JwtToken } from '../../services/jwt-token';
 import { mainPort } from '../../app.component';
+import { AuthService } from '../../services/auth.service';
+import { JwtToken } from '../../services/jwt-token';
 import { MessageService } from '../../services/message.service';
 @Component({
   selector: 'app-login',
