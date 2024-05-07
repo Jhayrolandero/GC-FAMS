@@ -61,20 +61,32 @@
         </app-line-graph>
     </div>
 
-    <div class="w-full bg-white rounded-[15px] shadow-main p-5 pt-1">
-        <p class="text-blue font-bold text-[2rem] my-2">Milestones Achieved</p>
-        <app-line-graph
-        [data]="[1,3,2,7,5,8,5]"
-        [labels]="['Gay', 'Gay', 'Gay', 'Gay', 'Gay', 'Gay', 'Gay']"
+    <div *ngIf="(milestoneCount$ | async) as milestone" class="w-full bg-white rounded-[15px] shadow-main p-5 pt-1">
+        <p class="text-blue font-bold text-[2rem] my-2">Milestones Achieved Each Year</p>
+        <app-bar-chart
+        [data]="milestone"
+        [axis]="'x'"
+        [labels]="yearsArray"
         [showLegend]="false">
-        </app-line-graph>
+        >  
+        </app-bar-chart>
     </div>
 
     <div class="w-full bg-white rounded-[15px] shadow-main p-5 pt-1">
-        <p class="text-blue font-bold text-[2rem] my-2">Attainment Timeline</p>
+        <div class="flex flex-row items-center gap-3">
+            <p class="text-blue font-bold text-[2rem] my-2">Attainment Timeline</p>
+            <div class="flex flex-row gap-1">
+                <div 
+                class="w-[23px] h-[23px] rounded-[5px] shadow-main duration-300 hover:duration-300 hover:bg-opacity-50"
+                [ngClass]="certToggle ? 'bg-greenBar' : 'bg-slate-200'"
+                (click)="certToggle = !certToggle"></div>
+                <p class="font-Roboto font-medium text-blue">Certifications</p>
+            </div>
+
+        </div>
         <app-line-graph
-        [data]="[1,3,2,7,5,8,5]"
-        [labels]="['Gay', 'Gay', 'Gay', 'Gay', 'Gay', 'Gay', 'Gay']"
+        [data]="[5,5,5,5,5,5]"
+        [labels]="yearsArray"
         [showLegend]="false">
         </app-line-graph>
     </div>
@@ -123,6 +135,7 @@
                 seminar[3][0],
                 seminar[4][0],
             ]"
+            [axis]="'y'"
             [showLegend]="false"
             ></app-bar-chart>
         </div>

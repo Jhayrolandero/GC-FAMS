@@ -7,6 +7,72 @@ const currentYear: number  = date.getFullYear();
 
 export const selectDeanState = createFeatureSelector<DeanState>('dean');
 
+
+export const selectCollegeMilestoneCount = createSelector(
+    selectDeanState,
+    (state: DeanState) => {
+        let milestoneMap: Map<number, number> = new Map();
+
+        state.commex.forEach(comm => {
+            const commYear = +comm.commex_date.slice(0,4);
+            if(milestoneMap.has(commYear)){
+                milestoneMap.set(commYear, milestoneMap.get(commYear)! + 1);
+            }
+            else{
+                milestoneMap.set(commYear, 1);
+            }
+        })
+        state.educs.forEach(educ => {
+            const educYear = +educ.year_end.slice(0,4);
+            if(milestoneMap.has(educYear)){
+                milestoneMap.set(educYear, milestoneMap.get(educYear)! + 1);
+            }
+            else{
+                milestoneMap.set(educYear, 1);
+            }
+                
+        })
+        state.certs.forEach(cert => {
+            const certYear = +(cert.accomplished_date + '').slice(0,4);
+            if(milestoneMap.has(certYear)){
+                milestoneMap.set(certYear, milestoneMap.get(certYear)! + 1);
+            }
+            else{
+                milestoneMap.set(certYear, 1);
+            }
+        })
+
+
+        const sortedMilestone = [...milestoneMap.entries()].sort((a, b) => a[0] - b[0]);
+        const ret = sortedMilestone.map(x => x[1]);
+        return ret.slice(ret.length - 15, ret.length);
+    }
+  );
+
+export const selectAttainmentTimeline = createSelector(
+    selectDeanState,
+    (state: DeanState) => {
+        const floorYear = currentYear - 16;
+        let attainmentTimeline = [
+            Array.from({ length: 15 }, () => 0), 
+            Array.from({ length: 15 }, () => 0), 
+            Array.from({ length: 15 }, () => 0)
+        ];
+
+        state.certs.forEach(cert => {
+            const currYear = +(cert.accomplished_date+'').slice(0,4);
+            if(currYear >= floorYear){
+                attainmentTimeline[0][currYear - floorYear] += 1
+            }
+        })
+
+        return attainmentTimeline;
+    }
+);
+
+
+
+
 export const selectAllCollege = createSelector(
     selectDeanState,
     (state: DeanState) => state.colleges

@@ -17,7 +17,7 @@ export class BarChartComponent {
   @Input() labels: string[] = [];
   @Input() showLegend?: boolean;
   @Input() legendLabel: string[] = [];
-
+  @Input() axis: string = '';
 
   ngAfterViewInit(){
     this.createChart();
@@ -54,7 +54,7 @@ export class BarChartComponent {
         type: 'bar',
         data: data,
         options: {
-          indexAxis: 'y',
+          indexAxis: this.axis as 'x' | 'y' | undefined,
           scales: {
             y: {
               beginAtZero: true

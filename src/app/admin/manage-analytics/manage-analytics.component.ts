@@ -4,7 +4,7 @@ import { FacultyMilestoneCalendarComponent } from "../../components/faculty/facu
 import { PieChartComponent } from '../../components/charts/pie-chart/pie-chart.component';
 import { LineGraphComponent } from '../../components/charts/line-graph/line-graph.component';
 import { Store } from '@ngrx/store';
-import { facultyCertsCountAverage, facultyCourseUnitAverage, selectCertTypes, selectCollegeEducTimeline, selectCollegeEmploymentType, selectCollegeFacultyCount, selectCommonSeminars, yearEvaluationAverage } from '../../state/dean-state/dean-state.selector';
+import { facultyCertsCountAverage, facultyCourseUnitAverage, selectCertTypes, selectCollegeEducTimeline, selectCollegeEmploymentType, selectCollegeFacultyCount, selectCollegeMilestoneCount, selectCommonSeminars, yearEvaluationAverage } from '../../state/dean-state/dean-state.selector';
 import { CommonModule, NgFor } from '@angular/common';
 import { BarChartComponent } from '../../components/charts/bar-chart/bar-chart.component';
 
@@ -20,6 +20,9 @@ export class ManageAnalyticsComponent implements OnInit{
   date = new Date();
   currentYear: number  = this.date.getFullYear();
   yearsArray: string[] = Array.from({ length: 15 }, (_, i) => (new Date().getFullYear() - 14) + i).map(String);
+  certToggle = false;
+  commexToggle = false;
+  seminarToggle = false;
 
 
 
@@ -31,11 +34,23 @@ export class ManageAnalyticsComponent implements OnInit{
   certTypes$ = this.store.select(selectCertTypes);
   employmentTypes$ = this.store.select(selectCollegeEmploymentType);
   seminarNames$ = this.store.select(selectCommonSeminars);
+  milestoneCount$ = this.store.select(selectCollegeMilestoneCount);
 
   constructor(public store: Store){}
   ngOnInit(): void {
-    this.seminarNames$.subscribe(next => {
+    this.milestoneCount$.subscribe(next => {
       console.log(next);
     })
+  }
+
+  switchToggle(type: number){
+    switch (type) {
+      case 1:
+        
+        break;
+    
+      default:
+        break;
+    }
   }
 }

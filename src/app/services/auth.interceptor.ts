@@ -1,7 +1,7 @@
 import { HttpEvent, HttpHandler, HttpHandlerFn, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { AuthService } from './auth.service';
 
 //This triggers at every single post request.
@@ -12,6 +12,13 @@ export function loggingInterceptor(req: HttpRequest<unknown>, next: HttpHandlerF
       'Authorization': `Bearer ${authToken}`,
     },
   });
-  return next(req);
+  console.log(next(req));
+  // return next(req);
+
+  return next(req).pipe(
+    tap((event: HttpEvent<unknown>) => {
+      console.log(event);
+    })
+  )
 }
 

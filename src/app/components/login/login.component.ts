@@ -42,6 +42,7 @@ export class LoginComponent {
     this.authService.flushToken();
     this.messageService.sendMessage("Logging In", 0)
     this.validForm = true;
+    
     //Main http post request, uses JwtToken interface, and stringified loginForm
     this.http.post<JwtToken>(this.url, this.loginForm.getRawValue()).subscribe({
       next: (res: any) => {
