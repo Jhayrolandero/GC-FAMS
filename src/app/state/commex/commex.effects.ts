@@ -8,6 +8,10 @@ import { CommunityExtension } from "../../services/Interfaces/community-extensio
 import { CommexState } from "../../services/Interfaces/commexState";
 import { parsedCollegeCommexSelector, parsedCommexSelector } from "./commex.selector";
 import { MessageService } from "../../services/message.service";
+import { AttendedState } from "../../services/Interfaces/attendedState";
+import { getAttended } from "../attendee/attendee.action";
+import { CryptoJSService } from "../../services/crypto-js.service";
+import { Encryption } from "../../services/Interfaces/encryption";
 @Injectable()
 
 export class CommexsEffects {
@@ -18,12 +22,19 @@ export class CommexsEffects {
     private facultyService: FacultyRequestService,
     private commexFacultyStore: Store<{ commexs: CommexState }>,
     private commexCollegeStore: Store<{ collegeCommexs: CommexState }>,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private attendedStore: Store<{ attended: AttendedState }>,
+    private cryptoJS: CryptoJSService
   ) {
   }
 
-  fetchCommex$ = (URI: string): Observable<CommunityExtension[]> => {
-    return this.facultyService.fetchData<CommunityExtension[]>(URI)
+
+  decryptData<T>(ciphertext: Encryption): T {
+    return this.cryptoJS.CryptoJSAesDecrypt<T>("ucj7XoyBfAMt/ZMF20SQ7sEzad+bKf4bha7bFBdl2HY=", ciphertext)
+  }
+
+  fetchCommex$(URI: string) {
+    return this.facultyService.fetchData<Encryption>(URI)
   }
 
   removeCommex$ = (commex_ID: number) => {
@@ -33,10 +44,19 @@ export class CommexsEffects {
   deleteCommex = createEffect(() => this.actions$.pipe(
     ofType(CommexActions.deleteCommex),
     mergeMap((action) => {
-      return this.removeCommex$(action.commex_ID).pipe(
-        map(() => CommexActions.deleteCommexSuccess({ commex_ID: action.commex_ID })),
-        catchError(error => of(CommexActions.deleteCommexFailure({ error: error.message })))
-      )
+
+      if (action.view === 'faculty') {
+
+        return this.removeCommex$(action.commex_ID).pipe(
+          map(() => CommexActions.deleteCommexSuccess({ commex_ID: action.commex_ID })),
+          catchError(error => of(CommexActions.deleteCommexFailure({ error: error.message })))
+        )
+      } else {
+        return this.removeCommex$(action.commex_ID).pipe(
+          map(() => CommexActions.deleteCollegeCommexSuccess({ commex_ID: action.commex_ID })),
+          catchError(error => of(CommexActions.deleteCollegeCommexFailure({ error: error.message })))
+        )
+      }
     })
   ))
 
@@ -45,12 +65,16 @@ export class CommexsEffects {
     tap(() => console.log("Hallo :D")),
     withLatestFrom(this.commexFacultyStore.select(parsedCommexSelector)),
     concatMap(([action, commexes]) => {
-
       if (commexes.length <= 0) {
         return this.fetchCommex$(action.uri).
           pipe(
-            tap((commexes) => console.log('Community Extension has loaded:', commexes)),
-            map(commexs => CommexActions.getCommexSuccess({ commexs })),
+            map(data => {
+              const commexs = this.decryptData<CommunityExtension[]>(data)
+
+              commexs.forEach(commex => this.attendedStore.dispatch(getAttended({ commex_ID: commex.commex_ID })))
+
+              return CommexActions.getCommexSuccess({ commexs })
+            }),
             catchError(error => of(CommexActions.getCommexFailure({ error: error.message }))),
           )
       } else {
@@ -59,6 +83,7 @@ export class CommexsEffects {
       }
     })
   ))
+
 
   getCollegeCommexs = createEffect(() => this.actions$.pipe(
     ofType(CommexActions.getCollegeCommex),
@@ -69,7 +94,12 @@ export class CommexsEffects {
         return this.fetchCommex$(action.uri).
           pipe(
             tap((commexes) => console.log('College Community Extension has loaded:', commexes)),
-            map(commexs => CommexActions.getCollegeCommexSuccess({ commexs })),
+            map(data => {
+              const commexs = this.decryptData<CommunityExtension[]>(data)
+
+              commexs.forEach(commex => this.attendedStore.dispatch(getAttended({ commex_ID: commex.commex_ID })))
+              return CommexActions.getCollegeCommexSuccess({ commexs })
+            }),
             catchError(error => of(CommexActions.getCollegeCommexFailure({ error: error.message }))),
           )
       } else {
@@ -79,7 +109,6 @@ export class CommexsEffects {
       }
     })
   ))
-
 
   postCommex$ = createEffect(() => {
     return this.actions$.pipe(

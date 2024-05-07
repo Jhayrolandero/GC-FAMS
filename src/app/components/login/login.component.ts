@@ -49,7 +49,7 @@ export class LoginComponent {
         //Success, wrong loginparams, and query error issue.
         if (res.code == 200) {
           let expireDate = new Date();
-          expireDate.setTime(expireDate.getTime() + (10 * 60 * 1000)); 
+          expireDate.setTime(expireDate.getTime() + (10 * 60 * 1000));
 
 
           document.cookie = `token=${res.token}; ${expireDate}; path=/`

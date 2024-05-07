@@ -2,6 +2,7 @@ import { createAction, props } from "@ngrx/store";
 import { Dictionary } from "../../services/Interfaces/dictionary";
 import { Attendee } from "../../services/Interfaces/attendee";
 import e from "express";
+import { CommunityExtension } from "../../services/Interfaces/community-extension";
 
 export const getAttendeeNumber = createAction('[Attendee] Fetch Attendee Number',
   props<{ id: number }>()
@@ -16,8 +17,11 @@ export const getAttendeeNumberFailure = createAction('[Attendee] Fetch Attendee 
 )
 
 
+// export const getAttended = createAction('[Attended Commex ] Fetch Commex Attended',
+//   props<{ commexs: CommunityExtension[] }>()
+// )
 export const getAttended = createAction('[Attended Commex ] Fetch Commex Attended',
-  props<{ commex_ID: number, faculty_ID: number }>()
+  props<{ commex_ID: number }>()
 )
 
 export const getAttendedSuccess = createAction('[Attended Commex ] Fetch Commex Attended Success',

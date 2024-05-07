@@ -20,7 +20,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { TooltipComponent } from '../../components/tooltip/tooltip.component';
 import { Attendee } from '../../services/Interfaces/attendee';
-import { Observable, Subscription, catchError, first, from, map, merge, mergeMap, of } from 'rxjs';
+import { Observable, Subscription, catchError, first, from, map, merge, mergeMap, of, take } from 'rxjs';
 import { Dictionary } from '../../services/Interfaces/dictionary';
 import { Response } from '../../services/Interfaces/response';
 import { MessageService } from '../../services/message.service';
@@ -39,6 +39,8 @@ import { Faculty } from '../../services/Interfaces/faculty';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { AttendedState } from '../../services/Interfaces/attendedState';
 import { MatMenuModule } from '@angular/material/menu';
+import { CryptoJSService } from '../../services/crypto-js.service';
+import { Encryption } from '../../services/Interfaces/encryption';
 
 @Component({
   selector: 'app-commex-form',
@@ -109,8 +111,6 @@ export class CommexFormComponent {
 
       formArray.controls.forEach((ctrl: any) => {
         if (JSON.stringify(ctrl.value) === JSON.stringify(attendeeObj)) {
-          // Remove the unselected element from the arrayForm
-          console.log("removed");
           formArray.removeAt(i);
           return;
         }
@@ -126,21 +126,12 @@ export class CommexFormComponent {
       this.commexformData.append("attendees[]", JSON.stringify(val))
     })
 
-    console.log(this.commexformData.getAll("attendees[]"))
   }
 
   submitAttendee() {
 
     const formArray: FormArray = this.commexForm.get('attendees') as FormArray;
-
-
-    console.log(
-      this.commexForm.controls['attendees'].value
-    )
-
     this.commexformData = this.facultyService.formDatanalize(this.commexForm);
-
-
     formArray.value.forEach((val: any) => {
       this.commexformData.append("attendees[]", JSON.stringify(val))
     })
@@ -211,7 +202,9 @@ export class CommunityExtensionsComponent {
     private attendedStore: Store<{ attended: AttendedState }>,
     private commexCollegeStore: Store<{ collegeCommexs: CommexState }>,
     private profileStore: Store<{ profile: ProfileState }>,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private cryptoJS: CryptoJSService
+
   ) {
 
     this.attendeeLoading$ = this.attendeeStore.pipe(select(AttendeeSelector.attendeeLoadingSelector))
@@ -224,16 +217,19 @@ export class CommunityExtensionsComponent {
     this.profileCollege$ = this.profileStore.pipe(select(ProfileSelectors.selectAllProfile))
     this.isAttendedLoading$ = this.attendedStore.pipe(select(AttendeeSelector.attendedLoadingSelector))
     this.isProfileLoading$ = this.profileStore.pipe(select(ProfileSelectors.selectProfileLoading))
-
+    this.attended$ = this.attendedStore.pipe(select(AttendeeSelector.attendedSelector))
   }
+
   commexs$: Observable<CommunityExtension[]>
+
   latestCommex$: Observable<CommunityExtension>
   isLoading$: Observable<boolean>
   isAttendedLoading$: Observable<boolean>
   isProfileLoading$: Observable<boolean>
   attendeeLoading$: Observable<boolean>
   attendeesNumber: Dictionary<number> = {}
-  attended: Dictionary<number> = {}
+  attended$: Observable<Dictionary<number>>;
+  // attended: Dictionary<number> = {}
   profileCollege$: Observable<Profile | undefined>
   profileCollegeID: number = 0
   profileFacultyID: number = 0
@@ -243,7 +239,7 @@ export class CommunityExtensionsComponent {
   ngOnInit(): void {
 
     this.attendeeNumberFetch()
-    this.attendedFetch()
+    // this.attendedFetch()
 
     // Switch the view depending on state
     if (this.switch === "faculty") {
@@ -251,16 +247,6 @@ export class CommunityExtensionsComponent {
     } else {
       this.commexs$ = this.commexCollegeStore.pipe(select(CommexsSelector.parsedCollegeCommexSelector))
     }
-    this.profileCollege$.pipe(first()).subscribe(
-      res => {
-
-        this.profileCollegeID = res!.college_ID
-        this.profileFacultyID = res!.faculty_ID
-        // this.commexCollegeStore.dispatch(CommexActions.getCollegeCommex({ uri: `getcommex/${res?.college_ID}?t=college` }))
-      }
-    )
-
-
   }
   tempPort = mainPort;
   isAttendeeLoading: boolean = true;
@@ -291,36 +277,18 @@ export class CommunityExtensionsComponent {
     })
   }
 
-  attendedFetch() {
-
-    this.commexs$.pipe(
-      mergeMap(commexs => from(commexs).pipe(
-        map(commex => this.attendeeStore.dispatch(AttendeeActions.getAttended({ commex_ID: commex.commex_ID, faculty_ID: this.profileFacultyID })))
-      ))
-    ).subscribe()
-
-
-    // Fix this error
-    return this.attendedStore.pipe(select(AttendeeSelector.attendedSelector)).subscribe({
-      next: res => {
-        this.attended = { ...this.attended, ...res }
-      },
-      error: err => console.log(err),
-      complete: () => console.log(this.attended)
-    })
-
-  }
-
-  isAttended = (commex_ID: number) => {
-    return this.facultyService.fetchData<Response<number>>(`attendee/${this.profileFacultyID}/commex/${commex_ID}`)
+  decryptData<T>(ciphertext: Encryption): T {
+    return this.cryptoJS.CryptoJSAesDecrypt<T>("ucj7XoyBfAMt/ZMF20SQ7sEzad+bKf4bha7bFBdl2HY=", ciphertext)
   }
 
   attendeeNameFetch$ = (id: number): Subscription => {
-    return this.facultyService.fetchData<Response<Attendee[]>>(`attendee/${id}`).subscribe({
-      next: res => this.attendees = ({
-        ...this.attendees,
-        [id]: res.data
-      }),
+    return this.facultyService.fetchData<Encryption>(`attendee/${id}`).subscribe({
+      next: res => {
+        this.attendees = ({
+          ...this.attendees,
+          [id]: this.decryptData<Response<Attendee[]>>(res).data
+        })
+      },
       error: err => console.log(err),
       complete: () => {
         this.attendee = this.attendees[id]
@@ -358,7 +326,6 @@ export class CommunityExtensionsComponent {
 
 
   toggleHide() {
-    console.log("Unsub...")
     this.currFetch$.unsubscribe()
     this.isVisible = false
     this.activeID = null
@@ -381,7 +348,7 @@ export class CommunityExtensionsComponent {
       this.isLoading$ = this.commexCollegeStore.pipe(select(CommexsSelector.isLoadingCollegeCommexSelector))
       this.latestCommex$ = this.commexCollegeStore.pipe(select(CommexsSelector.latestCollegeCommexSelector))
       this.attendeeNumberFetch()
-      this.attendedFetch()
+      // this.attendedFetch()
     } else {
       this.switch = 'faculty'
       this.commexs$ = this.commexFacultyStore.pipe(select(CommexsSelector.parsedCommexSelector))
@@ -428,7 +395,15 @@ export class CommunityExtensionsComponent {
 
   attendCommex(commex_ID: number) {
     const attendCommex = new FormData()
-    const attendeeForm = { commex_ID, faculty_ID: this.profileFacultyID }
+
+    let faculty_ID = undefined
+    this.profileCollege$.pipe(take(1)).subscribe(
+      res => {
+        faculty_ID = res?.faculty_ID
+        // this.commexCollegeStore.dispatch(CommexActions.getCollegeCommex({ uri: `getcommex/${res?.college_ID}?t=college` }))
+      }
+    )
+    const attendeeForm = { commex_ID, faculty_ID }
 
     attendCommex.append("attendees[]", JSON.stringify(attendeeForm))
     this.attendeeStore.dispatch(AttendeeActions.joinCommex({ commex_ID: commex_ID, formData: attendCommex }))
@@ -440,7 +415,7 @@ export class CommunityExtensionsComponent {
 
   openConfirm(commex_ID: number): void {
     this.dialog.open(ConfirmDeleteComponent, {
-      data: { commex_ID },
+      data: { commex_ID, view: this.switch },
     });
   }
 }
@@ -466,18 +441,17 @@ export class ConfirmDeleteComponent {
   constructor(
     public dialogRef: MatDialogRef<ConfirmDeleteComponent>,
     private commexFacultyStore: Store<{ commexs: CommexState }>,
-    @Inject(MAT_DIALOG_DATA) public data: { commex_ID: number }) {
-
-    this.isLoading$ = this.commexFacultyStore.select(CommexsSelector.deleteLoadingSelector)
+    private commexCollegeStore: Store<{ collegeCommexs: CommexState }>,
+    @Inject(MAT_DIALOG_DATA) public data: { commex_ID: number, view: 'college' | 'faculty' }) {
   }
 
-  isLoading$: Observable<boolean>
+  isLoading$: Observable<boolean> = this.data.view === 'college' ? this.commexCollegeStore.select(CommexsSelector.deleteCollegeLoadingSelector) : this.commexFacultyStore.select(CommexsSelector.deleteLoadingSelector)
 
   onNoClick(): void {
     this.dialogRef.close();
   }
 
-  deleteCommex(commex_ID: number) {
-    this.commexFacultyStore.dispatch(CommexActions.deleteCommex({ commex_ID }))
+  deleteCommex() {
+    this.commexFacultyStore.dispatch(CommexActions.deleteCommex({ commex_ID: this.data.commex_ID, view: this.data.view }))
   }
 }
