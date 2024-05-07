@@ -13,85 +13,85 @@ import { CoursesFaculty } from "../../services/Interfaces/courses-faculty";
 
 export const loadProfile = createAction('[Profile Global] Load Profile');
 export const loadProfileSuccess = createAction(
-    '[Profile Global] Profile Load Success',
-    props<{ profile: Profile }>()
+  '[Profile Global] Profile Load Success',
+  props<{ profile: Profile | undefined }>()
 );
 export const loadProfileFailure = createAction(
-    '[Profile Global] Profile Load Failed',
-    props<{ error: string }>()
+  '[Profile Global] Profile Load Failed',
+  props<{ error: string }>()
 );
 
 
 export const loadEduc = createAction('[Education Global] Load Education');
 export const loadEducSuccess = createAction(
-    '[Education Global] Education Load Success',
-    props<{ educs: EducationalAttainment[] }>()
+  '[Education Global] Education Load Success',
+  props<{ educs: EducationalAttainment[] }>()
 );
 export const loadEducFailure = createAction(
-    '[Education Global] Education Load Failed',
-    props<{ error: string }>()
+  '[Education Global] Education Load Failed',
+  props<{ error: string }>()
 );
 
 
 export const loadCert = createAction('[Certificate Global] Load Certificate');
 export const loadCertSuccess = createAction(
-    '[Certificate Global] Certificate Load Success',
-    props<{ certs: [CertificationsFaculty[], Certifications[]] }>()
+  '[Certificate Global] Certificate Load Success',
+  props<{ certs: [CertificationsFaculty[], Certifications[]] }>()
 );
 export const loadCertsFailure = createAction(
-    '[Certificate Global] Certificate Load Failed',
-    props<{ error: string }>()
+  '[Certificate Global] Certificate Load Failed',
+  props<{ error: string }>()
 );
 
 
 export const loadExp = createAction('[Experience Global] Load Experience');
 export const loadExpSuccess = createAction(
-    '[Experience Global] Experience Load Success',
-    props<{ exps: IndustryExperience[] }>()
+  '[Experience Global] Experience Load Success',
+  props<{ exps: IndustryExperience[] }>()
 );
 export const loadExpFailure = createAction(
-    '[Experience Global] Experience Load Failed',
-    props<{ error: string }>()
+  '[Experience Global] Experience Load Failed',
+  props<{ error: string }>()
 );
 
 
 export const loadProj = createAction('[Project Global] Load Project');
 export const loadProjSuccess = createAction(
-    '[Project Global] Project Load Success',
-    props<{ proj: Project[] }>()
+  '[Project Global] Project Load Success',
+  props<{ proj: Project[] }>()
 );
 export const loadProjFailure = createAction(
-    '[Project Global] Project Load Failed',
-    props<{ error: string }>()
+  '[Project Global] Project Load Failed',
+  props<{ error: string }>()
 );
 
 
 export const loadExpertise = createAction('[Expertise Global] Load Expertise');
 export const loadExpertiseSuccess = createAction(
-    '[Expertise Global] Expertise Load Success',
-    props<{ expertises: Expertise[] }>()
+  '[Expertise Global] Expertise Load Success',
+  props<{ expertises: Expertise[] }>()
 );
 export const loadExpertiseFailure = createAction(
-    '[Expertise Global] Expertise Load Failed',
-    props<{ error: string }>()
+  '[Expertise Global] Expertise Load Failed',
+  props<{ error: string }>()
 );
 
 export const loadEval = createAction('[Evaluation Global] Load Evaluation');
 export const loadEvalSuccess = createAction(
-    '[Evaluation Global] Evaluation Load Success',
-    props<{ evals: Evaluation[] }>()
+  '[Evaluation Global] Evaluation Load Success',
+  props<{ evals: Evaluation[] }>()
 );
 export const loadEvalFailure = createAction(
-    '[Evaluation Global] Evaluation Load Failed',
-    props<{ error: string }>()
+  '[Evaluation Global] Evaluation Load Failed',
+  props<{ error: string }>()
 );
 
 export const loadCourse = createAction('[Course Global] Load Course');
 export const loadCourseSuccess = createAction(
-    '[Course Global] Course Load Success',
-    props<{ courses: [CoursesFaculty[], Courses[]] }>()
+  '[Course Global] Course Load Success',
+  props<{ courses: [CoursesFaculty[], Courses[]] }>()
 );
 export const loadCourseFailure = createAction(
-    '[Course Global] Course Load Failed',
-    props<{ error: string }>()
+  '[Course Global] Course Load Failed',
+  props<{ error: string }>()
 );

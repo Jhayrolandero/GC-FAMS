@@ -17,7 +17,7 @@
         <div class="flex justify-end">
           <button
           class=" bg-red-500 rounded-full py-2 px-7 mt-2 max-w-min font-semibold text-white"
-          (click)="deleteCommex(data.commex_ID)"
+          (click)="deleteCommex()"
           [disabled]="isLoading$ | async"
           >Yes <span>@if(isLoading$ | async) { <i class="fa-duotone fa-spinner-third animate-spin"></i> }</span>
           </button>

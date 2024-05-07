@@ -58,8 +58,8 @@
               <h1 class="font-Poppins font-semibold text-[1.5rem]">
                 {{ latestCommex.commex_title }}
               </h1>
-              @if(attended[latestCommex.commex_ID] == 1) {
-              <button
+              @if((attended$ | async)?.[latestCommex.commex_ID] == 1) {
+                <button
               mat-button [matMenuTriggerFor]="menu"
               class="w-[5%] max-w-3">
                 <i class="fa-solid fa-ellipsis-vertical"></i>
@@ -110,11 +110,11 @@
                 Loading...
               </button>
             }@else {
-              @if(attended[latestCommex.commex_ID] == 1) {
-                <button
-                class=" bg-blue text-white px-2 py-1 rounded-lg"
-                (click)="leaveCommex(latestCommex.commex_ID)"
-                >
+                  @if((attended$ | async)?.[latestCommex.commex_ID] == 1) {
+                    <button
+                  class=" bg-blue text-white px-2 py-1 rounded-lg"
+                  (click)="leaveCommex(latestCommex.commex_ID)"
+                  >
                 Attended
               </button>
             }  @else {
@@ -122,9 +122,9 @@
               class=" bg-blue text-white px-2 py-1 rounded-lg"
               (click)="attendCommex(latestCommex.commex_ID)"
               >
-                Attend
-              </button>
-            }
+              Attend
+            </button>
+          }
           }
           </div>
               </div>
@@ -164,7 +164,7 @@
                   <h4 class="font-Poppins font-semibold text-[1.5rem]">
                     {{ commex.commex_title }}
                   </h4>
-                  @if(attended[commex.commex_ID] == 1) {
+                  @if((attended$ | async)?.[commex.commex_ID] == 1) {
 
                   <button
                   mat-button [matMenuTriggerFor]="menu"
@@ -214,7 +214,8 @@
                         Loading...
                       </button>
                     }@else {
-                      @if(attended[commex.commex_ID] == 1) {
+
+                      @if((attended$ | async)?.[commex.commex_ID] == 1) {
                         <button
                         class=" bg-blue text-white px-2 py-1 rounded-lg"
                         (click)="leaveCommex(commex.commex_ID)"

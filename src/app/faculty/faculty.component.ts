@@ -18,15 +18,15 @@ import { getCommex } from '../state/commex/commex.action';
   selector: 'app-faculty',
   standalone: true,
   imports: [SidebarComponent,
-    RouterOutlet, 
-    AnalyticsComponent, 
-    TopnavComponent, 
-    CommonModule, 
-    LoadingScreenComponent, 
+    RouterOutlet,
+    AnalyticsComponent,
+    TopnavComponent,
+    CommonModule,
+    LoadingScreenComponent,
     MessageComponent,
-    MatSidenavModule, 
-    MatButtonModule, 
-    FormsModule, 
+    MatSidenavModule,
+    MatButtonModule,
+    FormsModule,
     MatCheckboxModule],
 
   templateUrl: './faculty.component.html',
@@ -36,7 +36,7 @@ export class FacultyComponent {
   sideBarToggle = true;
   opened: boolean = true;
 
-  constructor(private store: Store){
+  constructor(private store: Store) {
     store.dispatch(loadProfile());
     store.dispatch(loadCert());
     store.dispatch(loadCourse());
