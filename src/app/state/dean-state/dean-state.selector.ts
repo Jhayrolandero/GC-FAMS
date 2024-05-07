@@ -52,7 +52,7 @@ export const selectCollegeMilestoneCount = createSelector(
 export const selectAttainmentTimeline = createSelector(
     selectDeanState,
     (state: DeanState) => {
-        const floorYear = currentYear - 16;
+        const floorYear = currentYear - 14;
         let attainmentTimeline = [
             Array.from({ length: 15 }, () => 0), 
             Array.from({ length: 15 }, () => 0), 
@@ -61,8 +61,23 @@ export const selectAttainmentTimeline = createSelector(
 
         state.certs.forEach(cert => {
             const currYear = +(cert.accomplished_date+'').slice(0,4);
+            console.log(currYear + "   " + floorYear);
             if(currYear >= floorYear){
                 attainmentTimeline[0][currYear - floorYear] += 1
+            }
+        })
+
+        state.commex.forEach(commex => {
+            const currYear = +commex.commex_date.slice(0,4);
+            if(currYear >= floorYear){
+                attainmentTimeline[1][currYear - floorYear] += 1
+            }
+        })
+
+        state.certs.forEach(cert => {
+            const currYear = +(cert.accomplished_date+'').slice(0,4);
+            if(currYear >= floorYear && cert.cert_type == "Completion"){
+                attainmentTimeline[2][currYear - floorYear] += 1
             }
         })
 
@@ -113,7 +128,7 @@ export const selectAllCollegeEduc = createSelector(
 export const selectCollegeEducTimeline = createSelector(
     selectDeanState,
     (state: DeanState) => {
-        const floorYear = currentYear - 16;
+        const floorYear = currentYear - 14;
         let educTimeline = [
             Array.from({ length: 15 }, () => 0), 
             Array.from({ length: 15 }, () => 0), 
