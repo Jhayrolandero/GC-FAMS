@@ -137,8 +137,8 @@
     </div>
 
     <div class="w-full flex flex-row gap-3">
-        <div class="bg-white w-[50%] shadow-main rounded-[15px] p-5 pt-1">
-            <div *ngIf="(topSeminar$ | async) as seminar"  >
+        <div class="w-[50%] flex flex-col gap-3">
+            <div *ngIf="(topSeminar$ | async) as seminar" class="bg-white shadow-main rounded-[15px] p-5 pt-1">
                 <p class="text-blue font-bold text-[2rem] my-2">Top Seminars Completed</p>
                 <app-bar-chart
                 [data]="[
@@ -161,25 +161,13 @@
                 ></app-bar-chart>
             </div>
 
-            <div *ngIf="(topSeminar$ | async) as seminar"  class="bg-white w-[50%] shadow-main rounded-[15px] p-5 pt-1">
-                <p class="text-blue font-bold text-[2rem] my-2">Top Seminars Completed</p>
+            <div *ngIf="(topExpertise$ | async) as expertise"  class="bg-white shadow-main rounded-[15px] p-5 pt-1">
+                <p class="text-blue font-bold text-[2rem] my-2">Top Common Expertise</p>
                 <app-bar-chart
-                [data]="[
-                    seminar[0][1],
-                    seminar[1][1],
-                    seminar[2][1],
-                    seminar[3][1],
-                    seminar[4][1],
-                ]"
-                [labels]="[
-                    seminar[0][0],
-                    seminar[1][0],
-                    seminar[2][0],
-                    seminar[3][0],
-                    seminar[4][0],
-                ]"
+                [data]="expertise[1]"
+                [labels]="expertise[0]"
                 [axis]="'y'"
-                [bgColor]="'rgb(7, 66, 135)'"
+                [bgColor]="'rgb(255, 122, 0)'"
                 [showLegend]="false"
                 ></app-bar-chart>
             </div>

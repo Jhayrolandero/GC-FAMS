@@ -4,7 +4,7 @@ import { FacultyMilestoneCalendarComponent } from "../../components/faculty/facu
 import { PieChartComponent } from '../../components/charts/pie-chart/pie-chart.component';
 import { LineGraphComponent } from '../../components/charts/line-graph/line-graph.component';
 import { Store } from '@ngrx/store';
-import { facultyCertsCountAverage, facultyCourseUnitAverage, selectAttainmentTimeline, selectCertTypes, selectCollegeEducTimeline, selectCollegeEmploymentType, selectCollegeFacultyCount, selectCollegeMilestoneCount, selectCommonSeminars, selectFacultyExpertise, yearEvaluationAverage } from '../../state/dean-state/dean-state.selector';
+import { facultyCertsCountAverage, facultyCourseUnitAverage, selectAttainmentTimeline, selectCertTypes, selectCollegeEducTimeline, selectCollegeEmploymentType, selectCollegeFacultyCount, selectCollegeMilestoneCount, selectCommonSeminars, selectFacultyExpertise, selectTopExpertise, yearEvaluationAverage } from '../../state/dean-state/dean-state.selector';
 import { CommonModule, NgFor } from '@angular/common';
 import { BarChartComponent } from '../../components/charts/bar-chart/bar-chart.component';
 
@@ -35,14 +35,14 @@ export class ManageAnalyticsComponent implements OnInit{
   certTypes$ = this.store.select(selectCertTypes);
   employmentTypes$ = this.store.select(selectCollegeEmploymentType);
   topSeminar$ = this.store.select(selectCommonSeminars);
-  topExpertise$ = this.store.select(selectFacultyExpertise);
+  topExpertise$ = this.store.select(selectTopExpertise);
   milestoneCount$ = this.store.select(selectCollegeMilestoneCount);
   attainmentTimeline$ = this.store.select(selectAttainmentTimeline);
 
 
   constructor(public store: Store){}
   ngOnInit(): void {
-    this.attainmentTimeline$.subscribe(next => {
+    this.topExpertise$.subscribe(next => {
       console.log(next);
     })
   }

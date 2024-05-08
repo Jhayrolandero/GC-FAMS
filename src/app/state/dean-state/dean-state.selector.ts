@@ -294,6 +294,27 @@ export const selectFacultyExpertise = createSelector(
     (state: DeanState) => state.expertises[0]
 );
 
+export const selectTopExpertise = createSelector(
+    selectDeanState,
+    (state: DeanState) => {
+        let expertiseNames: Map<string, number> = new Map();
+
+
+        state.expertises[0].forEach(exp => {
+            if(expertiseNames.has(exp.expertise_name)){
+                expertiseNames.set(exp.expertise_name, expertiseNames.get(exp.expertise_name)! + 1);
+            }
+            else{
+                expertiseNames.set(exp.expertise_name, 1);
+            }
+        })
+
+        const sortedCerts = [...expertiseNames.entries()].sort((a, b) => b[1] - a[1]);
+        const ret: [string[], number[]] = [sortedCerts.map(x => x[0]), sortedCerts.map(x => x[1])];
+        return ret;
+    }
+);
+
 
 
 export const selectAllEvaluation = createSelector(
