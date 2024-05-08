@@ -18,6 +18,7 @@ export class BarChartComponent {
   @Input() showLegend?: boolean;
   @Input() legendLabel: string[] = [];
   @Input() axis: string = '';
+  @Input() bgColor: string = '';
 
   ngAfterViewInit(){
     this.createChart();
@@ -39,9 +40,7 @@ export class BarChartComponent {
         data: this.data,
         fill: true,
         tension: 0.3,
-        borderColor: 'rgb(7, 66, 135)',
-        backgroundColor: 'rgba(7, 66, 135, 0.2)',
-        borderWidth: 2,
+        backgroundColor: this.bgColor,
         borderRadius: 5,
         hoverOffset: 4
         }

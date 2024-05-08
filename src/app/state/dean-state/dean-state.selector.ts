@@ -61,7 +61,6 @@ export const selectAttainmentTimeline = createSelector(
 
         state.certs.forEach(cert => {
             const currYear = +(cert.accomplished_date+'').slice(0,4);
-            console.log(currYear + "   " + floorYear);
             if(currYear >= floorYear){
                 attainmentTimeline[0][currYear - floorYear] += 1
             }

@@ -10,6 +10,7 @@ import { loadCert } from '../../../../state/faculty-state/faculty-state.actions'
 import { Store } from '@ngrx/store';
 import { selectAllCerts } from '../../../../state/faculty-state/faculty-state.selector';
 import { Certifications } from '../../../../services/Interfaces/certifications';
+import { MessageService } from '../../../../services/message.service';
 
 @Component({
     selector: 'app-faculty-certifications-form',
@@ -27,6 +28,7 @@ import { Certifications } from '../../../../services/Interfaces/certifications';
     constructor(
       public dialogRef: MatDialogRef<FacultyCertificationsFormComponent>, 
       private facultyRequest: FacultyRequestService,
+      private messageService: MessageService,
       private store: Store
     ){}
 
@@ -76,13 +78,18 @@ import { Certifications } from '../../../../services/Interfaces/certifications';
       }
 
       console.log(formType);
+      this.messageService.sendMessage("Adding Certification...", 0)
   
       const formData = this.facultyRequest.formDatanalize(formType);
       this.facultyRequest.postData(formData, submitType).subscribe({
         next(value) {console.log(value);},
-        error: (error) => {console.log(error)},
+        error: (error) => {
+          console.log(error);
+          this.messageService.sendMessage("Failed to add Certification.", -1)
+        },
         complete: () => {
           this.store.dispatch(loadCert());
+          this.messageService.sendMessage("Course Successfully Added!", 1)
           this.onNoClick();
         }
       });

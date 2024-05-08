@@ -8,6 +8,7 @@ import { Component, Inject } from '@angular/core';
 import { FacultyRequestService } from '../../../../services/faculty/faculty-request.service';
 import { Store } from '@ngrx/store';
 import { loadEduc } from '../../../../state/faculty-state/faculty-state.actions';
+import { MessageService } from '../../../../services/message.service';
 
 @Component({
     selector: 'app-faculty-certifications-form',
@@ -31,6 +32,7 @@ import { loadEduc } from '../../../../state/faculty-state/faculty-state.actions'
     constructor(
       public dialogRef: MatDialogRef<EducationalAttainmentFormComponent>, 
       private facultyRequest: FacultyRequestService,
+      private messageService: MessageService,
       private store: Store,
       @Inject(MAT_DIALOG_DATA) public data: any){}
 

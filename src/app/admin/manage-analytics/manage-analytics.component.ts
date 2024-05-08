@@ -20,6 +20,7 @@ export class ManageAnalyticsComponent implements OnInit{
   date = new Date();
   currentYear: number  = this.date.getFullYear();
   yearsArray: string[] = Array.from({ length: 15 }, (_, i) => (new Date().getFullYear() - 14) + i).map(String);
+  attainmentArr = [[], [], []]
   certToggle = false;
   commexToggle = false;
   seminarToggle = false;
@@ -42,16 +43,5 @@ export class ManageAnalyticsComponent implements OnInit{
     this.attainmentTimeline$.subscribe(next => {
       console.log(next);
     })
-  }
-
-  switchToggle(type: number){
-    switch (type) {
-      case 1:
-        
-        break;
-    
-      default:
-        break;
-    }
   }
 }

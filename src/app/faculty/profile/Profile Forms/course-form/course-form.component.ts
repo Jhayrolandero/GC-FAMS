@@ -10,6 +10,7 @@ import { FacultyRequestService } from '../../../../services/faculty/faculty-requ
 import { loadCert, loadCourse, loadExpertise } from '../../../../state/faculty-state/faculty-state.actions';
 import { ExpertiseFormComponent } from '../expertise-form/expertise-form.component';
 import { selectCourses } from '../../../../state/faculty-state/faculty-state.selector';
+import { MessageService } from '../../../../services/message.service';
 
 @Component({
     selector: 'app-course-form',
@@ -25,6 +26,7 @@ export class CourseFormComponent {
     constructor(
         public dialogRef: MatDialogRef<CourseFormComponent>,
         private facultyRequest: FacultyRequestService,
+        private messageService: MessageService,
         private store: Store,
         @Inject(MAT_DIALOG_DATA) public data: any
     ){}
@@ -46,11 +48,13 @@ export class CourseFormComponent {
 
     submitForm() {
         console.log(this.courseForm);
+        this.messageService.sendMessage("Adding Courses...", 0)
         this.facultyRequest.postData(this.courseForm, 'addCourse').subscribe({
             next: (next: any) => { console.log(next); },
-            error: (error) => { console.log(error) },
+            error: (error) => { this.messageService.sendMessage("Failed to add course.", -1) },
             complete: () => {
                 this.store.dispatch(loadCourse());
+                this.messageService.sendMessage("Courses Successfully Added!", 1)
                 this.onNoClick();
             }
         });
