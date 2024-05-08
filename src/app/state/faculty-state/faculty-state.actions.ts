@@ -9,6 +9,7 @@ import { CertificationsFaculty } from "../../services/Interfaces/certifications-
 import { Certifications } from "../../services/Interfaces/certifications";
 import { Courses } from "../../services/Interfaces/courses";
 import { CoursesFaculty } from "../../services/Interfaces/courses-faculty";
+import { ExpertiseFaculty } from "../../services/Interfaces/expertise-faculty";
 
 
 export const loadProfile = createAction('[Profile Global] Load Profile');
@@ -69,7 +70,7 @@ export const loadProjFailure = createAction(
 export const loadExpertise = createAction('[Expertise Global] Load Expertise');
 export const loadExpertiseSuccess = createAction(
   '[Expertise Global] Expertise Load Success',
-  props<{ expertises: Expertise[] }>()
+  props<{ expertises: [ExpertiseFaculty[], Expertise[]] }>()
 );
 export const loadExpertiseFailure = createAction(
   '[Expertise Global] Expertise Load Failed',

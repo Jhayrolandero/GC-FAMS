@@ -16,6 +16,7 @@ import { CoursesFaculty } from "../../services/Interfaces/courses-faculty";
 import { Courses } from "../../services/Interfaces/courses";
 import { CryptoJSService } from "../../services/crypto-js.service";
 import { Encryption } from "../../services/Interfaces/encryption";
+import { ExpertiseFaculty } from "../../services/Interfaces/expertise-faculty";
 
 @Injectable()
 export class CvEffects {
@@ -92,7 +93,11 @@ export class CvEffects {
     ofType(CvActions.loadExpertise),
     switchMap(() => this.facultyService.fetchData<Encryption>('expertise')
       .pipe(
-        map((data) => CvActions.loadExpertiseSuccess({ expertises: this.decryptData<Expertise[]>(data) })),
+        tap((data) => {
+          const decryptedData = this.decryptData<[ExpertiseFaculty[], Expertise[]]>(data);
+          console.log('Decrypted Data:', decryptedData); // Log decrypted data to console
+        }),
+        map((data) => CvActions.loadExpertiseSuccess({ expertises: this.decryptData<[ExpertiseFaculty[], Expertise[]]>(data) })),
         catchError((error) => of(CvActions.loadExpertiseFailure({ error })))
       )
     )

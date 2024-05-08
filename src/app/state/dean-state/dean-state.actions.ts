@@ -12,6 +12,7 @@ import { CoursesFaculty } from "../../services/Interfaces/courses-faculty";
 import { Faculty } from "../../services/Interfaces/faculty";
 import { CommunityExtension } from "../../services/Interfaces/community-extension";
 import { College } from "../../services/Interfaces/college";
+import { ExpertiseFaculty } from "../../services/Interfaces/expertise-faculty";
 
 export const loadCollege = createAction('[College Global] Load College');
 export const loadCollegeSuccess = createAction(
@@ -83,7 +84,7 @@ export const loadCollegeProjFailure = createAction(
 export const loadCollegeExpertise = createAction('[Expertise College Global] Load Expertise');
 export const loadCollegeExpertiseSuccess = createAction(
     '[Expertise College Global] Expertise Load Success',
-    props<{ expertises: Expertise[] }>()
+    props<{ expertises: [ExpertiseFaculty[], Expertise[]] }>()
 );
 export const loadCollegeExpertiseFailure = createAction(
     '[Expertise College Global] Expertise Load Failed',

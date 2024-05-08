@@ -44,9 +44,15 @@ export const selectAllProj = createSelector(
   (state: ProfileState) => state.proj
 );
 
+export const selectFacultyExpertise = createSelector(
+  selectProfileState,
+  (state: ProfileState) => state.expertises[0]
+);
+
+
 export const selectAllExpertise = createSelector(
   selectProfileState,
-  (state: ProfileState) => state.expertises
+  (state: ProfileState) => state.expertises[1]
 );
 
 export const selectAllEvaluation = createSelector(

@@ -286,7 +286,12 @@ export const selectAllProj = createSelector(
 
 export const selectAllExpertise = createSelector(
     selectDeanState,
-    (state: DeanState) => state.expertises
+    (state: DeanState) => state.expertises[1]
+);
+
+export const selectFacultyExpertise = createSelector(
+    selectDeanState,
+    (state: DeanState) => state.expertises[0]
 );
 
 

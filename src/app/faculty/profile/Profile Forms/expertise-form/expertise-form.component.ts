@@ -8,6 +8,7 @@ import { Component, Inject } from '@angular/core';
 import { FacultyRequestService } from '../../../../services/faculty/faculty-request.service';
 import { Store } from '@ngrx/store';
 import { loadEduc, loadExp, loadExpertise } from '../../../../state/faculty-state/faculty-state.actions';
+import { selectAllExpertise } from '../../../../state/faculty-state/faculty-state.selector';
 
 @Component({
   selector: 'app-expertise-form',
@@ -18,9 +19,15 @@ import { loadEduc, loadExp, loadExpertise } from '../../../../state/faculty-stat
   styleUrl: './expertise-form.component.css'
 })
 export class ExpertiseFormComponent {
+  public expertise$ = this.store.select(selectAllExpertise);
+  public selectedExisting: boolean = false;
+
   specForm = new FormGroup({
+    expertise_ID: new FormControl(''),
+  })
+
+  specNewForm = new FormGroup({
     expertise_name: new FormControl(''),
-    expertise_confidence: new FormControl('')
   })
 
   constructor(
@@ -34,27 +41,54 @@ export class ExpertiseFormComponent {
     this.dialogRef.close();
   }
 
-  submitForm(){
-      if(this.data.length == 0){
-        this.facultyRequest.postData(this.specForm, 'addSpec').subscribe({
-          next: (next: any) => {console.log(next);},
-          error: (error) => {console.log(error)},
-          complete: () => {
-            this.store.dispatch(loadExpertise());
-            this.onNoClick();
-          }
-        });
-      }
-      else{
-        this.facultyRequest.patchData(this.specForm, 'editSpec/' + this.data.expertise_ID).subscribe({
-          next: (next: any) => {console.log(next);},
-          error: (error) => {console.log(error)},
-          complete: () => {
-            this.store.dispatch(loadExpertise());
-            this.onNoClick();
+  existExpertiseSelect(event: any){
+    if(event.target.value == -1){
+      this.selectedExisting = false;
+      return;
+    }
 
-          }
-        });
-      }
+    this.selectedExisting = true;
+    this.specForm.patchValue({
+      expertise_ID: event.target.value
+    });
+  }
+
+  submitForm(type: string){
+    console.log(this.specNewForm);
+    if(type == "addNew"){
+      this.facultyRequest.postData(this.specNewForm, 'addNewSpec').subscribe({
+        next: (next: any) => {console.log(next);},
+        error: (error) => {console.log(error)},
+        complete: () => {
+          this.store.dispatch(loadExpertise());
+          this.onNoClick();
+        }
+      });
+    }
+    else if ( type == 'addExist'){
+      console.log(this.specForm);
+      this.facultyRequest.postData(this.specForm, 'addSpec').subscribe({
+        next: (next: any) => {console.log(next);},
+        error: (error) => {console.log(error)},
+        complete: () => {
+          this.store.dispatch(loadExpertise());
+          this.onNoClick();
+        }
+      });
+    }
+      // if(this.data.length == 0){
+
+      // }
+      // else{
+      //   this.facultyRequest.patchData(this.specForm, 'editSpec/' + this.data.expertise_ID).subscribe({
+      //     next: (next: any) => {console.log(next);},
+      //     error: (error) => {console.log(error)},
+      //     complete: () => {
+      //       this.store.dispatch(loadExpertise());
+      //       this.onNoClick();
+
+      //     }
+      //   });
+      // }
   }
 }

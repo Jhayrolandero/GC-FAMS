@@ -17,6 +17,7 @@ import { College } from "../../services/Interfaces/college";
 import { Route, Router } from "@angular/router";
 import { CryptoJSService } from "../../services/crypto-js.service";
 import { Encryption } from "../../services/Interfaces/encryption";
+import { ExpertiseFaculty } from "../../services/Interfaces/expertise-faculty";
 
 @Injectable()
 
@@ -105,7 +106,7 @@ export class DeanEffects {
     ofType(CvActions.loadCollegeExpertise),
     switchMap(() => this.facultyService.fetchData<Encryption>('expertise-college')
       .pipe(
-        map((data) => CvActions.loadCollegeExpertiseSuccess({ expertises: this.decryptData<Expertise[]>(data) })),
+        map((data) => CvActions.loadCollegeExpertiseSuccess({ expertises: this.decryptData<[ExpertiseFaculty[], Expertise[]]>(data) })),
         catchError((error) => of(CvActions.loadCollegeExpertiseFailure({ error })))
       )
     )
