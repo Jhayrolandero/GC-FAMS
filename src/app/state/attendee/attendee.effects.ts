@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { EMPTY, Observable, catchError, concatMap, exhaustMap, filter, map, mergeMap, of, take, tap, withLatestFrom } from "rxjs";
+import { EMPTY, Observable, catchError, concatMap, exhaustMap, filter, from, map, merge, mergeMap, of, take, tap, withLatestFrom } from "rxjs";
 import { Attendee } from "../../services/Interfaces/attendee";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { FacultyRequestService } from "../../services/faculty/faculty-request.service";
@@ -11,6 +11,8 @@ import { AttendeeNumberState } from "../../services/Interfaces/attendeeNumberSta
 import { attendedSelector, attendeeNumberSelector } from "./attendee.selector";
 import { Attended } from "../../services/Interfaces/attended";
 import { AttendedState } from "../../services/Interfaces/attendedState";
+import { Encryption } from "../../services/Interfaces/encryption";
+import { CryptoJSService } from "../../services/crypto-js.service";
 @Injectable()
 
 
@@ -22,18 +24,24 @@ export class AttendeeEffects {
     private facultyService: FacultyRequestService,
     private attendeeStore: Store<{ attendees: AttendeeNumberState }>,
     private attendedStore: Store<{ attended: AttendedState }>,
+    private cryptoJS: CryptoJSService
   ) { }
 
-  fetchAttendeeNumber$ = (id: number): Observable<Response<AttendeeCount[]>> => {
-    return this.facultyService.fetchData<Response<AttendeeCount[]>>(`attendee/${id}?q=number`)
+  decryptData<T>(ciphertext: Encryption): T {
+    return this.cryptoJS.CryptoJSAesDecrypt<T>("ucj7XoyBfAMt/ZMF20SQ7sEzad+bKf4bha7bFBdl2HY=", ciphertext)
+  }
+
+
+  fetchAttendeeNumber$ = (id: number): Observable<Encryption> => {
+    return this.facultyService.fetchData<Encryption>(`attendee/${id}?q=number`)
   }
 
   fetchAttendee$ = (id: number): Observable<Response<Attendee[]>> => {
     return this.facultyService.fetchData<Response<Attendee[]>>(`attendee/${id}`)
   }
 
-  fetchAttended$ = (commex_ID: number, faculty_ID: number): Observable<Response<Attended[]>> => {
-    return this.facultyService.fetchData<Response<Attended[]>>(`attendee/${faculty_ID}/commex/${commex_ID}?q=check`)
+  fetchAttended$ = (commex_ID: number): Observable<Encryption> => {
+    return this.facultyService.fetchData<Encryption>(`attendee/${commex_ID}?q=check`)
   }
 
   leaveCommex$ = (commex_ID: number, faculty_ID: number) => {
@@ -72,13 +80,14 @@ export class AttendeeEffects {
     })
   ))
 
+  // Is already joined
   getAttended = createEffect(() => this.actions$.pipe(
     ofType(AttendeeActions.getAttended),
     withLatestFrom(this.attendedStore.select(attendedSelector)),
     mergeMap(([action, attended]) => {
       if (!(action.commex_ID in attended)) {
-        return this.fetchAttended$(action.commex_ID, action.faculty_ID).pipe(
-          map(attendee => AttendeeActions.getAttendedSuccess({ attended: { [action.commex_ID]: attendee.data[0].attended } })),
+        return this.fetchAttended$(action.commex_ID).pipe(
+          map(data => AttendeeActions.getAttendedSuccess({ attended: { [action.commex_ID]: this.decryptData<Response<Attended[]>>(data).data[0].attended } })),
           catchError(err => of(AttendeeActions.getAttendedFailure({ error: err.message })))
         )
       } else {
@@ -88,6 +97,7 @@ export class AttendeeEffects {
     })
   ))
 
+  // How many
   getAttendeeNumber = createEffect(() => this.actions$.pipe(
     ofType(AttendeeActions.getAttendeeNumber),
     withLatestFrom(this.attendeeStore.select(attendeeNumberSelector)),
@@ -96,7 +106,7 @@ export class AttendeeEffects {
       if (!(action.id in attendeesNumber)) {
         return this.fetchAttendeeNumber$(action.id).
           pipe(
-            map(attendees => AttendeeActions.getAttendeeNumberSuccess({ attendees: { [action.id]: attendees.data[0].count } })),
+            map(data => AttendeeActions.getAttendeeNumberSuccess({ attendees: { [action.id]: this.decryptData<Response<AttendeeCount[]>>(data).data[0].count } })),
             catchError(err => of(AttendeeActions.getAttendeeNumberFailure({ error: err })))
           )
       } else {
@@ -106,6 +116,24 @@ export class AttendeeEffects {
 
     })
   ))
+  // getAttendeeNumber = createEffect(() => this.actions$.pipe(
+  //   ofType(AttendeeActions.getAttendeeNumber),
+  //   withLatestFrom(this.attendeeStore.select(attendeeNumberSelector)),
+  //   mergeMap(([action, attendeesNumber]) => {
+  //     // Check first if id exist
+  //     if (!(action.id in attendeesNumber)) {
+  //       return this.fetchAttendeeNumber$(action.id).
+  //         pipe(
+  //           map(attendees => AttendeeActions.getAttendeeNumberSuccess({ attendees: { [action.id]: attendees.data[0].count } })),
+  //           catchError(err => of(AttendeeActions.getAttendeeNumberFailure({ error: err })))
+  //         )
+  //     } else {
+  //       this.attendeeStore.dispatch(AttendeeActions.setLoading({ status: false }))
+  //       return EMPTY
+  //     }
+
+  //   })
+  // ))
 
   getAttendee = createEffect(() => this.actions$.pipe(
     ofType(AttendeeActions.getAttendee),
