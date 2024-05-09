@@ -1,18 +1,18 @@
-import { Component } from '@angular/core';
-import { SidebarComponent } from '../components/navbar/sidebar/sidebar.component';
-import { RouterOutlet } from '@angular/router';
-import { AnalyticsComponent } from './analytics/analytics.component';
-import { TopnavComponent } from '../components/navbar/topnav/topnav.component';
 import { CommonModule } from '@angular/common';
-import { LoadingScreenComponent } from '../components/loading-screen/loading-screen.component';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatButtonModule } from '@angular/material/button';
-import { MessageComponent } from '../components/message/message.component';
+import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { loadCert, loadCourse, loadEduc, loadEval, loadExp, loadExpertise, loadProfile, loadProj } from '../state/faculty-state/faculty-state.actions';
-import { Store, StoreModule } from '@ngrx/store';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { RouterOutlet } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { LoadingScreenComponent } from '../components/loading-screen/loading-screen.component';
+import { MessageComponent } from '../components/message/message.component';
+import { SidebarComponent } from '../components/navbar/sidebar/sidebar.component';
+import { TopnavComponent } from '../components/navbar/topnav/topnav.component';
 import { getCommex } from '../state/commex/commex.action';
+import { loadCert, loadCourse, loadEduc, loadEval, loadExp, loadExpertise, loadProfile, loadProj } from '../state/faculty-state/faculty-state.actions';
+import { AnalyticsComponent } from './analytics/analytics.component';
 
 @Component({
   selector: 'app-faculty',

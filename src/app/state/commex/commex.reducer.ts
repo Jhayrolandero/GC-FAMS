@@ -1,9 +1,7 @@
 import { createReducer, on } from "@ngrx/store";
 import { CommexState } from "../../services/Interfaces/commexState";
-import * as CommexActions from "./commex.action";
-import { state } from "@angular/animations";
-import { Dictionary } from "../../services/Interfaces/dictionary";
 import { CommunityExtension } from "../../services/Interfaces/community-extension";
+import * as CommexActions from "./commex.action";
 
 // For Faculty
 export const initialState: CommexState = {

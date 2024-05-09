@@ -3,6 +3,8 @@ import { AuthService } from './auth.service';
 import { jwtDecode } from "jwt-decode";
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
+// import "core-js/stable/atob"; // <- polyfill here
+
 
 export const authGuard: CanActivateFn = (route, state) => {
   //Declare jwt to make isAdmin callable
@@ -15,15 +17,12 @@ export const authGuard: CanActivateFn = (route, state) => {
   const auth = inject(AuthService);
   const router = inject(Router);
 
-
-  const token = auth.getToken()
-
-  // Check the token Existance first
-  if (token.length <= 0) {
+  // Check the existance of token
+  if (auth.getToken().length <= 0) {
     return false;
   }
-  
-  const decoded = jwtDecode<jwt>(token);
+
+  const decoded = jwtDecode<jwt>(auth.getToken());
   const priv = decoded.isAdmin == 0 ? "faculty" : "admin";
 
   //Extract state url, split to array, then get 2nd index to check if url root is faculty or not. Maybe a better way to extract this?

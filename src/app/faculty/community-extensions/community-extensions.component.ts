@@ -67,7 +67,9 @@ export class CommexFormComponent {
   mainPort: string = mainPort
   commexForm;
   commexformData: FormData
-  fetchAttendee$: Observable<Faculty[]> = this.facultyService.fetchData<Faculty[]>("faculty");
+  fetchAttendee$: Observable<Faculty[]> = this.facultyService.fetchData<Encryption>("faculty").pipe(
+    map(data => this.decryptData<Faculty[]>(data))
+  );  // fetchAttendee$: Observable<Faculty[]> = this.facultyService.fetchData<Encryption>("faculty").pipe(of(this.decryptData<Faculty[]>(data)))
   fetchAttendeeError$: Observable<Error> = this.fetchAttendee$.pipe(catchError((err) => of(err)));
   profile$: Observable<Profile | undefined>
   postLoading$: Observable<boolean>
@@ -77,7 +79,8 @@ export class CommexFormComponent {
     private store: Store<{ commexs: CommexState }>,
     private profileStore: Store<{ profile: ProfileState }>,
     private commexFacultyStore: Store<{ commexs: CommexState }>,
-    private _fb: FormBuilder
+    private _fb: FormBuilder,
+    private cryptoJS: CryptoJSService
   ) {
     this.commexForm = this._fb.group({
       commex_title: new FormControl('', [
@@ -98,6 +101,11 @@ export class CommexFormComponent {
 
     this.profile$ = this.profileStore.pipe(select(ProfileSelectors.selectAllProfile))
     this.postLoading$ = this.commexFacultyStore.pipe(select(CommexsSelector.postLoadingSelector))
+  }
+
+
+  decryptData<T>(ciphertext: Encryption): T {
+    return this.cryptoJS.CryptoJSAesDecrypt<T>("ucj7XoyBfAMt/ZMF20SQ7sEzad+bKf4bha7bFBdl2HY=", ciphertext)
   }
 
   onCheckChange(e: any, attendeeObj: { faculty_ID: number, college_ID: number }) {
