@@ -3,6 +3,8 @@ import { AuthService } from './auth.service';
 import { jwtDecode } from "jwt-decode";
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
+// import "core-js/stable/atob"; // <- polyfill here
+
 
 export const authGuard: CanActivateFn = (route, state) => {
   //Declare jwt to make isAdmin callable
@@ -14,6 +16,12 @@ export const authGuard: CanActivateFn = (route, state) => {
   //Decode current token held
   const auth = inject(AuthService);
   const router = inject(Router);
+
+  // Check the existance of token
+  if (auth.getToken().length <= 0) {
+    return false;
+  }
+
   const decoded = jwtDecode<jwt>(auth.getToken());
   const priv = decoded.isAdmin == 0 ? "faculty" : "admin";
 
