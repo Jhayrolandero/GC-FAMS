@@ -14,7 +14,16 @@ export const authGuard: CanActivateFn = (route, state) => {
   //Decode current token held
   const auth = inject(AuthService);
   const router = inject(Router);
-  const decoded = jwtDecode<jwt>(auth.getToken());
+
+
+  const token = auth.getToken()
+
+  // Check the token Existance first
+  if (token.length <= 0) {
+    return false;
+  }
+  
+  const decoded = jwtDecode<jwt>(token);
   const priv = decoded.isAdmin == 0 ? "faculty" : "admin";
 
   //Extract state url, split to array, then get 2nd index to check if url root is faculty or not. Maybe a better way to extract this?

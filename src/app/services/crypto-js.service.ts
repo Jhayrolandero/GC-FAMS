@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import * as CryptoJS from 'crypto-js';
-import { Observable } from 'rxjs';
 import { Encryption } from './Interfaces/encryption';
 @Injectable({
   providedIn: 'root'
