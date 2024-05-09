@@ -13,6 +13,7 @@ import { flushCollege } from '../../../state/dean-state/dean-state.actions';
 import { flushCollegeCommexState, flushCommexState } from '../../../state/commex/commex.action';
 import { flushProfileState } from '../../../state/faculty-state/faculty-state.actions';
 import { FlushAttended, FlushAttendee, FlushAttendeeNumber } from '../../../state/attendee/attendee.action';
+import { logOut } from '../../../state/logout.action';
 
 @Component({
   selector: 'app-topnav',
@@ -41,6 +42,7 @@ export class TopnavComponent {
   }
 
   openDialog(): void {
+    this.store.dispatch(logOut());
     this.router.navigate(['/']);
     // console.log("Checking dialogue");
     // this.dialog.open(TopnavLogout);
@@ -68,13 +70,14 @@ export class TopnavLogout {
   ) { }
   logout() {
 
-    this.store.dispatch(flushCollege())
-    this.store.dispatch(flushCollegeCommexState())
-    this.store.dispatch(flushCommexState())
-    this.store.dispatch(flushProfileState())
-    this.store.dispatch(FlushAttended())
-    this.store.dispatch(FlushAttendee())
-    this.store.dispatch(FlushAttendeeNumber())
+    console.log("Logout...")
+    // this.store.dispatch(flushCollege())
+    // this.store.dispatch(flushCollegeCommexState())
+    // this.store.dispatch(flushCommexState())
+    // this.store.dispatch(flushProfileState())
+    // this.store.dispatch(FlushAttended())
+    // this.store.dispatch(FlushAttendee())
+    // this.store.dispatch(FlushAttendeeNumber())
 
     this.authService.flushToken();
     this.router.navigate(['/']);

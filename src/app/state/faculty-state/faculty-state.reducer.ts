@@ -13,13 +13,13 @@ import { CoursesFaculty } from "../../services/Interfaces/courses-faculty";
 
 export interface ProfileState {
   profile?: Profile;
-  certs: [CertificationsFaculty[], Certifications[]] | null;
+  certs: [CertificationsFaculty[], Certifications[]];
   educs: EducationalAttainment[];
   exps: IndustryExperience[];
   proj: Project[];
   expertises: Expertise[];
   evals: Evaluation[];
-  courses: [CoursesFaculty[], Courses[]] | null;
+  courses: [CoursesFaculty[], Courses[]];
   isLoading: boolean
 }
 
@@ -101,18 +101,5 @@ export const profileReducer = createReducer(
     ...state,
     courses: courses
   })),
-  on(CertActions.loadCourseFailure, (state) => ({ ...state, })),
-  on(CertActions.flushProfileState, (state) => ({
-    ...state,
-    profile: undefined,
-    certs: null,
-    educs: [],
-    exps: [],
-    proj: [],
-    expertises: [],
-    evals: [],
-    courses: null,
-    isLoading: false
-
-  }) )
+  on(CertActions.loadCourseFailure, (state) => ({ ...state, }))
 )

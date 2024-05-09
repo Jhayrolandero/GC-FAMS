@@ -45,10 +45,6 @@ export const attendedReducer = createReducer(
   on(AttendeeActions.setAttendedLoading, (state, action) => ({
     ...state,
     isLoading: action.status,
-  })),
-  on(AttendeeActions.FlushAttended, (state) => ({
-    ...state,
-    attended: {}
   }))
 )
 
@@ -83,10 +79,6 @@ export const attendeeNumberReducer = createReducer(
   on(AttendeeActions.joinCommexSuccess, (state, action) => ({
     ...state,
     attendees: incrementAttendeeNumber(state.attendees, action.commex_ID)
-  })),
-  on(AttendeeActions.FlushAttendeeNumber, (state) => ({
-    ...state,
-    attendees: {}
   }))
 )
 
@@ -108,10 +100,6 @@ export const attendeeReducer = createReducer(
     ...state,
     isLoading: false,
     error: action.error
-  })),
-  on(AttendeeActions.FlushAttendee, (state) => ({
-    ...state,
-    attendees: {}
   }))
 )
 
