@@ -31,6 +31,8 @@ import { getCollegeCommex, getCommex } from '../state/commex/commex.action';
 })
 export class AdminComponent {
   sideBarToggle = true;
+  //Only unique to admin manage analytics, waits until all dispatches are completed.
+  manageAnalyticsLoading = false;
   opened: boolean = true;
 
   constructor(public store: Store){
@@ -45,6 +47,12 @@ export class AdminComponent {
     store.dispatch(loadCollegeCommex());
     store.dispatch(loadCollegeCourse());
     store.dispatch(loadCollege());
+  }
+
+  ngOnInit(): void {
+    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
+    //Add 'implements OnInit' to the class.
+    
   }
 
   toggle(){

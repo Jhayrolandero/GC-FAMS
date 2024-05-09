@@ -279,6 +279,41 @@ export const selectAllExp = createSelector(
     (state: DeanState) => state.exps
 );
 
+export const selectTeachingLength = createSelector(
+    selectDeanState,
+    (state: DeanState) => {
+        let experienceName: Map<number, [number, number, number]> = new Map();
+
+        state.exps.forEach(exp => {
+            let totalTeach = 0;
+            let fromDate = new Date(exp.experience_from).getTime();
+            let toDate: number;
+
+            if(exp.experience_to == undefined){
+                toDate = new Date().getTime();
+            }
+            else{
+                toDate = new Date(exp.experience_to).getTime();
+            }
+
+            let dateDiff = toDate - fromDate;
+
+            // if(experienceName.has(exp.faculty_ID)){
+            //     experienceName.set(exp.faculty_ID, experienceName.get(exp.faculty_ID)[0]! + dateDiff);
+            // }
+            // else{
+            //     experienceName.set(exp.faculty_ID, 0);
+            // }
+        })
+
+        // const sortedTeaching = [...experienceName.entries()].sort((a, b) => b[1] - a[1]);
+        // return sortedTeaching;
+    }
+);
+
+
+
+
 export const selectAllProj = createSelector(
     selectDeanState,
     (state: DeanState) => state.proj

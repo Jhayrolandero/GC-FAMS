@@ -165,7 +165,7 @@
                 <p class="text-blue font-bold text-[2rem] my-2">Top Common Expertise</p>
                 <app-bar-chart
                 [data]="expertise[1]"
-                [labels]="expertise[0]"
+                [labels]="expertise[0]" 
                 [axis]="'y'"
                 [bgColor]="'rgb(255, 122, 0)'"
                 [showLegend]="false"
@@ -174,17 +174,11 @@
         </div>
 
         <div  class="w-[50%]">
-            <div>
+            <div class="bg-white rounded-[15px] shadow-main">
+                <app-scatter-plot
+                [data]="[[1,2], [2,1]]">
 
-            </div>
-
-            <div>
-                <div class="bg-white rounded-[15px] shadow-main">
-                    <p class="text-blue font-bold text-[2rem] my-2">Faculty Statistics Radar Chart</p>
-                </div>
-                <div>
-
-                </div>
+                </app-scatter-plot>
             </div>
         </div>
     </div>
