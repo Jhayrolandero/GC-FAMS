@@ -6,13 +6,15 @@ import { CommonModule } from '@angular/common';
 import { MessageComponent } from '../components/message/message.component';
 import { MessageService } from '../services/message.service';
 import { Message } from '../services/Interfaces/message';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { Store } from '@ngrx/store';
 import { loadProfile } from '../state/faculty-state/faculty-state.actions';
 import { loadCollege, loadCollegeCert, loadCollegeCommex, loadCollegeCourse, loadCollegeEduc, loadCollegeEval, loadCollegeExp, loadCollegeExpertise, loadCollegeProfile, loadCollegeProj } from '../state/dean-state/dean-state.actions';
 import { getCollegeCommex, getCommex } from '../state/commex/commex.action';
+import { Subject, takeUntil } from 'rxjs';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 @Component({
   selector: 'app-admin',
   standalone: true,
@@ -22,8 +24,8 @@ import { getCollegeCommex, getCommex } from '../state/commex/commex.action';
     TopnavComponent,
     CommonModule,
     MessageComponent,
-    MatSidenavModule, 
-    MatButtonModule, 
+    MatSidenavModule,
+    MatButtonModule,
     FormsModule,
   ],
   templateUrl: './admin.component.html',
@@ -33,7 +35,29 @@ export class AdminComponent {
   sideBarToggle = true;
   opened: boolean = true;
 
-  constructor(public store: Store){
+  options = this._formBuilder.group({
+    bottom: 0,
+    fixed: true,
+    top: 0,
+  });
+
+  destroyed = new Subject<void>();
+  screenSize: string = ''
+
+  // Create a map to display breakpoint names for demonstration purposes.
+  displayNameMap = new Map([
+    [Breakpoints.XSmall, 'XSmall'],
+    [Breakpoints.Small, 'Small'],
+    [Breakpoints.Medium, 'Medium'],
+    [Breakpoints.Large, 'Large'],
+    [Breakpoints.XLarge, 'XLarge'],
+  ]);
+
+  constructor(
+    public store: Store,
+    breakpointObserver: BreakpointObserver,
+    private _formBuilder: FormBuilder
+  ) {
     store.dispatch(loadProfile());
     store.dispatch(loadCollegeProfile());
     store.dispatch(loadCollegeEduc());
@@ -45,9 +69,27 @@ export class AdminComponent {
     store.dispatch(loadCollegeCommex());
     store.dispatch(loadCollegeCourse());
     store.dispatch(loadCollege());
+
+
+    breakpointObserver
+      .observe([
+        Breakpoints.XSmall,
+        Breakpoints.Small,
+        Breakpoints.Medium,
+        Breakpoints.Large,
+        Breakpoints.XLarge,
+      ])
+      .pipe(takeUntil(this.destroyed))
+      .subscribe(result => {
+        for (const query of Object.keys(result.breakpoints)) {
+          if (result.breakpoints[query]) {
+            this.screenSize = this.displayNameMap.get(query) ?? 'Unknown';
+          }
+        }
+      });
   }
 
-  toggle(){
+  toggle() {
     this.sideBarToggle = !this.sideBarToggle;
     console.log(this.sideBarToggle);
   }

@@ -69,16 +69,6 @@ export class TopnavLogout {
     private store: Store
   ) { }
   logout() {
-
-    console.log("Logout...")
-    // this.store.dispatch(flushCollege())
-    // this.store.dispatch(flushCollegeCommexState())
-    // this.store.dispatch(flushCommexState())
-    // this.store.dispatch(flushProfileState())
-    // this.store.dispatch(FlushAttended())
-    // this.store.dispatch(FlushAttendee())
-    // this.store.dispatch(FlushAttendeeNumber())
-
     this.authService.flushToken();
     this.router.navigate(['/']);
     this.dialogRef.close()

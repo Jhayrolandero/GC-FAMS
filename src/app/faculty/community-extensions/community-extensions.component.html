@@ -48,12 +48,12 @@
 
           <div
           *ngIf="(latestCommex$ | async) as latestCommex"
-          class="bg-white shadow-main w-full rounded-[15px] flex flex-row overflow-hidden hover:scale-[101%] hover:duration-300 duration-300"
+          class="bg-white shadow-main w-full rounded-[15px] flex mobileS:flex-col tablet:flex-row overflow-hidden hover:scale-[101%] hover:duration-300 duration-300"
           >
-          <div *ngIf="latestCommex.commex_header_img != tempPort" class="bg-red-400 w-[25%] h-[280px] flex justify-center items-center">
+          <div *ngIf="latestCommex.commex_header_img != tempPort" class="bg-red-400 mobileS:w-full tablet:w-[35%] desktop:w-[25%] h-[280px] flex justify-center items-center">
             <img [src]="latestCommex.commex_header_img" class="w-full aspect-video" />
           </div>
-          <div class="p-4 w-[75%] flex flex-col gap-2">
+          <div class="p-4 mobileS:w-full tablet:w-[65%] desktop:w-[75%] flex flex-col gap-2">
             <div class="flex gap-2 justify-between items-center">
               <h1 class="font-Poppins font-semibold text-[1.5rem]">
                 {{ latestCommex.commex_title }}
