@@ -156,7 +156,7 @@
                     seminar[4][0],
                 ]"
                 [axis]="'y'"
-                [bgColor]="'rgb(7, 66, 135)'"
+                [bgColor]="'rgb(30, 114, 66)'"
                 [showLegend]="false"
                 ></app-bar-chart>
             </div>
@@ -167,21 +167,32 @@
                 [data]="expertise[1]"
                 [labels]="expertise[0]" 
                 [axis]="'y'"
-                [bgColor]="'rgb(255, 122, 0)'"
+                [bgColor]="'rgb(7, 66, 135)'"
                 [showLegend]="false"
                 ></app-bar-chart>
             </div>
         </div>
 
-        <div  class="w-[50%]">
-            <div class="bg-white rounded-[15px] shadow-main">
+        <div class="w-[50%]">
+            <div *ngIf="(teachingLength$ | async) as teaching" class="bg-white rounded-[15px] shadow-main p-5 pt-1 h-full">
+                <p class="text-blue font-bold text-[2rem] my-2">Teaching Length and Evaluation Average Correlation</p>
                 <app-scatter-plot
-                [data]="[[1,2], [2,1]]">
-
+                [data]="teaching[0]"
+                [showLegend]="false">
                 </app-scatter-plot>
             </div>
         </div>
     </div>
+
+    <!-- <div class="w-full flex flex-row gap-3">
+        <p class="text-blue font-bold text-[2rem] my-2">Teaching Length & Certification Count per Faculty Member</p>
+        <app-line-graph
+        [data]="educTimeline[0]"
+        [labels]="yearsArray"
+        [showLegend]="true"
+        [legendLabel]="['Bachelor Degree', 'Masters Degree', 'Doctorate Degree']">
+        </app-line-graph>
+    </div> -->
 
 
     <!-- <div class="w-full h-[300px] flex flex-row gap-x-3 items-center">
