@@ -13,5 +13,6 @@ export class AppComponent {
 }
 //PARA ISAHANG CHANGE NALANG NG LOCALHOST SA LAHAT NG HTTP REQUESTS
 export const mainPort = "http://localhost";
+// export const mainPort = "https://gc-fams.000webhostapp.com";
 
 

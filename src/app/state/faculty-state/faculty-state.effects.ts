@@ -1,21 +1,20 @@
-import { FacultyRequestService } from "../../services/faculty/faculty-request.service";
-import { Actions, createEffect, ofType } from "@ngrx/effects";
-import * as CvActions from "./faculty-state.actions";
-import { catchError, exhaustMap, map, mergeMap, of, switchMap, tap } from "rxjs";
 import { Injectable } from "@angular/core";
+import { Actions, createEffect, ofType } from "@ngrx/effects";
+import { catchError, map, of, switchMap } from "rxjs";
 import { Certifications } from "../../services/Interfaces/certifications";
-import { mainPort } from "../../app.component";
-import { EducationalAttainment } from "../../services/Interfaces/educational-attainment";
-import { Profile } from "../../services/Interfaces/profile";
-import { IndustryExperience } from "../../services/Interfaces/industry-experience";
-import { Project } from "../../services/Interfaces/project";
-import { Expertise } from "../../services/Interfaces/expertise";
-import { Evaluation } from "../../services/Interfaces/evaluation";
 import { CertificationsFaculty } from "../../services/Interfaces/certifications-faculty";
-import { CoursesFaculty } from "../../services/Interfaces/courses-faculty";
 import { Courses } from "../../services/Interfaces/courses";
-import { CryptoJSService } from "../../services/crypto-js.service";
+import { CoursesFaculty } from "../../services/Interfaces/courses-faculty";
+import { EducationalAttainment } from "../../services/Interfaces/educational-attainment";
 import { Encryption } from "../../services/Interfaces/encryption";
+import { Evaluation } from "../../services/Interfaces/evaluation";
+import { Expertise } from "../../services/Interfaces/expertise";
+import { IndustryExperience } from "../../services/Interfaces/industry-experience";
+import { Profile } from "../../services/Interfaces/profile";
+import { Project } from "../../services/Interfaces/project";
+import { CryptoJSService } from "../../services/crypto-js.service";
+import { FacultyRequestService } from "../../services/faculty/faculty-request.service";
+import * as CvActions from "./faculty-state.actions";
 
 @Injectable()
 export class CvEffects {
