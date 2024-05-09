@@ -23,7 +23,7 @@ export interface DeanState {
     proj: Project[];
     expertises: Expertise[];
     evals: Evaluation[];
-    courses: [CoursesFaculty[], Courses[]];
+    courses: [CoursesFaculty[], Courses[]] | null;
     commex: CommunityExtension[];
 }
 
@@ -116,5 +116,18 @@ export const profileDeanReducer = createReducer(
         ...state,
         commex: commex
     })),
-    on(CertActions.loadCollegeCommexFailure, (state) => ({...state,}))
+    on(CertActions.loadCollegeCommexFailure, (state) => ({ ...state, })),
+    on(CertActions.flushCollege, (state) => ({
+        ...state,
+        colleges: [],
+        profile: [],
+        certs: [],
+        educs: [],
+        exps: [],
+        proj: [],
+        expertises: [],
+        evals: [],
+        courses: null,
+        commex: []
+    }))
 )

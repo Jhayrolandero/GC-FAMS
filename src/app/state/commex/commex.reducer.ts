@@ -68,6 +68,10 @@ export const commexReducer = createReducer(
       error: action.error
     }
   )),
+  on(CommexActions.flushCommexState, (state) => ({
+    ...state,
+    commexs: []
+  }))
 )
 
 export const collegeCommexReducer = createReducer(
@@ -105,6 +109,10 @@ export const collegeCommexReducer = createReducer(
       deleteLoading: true,
     }
   )),
+  on(CommexActions.flushCollegeCommexState, (state) => ({
+    ...state,
+    commexs: []
+  }))
 )
 
 

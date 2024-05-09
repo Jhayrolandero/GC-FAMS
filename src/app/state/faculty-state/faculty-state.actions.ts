@@ -95,3 +95,5 @@ export const loadCourseFailure = createAction(
   '[Course Global] Course Load Failed',
   props<{ error: string }>()
 );
+
+export const flushProfileState = createAction('[Profile Global] Flush Profile');

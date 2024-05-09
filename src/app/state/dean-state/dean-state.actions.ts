@@ -14,6 +14,9 @@ import { CommunityExtension } from "../../services/Interfaces/community-extensio
 import { College } from "../../services/Interfaces/college";
 
 export const loadCollege = createAction('[College Global] Load College');
+export const flushCollege = createAction('[College Global] Flush College');
+
+
 export const loadCollegeSuccess = createAction(
     '[College Global] College Load Success',
     props<{ colleges: College[] }>()

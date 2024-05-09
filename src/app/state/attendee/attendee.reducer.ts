@@ -5,6 +5,7 @@ import { AttendeeState } from "../../services/Interfaces/attendeeState";
 import { create } from "domain";
 import { AttendedState } from "../../services/Interfaces/attendedState";
 import { Dictionary } from "../../services/Interfaces/dictionary";
+
 export const initialAttendeeNumberState: AttendeeNumberState = {
   isLoading: false,
   attendees: {},
@@ -45,6 +46,10 @@ export const attendedReducer = createReducer(
     ...state,
     isLoading: action.status,
   })),
+  on(AttendeeActions.FlushAttended, (state) => ({
+    ...state,
+    attended: {}
+  }))
 )
 
 
@@ -78,6 +83,10 @@ export const attendeeNumberReducer = createReducer(
   on(AttendeeActions.joinCommexSuccess, (state, action) => ({
     ...state,
     attendees: incrementAttendeeNumber(state.attendees, action.commex_ID)
+  })),
+  on(AttendeeActions.FlushAttendeeNumber, (state) => ({
+    ...state,
+    attendees: {}
   }))
 )
 
@@ -99,6 +108,10 @@ export const attendeeReducer = createReducer(
     ...state,
     isLoading: false,
     error: action.error
+  })),
+  on(AttendeeActions.FlushAttendee, (state) => ({
+    ...state,
+    attendees: {}
   }))
 )
 

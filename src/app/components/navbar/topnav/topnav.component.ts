@@ -9,6 +9,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { selectAllProfile } from '../../../state/faculty-state/faculty-state.selector';
 import { Store } from '@ngrx/store';
 import { AuthService } from '../../../services/auth.service';
+import { flushCollege } from '../../../state/dean-state/dean-state.actions';
+import { flushCollegeCommexState, flushCommexState } from '../../../state/commex/commex.action';
+import { flushProfileState } from '../../../state/faculty-state/faculty-state.actions';
+import { FlushAttended, FlushAttendee, FlushAttendeeNumber } from '../../../state/attendee/attendee.action';
 
 @Component({
   selector: 'app-topnav',
@@ -57,8 +61,21 @@ export class TopnavComponent {
 })
 export class TopnavLogout {
   authService = inject(AuthService);
-  constructor(private router: Router, public dialogRef: MatDialogRef<TopnavLogout>) { }
+  constructor(
+    private router: Router,
+    public dialogRef: MatDialogRef<TopnavLogout>,
+    private store: Store
+  ) { }
   logout() {
+
+    this.store.dispatch(flushCollege())
+    this.store.dispatch(flushCollegeCommexState())
+    this.store.dispatch(flushCommexState())
+    this.store.dispatch(flushProfileState())
+    this.store.dispatch(FlushAttended())
+    this.store.dispatch(FlushAttendee())
+    this.store.dispatch(FlushAttendeeNumber())
+
     this.authService.flushToken();
     this.router.navigate(['/']);
     this.dialogRef.close()
