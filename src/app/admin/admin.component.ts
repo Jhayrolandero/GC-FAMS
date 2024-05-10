@@ -10,7 +10,7 @@ import { FormBuilder, FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { Store } from '@ngrx/store';
-import { loadProfile } from '../state/faculty-state/faculty-state.actions';
+import { loadCert, loadCourse, loadEduc, loadEval, loadExp, loadExpertise, loadProfile, loadProj } from '../state/faculty-state/faculty-state.actions';
 import { loadCollege, loadCollegeCert, loadCollegeCommex, loadCollegeCourse, loadCollegeEduc, loadCollegeEval, loadCollegeExp, loadCollegeExpertise, loadCollegeProfile, loadCollegeProj } from '../state/dean-state/dean-state.actions';
 import { getCollegeCommex, getCommex } from '../state/commex/commex.action';
 import { Subject, takeUntil } from 'rxjs';
@@ -70,6 +70,15 @@ export class AdminComponent {
     store.dispatch(loadCollegeCourse());
     store.dispatch(loadCollege());
 
+    store.dispatch(loadProfile());
+    store.dispatch(loadCert());
+    store.dispatch(loadCourse());
+    store.dispatch(loadEduc());
+    store.dispatch(loadExp());
+    store.dispatch(loadProj());
+    store.dispatch(loadExpertise());
+    store.dispatch(loadEval());
+    store.dispatch(getCommex({ uri: 'getcommex?t=faculty' }))
 
     breakpointObserver
       .observe([
