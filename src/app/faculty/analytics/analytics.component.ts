@@ -6,12 +6,8 @@ import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { LoadingScreenComponent } from '../../components/loading-screen/loading-screen.component';
 import { EvaluationService } from '../../services/evaluation.service';
 import { Schedule } from '../../services/admin/schedule';
-
-type ScoreCategory = {
-  name: string,
-  value: number,
-  bgColor?: string;
-}
+import { selectAllProfile } from '../../state/faculty-state/faculty-state.selector';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-analytics',
@@ -27,10 +23,12 @@ type ScoreCategory = {
   styleUrl: './analytics.component.css'
 })
 export class AnalyticsComponent {
-  schedules: Schedule[] = [];
-  unit = 0;
+  port = mainPort;
+
+  facultyProfile$ = this.store.select(selectAllProfile);
 
   constructor(
     private router: Router,
+    private store: Store,
   ) {}
 }

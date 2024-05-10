@@ -12,6 +12,7 @@ import { Store, select } from '@ngrx/store';
 import { selectAllCollegeEduc, selectAllExistCerts, selectCollegeCommex } from '../../../state/dean-state/dean-state.selector';
 import { getCollegeCommex } from '../../../state/commex/commex.action';
 import { parsedCollegeCommexSelector } from '../../../state/commex/commex.selector';
+import { selectAllEduc } from '../../../state/faculty-state/faculty-state.selector';
 
 //Event object to display on hover
 interface Event {
@@ -48,7 +49,21 @@ export class FacultyMilestoneCalendarComponent implements OnInit{
 
   ngOnInit(): void {
     if(this.type === 'faculty'){
+      this.store.select(selectAllEduc).subscribe(data => {
+        data.forEach(educ => 
+          this.addEvent(new Date(educ.year_end), this.eventParser("Educational Attainment", educ.educ_title, educ.educ_school)))
+      });
 
+      this.store.select(selectCollegeCommex).subscribe(data => {
+        data.forEach(commex =>
+          this.addEvent(new Date(commex.commex_date), this.eventParser("Community Extension", commex.commex_title, "")))
+      });
+
+      this.store.select(selectAllExistCerts).subscribe(data => {
+        data.forEach(certs =>
+          this.addEvent(new Date(certs.accomplished_date), this.eventParser("Certifications", certs.cert_name, certs.cert_corporation))
+        )
+      });
     }
     else{
       //Admin loading for calendar. opens a subscription for each observable and places each of their dates and data into the calendar.
