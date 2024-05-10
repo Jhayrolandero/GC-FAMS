@@ -25,9 +25,16 @@ export const routes: Routes = [
   {
     path: 'admin', component: AdminComponent, children: [
       { path: 'add-faculty', loadComponent: () => import('./admin/manage-faculty/add-faculty/add-faculty.component').then(m => m.AddFacultyComponent) },
-      { path: 'manage-faculty', loadComponent: () => import('./admin/manage-faculty/manage-faculty.component').then(m => m.ManageFacultyComponent)},
-      { path: 'commex', loadComponent: () => import('./admin/commex/commex.component').then(m => m.CommexComponent) },
+      { path: 'manage-faculty', loadComponent: () => import('./admin/manage-faculty/manage-faculty.component').then(m => m.ManageFacultyComponent) },
+      // { path: 'commex', loadComponent: () => import('./admin/commex/commex.component').then(m => m.CommexComponent) },
       { path: 'program-analytics', loadComponent: () => import('./admin/manage-analytics/manage-analytics.component').then(m => m.ManageAnalyticsComponent) },
+      {
+        path: 'curriculum-vitae', loadComponent: () => import('./faculty/profile/profile.component').then(m => m.ProfileComponent),
+      },
+      { path: 'analytics', loadComponent: () => import('./faculty/analytics/analytics.component').then(m => m.AnalyticsComponent) },
+      { path: 'community', loadComponent: () => import('./faculty/community-extensions/community-extensions.component').then(m => m.CommunityExtensionsComponent) },
+      { path: 'evaluation', loadComponent: () => import('./faculty/evaluation/evaluation.component').then(m => m.EvaluationComponent) },
+
     ], canActivateChild: [authGuard]
   },
   { path: 'cv', loadComponent: () => import('./components/cv/cv.component').then(m => m.CvComponent) },

@@ -8,6 +8,8 @@ import { AuthService } from '../../services/auth.service';
 import { JwtToken } from '../../services/jwt-token';
 import { MessageService } from '../../services/message.service';
 import { CryptoJSService } from '../../services/crypto-js.service';
+import { Store } from '@ngrx/store';
+import { logOut } from '../../state/logout.action';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -37,6 +39,7 @@ export class LoginComponent {
   })
 
   constructor(
+    private store: Store,
     private messageService: MessageService,
     private cryptoJS: CryptoJSService
   ) {
@@ -44,6 +47,7 @@ export class LoginComponent {
   }
 
   onLogin(): void {
+    this.store.dispatch(logOut());
     this.authService.flushToken();
     this.messageService.sendMessage("Logging In", 0)
     this.validForm = true;
@@ -57,8 +61,6 @@ export class LoginComponent {
           if (res.code == 200) {
             let expireDate = new Date();
             expireDate.setTime(expireDate.getTime() + (10 * 60 * 1000));
-
-
             document.cookie = `token=${res.token}; ${expireDate}; path=/`
             console.log("Created token: " + res.privilege);
 

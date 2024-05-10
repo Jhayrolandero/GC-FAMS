@@ -1,4 +1,4 @@
-<div class="w-[600px] bg-white rounded-[15px] shadow-lg opacity-100 overflow-hidden">
+<div class="min-w-[240px] mobileM:w-[320px] tablet:w-[460px] laptop:w-[540px] desktop:w-[620px] bg-white rounded-[15px] shadow-lg opacity-100 overflow-hidden">
     <div class="w-full bg-blue h-[38px] flex items-center justify-between">
         @if (data.length == 0) {
             <p class="font-Poppins font-semibold text-white ml-5">Add Educational Attainment</p>
@@ -17,78 +17,74 @@
             </defs>
         </svg>
     </div>
-    <form (ngSubmit)="submitForm()" [formGroup]="educForm" class="m-5 border-2 p-3">
-        <p class="font-Roboto font-medium text-[1.1rem]">Educational Level</p>
-        <select
-        type="text"
-        placeholder="Add Educational Title"
-        id="educ_level"
-        [ngModel]="data.educ_level"
-        formControlName="educ_level"
-        class="w-full border-2 px-2 font-Roboto font-regular text-[1.1rem] rounded-[5px] text-black py-1"
-        >
-            <option>Doctorate Degree</option>
-            <option>Master's Degree</option>
-            <option>Bachelor's Degree</option>
-            <option>Associate's Degree</option>
-        </select>
-
-        <p class="font-Roboto font-medium text-[1.1rem]">Educational Attainment</p>
-        <input
-        type="text"
-        placeholder="Add Educational Title"
-        id="educ_title"
-        [ngModel]="data.educ_title"
-        formControlName="educ_title"
-        class="w-full border-2 px-2 font-Roboto font-regular text-[1.1rem] rounded-[5px] text-black py-1"
-        >
-
-        <p class="font-Roboto font-medium text-[1.1rem] mt-4">School or Institution</p>
-        <input
-        type="text"
-        placeholder="Add School or Institution"
-        id="educ_school"
-        [ngModel]="data.educ_school"
-        formControlName="educ_school"
-        class="w-full border-2 px-2 font-Roboto font-regular text-[1.1rem] rounded-[5px] text-black py-1"
-        >
-
-        <p class="font-Roboto font-medium text-[1.1rem] mt-4">Achievements <span class="font-Roboto font-medium text-[1.1rem] italic">(optional)</span></p>
-
-        <input
-        type="text"
-        placeholder=""
-        id="educ_details"
-        [ngModel]="data.educ_details"
-        formControlName="educ_details"
-        class="w-full border-2 px-2 font-Roboto font-regular text-[1.1rem] rounded-[5px] text-black py-1"
-        >
-
-        <p class="font-Roboto font-medium text-[1.1rem] mt-4">Date Started</p>
-        <input
-        type="date"
-        placeholder=""
-        id="year_start"
-        [ngModel]="data.year_start"
-        formControlName="year_start"
-        class="w-full border-2 px-2 font-Roboto font-regular text-[1.1rem] rounded-[5px] text-black py-1"
-        >
-
-        <p class="font-Roboto font-medium text-[1.1rem] mt-4">Date Achieved</p>
-        <input
-        type="date"
-        placeholder=""
-        id="year_end"
-        [ngModel]="data.year_end"
-        formControlName="year_end"
-        class="w-full border-2 px-2 font-Roboto font-regular text-[1.1rem] rounded-[5px] text-black py-1"
-        >
-        <div class="flex justify-end">
-            <input
-            type="submit"
-            value="Submit"
-            class="bg-blue rounded-full py-2 px-7 mt-2 max-w-min font-semibold text-white"
-            />
-        </div>
-    </form>
+    <div class="w-full p-4 mobileS:max-h-[640px] laptop:h-max mobileS:overflow-y-scroll laptop:overflow-y-hidden">
+      <form (ngSubmit)="submitForm()" [formGroup]="educForm" class="w-full border-2 p-2">
+          <p class="font-Roboto font-medium text-[1.1rem]">Educational Level</p>
+          <select
+          type="text"
+          placeholder="Add Educational Title"
+          id="educ_level"
+          [ngModel]="data.educ_level"
+          formControlName="educ_level"
+          class="w-full border-2 px-2 font-Roboto font-regular text-[1.1rem] rounded-[5px] text-black py-1"
+          >
+              <option>Doctorate Degree</option>
+              <option>Master's Degree</option>
+              <option>Bachelor's Degree</option>
+              <option>Associate's Degree</option>
+          </select>
+          <p class="font-Roboto font-medium text-[1.1rem]">Educational Attainment</p>
+          <input
+          type="text"
+          placeholder="Add Educational Title"
+          id="educ_title"
+          [ngModel]="data.educ_title"
+          formControlName="educ_title"
+          class="w-full border-2 px-2 font-Roboto font-regular text-[1.1rem] rounded-[5px] text-black py-1"
+          >
+          <p class="font-Roboto font-medium text-[1.1rem] mt-4">School or Institution</p>
+          <input
+          type="text"
+          placeholder="Add School or Institution"
+          id="educ_school"
+          [ngModel]="data.educ_school"
+          formControlName="educ_school"
+          class="w-full border-2 px-2 font-Roboto font-regular text-[1.1rem] rounded-[5px] text-black py-1"
+          >
+          <p class="font-Roboto font-medium text-[1.1rem] mt-4">Achievements <span class="font-Roboto font-medium text-[1.1rem] italic">(optional)</span></p>
+          <input
+          type="text"
+          placeholder=""
+          id="educ_details"
+          [ngModel]="data.educ_details"
+          formControlName="educ_details"
+          class="w-full border-2 px-2 font-Roboto font-regular text-[1.1rem] rounded-[5px] text-black py-1"
+          >
+          <p class="font-Roboto font-medium text-[1.1rem] mt-4">Date Started</p>
+          <input
+          type="date"
+          placeholder=""
+          id="year_start"
+          [ngModel]="data.year_start"
+          formControlName="year_start"
+          class="w-full border-2 px-2 font-Roboto font-regular text-[1.1rem] rounded-[5px] text-black py-1"
+          >
+          <p class="font-Roboto font-medium text-[1.1rem] mt-4">Date Achieved</p>
+          <input
+          type="date"
+          placeholder=""
+          id="year_end"
+          [ngModel]="data.year_end"
+          formControlName="year_end"
+          class="w-full border-2 px-2 font-Roboto font-regular text-[1.1rem] rounded-[5px] text-black py-1"
+          >
+          <div class="flex justify-end">
+              <input
+              type="submit"
+              value="Submit"
+              class="bg-blue rounded-full py-2 px-7 mt-2 max-w-min font-semibold text-white"
+              />
+          </div>
+      </form>
+    </div>
 </div>

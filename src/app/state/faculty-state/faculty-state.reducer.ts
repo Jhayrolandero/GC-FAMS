@@ -102,5 +102,5 @@ export const profileReducer = createReducer(
     ...state,
     courses: courses
   })),
-  on(CertActions.loadCourseFailure, (state) => ({ ...state, })),
+  on(CertActions.loadCourseFailure, (state) => ({ ...state, }))
 )

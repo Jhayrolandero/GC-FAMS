@@ -16,7 +16,7 @@ export class MessageService {
   constructor() { }
 
   sendMessage(message: string, status: number) {
-
+    console.log(message)
     this.messages.push({
       message, status
     })
@@ -35,7 +35,12 @@ export class MessageService {
     this.messages = []
   }
 
-  deleteMessage = () => {
+  deleteMessage = (idx?: number) => {
+
+    if (idx) {
+      this.messages.splice(idx, 1)
+      return
+    }
     this.messages.shift()
   }
 }

@@ -9,6 +9,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { selectAllProfile } from '../../../state/faculty-state/faculty-state.selector';
 import { Store } from '@ngrx/store';
 import { AuthService } from '../../../services/auth.service';
+import { flushCollege } from '../../../state/dean-state/dean-state.actions';
+import { flushCollegeCommexState, flushCommexState } from '../../../state/commex/commex.action';
+import { flushProfileState } from '../../../state/faculty-state/faculty-state.actions';
+import { FlushAttended, FlushAttendee, FlushAttendeeNumber } from '../../../state/attendee/attendee.action';
+import { logOut } from '../../../state/logout.action';
 
 @Component({
   selector: 'app-topnav',
@@ -37,6 +42,7 @@ export class TopnavComponent {
   }
 
   openDialog(): void {
+    this.store.dispatch(logOut());
     this.router.navigate(['/']);
     // console.log("Checking dialogue");
     // this.dialog.open(TopnavLogout);
@@ -57,7 +63,11 @@ export class TopnavComponent {
 })
 export class TopnavLogout {
   authService = inject(AuthService);
-  constructor(private router: Router, public dialogRef: MatDialogRef<TopnavLogout>) { }
+  constructor(
+    private router: Router,
+    public dialogRef: MatDialogRef<TopnavLogout>,
+    private store: Store
+  ) { }
   logout() {
     this.authService.flushToken();
     this.router.navigate(['/']);

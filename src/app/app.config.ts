@@ -17,6 +17,7 @@ import { CvEffects } from './state/faculty-state/faculty-state.effects';
 import { provideMomentDateAdapter } from '@angular/material-moment-adapter'
 import { DeanEffects } from './state/dean-state/dean-state.effects';
 import { profileDeanReducer } from './state/dean-state/dean-state.reducer';
+import { clearStateMetaReducer } from './state/logout.reducer';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
@@ -29,6 +30,12 @@ export const appConfig: ApplicationConfig = {
     provideState({ name: 'collegeCommexs', reducer: collegeCommexReducer }),
     provideState({ name: 'attendees', reducer: attendeeNumberReducer }),
     provideState({ name: 'attended', reducer: attendedReducer }),
+    // provideState({ name: 'logout', metareducers: logoutReducer }),
+    provideStore(clearStateMetaReducer, {
+      runtimeChecks: {},
+      metaReducers: [clearStateMetaReducer] // <--- Meta reducers here
+    }),
+
     provideStoreDevtools({
       maxAge: 200, // Retains last 25 states
       logOnly: !isDevMode(), // Restrict extension to log-only mode

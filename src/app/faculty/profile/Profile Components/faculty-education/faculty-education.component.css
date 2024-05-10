@@ -5,4 +5,12 @@
 .mainParent:hover .showChild{
     opacity: 100;
     transition-duration: 0.3s;
+  }
+
+
+  @media only screen and (max-width: 1023px) {
+
+    .showChild {
+    opacity: 100;
+  }
 }

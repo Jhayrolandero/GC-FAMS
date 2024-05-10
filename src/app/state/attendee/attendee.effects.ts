@@ -49,7 +49,7 @@ export class AttendeeEffects {
   }
 
   joinCommex$ = (formData: FormData) => {
-    return this.facultyService.postData(formData, `test`)
+    return this.facultyService.postData(formData, `attendee`)
   }
 
   postAttendee = createEffect(() => this.actions$.pipe(

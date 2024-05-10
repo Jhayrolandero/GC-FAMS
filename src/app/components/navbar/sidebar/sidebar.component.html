@@ -1,7 +1,5 @@
-<aside class="w-full overflow-x-hidden">
-  <div
-    class="flex flex-col h-screen bg-gradient-to-b from-greenBar from-0% via-blue via-[180px] to-blue to-100% rounded-r-[15px] pb-6 py-4"
-  >
+<aside class="w-full h-full overflow-x-hidden bg-transparent flex flex-col bg-gradient-to-b from-greenBar from-0% via-blue via-[180px] to-blue to-100%  pb-6 py-4">
+
     <div class="pt-4 pb-10 flex justify-center items-center">
       <img src="../../../assets/img/Logo_mockup 1.png" class="w-[60%]" />
     </div>
@@ -21,13 +19,42 @@
           [title]="'Program Analytics'"
           [source]="'ScatterPlot.png'"
         ></app-nav>
-        <app-nav
+        <!-- <app-nav
         (click)="onSelect(13)"
         [selectedBar]="selectedBar"
         [index]="'13'"
         [title]="'Commex'"
         [source]="'Users.png'"
-      ></app-nav>
+      ></app-nav> -->
+
+      <app-nav
+      (click)="onSelect(69)"
+      [selectedBar]="selectedBar"
+      [index]="'69'"
+      [title]="'Curriculum Vitae'"
+      [source]="'Person.png'"
+    ></app-nav>
+    <app-nav
+      (click)="onSelect(8)"
+      [selectedBar]="selectedBar"
+      [index]="'8'"
+      [title]="'Analytics'"
+      [source]="'Signal.png'"
+    ></app-nav>
+    <app-nav
+      (click)="onSelect(13)"
+      [selectedBar]="selectedBar"
+      [index]="'13'"
+      [title]="'Community'"
+      [source]="'Users.png'"
+    ></app-nav>
+    <app-nav
+      (click)="onSelect(14)"
+      [selectedBar]="selectedBar"
+      [index]="'14'"
+      [title]="'Evaluation'"
+      [source]="'ScatterPlot.png'"
+    ></app-nav>
       </ul>
 
 
@@ -63,9 +90,5 @@
         ></app-nav>
       </ul>
     </div>
-    <!-- <i
-      (click)="logout()"
-      class="fa-solid fa-right-from-bracket text-white w-full text-center text-[30px] cursor-pointer"
-    ></i> -->
-  </div>
+
 </aside>
