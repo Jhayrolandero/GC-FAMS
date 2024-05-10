@@ -338,7 +338,7 @@ export const selectTeachingLength = createSelector(
         const sortedTeaching = [...experienceName.entries()];
         // return sortedTeaching;
         console.log(sortedTeaching);
-        return [sortedTeaching.map(x => [x[1][0], x[1][1]]), sortedTeaching.map(x => [x[1][0], x[1][2]])];
+        return [sortedTeaching.map(x => [x[1][0], x[1][1]]), [sortedTeaching.map(x => x[1][0]), sortedTeaching.map(x => x[1][1])]];
         // return [sortedTeaching.map(x => x[0]), sortedTeaching.map(x => x[1][0]), sortedTeaching.map(x => x[1][1]), sortedTeaching.map(x => x[1][2])]
     }
 );

@@ -184,6 +184,20 @@
         </div>
     </div>
 
+    <div *ngIf="(teachingLength$ | async) as teaching" class="w-full bg-white rounded-[15px] shadow-main p-5 pt-1">
+        <p class="text-blue font-bold text-[2rem] my-2">Teaching Length & Certification Count per Faculty Member</p>
+        <app-bar-chart
+        [data]="teaching[1][0]"
+        [data2]="teaching[1][1]"
+        [axis]="'x'"
+        [bgColor]="'rgb(7,66,135)'"
+        [bgColor2]="'rgb(30,114,66)'"
+        [labels]="yearsArray"
+        [showLegend]="false">
+        >  
+        </app-bar-chart>
+    </div>
+
     <!-- <div class="w-full flex flex-row gap-3">
         <p class="text-blue font-bold text-[2rem] my-2">Teaching Length & Certification Count per Faculty Member</p>
         <app-line-graph

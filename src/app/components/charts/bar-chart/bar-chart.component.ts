@@ -14,11 +14,13 @@ export class BarChartComponent {
   @ViewChild('barGraphCanvas') private barGraphCanvas!: ElementRef<HTMLCanvasElement>;
 
   @Input() data: number[] = [];
+  @Input() data2: number[] = [];
   @Input() labels: string[] = [];
   @Input() showLegend?: boolean;
   @Input() legendLabel: string[] = [];
   @Input() axis: string = '';
   @Input() bgColor: string = '';
+  @Input() bgColor2: string = ''
 
   ngAfterViewInit(){
     this.createChart();
@@ -46,6 +48,31 @@ export class BarChartComponent {
         }
     ]
     };
+    if(this.data2.length > 0){
+      data = {
+        labels: this.labels,
+        datasets: [
+          {
+          label: this.legendLabel[0],
+          data: this.data,
+          fill: true,
+          tension: 0.3,
+          backgroundColor: this.bgColor,
+          borderRadius: 5,
+          hoverOffset: 4
+          },
+          {
+            label: this.legendLabel[1],
+            data: this.data2,
+            fill: true,
+            tension: 0.3,
+            backgroundColor: this.bgColor2,
+            borderRadius: 5,
+            hoverOffset: 4
+            }
+      ]
+      };
+    }
 
     const ctx = this.barGraphCanvas.nativeElement.getContext('2d');
     if(ctx){
