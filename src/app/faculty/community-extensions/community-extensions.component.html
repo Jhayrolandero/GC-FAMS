@@ -2,7 +2,7 @@
   <div
   class="bg-white shadow-main bg-opacity-70 w-full rounded-[15px] flex flex-col tablet:flex-row tablet:justify-between items-center px-5"
   >
-  <h1 class="font-Poppins font-semibold text-[2.5rem] py-2">
+  <h1 class="font-Poppins font-semibold mobileS:text-[1rem] mobileM:text-[1.5rem] tablet:text-[2.5rem] py-2">
     Community Extensions
   </h1>
   <div class="flex flex-row space-x-4 flex-1">
@@ -40,7 +40,7 @@
   } @else {
       <div class="p-5 flex flex-col gap-3 text-blue">
 
-      <h1 class="font-Poppins font-semibold text-[1.5rem] py-2">
+      <h1 class="font-Poppins font-semibold mobileS:text-[1rem] mobileM:text-[1.5rem]  py-2 mobileS:text-center tablet:text-start">
         Latest Community Extensions
       </h1>
       <hr class="border-[1.5px] border-slate-400">
@@ -48,9 +48,9 @@
 
           <div
           *ngIf="(latestCommex$ | async) as latestCommex"
-          class="bg-white shadow-main w-full rounded-[15px] flex mobileS:flex-col tablet:flex-row overflow-hidden hover:scale-[101%] hover:duration-300 duration-300"
+          class="bg-white shadow-main w-full rounded-[15px] flex mobileS:flex-col tablet:flex-row overflow-hidden hover:scale-[101%] hover:duration-300 duration-300 min-h[10rem]"
           >
-          <div *ngIf="latestCommex.commex_header_img != tempPort" class="bg-red-400 mobileS:w-full tablet:w-[35%] desktop:w-[25%] h-[280px] flex justify-center items-center">
+          <div *ngIf="latestCommex.commex_header_img != tempPort" class="bg-black mobileS:w-full tablet:w-[35%] desktop:w-[25%] flex justify-center items-center">
             <img [src]="latestCommex.commex_header_img" class="w-full aspect-video" />
           </div>
           <div class="p-4 mobileS:w-full tablet:w-[65%] desktop:w-[75%] flex flex-col gap-2">
@@ -134,8 +134,8 @@
 
       <div class="text-blue p-5">
         <!-- Other -->
-        <div class="flex justify-between">
-          <h1 class="font-Poppins font-semibold text-[1.5rem] py-2">
+        <div class="flex mobileS:flex-col tablet:flex-row justify-between">
+          <h1 class="font-Poppins font-semibold mobileS:text-[1rem] mobileM:text-[1.5rem]  py-2 mobileS:text-center tablet:text-start">
             Other Community Extensions
           </h1>
           <mat-form-field>

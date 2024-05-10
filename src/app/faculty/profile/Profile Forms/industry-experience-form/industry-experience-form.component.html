@@ -1,4 +1,4 @@
-<div class="w-[600px] bg-white rounded-[15px] shadow-lg opacity-100 overflow-hidden">
+<div class="min-w-[240px] mobileM:w-[320px] tablet:w-[460px] laptop:w-[540px] desktop:w-[620px] bg-white rounded-[15px] shadow-lg opacity-100 overflow-hidden">
     <div class="w-full bg-blue h-[38px] flex items-center justify-between">
         @if (data.length == 0) {
             <p class="font-Poppins font-semibold text-white ml-5">Add Industry Experience</p>
@@ -17,7 +17,9 @@
             </defs>
         </svg>
     </div>
-    <form (ngSubmit)="submitForm()" [formGroup]="expForm" class="m-5 border-2 p-3">
+    <div class="w-full p-4 mobileS:max-h-[640px] laptop:h-max mobileS:overflow-y-scroll laptop:overflow-y-hidden">
+
+    <form (ngSubmit)="submitForm()" [formGroup]="expForm" class="border-2 p-3">
         <p class="font-Roboto font-medium text-[1.1rem]">Industry Experience Name</p>
         <input
         type="text"
@@ -76,4 +78,5 @@
             />
         </div>
     </form>
+    </div>
 </div>
