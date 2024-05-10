@@ -1,25 +1,24 @@
 import { Component, ElementRef, Input, SimpleChanges, ViewChild } from '@angular/core';
-import { Chart } from 'chart.js/auto';
+import { Chart } from 'chart.js';
 
 @Component({
-  selector: 'app-line-graph',
+  selector: 'app-scatter-plot',
   standalone: true,
   imports: [],
-  templateUrl: './line-graph.component.html',
-  styleUrl: './line-graph.component.css'
+  templateUrl: './scatter-plot.component.html',
+  styleUrl: './scatter-plot.component.css'
 })
-export class LineGraphComponent {
+export class ScatterPlotComponent {
   public chart: any;
   public chartId: string = `doughnut-${Math.random().toString(36).substr(2, 9)}`;
-  @ViewChild('lineGraphCanvas', {static: true}) private lineGraphCanvas!: ElementRef<HTMLCanvasElement>;
+  @ViewChild('scatterGraphCanvas') private scatterGraphCanvas!: ElementRef<HTMLCanvasElement>;
 
-  @Input() data: number[] = [];
-  @Input() data2: number[] = [];
-  @Input() data3: number[] = [];
+  @Input() data: number[][] = [[]];
   @Input() labels: string[] = [];
   @Input() showLegend?: boolean;
   @Input() legendLabel: string[] = [];
-
+  @Input() axis: string = '';
+  @Input() bgColor: string = '';
 
   ngAfterViewInit(){
     this.createChart();
@@ -41,37 +40,24 @@ export class LineGraphComponent {
         data: this.data,
         fill: true,
         tension: 0.3,
-        borderColor: 'rgb(7, 66, 135)',
-        backgroundColor: 'rgba(7, 66, 135, 0.2)',
+        backgroundColor: this.bgColor,
+        borderRadius: 5,
         hoverOffset: 4
-        },
-        {
-          label: this.legendLabel[1],
-          data: this.data2,
-          fill: true,
-          tension: 0.3,
-          borderColor: 'rgb(30, 114, 66)',
-          backgroundColor: 'rgba(30, 114, 66, 0.2)',
-          hoverOffset: 4
-        },
-        {
-          label: this.legendLabel[2],
-          data: this.data3,
-          fill: true,
-          tension: 0.3,
-          borderColor: 'rgb(255, 122, 0)',
-          backgroundColor: 'rgba(255, 122, 0, 0.2)',
-          hoverOffset: 4
         }
     ]
     };
 
-    const ctx = this.lineGraphCanvas.nativeElement.getContext('2d');
+    const ctx = this.scatterGraphCanvas.nativeElement.getContext('2d');
     if(ctx){
       this.chart = new Chart(ctx, {
-        type: 'line',
+        type: 'scatter',
         data: data,
         options: {
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          },
           responsive: true, // This makes the chart responsive
           maintainAspectRatio: false,
           plugins: {
@@ -86,3 +72,4 @@ export class LineGraphComponent {
 
   }
 }
+

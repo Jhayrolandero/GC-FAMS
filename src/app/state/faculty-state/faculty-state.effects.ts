@@ -1,12 +1,13 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
-import { catchError, map, of, switchMap } from "rxjs";
+import { catchError, map, of, switchMap, tap } from "rxjs";
 import { Certifications } from "../../services/Interfaces/certifications";
 import { CertificationsFaculty } from "../../services/Interfaces/certifications-faculty";
 import { Courses } from "../../services/Interfaces/courses";
 import { CoursesFaculty } from "../../services/Interfaces/courses-faculty";
 import { EducationalAttainment } from "../../services/Interfaces/educational-attainment";
 import { Encryption } from "../../services/Interfaces/encryption";
+import { ExpertiseFaculty } from "../../services/Interfaces/expertise-faculty";
 import { Evaluation } from "../../services/Interfaces/evaluation";
 import { Expertise } from "../../services/Interfaces/expertise";
 import { IndustryExperience } from "../../services/Interfaces/industry-experience";
@@ -91,7 +92,11 @@ export class CvEffects {
     ofType(CvActions.loadExpertise),
     switchMap(() => this.facultyService.fetchData<Encryption>('expertise')
       .pipe(
-        map((data) => CvActions.loadExpertiseSuccess({ expertises: this.decryptData<Expertise[]>(data) })),
+        tap((data) => {
+          const decryptedData = this.decryptData<[ExpertiseFaculty[], Expertise[]]>(data);
+          console.log('Decrypted Data:', decryptedData); // Log decrypted data to console
+        }),
+        map((data) => CvActions.loadExpertiseSuccess({ expertises: this.decryptData<[ExpertiseFaculty[], Expertise[]]>(data) })),
         catchError((error) => of(CvActions.loadExpertiseFailure({ error })))
       )
     )

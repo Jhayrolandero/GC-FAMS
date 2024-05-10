@@ -6,6 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { CommonModule } from '@angular/common';
 import { Component, Inject } from '@angular/core';
 import { FacultyRequestService } from '../../../../services/faculty/faculty-request.service';
+import { MessageService } from '../../../../services/message.service';
 
 @Component({
     selector: 'app-cv-delete-form',
@@ -21,6 +22,7 @@ import { FacultyRequestService } from '../../../../services/faculty/faculty-requ
     constructor(
       public dialogRef: MatDialogRef<CvDeleteForm>, 
       private facultyRequest: FacultyRequestService,
+      private messageService: MessageService,
       @Inject(MAT_DIALOG_DATA) public data: any){
         // console.log(this.data.length);
       }
@@ -32,10 +34,18 @@ import { FacultyRequestService } from '../../../../services/faculty/faculty-requ
   
     submitForm(){
         console.log(this.data);
+        this.messageService.sendMessage("Deleting Data...", 0);
         this.facultyRequest.deleteData(this.data[0]).subscribe({
         next: (next: any) => {console.log(next);},
-        error: (error) => {console.log(error)},
-        complete: () => {this.onNoClick();}
+        error: (error) => {
+          console.log(error);
+          this.messageService.sendMessage("Failed to delete data.", -1);
+
+        },
+        complete: () => {
+          this.onNoClick();
+          this.messageService.sendMessage("Data successfully deleted!", 1);
+        }
       });
     }
   }

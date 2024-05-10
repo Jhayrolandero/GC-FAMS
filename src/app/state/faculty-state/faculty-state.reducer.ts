@@ -10,6 +10,7 @@ import { CertificationsFaculty } from "../../services/Interfaces/certifications-
 import { Certifications } from "../../services/Interfaces/certifications";
 import { Courses } from "../../services/Interfaces/courses";
 import { CoursesFaculty } from "../../services/Interfaces/courses-faculty";
+import { ExpertiseFaculty } from "../../services/Interfaces/expertise-faculty";
 
 export interface ProfileState {
   profile?: Profile;
@@ -17,7 +18,7 @@ export interface ProfileState {
   educs: EducationalAttainment[];
   exps: IndustryExperience[];
   proj: Project[];
-  expertises: Expertise[];
+  expertises: [ExpertiseFaculty[], Expertise[]];
   evals: Evaluation[];
   courses: [CoursesFaculty[], Courses[]];
   isLoading: boolean
@@ -29,7 +30,7 @@ export const initialProfileState: ProfileState = {
   educs: [],
   exps: [],
   proj: [],
-  expertises: [],
+  expertises: [[], []],
   evals: [],
   courses: [[], []],
   isLoading: false

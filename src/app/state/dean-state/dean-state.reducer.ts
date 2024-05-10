@@ -13,6 +13,7 @@ import { CoursesFaculty } from "../../services/Interfaces/courses-faculty";
 import { Faculty } from "../../services/Interfaces/faculty";
 import { CommunityExtension } from "../../services/Interfaces/community-extension";
 import { College } from "../../services/Interfaces/college";
+import { ExpertiseFaculty } from "../../services/Interfaces/expertise-faculty";
 
 export interface DeanState {
   colleges: College[];
@@ -21,7 +22,7 @@ export interface DeanState {
   educs: EducationalAttainment[];
   exps: IndustryExperience[];
   proj: Project[];
-  expertises: Expertise[];
+  expertises: [ExpertiseFaculty[], Expertise[]];
   evals: Evaluation[];
   courses: [CoursesFaculty[], Courses[]];
   commex: CommunityExtension[];
@@ -34,7 +35,7 @@ export const initialDeanState: DeanState = {
   educs: [],
   exps: [],
   proj: [],
-  expertises: [],
+  expertises: [[], []],
   evals: [],
   courses: [[], []],
   commex: []

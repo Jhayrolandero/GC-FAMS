@@ -14,8 +14,10 @@ import { Courses } from "../../services/Interfaces/courses";
 import { Faculty } from "../../services/Interfaces/faculty";
 import { CommunityExtension } from "../../services/Interfaces/community-extension";
 import { College } from "../../services/Interfaces/college";
+import { Route, Router } from "@angular/router";
 import { CryptoJSService } from "../../services/crypto-js.service";
 import { Encryption } from "../../services/Interfaces/encryption";
+import { ExpertiseFaculty } from "../../services/Interfaces/expertise-faculty";
 
 @Injectable()
 
@@ -84,6 +86,10 @@ export class DeanEffects {
     ofType(CvActions.loadCollegeExp),
     switchMap(() => this.facultyService.fetchData<Encryption>('experience-college')
       .pipe(
+        tap((data) => {
+          const decryptedData = this.decryptData<IndustryExperience[]>(data);
+          console.log('Decrypted Data:', decryptedData); // Log decrypted data to console
+        }),
         map((data) => CvActions.loadCollegeExpSuccess({ exps: this.decryptData<IndustryExperience[]>(data) })),
         catchError((error) => of(CvActions.loadCollegeExpFailure({ error })))
       )
@@ -104,7 +110,7 @@ export class DeanEffects {
     ofType(CvActions.loadCollegeExpertise),
     switchMap(() => this.facultyService.fetchData<Encryption>('expertise-college')
       .pipe(
-        map((data) => CvActions.loadCollegeExpertiseSuccess({ expertises: this.decryptData<Expertise[]>(data) })),
+        map((data) => CvActions.loadCollegeExpertiseSuccess({ expertises: this.decryptData<[ExpertiseFaculty[], Expertise[]]>(data) })),
         catchError((error) => of(CvActions.loadCollegeExpertiseFailure({ error })))
       )
     )

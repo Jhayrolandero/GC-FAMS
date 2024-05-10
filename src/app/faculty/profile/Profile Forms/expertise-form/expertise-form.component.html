@@ -17,34 +17,62 @@
             </defs>
         </svg>
     </div>
-    <div class="w-full p-4 mobileS:max-h-[640px] laptop:h-max mobileS:overflow-y-scroll laptop:overflow-y-hidden">
-    <form (ngSubmit)="submitForm()" [formGroup]="specForm" class="border-2 p-3">
-        <p class="font-Roboto font-medium text-[1.1rem]">Expertise Name</p>
-        <input
-        type="text"
-        placeholder="Add Expertise Name"
-        id="expertise_name"
-        formControlName="expertise_name"
-        [ngModel]="data?.expertise_name"
-        class="w-full border-2 px-2 font-Roboto font-regular text-[1.1rem] rounded-[5px] text-black py-1"
-        >
 
-        <p class="font-Roboto font-medium text-[1.1rem] mt-4">Confidence</p>
-        <input
-        [ngModel]="data?.expertise_confidence"
-        type="text"
-        placeholder=""
-        id="expertise_confidence"
-        formControlName="expertise_confidence"
-        class="w-full border-2 px-2 font-Roboto font-regular text-[1.1rem] rounded-[5px] text-black py-1"
-        >
-        <div class="flex justify-end">
-            <input
-            type="submit"
-            value="Add"
-            class="bg-blue rounded-full py-2 px-7 mt-2 max-w-min font-semibold text-white"
-            />
+
+        <!-- <form (ngSubmit)="submitForm('addExist')" [formGroup]="specNewForm"> -->
+        <div class="w-full p-4 mobileS:max-h-[640px] laptop:h-max mobileS:overflow-y-scroll laptop:overflow-y-hidden">
+            <p class="font-Roboto font-medium text-[1.1rem]">Select from expertise selected by other faculty members:</p>
+            <select
+            type="text"
+            placeholder="Existing certifications"
+            id="cert_exist"
+            class="w-full border-2 px-2 font-Roboto font-regular text-[1.1rem] rounded-[5px] text-black py-1"
+            (change)="existExpertiseSelect($event)"
+            >
+                <option [value]="-1">
+                    Input new expertise
+                </option>
+                <br>
+                <hr>
+                <br>
+                <option *ngFor="let exp of expertise$ | async; let i = index" [value]="exp.expertise_ID">
+                    {{exp.expertise_name}}
+                </option>
+            </select>
         </div>
-    </form>
-    </div>
+        <!-- </form> -->
+
+        @if (!selectedExisting) {
+            <form (ngSubmit)="submitForm('addNew')" [formGroup]="specNewForm" class="m-5 border-2 p-3">
+                <p class="font-Roboto font-medium text-[1.1rem]">Expertise Name</p>
+                <input
+                type="text"
+                placeholder="Add Expertise Name"
+                id="expertise_name"
+                formControlName="expertise_name"
+                [ngModel]="data?.expertise_name"
+                class="w-full border-2 px-2 font-Roboto font-regular text-[1.1rem] rounded-[5px] text-black py-1"
+                >
+
+                <div class="flex justify-end">
+                    <input
+                    type="submit"
+                    value="Add"
+                    class="bg-blue rounded-full py-2 px-7 mt-2 max-w-min font-semibold text-white"
+                    />
+                </div>
+            </form>
+        }
+        @else {
+            <form (ngSubmit)="submitForm('addExist')" [formGroup]="specForm" class="m-5 border-2 p-3">
+                <div class="flex justify-end">
+                    <input
+                    type="submit"
+                    value="Add"
+                    class="bg-blue rounded-full py-2 px-7 mt-2 max-w-min font-semibold text-white"
+                    />
+                </div>
+            </form>
+        }
+
 </div>

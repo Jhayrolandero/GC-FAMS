@@ -4,7 +4,7 @@ import { Expertise } from '../../../../services/Interfaces/expertise';
 import { FacultyRequestService } from '../../../../services/faculty/faculty-request.service';
 import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
-import { selectAllExpertise } from '../../../../state/faculty-state/faculty-state.selector';
+import { selectFacultyExpertise } from '../../../../state/faculty-state/faculty-state.selector';
 
 @Component({
   selector: 'app-faculty-expertise',
@@ -17,7 +17,7 @@ export class FacultyExpertiseComponent {
   @Output() editEvent = new EventEmitter<any>();
   @Output() deleteEvent = new EventEmitter<any>();
 
-  public expertise$ = this.store.select(selectAllExpertise);
+  public expertise$ = this.store.select(selectFacultyExpertise);
   
   constructor(
     private facultyRequest: FacultyRequestService, 

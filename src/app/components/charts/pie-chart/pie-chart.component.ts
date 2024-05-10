@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { Chart } from 'chart.js/auto';
 
 @Component({
@@ -18,6 +18,13 @@ export class PieChartComponent {
 
 
   ngAfterViewInit() {
+    this.createChart();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if(this.chart){
+      this.chart.destroy();
+    }
     this.createChart();
   }
 

@@ -7,6 +7,86 @@ const currentYear: number  = date.getFullYear();
 
 export const selectDeanState = createFeatureSelector<DeanState>('dean');
 
+
+export const selectCollegeMilestoneCount = createSelector(
+    selectDeanState,
+    (state: DeanState) => {
+        let milestoneMap: Map<number, number> = new Map();
+
+        state.commex.forEach(comm => {
+            const commYear = +comm.commex_date.slice(0,4);
+            if(milestoneMap.has(commYear)){
+                milestoneMap.set(commYear, milestoneMap.get(commYear)! + 1);
+            }
+            else{
+                milestoneMap.set(commYear, 1);
+            }
+        })
+        state.educs.forEach(educ => {
+            const educYear = +educ.year_end.slice(0,4);
+            if(milestoneMap.has(educYear)){
+                milestoneMap.set(educYear, milestoneMap.get(educYear)! + 1);
+            }
+            else{
+                milestoneMap.set(educYear, 1);
+            }
+                
+        })
+        state.certs.forEach(cert => {
+            const certYear = +(cert.accomplished_date + '').slice(0,4);
+            if(milestoneMap.has(certYear)){
+                milestoneMap.set(certYear, milestoneMap.get(certYear)! + 1);
+            }
+            else{
+                milestoneMap.set(certYear, 1);
+            }
+        })
+
+
+        const sortedMilestone = [...milestoneMap.entries()].sort((a, b) => a[0] - b[0]);
+        const ret = sortedMilestone.map(x => x[1]);
+        return ret.slice(ret.length - 15, ret.length);
+    }
+  );
+
+export const selectAttainmentTimeline = createSelector(
+    selectDeanState,
+    (state: DeanState) => {
+        const floorYear = currentYear - 14;
+        let attainmentTimeline = [
+            Array.from({ length: 15 }, () => 0), 
+            Array.from({ length: 15 }, () => 0), 
+            Array.from({ length: 15 }, () => 0)
+        ];
+
+        state.certs.forEach(cert => {
+            const currYear = +(cert.accomplished_date+'').slice(0,4);
+            if(currYear >= floorYear){
+                attainmentTimeline[0][currYear - floorYear] += 1
+            }
+        })
+
+        state.commex.forEach(commex => {
+            const currYear = +commex.commex_date.slice(0,4);
+            if(currYear >= floorYear){
+                attainmentTimeline[1][currYear - floorYear] += 1
+            }
+        })
+
+        state.certs.forEach(cert => {
+            const currYear = +(cert.accomplished_date+'').slice(0,4);
+            if(currYear >= floorYear && cert.cert_type == "Completion"){
+                attainmentTimeline[2][currYear - floorYear] += 1
+            }
+        })
+
+        return attainmentTimeline;
+    }
+);
+
+
+
+
 export const selectAllCollege = createSelector(
     selectDeanState,
     (state: DeanState) => state.colleges
@@ -18,10 +98,25 @@ export const selectCollegeFaculty = createSelector(
   (state: DeanState) => state.profile
 );
 
+export const selectCollegeEmploymentType = createSelector(
+    selectDeanState,
+    (state: DeanState) => {
+        let employmentType: number[] = [0, 0];
+
+        state.profile.forEach(faculty => {
+            faculty.employment_status == 1 ? employmentType[1]  += 1 : employmentType[0] += 1;
+        })
+
+        return employmentType;
+    }
+  );
+
 export const selectCollegeFacultyCount = createSelector(
     selectDeanState,
     (state: DeanState) => state.profile.length
   );
+
+
 
 
 export const selectAllCollegeEduc = createSelector(
@@ -29,10 +124,94 @@ export const selectAllCollegeEduc = createSelector(
     (state: DeanState) => state.educs
 );
 
+export const selectCollegeEducTimeline = createSelector(
+    selectDeanState,
+    (state: DeanState) => {
+        const floorYear = currentYear - 14;
+        let educTimeline = [
+            Array.from({ length: 15 }, () => 0), 
+            Array.from({ length: 15 }, () => 0), 
+            Array.from({ length: 15 }, () => 0)
+        ];
+
+        state.educs.forEach(educ => {
+            const currYear = +educ.year_end.slice(0,4);
+            if(currYear >= floorYear){
+                if(educ.educ_level == "Bachelor's Degree"){
+                    for (let index = currYear - floorYear; index < 15; index++) {
+                        educTimeline[0][index] += 1;
+                    }
+                }
+                else if(educ.educ_level == "Master's Degree"){
+                    for (let index = currYear - floorYear; index < 15; index++) {
+                        educTimeline[1][index] += 1;
+                        educTimeline[0][index] -= 1;
+                    }
+                }
+                else{
+                    for (let index = currYear - floorYear; index < 15; index++) {
+                        educTimeline[2][index] += 1;
+                        educTimeline[1][index] -= 1;
+                    }
+                }
+            }
+        })
+
+        return educTimeline;
+    }
+);
+
+
+
+
+
 export const selectAllExistCerts = createSelector(
     selectDeanState,
     (state: DeanState) => state.certs
 );
+
+export const selectCertTypes = createSelector(
+    selectDeanState,
+    (state: DeanState) => {
+        let certTypes: {[key: string]: number} = {};
+
+        state.certs.forEach(cert => {
+            const educYear = (cert.accomplished_date + '').slice(0,4);
+
+            if(+educYear == currentYear){
+                if(certTypes[cert.cert_type]){
+                    certTypes[cert.cert_type] += 1;
+                }
+                else{
+                    certTypes[cert.cert_type] = 1;
+                }
+            }
+        })
+        return certTypes;
+    }
+);
+
+export const selectCommonSeminars = createSelector(
+    selectDeanState,
+    (state: DeanState) => {
+        let certNames: Map<string, number> = new Map();
+
+
+        state.certs.forEach(cert => {
+            if(certNames.has(cert.cert_name)){
+                certNames.set(cert.cert_name, certNames.get(cert.cert_name)! + 1);
+            }
+            else{
+                certNames.set(cert.cert_name, 1);
+            }
+        })
+
+        const sortedCerts = [...certNames.entries()].sort((a, b) => b[1] - a[1]);
+        return sortedCerts;
+    }
+);
+
+
 
 //Averages out total certificate count each faculty
 export const facultyCertsCountAverage = createSelector(
@@ -100,6 +279,73 @@ export const selectAllExp = createSelector(
     (state: DeanState) => state.exps
 );
 
+export const selectTeachingLength = createSelector(
+    selectDeanState,
+    (state: DeanState) => {
+        let experienceName: Map<number, [number, number, number]> = new Map();
+
+        //Gets teaching year 
+        state.exps.forEach(exp => {
+            let fromDate = new Date(exp.experience_from).getTime();
+            let toDate: number;
+
+            if(exp.experience_to == undefined){
+                toDate = new Date().getTime();
+            }
+            else{
+                toDate = new Date(exp.experience_to).getTime();
+            }
+
+            let dateDiff = +((toDate - fromDate) / 31536000000).toFixed(2);
+
+            if(experienceName.has(exp.faculty_ID)){
+                let currentValue = experienceName.get(exp.faculty_ID)!;
+                currentValue[0] += dateDiff;
+                experienceName.set(exp.faculty_ID, currentValue);
+            }
+            else{
+                experienceName.set(exp.faculty_ID, [dateDiff, 0, 0]);
+            }
+        })
+
+        state.certs.forEach(cert => {
+            if(experienceName.has(cert.faculty_ID)){
+                let currentValue = experienceName.get(cert.faculty_ID)!;
+                currentValue[1] += 1;
+                experienceName.set(cert.faculty_ID, currentValue);
+            }
+            else{
+                experienceName.set(cert.faculty_ID, [0, 0, 1])
+            }
+        })
+
+        const yearEvaluation = state.evals.filter((evaluation: Evaluation) => evaluation.evaluation_year == currentYear);
+        const params: number[] = Array.from({ length: 6 }, () => 0);
+
+        // Gets evaluation average for current year of each faculty member
+        yearEvaluation.forEach((evaluation: Evaluation) => {
+            let average = (+evaluation.param1_score + +evaluation.param2_score + +evaluation.param3_score + +evaluation.param4_score + +evaluation.param5_score + +evaluation.param6_score) / 6;
+            if(experienceName.has(evaluation.faculty_ID)){
+                let currentValue = experienceName.get(evaluation.faculty_ID)!;
+                currentValue[1] == 0 ? currentValue[1] += average : currentValue[1] = (currentValue[1] + average) / 2
+                experienceName.set(evaluation.faculty_ID, currentValue);
+            }
+            else{
+                experienceName.set(evaluation.faculty_ID, [0, average, 0])
+            }
+        });
+
+        const sortedTeaching = [...experienceName.entries()];
+        // return sortedTeaching;
+        console.log(sortedTeaching);
+        return [sortedTeaching.map(x => [x[1][0], x[1][1]]), [sortedTeaching.map(x => x[1][0]), sortedTeaching.map(x => x[1][1])]];
+        // return [sortedTeaching.map(x => x[0]), sortedTeaching.map(x => x[1][0]), sortedTeaching.map(x => x[1][1]), sortedTeaching.map(x => x[1][2])]
+    }
+);
+
+
+
+
 export const selectAllProj = createSelector(
     selectDeanState,
     (state: DeanState) => state.proj
@@ -107,7 +353,33 @@ export const selectAllProj = createSelector(
 
 export const selectAllExpertise = createSelector(
     selectDeanState,
-    (state: DeanState) => state.expertises
+    (state: DeanState) => state.expertises[1]
+);
+
+export const selectFacultyExpertise = createSelector(
+    selectDeanState,
+    (state: DeanState) => state.expertises[0]
+);
+
+export const selectTopExpertise = createSelector(
+    selectDeanState,
+    (state: DeanState) => {
+        let expertiseNames: Map<string, number> = new Map();
+
+
+        state.expertises[0].forEach(exp => {
+            if(expertiseNames.has(exp.expertise_name)){
+                expertiseNames.set(exp.expertise_name, expertiseNames.get(exp.expertise_name)! + 1);
+            }
+            else{
+                expertiseNames.set(exp.expertise_name, 1);
+            }
+        })
+
+        const sortedCerts = [...expertiseNames.entries()].sort((a, b) => b[1] - a[1]);
+        const ret: [string[], number[]] = [sortedCerts.map(x => x[0]), sortedCerts.map(x => x[1])];
+        return ret;
+    }
 );
 
 

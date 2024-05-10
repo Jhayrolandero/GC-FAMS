@@ -33,6 +33,8 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 })
 export class AdminComponent {
   sideBarToggle = true;
+  //Only unique to admin manage analytics, waits until all dispatches are completed.
+  manageAnalyticsLoading = false;
   opened: boolean = true;
 
   options = this._formBuilder.group({
