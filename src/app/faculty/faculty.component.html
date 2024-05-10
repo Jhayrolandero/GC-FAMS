@@ -1,20 +1,20 @@
-<!-- <div class="flex w-[100%]">
-  <div *ngIf="sideBarToggle" class="hidden flex-none h-screen sticky top-0 tablet:w-[130px] tablet:flex">
-    <app-sidebar></app-sidebar>
-  </div>
-  <div class="flex flex-col w-full">
-    <app-topnav (setToggle)="toggle()"></app-topnav>
-    <div class="">
-      <router-outlet></router-outlet>
-    </div>
-  </div>
-</div> -->
-
 <mat-sidenav-container class="example-container flex w-[100%] h-[100%]">
-  <mat-sidenav #sidenav mode="side" [(opened)]="opened">
-    <div *ngIf="sideBarToggle" class="hidden flex-none h-screen sticky top-0 tablet:w-[130px] tablet:flex">
-      <app-sidebar></app-sidebar>
-    </div>
+
+  <mat-sidenav #sidenav
+  [mode]="screenSize === 'XSmall' ? 'over': 'side'"
+  [opened]="screenSize === 'XSmall' ? false : opened"
+  [fixedInViewport]="options.value.fixed"
+  [fixedTopGap]="options.value.top"
+  [fixedBottomGap]="options.value.bottom"
+  >
+
+  <div
+  class="w-[130px] h-full"
+  >
+  <app-sidebar></app-sidebar>
+
+  </div>
+
   </mat-sidenav>
 
   <mat-sidenav-content>
@@ -25,5 +25,5 @@
       </div>
     </div>
     <app-message></app-message>
-  </mat-sidenav-content>
+  </mat-sidenav-content>+
 </mat-sidenav-container>

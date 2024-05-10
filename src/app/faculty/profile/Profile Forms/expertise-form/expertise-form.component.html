@@ -1,4 +1,4 @@
-<div class="w-[600px] bg-white rounded-[15px] shadow-lg opacity-100 overflow-hidden">
+<div class="min-w-[240px] mobileM:w-[320px] tablet:w-[460px] laptop:w-[540px] desktop:w-[620px] bg-white rounded-[15px] shadow-lg opacity-100 overflow-hidden">
     <div class="w-full bg-blue h-[38px] flex items-center justify-between">
         @if (data.length == 0) {
             <p class="font-Poppins font-semibold text-white ml-5">Add Expertise</p>
@@ -20,7 +20,7 @@
 
 
         <!-- <form (ngSubmit)="submitForm('addExist')" [formGroup]="specNewForm"> -->
-        <div class="m-5">
+        <div class="w-full p-4 mobileS:max-h-[640px] laptop:h-max mobileS:overflow-y-scroll laptop:overflow-y-hidden">
             <p class="font-Roboto font-medium text-[1.1rem]">Select from expertise selected by other faculty members:</p>
             <select
             type="text"
@@ -53,7 +53,7 @@
                 [ngModel]="data?.expertise_name"
                 class="w-full border-2 px-2 font-Roboto font-regular text-[1.1rem] rounded-[5px] text-black py-1"
                 >
-        
+
                 <div class="flex justify-end">
                     <input
                     type="submit"

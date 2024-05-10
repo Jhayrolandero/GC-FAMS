@@ -21,7 +21,7 @@
           />
         </svg>
         <p
-          class="text-white text-[1.5rem] font-Poppins font-semibold ml-2 select-none"
+          class="text-white mobileS:text-[1rem] tablet:text-[1.5rem] font-Poppins font-semibold ml-2 select-none"
         >
           {{ name }}
         </p>
@@ -56,7 +56,7 @@
           </defs>
         </svg>
       </div>
-    </div>  
+    </div>
     <!-- "Educational Attaiment", "Certifications", "Industry Experience", "Projects", "Expertise" -->
     @switch(name){
         @case("Educational Attainment"){
@@ -75,5 +75,5 @@
             <app-faculty-expertise (deleteEvent)="deleteDialog($event)" (editEvent)="openDialog('Expertise', $event)" *ngIf="rotated"></app-faculty-expertise>
         }
     }
-    
+
   </div>

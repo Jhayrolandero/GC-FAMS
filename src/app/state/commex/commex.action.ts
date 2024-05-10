@@ -63,3 +63,5 @@ export const deleteCollegeCommexFailure = createAction('[College Commex] Delete 
   props<{ error: string }>()
 )
 
+export const flushCommexState = createAction('[Commex] Flush Commex');
+export const flushCollegeCommexState = createAction('[College Commex] Flush College Commex');

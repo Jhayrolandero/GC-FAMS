@@ -1,153 +1,184 @@
 <section class="bg-white shadow-main rounded-[15px]">
-  
   <!-- class="bg-white flex flex-col py-4 px-6 rounded-[25px] shadow-main gap-4 mt-4" -->
   <div class="flex justify-start rounded-[15px]">
     <button
       (click)="filterCollege(''); activeButton = 'all'"
-      [ngClass]="{ 'bg-blue text-white rounded-tr-[1rem] rounded-tl-[1rem]': activeButton === 'all' }"
-      class="flex-1  border-b-2 font-bold border-black py-1"
-      >
+      [ngClass]="{
+        'bg-blue text-white rounded-tr-[1rem] rounded-tl-[1rem]':
+          activeButton === 'all'
+      }"
+      class="flex-1 border-b-2 font-bold border-black py-1"
+    >
       All
     </button>
     <button
-    (click)="filterCollege('CCS'); activeButton = 'ccs'"
-    [ngClass]="{ 'bg-blue text-white rounded-tr-[1rem] rounded-tl-[1rem]': activeButton === 'ccs' }"
-    class="flex-1  border-b-2 font-bold border-black  py-1"
+      (click)="filterCollege('CCS'); activeButton = 'ccs'"
+      [ngClass]="{
+        'bg-blue text-white rounded-tr-[1rem] rounded-tl-[1rem]':
+          activeButton === 'ccs'
+      }"
+      class="flex-1 border-b-2 font-bold border-black py-1"
     >
       CCS
     </button>
     <button
       (click)="filterCollege('CEAS'); activeButton = 'ceas'"
-    [ngClass]="{ 'bg-blue text-white rounded-tr-[1rem] rounded-tl-[1rem]': activeButton === 'ceas' }"
-    class="flex-1  border-b-2 font-bold border-black py-1"
+      [ngClass]="{
+        'bg-blue text-white rounded-tr-[1rem] rounded-tl-[1rem]':
+          activeButton === 'ceas'
+      }"
+      class="flex-1 border-b-2 font-bold border-black py-1"
     >
-    CEAS
+      CEAS
     </button>
     <button
-    (click)="filterCollege('CHTM'); activeButton = 'chtm'"
-    [ngClass]="{ 'bg-blue text-white rounded-tr-[1rem] rounded-tl-[1rem]': activeButton === 'chtm' }"
-    class="flex-1  border-b-2 font-bold border-black  py-1"
+      (click)="filterCollege('CHTM'); activeButton = 'chtm'"
+      [ngClass]="{
+        'bg-blue text-white rounded-tr-[1rem] rounded-tl-[1rem]':
+          activeButton === 'chtm'
+      }"
+      class="flex-1 border-b-2 font-bold border-black py-1"
     >
       CHTM
     </button>
     <button
-    (click)="filterCollege('CAHS'); activeButton = 'cahs'"
-    [ngClass]="{ 'bg-blue text-white rounded-tr-[1rem] rounded-tl-[1rem]': activeButton === 'cahs' }"
-    class="flex-1  border-b-2 font-bold border-black  py-1"
+      (click)="filterCollege('CAHS'); activeButton = 'cahs'"
+      [ngClass]="{
+        'bg-blue text-white rounded-tr-[1rem] rounded-tl-[1rem]':
+          activeButton === 'cahs'
+      }"
+      class="flex-1 border-b-2 font-bold border-black py-1"
     >
-    CAHS
-  </button>
-  <button
-  (click)="filterCollege('CBA'); activeButton = 'cba'"
-  [ngClass]="{ 'bg-blue text-white rounded-tr-[1rem] rounded-tl-[1rem]': activeButton === 'cba' }"
-  class="flex-1  border-b-2 font-bold border-black  py-1"
-  >
+      CAHS
+    </button>
+    <button
+      (click)="filterCollege('CBA'); activeButton = 'cba'"
+      [ngClass]="{
+        'bg-blue text-white rounded-tr-[1rem] rounded-tl-[1rem]':
+          activeButton === 'cba'
+      }"
+      class="flex-1 border-b-2 font-bold border-black py-1"
+    >
       CBA
     </button>
   </div>
 
   <input
-  [(ngModel)]="searchQuery"
-  (ngModelChange)="filterName()"
-  type="text"
-  placeholder="Search Faculty"
-  class="flex-1 rounded-[5px] py-1 m-5 px-5 shadow-inner placeholder:text-center placeholder:font-semibold border-2 border-skate-200 w-1/4 max-w-[400px] min-w-[200px]"
+    [(ngModel)]="searchQuery"
+    (ngModelChange)="filterName()"
+    type="text"
+    placeholder="Search Faculty"
+    class="flex-1 rounded-[5px] py-1 m-5 px-5 shadow-inner placeholder:text-center placeholder:font-semibold border-2 border-skate-200 w-1/4 max-w-[400px] min-w-[200px]"
   />
 
-
-
   <div class="grid justify-items-start grid-cols-4 gap-5 p-5">
-    @if ((facultyMembers$ | async)?.length) {
-      @for (faculty of facultyMembers$ | async; track faculty.first_name) {
-        <div
-        class="col-span-4 grid-cols-subgrid grid items-center border-l-4 justify-items-start gap-3 py-1 transition hover:translate-x-1 hover:bg-gray-200 hover:duration-300 duration-300 1"
-        >
-          <div class="flex items-center gap-3">
-            <img
-              [src]="port + faculty.profile_image"
-              alt="ains"
-              class="aspect-square rounded-full"
-              onerror="this.onerror=null; this.src='../../../../assets/profiles/user.png'"
-              width="50"
-              height="50"
-            />
-            <div>
-              <p class="font-poppins font-semibold text-blue">
-                {{ faculty.first_name }} {{ faculty.middle_name[0] }}.
-                {{ faculty.last_name }} {{ faculty.ext_name }}
-              </p>
-              <small class="leading-normal">{{ faculty.email }}</small>
-            </div>
-          </div>
-        <p class="text-blue font-bold">{{ faculty.college_abbrev }}</p>
-        <p>{{ faculty.teaching_position }}</p>
-        <div class="flex justify-between w-full">
-          <p>
-            {{ faculty.employment_status == 1 ? "Full-Time" : "Part-Time" }}
+    @if ((facultyMembers$ | async)?.length) { @for (faculty of facultyMembers$ |
+    async; track faculty.first_name) {
+    <div
+      class="col-span-4 grid-cols-subgrid grid items-center border-l-4 justify-items-start gap-3 py-1 transition hover:translate-x-1 hover:bg-gray-200 hover:duration-300 duration-300 1"
+    >
+      <div class="flex items-center gap-3">
+        <img
+          [src]="port + faculty.profile_image"
+          alt="ains"
+          class="aspect-square rounded-full"
+          onerror="this.onerror=null; this.src='../../../../assets/profiles/user.png'"
+          width="50"
+          height="50"
+        />
+        <div>
+          <p class="font-poppins font-semibold text-blue">
+            {{ faculty.first_name }} {{ faculty.middle_name[0] }}.
+            {{ faculty.last_name }} {{ faculty.ext_name }}
           </p>
-          <button mat-button [matMenuTriggerFor]="menu"
-          class=" hover:bg-none cursor-pointer w-[40px]">
-            <i class="fa-solid fa-ellipsis-vertical"></i>
-          </button>
-          <mat-menu #menu="matMenu">
-            <ng-template matMenuContent>
+          <small class="leading-normal">{{ faculty.email }}</small>
+        </div>
+      </div>
+      <p class="text-blue font-bold">{{ faculty.college_abbrev }}</p>
+      <p>{{ faculty.teaching_position }}</p>
+      <div class="flex justify-between w-full">
+        <p>
+          {{ faculty.employment_status == 1 ? "Full-Time" : "Part-Time" }}
+        </p>
+        <button
+          mat-button
+          [matMenuTriggerFor]="menu"
+          class="hover:bg-none cursor-pointer w-[40px]"
+        >
+          <i class="fa-solid fa-ellipsis-vertical"></i>
+        </button>
+        <mat-menu #menu="matMenu">
+          <ng-template matMenuContent>
             <button mat-menu-item>Reset Password</button>
             <button mat-menu-item (click)="editFaculty(faculty)">Edit</button>
-            <button mat-menu-item (click)="deleteForm(faculty.faculty_ID)">Delete</button>
+            <button mat-menu-item (click)="deleteForm(faculty.faculty_ID)">
+              Delete
+            </button>
             <!-- <button mat-menu-item (click)="deleteFaculty(faculty.id)">Delete</button> -->
-            </ng-template>
-          </mat-menu>
-        </div>
+          </ng-template>
+        </mat-menu>
       </div>
-      } @empty {
-          <i class="fa-regular fa-folder-open col-span-4 place-self-center text-9xl text-gray-300"></i>
-          <h4 class="col-span-4 place-self-center text-2xl font-bold text-gray-400"> No Result :</h4>
-      }
-    } @else {
+    </div>
+    } @empty {
+    <i
+      class="fa-regular fa-folder-open col-span-4 place-self-center text-9xl text-gray-300"
+    ></i>
+    <h4 class="col-span-4 place-self-center text-2xl font-bold text-gray-400">
+      No Result :
+    </h4>
+    } } @else {
 
-      <div role="status" class="max-w-sm animate-pulse col-span-4 grid-cols-subgrid grid items-center border-l-4 justify-items-start gap-5 p-1">
-        <div class="flex items-center gap-3 w-full">
-          <div class="w-[50px] aspect-square bg-gray-200 rounded-full"></div>
-          <div class=" w-full flex flex-col gap-2">
-            <div class="h-3 bg-gray-200 rounded-full w-4/12"></div>
-            <div class="h-3 bg-gray-200 rounded-full w-8/12"></div>
-          </div>
+    <div
+      role="status"
+      class="max-w-sm animate-pulse col-span-4 grid-cols-subgrid grid items-center border-l-4 justify-items-start gap-5 p-1"
+    >
+      <div class="flex items-center gap-3 w-full">
+        <div class="w-[50px] aspect-square bg-gray-200 rounded-full"></div>
+        <div class="w-full flex flex-col gap-2">
+          <div class="h-3 bg-gray-200 rounded-full w-4/12"></div>
+          <div class="h-3 bg-gray-200 rounded-full w-8/12"></div>
         </div>
-        <div class="h-4 bg-gray-200 rounded-full w-1/6 "></div>
-        <div class="h-4 bg-gray-200 rounded-full w-2/6 "></div>
-        <div class="h-4 bg-gray-200 rounded-full w-1/3"></div>
-        <span class="sr-only">Loading...</span>
       </div>
+      <div class="h-4 bg-gray-200 rounded-full w-1/6"></div>
+      <div class="h-4 bg-gray-200 rounded-full w-2/6"></div>
+      <div class="h-4 bg-gray-200 rounded-full w-1/3"></div>
+      <span class="sr-only">Loading...</span>
+    </div>
 
-      <div role="status" class="max-w-sm animate-pulse col-span-4 grid-cols-subgrid grid items-center border-l-4 justify-items-start gap-5 p-1">
-        <div class="flex items-center gap-3 w-full">
-          <div class="w-[50px] aspect-square bg-gray-200 rounded-full"></div>
-          <div class=" w-full flex flex-col gap-2">
-            <div class="h-3 bg-gray-200 rounded-full w-4/12"></div>
-            <div class="h-3 bg-gray-200 rounded-full w-8/12"></div>
-          </div>
+    <div
+      role="status"
+      class="max-w-sm animate-pulse col-span-4 grid-cols-subgrid grid items-center border-l-4 justify-items-start gap-5 p-1"
+    >
+      <div class="flex items-center gap-3 w-full">
+        <div class="w-[50px] aspect-square bg-gray-200 rounded-full"></div>
+        <div class="w-full flex flex-col gap-2">
+          <div class="h-3 bg-gray-200 rounded-full w-4/12"></div>
+          <div class="h-3 bg-gray-200 rounded-full w-8/12"></div>
         </div>
-        <div class="h-4 bg-gray-200 rounded-full w-1/6 "></div>
-        <div class="h-4 bg-gray-200 rounded-full w-2/6 "></div>
-        <div class="h-4 bg-gray-200 rounded-full w-1/3"></div>
-        <span class="sr-only">Loading...</span>
       </div>
+      <div class="h-4 bg-gray-200 rounded-full w-1/6"></div>
+      <div class="h-4 bg-gray-200 rounded-full w-2/6"></div>
+      <div class="h-4 bg-gray-200 rounded-full w-1/3"></div>
+      <span class="sr-only">Loading...</span>
+    </div>
 
-      <div role="status" class="max-w-sm animate-pulse col-span-4 grid-cols-subgrid grid items-center border-l-4 justify-items-start gap-5 p-1">
-        <div class="flex items-center gap-3 w-full">
-          <div class="w-[50px] aspect-square bg-gray-200 rounded-full"></div>
-          <div class=" w-full flex flex-col gap-2">
-            <div class="h-3 bg-gray-200 rounded-full w-4/12"></div>
-            <div class="h-3 bg-gray-200 rounded-full w-8/12"></div>
-          </div>
+    <div
+      role="status"
+      class="max-w-sm animate-pulse col-span-4 grid-cols-subgrid grid items-center border-l-4 justify-items-start gap-5 p-1"
+    >
+      <div class="flex items-center gap-3 w-full">
+        <div class="w-[50px] aspect-square bg-gray-200 rounded-full"></div>
+        <div class="w-full flex flex-col gap-2">
+          <div class="h-3 bg-gray-200 rounded-full w-4/12"></div>
+          <div class="h-3 bg-gray-200 rounded-full w-8/12"></div>
         </div>
-        <div class="h-4 bg-gray-200 rounded-full w-1/6 "></div>
-        <div class="h-4 bg-gray-200 rounded-full w-2/6 "></div>
-        <div class="h-4 bg-gray-200 rounded-full w-1/3"></div>
-        <span class="sr-only">Loading...</span>
       </div>
+      <div class="h-4 bg-gray-200 rounded-full w-1/6"></div>
+      <div class="h-4 bg-gray-200 rounded-full w-2/6"></div>
+      <div class="h-4 bg-gray-200 rounded-full w-1/3"></div>
+      <span class="sr-only">Loading...</span>
+    </div>
 
     }
-
   </div>
 </section>

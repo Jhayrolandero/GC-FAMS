@@ -2,9 +2,41 @@ input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
-    transition: background-color 5000s ease-in-out 0s;
+  transition: background-color 5000s ease-in-out 0s;
 }
 
-.hide{
-    display:none
+.hide {
+  display: none;
+}
+
+#GCFAMSTitle {
+  animation: titleIntro 1s ease-out 1 normal forwards;
+}
+
+@keyframes titleIntro {
+  0% {
+    opacity: 0;
+    transform: translateX(-250px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+#GCFAMSLogo {
+  animation: logoIntro 1s ease-out 1 normal forwards;
+}
+
+@keyframes logoIntro {
+  0% {
+    opacity: 0;
+    transform: translateY(250px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

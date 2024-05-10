@@ -5,6 +5,7 @@ import { AttendeeState } from "../../services/Interfaces/attendeeState";
 import { create } from "domain";
 import { AttendedState } from "../../services/Interfaces/attendedState";
 import { Dictionary } from "../../services/Interfaces/dictionary";
+
 export const initialAttendeeNumberState: AttendeeNumberState = {
   isLoading: false,
   attendees: {},
@@ -44,7 +45,7 @@ export const attendedReducer = createReducer(
   on(AttendeeActions.setAttendedLoading, (state, action) => ({
     ...state,
     isLoading: action.status,
-  })),
+  }))
 )
 
 

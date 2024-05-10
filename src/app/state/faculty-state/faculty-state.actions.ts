@@ -98,13 +98,4 @@ export const loadCourseFailure = createAction(
   props<{ error: string }>()
 );
 
-
-export const loadCommex = createAction('[Commex Global] Load Commex');
-export const loadCommexSuccess = createAction(
-  '[Commex Global] Commex Load Success',
-  props<{ commex: CommunityExtension[] }>()
-);
-export const loadCommexFailure = createAction(
-  '[Commex Global] Commex Load Failed',
-  props<{ error: string }>()
-);
+export const flushProfileState = createAction('[Profile Global] Flush Profile');

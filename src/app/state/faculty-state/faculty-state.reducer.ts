@@ -105,12 +105,5 @@ export const profileReducer = createReducer(
     ...state,
     courses: courses
   })),
-  on(CertActions.loadCourseFailure, (state) => ({ ...state, })),
-
-  on(CertActions.loadCommex, (state) => ({ ...state })),
-  on(CertActions.loadCommexSuccess, (state, { commex }) => ({
-    ...state,
-    commex: commex
-  })),
-  on(CertActions.loadCommexFailure, (state) => ({ ...state, })),
+  on(CertActions.loadCourseFailure, (state) => ({ ...state, }))
 )

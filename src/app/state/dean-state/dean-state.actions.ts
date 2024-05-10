@@ -15,6 +15,9 @@ import { College } from "../../services/Interfaces/college";
 import { ExpertiseFaculty } from "../../services/Interfaces/expertise-faculty";
 
 export const loadCollege = createAction('[College Global] Load College');
+export const flushCollege = createAction('[College Global] Flush College');
+
+
 export const loadCollegeSuccess = createAction(
     '[College Global] College Load Success',
     props<{ colleges: College[] }>()

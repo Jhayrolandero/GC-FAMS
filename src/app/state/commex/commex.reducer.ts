@@ -67,7 +67,7 @@ export const commexReducer = createReducer(
       deleteLoading: false,
       error: action.error
     }
-  )),
+  ))
 )
 
 export const collegeCommexReducer = createReducer(
@@ -104,7 +104,7 @@ export const collegeCommexReducer = createReducer(
       ...state,
       deleteLoading: true,
     }
-  )),
+  ))
 )
 
 
