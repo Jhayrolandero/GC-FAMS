@@ -86,20 +86,6 @@ export class EvaluationForm {
   }
 
   submitForm() {
-    //Proceed to next semester or year
-    // if (this.data.sem == 1) {
-    //   this.evalForm.patchValue({
-    //     semester: '2',
-    //     evaluation_year: (this.data.year) + ''
-    //   });
-    // }
-    // else {
-    //   this.evalForm.patchValue({
-    //     semester: '1',
-    //     evaluation_year: ((+this.data.year) + 1) + ""
-    //   })
-    // }
-
     console.log(this.evalForm);
     //Post request on form
     this.facultyRequest.postData(this.evalForm, "addEval").subscribe({

@@ -4,6 +4,7 @@ export interface Profile {
     college_name: string,
     college_abbrev:string,
     teaching_position: string,
+    teaching_level: string,
     isAdmin: boolean,
     first_name: string,
     last_name: string,

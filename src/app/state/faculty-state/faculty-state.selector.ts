@@ -48,6 +48,50 @@ export const selectMilestoneCount = createSelector(
   }
 );
 
+export const selectAttainmentTimeline = createSelector(
+  selectProfileState,
+  (state: ProfileState) => {
+      const floorYear = currentYear - 14;
+      let attainmentTimeline = [
+          Array.from({ length: 15 }, () => 0), 
+          Array.from({ length: 15 }, () => 0), 
+          Array.from({ length: 15 }, () => 0)
+      ];
+
+      state.certs[0].forEach(cert => {
+          const currYear = +(cert.accomplished_date+'').slice(0,4);
+          if(currYear >= floorYear){
+              attainmentTimeline[0][currYear - floorYear] += 1
+          }
+      })
+
+      state.commex.forEach(commex => {
+          const currYear = +commex.commex_date.slice(0,4);
+          if(currYear >= floorYear){
+              attainmentTimeline[1][currYear - floorYear] += 1
+          }
+      })
+
+      state.certs[0].forEach(cert => {
+          const currYear = +(cert.accomplished_date+'').slice(0,4);
+          if(currYear >= floorYear && cert.cert_type == "Completion"){
+              attainmentTimeline[2][currYear - floorYear] += 1
+          }
+      })
+
+      attainmentTimeline.map((arr, idx) => {
+          arr.map((x, index) => {
+              if(index < 14){
+                  attainmentTimeline[idx][index + 1] = (attainmentTimeline[idx][index + 1] + x)
+              }
+          })
+      })
+      
+
+      return attainmentTimeline;
+  }
+);
+
 
 export const selectAllProfile = createSelector(
   selectProfileState,
@@ -69,6 +113,19 @@ export const selectCertCount = createSelector(
   (state: ProfileState) => {
     let count = 0;
     state.certs[0].forEach(cert => {count += 1;})
+    return count;
+  }
+);
+
+export const selectSeminarCount = createSelector(
+  selectProfileState,
+  (state: ProfileState) => {
+    let count = 0;
+    state.certs[0].forEach(cert => {
+      if(cert.cert_type == 'Completion'){
+        count += 1;
+      }
+    })
     return count;
   }
 );
