@@ -5,13 +5,12 @@ import { selectAllProfile } from '../../state/faculty-state/faculty-state.select
 import { LoadingScreenComponent } from '../loading-screen/loading-screen.component';
 import { CommonModule } from '@angular/common';
 import { mainPort } from '../../app.component';
-import {MatIconModule} from '@angular/material/icon';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ProfileFormComponent } from './profile-form/profile-form.component';
 import { MatDialog } from '@angular/material/dialog';
-
+import { FormsErrorComponent } from '../../admin/manage-faculty/forms-error/forms-error.component';
 @Component({
   selector: 'app-manage-profile',
   standalone: true,
@@ -20,7 +19,10 @@ import { MatDialog } from '@angular/material/dialog';
     CommonModule,
     MatFormFieldModule,
     MatInputModule,
-    ProfileFormComponent
+    ProfileFormComponent,
+    FormsModule,
+    ReactiveFormsModule,
+    FormsErrorComponent
   ],
   templateUrl: './manage-profile.component.html',
   styleUrl: './manage-profile.component.css'
@@ -31,9 +33,62 @@ export class ManageProfileComponent {
   constructor(
     private profileStore: Store<{ profile: ProfileState }>,
     public dialog: MatDialog
-  ) {}
+  ) {
 
-  public facultyProfile$ = this.profileStore.select(selectAllProfile);
+    try {
+
+      this.facultyProfile$.subscribe({
+        next: res => {
+          this.facultyInfo.patchValue({
+            first_name: res!.first_name,
+            last_name: res!.last_name,
+            birthdate: res!.birthdate,
+            age: res!.age,
+            citizenship: res!.citizenship,
+            civil_status: res!.civil_status,
+            sex: res!.sex,
+            email: res!.email,
+            phone_number: res!.phone_number,
+            middle_name: res!.middle_name,
+            ext_name: res!.ext_name,
+            region: res!.region,
+            province: res!.province,
+            language: res!.language,
+            city: res!.city,
+            barangay: res!.barangay,
+            // password: res!.password
+          })
+        }
+      })
+    } catch {
+
+      this.facultyProfile$.subscribe({
+        next: res => {
+          this.facultyInfo.patchValue({
+            first_name: res!.first_name,
+            last_name: res!.last_name,
+            birthdate: res!.birthdate,
+            age: res!.age,
+            citizenship: res!.citizenship,
+            civil_status: res!.civil_status,
+            sex: res!.sex,
+            email: res!.email,
+            phone_number: res!.phone_number,
+            middle_name: res!.middle_name,
+            ext_name: res!.ext_name,
+            region: res!.region,
+            province: res!.province,
+            language: res!.language,
+            city: res!.city,
+            barangay: res!.barangay,
+            // password: res!.password
+          })
+        }
+      })
+    }
+  }
+
+  facultyProfile$ = this.profileStore.select(selectAllProfile);
 
 
   facultyInfo = new FormGroup({
@@ -45,7 +100,7 @@ export class ManageProfileComponent {
       Validators.required,
       Validators.pattern('[a-zA-Z ]*')
     ]),
-    birthdate: new FormControl('', [
+    birthdate: new FormControl(new Date(), [
       Validators.required,
     ]),
     age: new FormControl<string | number>('', [
@@ -103,4 +158,9 @@ export class ManageProfileComponent {
       data : {image}
     });
     }
+
+    formControl(form:string) {
+      return this.facultyInfo.get(form);
+    }
+
 }
