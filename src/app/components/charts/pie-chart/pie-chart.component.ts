@@ -1,5 +1,6 @@
 import { Component, ElementRef, Input, OnInit, SimpleChanges, ViewChild } from '@angular/core';
-import { Chart } from 'chart.js/auto';
+import { Chart, registerables } from 'chart.js';
+Chart.register(...registerables);
 
 @Component({
   selector: 'app-pie-chart',
@@ -11,7 +12,7 @@ import { Chart } from 'chart.js/auto';
 export class PieChartComponent {
   public chart: any;
   public chartId: string = `doughnut-${Math.random().toString(36).substr(2, 9)}`;
-  @ViewChild('pieChartCanvas') private pieChartCanvas!: ElementRef<HTMLCanvasElement>;
+  @ViewChild('pieChartCanvas', {static: true}) private pieChartCanvas!: ElementRef<HTMLCanvasElement>;
 
   @Input() data: number[] = [];
   @Input() labels: string[] = [];

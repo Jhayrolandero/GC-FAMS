@@ -118,7 +118,7 @@ export class DeanEffects {
 
   loadCommex$ = createEffect(() => this.actions$.pipe(
     ofType(CvActions.loadCollegeCommex),
-    switchMap(() => this.facultyService.fetchData<Encryption>('getcommex/1?t=college')
+    switchMap(() => this.facultyService.fetchData<Encryption>('getcommex/?t=college')
       .pipe(
         map((data) => CvActions.loadCollegeCommexSuccess({ commex: this.decryptData<CommunityExtension[]>(data) })),
         catchError((error) => of(CvActions.loadCollegeCommexFailure({ error })))

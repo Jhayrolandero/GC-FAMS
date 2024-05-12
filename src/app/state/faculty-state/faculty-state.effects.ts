@@ -94,7 +94,7 @@ export class CvEffects {
 
   loadCommex$ = createEffect(() => this.actions$.pipe(
     ofType(CvActions.loadCommex),
-    switchMap(() => this.facultyService.fetchData<Encryption>('getcommex/1?t=faculty')
+    switchMap(() => this.facultyService.fetchData<Encryption>('getcommex/?t=faculty')
       .pipe(
         map((data) => CvActions.loadCommexSuccess({ commex: this.decryptData<CommunityExtension[]>(data) })),
         catchError((error) => of(CvActions.loadCommexFailure({ error })))

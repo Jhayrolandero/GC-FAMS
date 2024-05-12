@@ -11,6 +11,7 @@
   age: number,
   citizenship: string,
   civil_status: string,
+  teaching_level: string,
   sex: string,
   college_abbrev: string,
   email: string, 

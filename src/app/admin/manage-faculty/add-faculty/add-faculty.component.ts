@@ -66,6 +66,7 @@ export class AddFacultyComponent {
         civil_status: this.editData?.civil_status,
         sex: this.editData?.sex,
         email: this.editData?.email,
+        teaching_level: this.editData?.teaching_level,
         phone_number: this.editData?.phone_number,
         middle_name: this.editData?.middle_name,
         ext_name: this.editData?.ext_name,
@@ -121,6 +122,9 @@ export class AddFacultyComponent {
     last_name: new FormControl('', [
       Validators.required,
       Validators.pattern('[a-zA-Z ]*')
+    ]),
+    teaching_level: new FormControl('', [
+      Validators.required
     ]),
     birthdate: new FormControl('', [
       Validators.required,
@@ -196,6 +200,7 @@ export class AddFacultyComponent {
 
 
   setEmployment(value: number): void {
+    console.log(this.facultyInfo);
     this.facultyInfo.patchValue({
       employment_status: value
     })

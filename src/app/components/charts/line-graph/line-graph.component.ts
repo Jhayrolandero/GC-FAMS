@@ -1,5 +1,6 @@
 import { Component, ElementRef, Input, SimpleChanges, ViewChild } from '@angular/core';
-import { Chart } from 'chart.js/auto';
+import { Chart, registerables } from 'chart.js';
+Chart.register(...registerables);
 
 @Component({
   selector: 'app-line-graph',

@@ -12,7 +12,7 @@ import { Store, select } from '@ngrx/store';
 import { selectAllCollegeEduc, selectAllExistCerts, selectCollegeCommex } from '../../../state/dean-state/dean-state.selector';
 import { getCollegeCommex } from '../../../state/commex/commex.action';
 import { parsedCollegeCommexSelector } from '../../../state/commex/commex.selector';
-import { selectAllEduc } from '../../../state/faculty-state/faculty-state.selector';
+import { selectAllEduc, selectCommex, selectFacultyCerts } from '../../../state/faculty-state/faculty-state.selector';
 
 //Event object to display on hover
 interface Event {
@@ -54,12 +54,12 @@ export class FacultyMilestoneCalendarComponent implements OnInit{
           this.addEvent(new Date(educ.year_end), this.eventParser("Educational Attainment", educ.educ_title, educ.educ_school)))
       });
 
-      this.store.select(selectCollegeCommex).subscribe(data => {
+      this.store.select(selectCommex).subscribe(data => {
         data.forEach(commex =>
           this.addEvent(new Date(commex.commex_date), this.eventParser("Community Extension", commex.commex_title, "")))
       });
 
-      this.store.select(selectAllExistCerts).subscribe(data => {
+      this.store.select(selectFacultyCerts).subscribe(data => {
         data.forEach(certs =>
           this.addEvent(new Date(certs.accomplished_date), this.eventParser("Certifications", certs.cert_name, certs.cert_corporation))
         )
