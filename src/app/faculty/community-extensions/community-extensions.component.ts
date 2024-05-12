@@ -211,7 +211,8 @@ export class CommunityExtensionsComponent {
     private commexCollegeStore: Store<{ collegeCommexs: CommexState }>,
     private profileStore: Store<{ profile: ProfileState }>,
     private messageService: MessageService,
-    private cryptoJS: CryptoJSService
+    private cryptoJS: CryptoJSService,
+    private store: Store
 
   ) {
 
@@ -342,14 +343,12 @@ export class CommunityExtensionsComponent {
   }
 
   toggleView() {
-
-
     if (this.switch === 'faculty') {
       this.switch = 'college'
 
       this.profileCollege$.pipe(first()).subscribe(
         res => {
-          this.commexCollegeStore.dispatch(CommexActions.getCollegeCommex({ uri: `getcommex/${res?.college_ID}?t=college` }))
+          this.commexCollegeStore.dispatch(CommexActions.getCollegeCommex({ uri: `getcommex/?t=college` }))
         }
       )
       this.commexs$ = this.commexCollegeStore.pipe(select(CommexsSelector.parsedCollegeCommexSelector))
@@ -359,6 +358,7 @@ export class CommunityExtensionsComponent {
       // this.attendedFetch()
     } else {
       this.switch = 'faculty'
+      this.store.dispatch(CommexActions.getCommex());
       this.commexs$ = this.commexFacultyStore.pipe(select(CommexsSelector.parsedCommexSelector))
       this.isLoading$ = this.commexFacultyStore.pipe(select(CommexsSelector.isLoadingSelector))
       this.latestCommex$ = this.commexFacultyStore.pipe(select(CommexsSelector.latestCommexSelector))
@@ -396,9 +396,9 @@ export class CommunityExtensionsComponent {
   }
 
   leaveCommex(commex_ID: number) {
-    this.attendeeStore.dispatch(AttendeeActions.leaveCommex({ commex_ID: commex_ID, faculty_ID: this.profileFacultyID }))
+    this.attendeeStore.dispatch(AttendeeActions.leaveCommex({ commex_ID: commex_ID}))
     // reset the attendees to fetch new
-    delete this.attendees[commex_ID]
+    this.store.dispatch(CommexActions.getCommex());
   }
 
   attendCommex(commex_ID: number) {
@@ -416,17 +416,18 @@ export class CommunityExtensionsComponent {
     attendCommex.append("attendees[]", JSON.stringify(attendeeForm))
     this.attendeeStore.dispatch(AttendeeActions.joinCommex({ commex_ID: commex_ID, formData: attendCommex }))
     // reset the attendees to fetch new
-    delete this.attendees[commex_ID]
-
   }
 
 
   openConfirm(commex_ID: number): void {
-    this.dialog.open(ConfirmDeleteComponent, {
+    let deleteDialog = this.dialog.open(ConfirmDeleteComponent, {
       data: { commex_ID, view: this.switch },
     });
   }
 }
+
+
+
 @Component({
   selector: 'confirm-delete',
   templateUrl: 'confirm-delete.component.html',
@@ -461,5 +462,6 @@ export class ConfirmDeleteComponent {
 
   deleteCommex() {
     this.commexFacultyStore.dispatch(CommexActions.deleteCommex({ commex_ID: this.data.commex_ID, view: this.data.view }))
+    this.onNoClick();
   }
 }

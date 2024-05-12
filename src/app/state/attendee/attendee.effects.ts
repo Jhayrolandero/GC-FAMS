@@ -13,6 +13,7 @@ import { CryptoJSService } from "../../services/crypto-js.service";
 import { FacultyRequestService } from "../../services/faculty/faculty-request.service";
 import * as AttendeeActions from "./attendee.action";
 import { attendedSelector, attendeeNumberSelector } from "./attendee.selector";
+import { NumberCardComponent } from "@swimlane/ngx-charts";
 @Injectable()
 
 
@@ -44,8 +45,8 @@ export class AttendeeEffects {
     return this.facultyService.fetchData<Encryption>(`attendee/${commex_ID}?q=check`)
   }
 
-  leaveCommex$ = (commex_ID: number, faculty_ID: number) => {
-    return this.facultyService.deleteData(`attendee/${faculty_ID}/commex/${commex_ID}`)
+  leaveCommex$ = (commex_ID: number) => {
+    return this.facultyService.deleteData(`attendee/${commex_ID}`)
   }
 
   joinCommex$ = (formData: FormData) => {
@@ -70,7 +71,7 @@ export class AttendeeEffects {
   deleteAttendee = createEffect(() => this.actions$.pipe(
     ofType(AttendeeActions.leaveCommex),
     mergeMap((action) => {
-      return this.leaveCommex$(action.commex_ID, action.faculty_ID).pipe(
+      return this.leaveCommex$(action.commex_ID).pipe(
         map(() => {
           this.attendeeStore.dispatch(AttendeeActions.getAttendedSuccess({ attended: { [action.commex_ID]: 0 } }))
           return AttendeeActions.leaveCommexSuccess({ commex_ID: action.commex_ID })
