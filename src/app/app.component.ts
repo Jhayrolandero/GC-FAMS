@@ -12,7 +12,9 @@ export class AppComponent {
   title = 'GC-FaMS';
 }
 //PARA ISAHANG CHANGE NALANG NG LOCALHOST SA LAHAT NG HTTP REQUESTS
-export const mainPort = "https://gcfams.com/";
+// export const mainPort = "https://gcfams.com/";
+export const mainPort = "http://localhost/GC-FaMS-API";
 // export const mainPort = "https://gc-fams.000webhostapp.com";
 
 
+``
