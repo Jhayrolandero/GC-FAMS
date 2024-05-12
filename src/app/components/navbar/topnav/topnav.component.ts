@@ -1,5 +1,5 @@
-import { Component, EventEmitter, OnInit, Output, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { mainPort } from '../../../app.component';
 import { CommonModule } from '@angular/common';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog'
@@ -9,11 +9,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { selectAllProfile } from '../../../state/faculty-state/faculty-state.selector';
 import { Store } from '@ngrx/store';
 import { AuthService } from '../../../services/auth.service';
-import { flushCollege } from '../../../state/dean-state/dean-state.actions';
-import { flushCollegeCommexState, flushCommexState } from '../../../state/commex/commex.action';
-import { flushProfileState } from '../../../state/faculty-state/faculty-state.actions';
-import { FlushAttended, FlushAttendee, FlushAttendeeNumber } from '../../../state/attendee/attendee.action';
 import { logOut } from '../../../state/logout.action';
+
 
 @Component({
   selector: 'app-topnav',
@@ -21,21 +18,31 @@ import { logOut } from '../../../state/logout.action';
   imports: [CommonModule,
     MatInputModule,
     MatSelectModule,
-    MatFormFieldModule],
+    MatFormFieldModule,
+    RouterModule
+  ],
   templateUrl: './topnav.component.html',
   styleUrl: './topnav.component.css'
 })
 export class TopnavComponent {
+
+  @Input("path") path:string = ""
   dropToggle = false;
   isLoading: boolean = false;
   port = mainPort
   public facultyProfile$ = this.store.select(selectAllProfile);
-
+  accountPath: string;
+  isFaculty: boolean;
 
   constructor(
+    private route: ActivatedRoute,
     private store: Store,
     public dialog: MatDialog,
-    private router: Router) { }
+    private router: Router) {
+
+      this.accountPath = this.route.snapshot.url[0].path;
+      this.isFaculty = this.accountPath === "faculty";
+    }
 
   triggerToggle() {
     this.setToggle.emit();

@@ -1,29 +1,27 @@
 <mat-sidenav-container class="example-container flex w-[100%] h-[100%]">
-
-  <mat-sidenav #sidenav
-  [mode]="screenSize === 'XSmall' ? 'over': 'side'"
-  [opened]="screenSize === 'XSmall' ? false : opened"
-  [fixedInViewport]="options.value.fixed"
-  [fixedTopGap]="options.value.top"
-  [fixedBottomGap]="options.value.bottom"
+  <mat-sidenav
+    #sidenav
+    [mode]="screenSize === 'XSmall' ? 'over' : 'side'"
+    [opened]="screenSize === 'XSmall' ? false : opened"
+    [fixedInViewport]="options.value.fixed"
+    [fixedTopGap]="options.value.top"
+    [fixedBottomGap]="options.value.bottom"
   >
-
-  <div
-  class="w-[130px] h-full"
-  >
-  <app-sidebar></app-sidebar>
-
-  </div>
-
+    <div class="w-[130px] h-full">
+      <app-sidebar></app-sidebar>
+    </div>
   </mat-sidenav>
 
   <mat-sidenav-content>
     <div class="flex flex-col w-full bg-[#EEEEEE]">
-      <app-topnav (setToggle)="sidenav.toggle()"></app-topnav>
+      <app-topnav
+        (setToggle)="sidenav.toggle()"
+        [path]="'faculty'"
+      ></app-topnav>
       <div>
         <router-outlet></router-outlet>
       </div>
     </div>
-    <app-message></app-message>
-  </mat-sidenav-content>+
+    <app-message></app-message> </mat-sidenav-content
+  >+
 </mat-sidenav-container>

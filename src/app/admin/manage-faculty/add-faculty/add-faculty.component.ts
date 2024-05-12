@@ -23,10 +23,10 @@ import { Faculty } from '../../../services/Interfaces/faculty';
     templateUrl: './add-faculty.component.html',
     styleUrl: './add-faculty.component.css',
     imports: [
-      GcBoxComponent, 
-      LoadingScreenComponent, 
-      EmployeeTypeComponent, 
-      EmployeePositionComponent, 
+      GcBoxComponent,
+      LoadingScreenComponent,
+      EmployeeTypeComponent,
+      EmployeePositionComponent,
       FormsErrorComponent,
       CommonModule,
       FormsErrorComponent,
@@ -87,7 +87,6 @@ export class AddFacultyComponent {
       this.coverURL = this.editData?.cover_image !== 'null' ? this.editData?.cover_image : undefined
       console.log(this.coverURL)
     } else {
-
       this.facultyInfo.get('email')?.enable();
     }
   }

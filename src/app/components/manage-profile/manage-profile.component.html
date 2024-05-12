@@ -1,0 +1,315 @@
+<app-loading-screen
+  *ngIf="!(facultyProfile$ | async) as facultyProfile"
+></app-loading-screen>
+<div
+  *ngIf="facultyProfile$ | async as facultyProfile"
+  class="p-5 flex flex-col max-w-full flex-initial gap-3 text-blue overflow-x-hidden"
+  id="mainPage"
+>
+  <div
+    class="min-w-mobileL w-full bg-white rounded-[15px] overflow-hidden shadow-main"
+  >
+    <!-- IMAGE AND COVER -->
+    <div class="w-full">
+      <div class="h-[210px] w-full flex justify-center tablet:block relative">
+        <div
+          class="rounded-full ml-0 absolute tablet:ml-7 bg-greenBar max-h-[210px] max-w-[210px] overflow-hidden border-[5px] border-white"
+        >
+          <img
+            [src]="port + facultyProfile.profile_image"
+            onerror="this.onerror=null; this.src='../../../assets/profiles/user.png'"
+          />
+        </div>
+        <button
+          class="absolute right-2 top-2 bg-white px-2 py-1 rounded-full"
+          (click)="openDialog('cover')"
+        >
+          <i class="fa-solid fa-pen"></i>
+        </button>
+        <div class="w-full h-[180px] overflow-hidden flex items-center">
+          <img
+            class="w-full"
+            [src]="port + facultyProfile.cover_image"
+            onerror="this.onerror=null; this.src='../../../assets/profiles/cover.jpg'"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="flex flex-col justify-center tablet:flex-row tablet:justify-between"
+    >
+      <p
+        class="mobileS:text-[1.5rem] tablet:text-[2rem] text-center tablet:text-start font-Poppins font-semibold ml-0 tablet:ml-7 mt-1 mb-2"
+      ></p>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-[15px] p-4">
+    <form action="" class="grid grid-cols-5 gap-2 auto-cols-max auto-rows-max">
+      <h4 class="col-span-5 text-2xl mb-4">Personal Information</h4>
+
+      <div class="relative z-0 w-full mb-5 group col-span-5 tablet:col-span-2">
+        <input
+          type="email"
+          name="floating_email"
+          id="floating_email"
+          class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+          placeholder=" "
+          [value]="facultyProfile.email"
+          required
+        />
+        <label
+          for="floating_email"
+          class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+          >Email address</label
+        >
+      </div>
+      <div class="relative z-0 w-full mb-5 group col-span-5 tablet:col-span-2">
+        <input
+          type="text"
+          name="floating_email"
+          id="floating_email"
+          class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+          [value]="facultyProfile.phone_number"
+          placeholder=" "
+          required
+        />
+        <label
+          for="floating_email"
+          class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+          >Phone Number</label
+        >
+      </div>
+      <div class="relative z-0 w-full mb-5 group col-span-5 tablet:col-span-1">
+        <input
+          type="date"
+          name="floating_email"
+          id="floating_email"
+          class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+          placeholder=" "
+          [value]="facultyProfile.birthdate"
+          required
+        />
+        <label
+          for="floating_email"
+          class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+          >Birthdate</label
+        >
+      </div>
+      <div class="col-span-5 flex flex-row gap-2 flex-wrap">
+        <div class="relative z-0 w-full mb-5 group flex-1">
+          <input
+            type="text"
+            name="floating_email"
+            id="floating_email"
+            class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+            [value]="facultyProfile.last_name"
+            placeholder=" "
+            required
+          />
+          <label
+            for="floating_email"
+            class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            >Lastname</label
+          >
+        </div>
+        <div class="relative z-0 w-full mb-5 group flex-1">
+          <input
+            type="text"
+            name="floating_email"
+            id="floating_email"
+            class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+            [value]="facultyProfile.first_name"
+            placeholder=" "
+            required
+          />
+          <label
+            for="floating_email"
+            class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            >Firstname</label
+          >
+        </div>
+        <div class="relative z-0 w-full mb-5 group flex-1">
+          <input
+            type="text"
+            name="floating_email"
+            id="floating_email"
+            class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+            [value]="facultyProfile.middle_name"
+            placeholder=" "
+            required
+          />
+          <label
+            for="floating_email"
+            class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            >Middlename</label
+          >
+        </div>
+        <div class="relative z-0 w-full mb-5 group flex-1">
+          <input
+            type="text"
+            name="floating_email"
+            id="floating_email"
+            class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+            [value]="facultyProfile.ext_name"
+            placeholder=" "
+            required
+          />
+          <label
+            for="floating_email"
+            class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            >Ext. name</label
+          >
+        </div>
+      </div>
+      <div class="col-span-5 flex flex-row gap-2 flex-wrap">
+        <div class="relative z-0 w-full mb-5 group flex-1">
+          <input
+            type="text"
+            name="floating_email"
+            id="floating_email"
+            class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+            [value]="facultyProfile.region"
+            placeholder=" "
+            required
+          />
+          <label
+            for="floating_email"
+            class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            >Region</label
+          >
+        </div>
+        <div class="relative z-0 w-full mb-5 group flex-1">
+          <input
+            type="text"
+            name="floating_email"
+            id="floating_email"
+            class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+            [value]="facultyProfile.province"
+            placeholder=" "
+            required
+          />
+          <label
+            for="floating_email"
+            class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            >Province</label
+          >
+        </div>
+        <div class="relative z-0 w-full mb-5 group flex-1">
+          <input
+            type="text"
+            name="floating_email"
+            id="floating_email"
+            class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+            [value]="facultyProfile.city"
+            placeholder=" "
+            required
+          />
+          <label
+            for="floating_email"
+            class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            >City</label
+          >
+        </div>
+        <div class="relative z-0 w-full mb-5 group flex-1">
+          <input
+            type="text"
+            name="floating_email"
+            id="floating_email"
+            class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+            [value]="facultyProfile.barangay"
+            placeholder=" "
+            required
+          />
+          <label
+            for="floating_email"
+            class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            >Barangay</label
+          >
+        </div>
+      </div>
+
+      <div class="relative z-0 w-full mb-5 group col-span-5 tablet:col-span-1">
+        <input
+          type="text"
+          name="floating_email"
+          id="floating_email"
+          class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+          [value]="facultyProfile.sex"
+          placeholder=" "
+          required
+        />
+        <label
+          for="floating_email"
+          class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+          >Sex</label
+        >
+      </div>
+      <div class="relative z-0 w-full mb-5 group col-span-5 tablet:col-span-1">
+        <input
+          type="text"
+          name="floating_email"
+          id="floating_email"
+          class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+          [value]="facultyProfile.language"
+          placeholder=" "
+          required
+        />
+        <label
+          for="floating_email"
+          class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+          >Language</label
+        >
+      </div>
+      <div class="relative z-0 w-full mb-5 group col-span-5 tablet:col-span-1">
+        <input
+          type="text"
+          name="floating_email"
+          id="floating_email"
+          class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+          [value]="facultyProfile.citizenship"
+          placeholder=" "
+          required
+        />
+        <label
+          for="floating_email"
+          class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+          >Citizenship</label
+        >
+      </div>
+      <div class="relative z-0 w-full mb-5 group col-span-5 tablet:col-span-1">
+        <input
+          type="text"
+          name="floating_email"
+          id="floating_email"
+          class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+          [value]="facultyProfile.age"
+          placeholder=" "
+          required
+        />
+        <label
+          for="floating_email"
+          class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+          >Age</label
+        >
+      </div>
+      <div class="relative z-0 w-full mb-5 group col-span-5 tablet:col-span-1">
+        <input
+          type="text"
+          name="floating_email"
+          id="floating_email"
+          class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+          [value]="facultyProfile.civil_status"
+          placeholder=" "
+          required
+        />
+        <label
+          for="floating_email"
+          class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+          >Civil Status</label
+        >
+      </div>
+    </form>
+  </div>
+</div>

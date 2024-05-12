@@ -1,116 +1,182 @@
-<app-loading-screen *ngIf="!(facultyProfile$ | async) as facultyProfile"></app-loading-screen>
-<div *ngIf="facultyProfile$ | async as facultyProfile"
-    class="p-5 flex flex-col max-w-full flex-initial gap-3 text-blue overflow-x-hidden" id="mainPage">
-    <div class="min-w-mobileL w-full bg-white rounded-[15px] overflow-hidden shadow-main">
-        <!-- IMAGE AND COVER -->
-        <div class="w-full">
-            <div class="h-[210px] w-full flex justify-center tablet:block">
-                <div
-                    class="rounded-full ml-0 absolute tablet:ml-7 bg-greenBar max-h-[210px] max-w-[210px] overflow-hidden border-[5px] border-white">
-                    <img [src]="port + facultyProfile.profile_image"
-                        onerror="this.onerror=null; this.src='../../../assets/profiles/user.png'" />
-                </div>
-                <div class="w-full h-[180px] overflow-hidden flex items-center">
-                    <img class="w-full" [src]="port + facultyProfile.cover_image"
-                        onerror="this.onerror=null; this.src='../../../assets/profiles/cover.jpg'" />
-                </div>
-            </div>
+<app-loading-screen
+  *ngIf="!(facultyProfile$ | async) as facultyProfile"
+></app-loading-screen>
+<div
+  *ngIf="facultyProfile$ | async as facultyProfile"
+  class="p-5 flex flex-col max-w-full flex-initial gap-3 text-blue overflow-x-hidden"
+  id="mainPage"
+>
+  <div
+    class="min-w-mobileL w-full bg-white rounded-[15px] overflow-hidden shadow-main"
+  >
+    <!-- IMAGE AND COVER -->
+    <div class="w-full">
+      <div class="h-[210px] w-full flex justify-center tablet:block">
+        <div
+          class="rounded-full ml-0 absolute tablet:ml-7 bg-greenBar max-h-[210px] max-w-[210px] overflow-hidden border-[5px] border-white"
+        >
+          <img
+            [src]="port + facultyProfile.profile_image"
+            onerror="this.onerror=null; this.src='../../../assets/profiles/user.png'"
+          />
         </div>
-
-        <div class="flex flex-col justify-center tablet:flex-row tablet:justify-between">
-            <p
-                class="mobileS:text-[1.5rem] tablet:text-[2rem] text-center tablet:text-start font-Poppins font-semibold ml-0 tablet:ml-7 mt-1 mb-2">
-                {{ facultyProfile.first_name }} {{ facultyProfile.last_name }}
-            </p>
+        <div
+          class="w-full h-[180px] overflow-hidden flex items-center relative z-10"
+        >
+          <img
+            class="w-full z-30"
+            [src]="port + facultyProfile.cover_image"
+            onerror="this.onerror=null; this.src='../../../assets/profiles/cover.jpg'"
+          />
+          <button class="absolute bottom-0 right-5">Edit</button>
         </div>
-</div>
+      </div>
+    </div>
 
-<div (click)="getCv()"
-    class="shadow-main bg-white rounded-[15px] overflow-hidden hover:scale-[101%] hover:text-white hover:bg-blue hover:duration-300 duration-300 select-none flex flex-col justify-center items-center">
+    <div
+      class="flex flex-col justify-center tablet:flex-row tablet:justify-between"
+    >
+      <p
+        class="mobileS:text-[1.5rem] tablet:text-[2rem] text-center tablet:text-start font-Poppins font-semibold ml-0 tablet:ml-7 mt-1 mb-2"
+      >
+        {{ facultyProfile.first_name }} {{ facultyProfile.last_name }}
+      </p>
+    </div>
+  </div>
+
+  <div
+    (click)="getCv()"
+    class="shadow-main bg-white rounded-[15px] overflow-hidden hover:scale-[101%] hover:text-white hover:bg-blue hover:duration-300 duration-300 select-none flex flex-col justify-center items-center"
+  >
     <p class="text-[1.5rem] font-Poppins font-semibold">Generate CV</p>
-</div>
+  </div>
 
-<div class="flex flex-col laptop:flex-row gap-4">
-    <div class="hidden laptop:flex laptop:w-[200px] p-5 items-center bg-white rounded-[15px] shadow-main">
-        <img class="" src="../../../assets/college-logo-big/CCS.png" />
+  <div class="flex flex-col laptop:flex-row gap-4">
+    <div
+      class="hidden laptop:flex laptop:w-[200px] p-5 items-center bg-white rounded-[15px] shadow-main"
+    >
+      <img class="" src="../../../assets/college-logo-big/CCS.png" />
     </div>
 
-    <div class="bg-white rounded-[15px] shadow-main flex flex-col tablet:flex-row p-5">
-        <div class="mr-[50px]">
-            <p class="font-Poppins font-semibold text-[1.6rem]">Personal</p>
-            <hr class="h-[2px] bg-mainGray" />
-            <div class="flex flex-row">
-                <div class="font-Roboto font-bold mr-10 text-black [&_p]:my-2">
-                    <p>Birthdate</p>
-                    <p>Age</p>
-                    <p>Citizenship</p>
-                    <p>Civil Status</p>
-                    <p>Sex</p>
-                </div>
-                <div class="font-Roboto font-regular text-black [&_p]:my-2">
-                    <p>{{ facultyProfile.birthdate }}</p>
-                    <p>{{ facultyProfile.age }}</p>
-                    <p>{{ facultyProfile.citizenship }}</p>
-                    <p>{{ facultyProfile.civil_status }}</p>
-                    <p>{{ facultyProfile.sex }}</p>
-                </div>
-            </div>
+    <div
+      class="bg-white rounded-[15px] shadow-main flex flex-col tablet:flex-row p-5"
+    >
+      <div class="mr-[50px]">
+        <p class="font-Poppins font-semibold text-[1.6rem]">Personal</p>
+        <hr class="h-[2px] bg-mainGray" />
+        <div class="flex flex-row">
+          <div class="font-Roboto font-bold mr-10 text-black [&_p]:my-2">
+            <p>Birthdate</p>
+            <p>Age</p>
+            <p>Citizenship</p>
+            <p>Civil Status</p>
+            <p>Sex</p>
+          </div>
+          <div class="font-Roboto font-regular text-black [&_p]:my-2">
+            <p>{{ facultyProfile.birthdate }}</p>
+            <p>{{ facultyProfile.age }}</p>
+            <p>{{ facultyProfile.citizenship }}</p>
+            <p>{{ facultyProfile.civil_status }}</p>
+            <p>{{ facultyProfile.sex }}</p>
+          </div>
         </div>
-        <div class="">
-            <p class="font-Poppins font-semibold text-[1.6rem]">Contact</p>
-            <hr class="h-[2px] bg-mainGray" />
-            <p class="font-Roboto font-regular text-black my-2 text-[1.0rem]">
-                {{ facultyProfile.email }}
+      </div>
+      <div class="">
+        <p class="font-Poppins font-semibold text-[1.6rem]">Contact</p>
+        <hr class="h-[2px] bg-mainGray" />
+        <p class="font-Roboto font-regular text-black my-2 text-[1.0rem]">
+          {{ facultyProfile.email }}
+        </p>
+        <p class="font-Roboto font-regular text-black my-2 text-[1.0rem]">
+          09684949573
+        </p>
+      </div>
+    </div>
+
+    <div
+      class="bg-white rounded-[15px] shadow-main flex flex-1 flex-col tablet:flex-row p-5"
+    >
+      <div class="w-full">
+        <div class="flex flex-row justify-between">
+          <p class="text-[1.6rem] font-Roboto font-semibold">Courses Handled</p>
+          <div>
+            <div
+              (click)="openDialogue()"
+              class="w-[80px] h-[28px] rounded-[15px] bg-blue hover:shadow-main hover:scale-[102%] hover:duration-300 duration:300 flex justify-center items-center"
+            >
+              <svg
+                width="25"
+                height="25"
+                viewBox="0 0 30 31"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g clip-path="url(#clip0_984_350)">
+                  <path
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M11.25 6.75C11.25 6.08696 11.5134 5.45107 11.9822 4.98223C12.4511 4.51339 13.087 4.25 13.75 4.25H16.25C16.913 4.25 17.5489 4.51339 18.0178 4.98223C18.4866 5.45107 18.75 6.08696 18.75 6.75V11.75H23.75C24.413 11.75 25.0489 12.0134 25.5178 12.4822C25.9866 12.9511 26.25 13.587 26.25 14.25V16.75C26.25 17.413 25.9866 18.0489 25.5178 18.5178C25.0489 18.9866 24.413 19.25 23.75 19.25H18.75V24.25C18.75 24.913 18.4866 25.5489 18.0178 26.0178C17.5489 26.4866 16.913 26.75 16.25 26.75H13.75C13.087 26.75 12.4511 26.4866 11.9822 26.0178C11.5134 25.5489 11.25 24.913 11.25 24.25V19.25H6.25C5.58696 19.25 4.95107 18.9866 4.48223 18.5178C4.01339 18.0489 3.75 17.413 3.75 16.75V14.25C3.75 13.587 4.01339 12.9511 4.48223 12.4822C4.95107 12.0134 5.58696 11.75 6.25 11.75H11.25V6.75Z"
+                    fill="#FFFFFF"
+                  />
+                </g>
+                <defs>
+                  <clipPath id="clip0_984_350">
+                    <rect
+                      width="30"
+                      height="30"
+                      fill="white"
+                      transform="translate(0 0.5)"
+                    />
+                  </clipPath>
+                </defs>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="w-full rounded-[15px] bg-white flex flex-row px-5 py-2">
+          <p class="w-[20%] text-greenBar font-Roboto font-bold text-[0.9rem]">
+            Course Code
+          </p>
+          <p class="w-[60%] text-greenBar font-Roboto font-bold text-[0.9rem]">
+            Course Name
+          </p>
+          <p class="w-[10%] text-greenBar font-Roboto font-bold text-[0.9rem]">
+            Unit
+          </p>
+          <p class="w-[10%] text-greenBar font-Roboto font-bold text-[0.9rem]">
+            Count
+          </p>
+        </div>
+        <div class="grid gap-y-2 h-[150px] overflow-y-scroll">
+          <div
+            *ngFor="let cert of certFaculty$ | async"
+            class="w-full rounded-[10px] bg-blue shadow-main flex flex-row flex-initial px-5 py-[7px] select-none"
+          >
+            <p class="w-[20%] text-white font-Roboto font-medium text-[0.8rem]">
+              {{ cert.course_code }}
             </p>
-            <p class="font-Roboto font-regular text-black my-2 text-[1.0rem]">
-                09684949573
+            <p class="w-[60%] text-white font-Roboto font-medium text-[0.8rem]">
+              {{ cert.course_name }}
             </p>
+            <p class="w-[10%] text-white font-Roboto font-medium text-[0.8rem]">
+              {{ cert.unit }}
+            </p>
+            <p class="w-[10%] text-white font-Roboto font-medium text-[0.8rem]">
+              {{ cert.class_count }}
+            </p>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 
-    <div class="bg-white rounded-[15px] shadow-main flex flex-1 flex-col tablet:flex-row p-5">
-        <div class="w-full">
-            <div class="flex flex-row justify-between">
-                <p class="text-[1.6rem] font-Roboto font-semibold">Courses Handled</p>
-                <div>
-                    <div (click)="openDialogue()" class="w-[80px] h-[28px] rounded-[15px] bg-blue hover:shadow-main hover:scale-[102%] hover:duration-300 duration:300 flex justify-center items-center">
-                    <svg width="25" height="25" viewBox="0 0 30 31" fill="none" xmlns="http://www.w3.org/2000/svg" >
-                      <g clip-path="url(#clip0_984_350)">
-                        <path fill-rule="evenodd" clip-rule="evenodd" d="M11.25 6.75C11.25 6.08696 11.5134 5.45107 11.9822 4.98223C12.4511 4.51339 13.087 4.25 13.75 4.25H16.25C16.913 4.25 17.5489 4.51339 18.0178 4.98223C18.4866 5.45107 18.75 6.08696 18.75 6.75V11.75H23.75C24.413 11.75 25.0489 12.0134 25.5178 12.4822C25.9866 12.9511 26.25 13.587 26.25 14.25V16.75C26.25 17.413 25.9866 18.0489 25.5178 18.5178C25.0489 18.9866 24.413 19.25 23.75 19.25H18.75V24.25C18.75 24.913 18.4866 25.5489 18.0178 26.0178C17.5489 26.4866 16.913 26.75 16.25 26.75H13.75C13.087 26.75 12.4511 26.4866 11.9822 26.0178C11.5134 25.5489 11.25 24.913 11.25 24.25V19.25H6.25C5.58696 19.25 4.95107 18.9866 4.48223 18.5178C4.01339 18.0489 3.75 17.413 3.75 16.75V14.25C3.75 13.587 4.01339 12.9511 4.48223 12.4822C4.95107 12.0134 5.58696 11.75 6.25 11.75H11.25V6.75Z" fill="#FFFFFF"/>
-                      </g>
-                      <defs>
-                        <clipPath id="clip0_984_350">
-                          <rect width="30" height="30" fill="white" transform="translate(0 0.5)"
-                          />
-                        </clipPath>
-                      </defs>
-                    </svg>
-                  </div>
-                </div>
-            </div>
-
-            <div class="w-full rounded-[15px] bg-white flex flex-row px-5 py-2">
-                <p class="w-[20%] text-greenBar font-Roboto font-bold text-[0.9rem]">Course Code</p>
-                <p class="w-[60%] text-greenBar font-Roboto font-bold text-[0.9rem]">Course Name</p>
-                <p class="w-[10%] text-greenBar font-Roboto font-bold text-[0.9rem]">Unit</p>
-                <p class="w-[10%] text-greenBar font-Roboto font-bold text-[0.9rem]">Count</p>
-            </div>
-            <div class="grid gap-y-2 h-[150px]  overflow-y-scroll">
-                <div *ngFor="let cert of certFaculty$ | async" class="w-full rounded-[10px] bg-blue shadow-main flex flex-row flex-initial px-5 py-[7px] select-none">
-                    <p class="w-[20%] text-white font-Roboto font-medium text-[0.8rem]">{{ cert.course_code }}</p>
-                    <p class="w-[60%] text-white font-Roboto font-medium text-[0.8rem]">{{ cert.course_name }}</p>
-                    <p class="w-[10%] text-white font-Roboto font-medium text-[0.8rem]">{{ cert.unit }}</p>
-                    <p class="w-[10%] text-white font-Roboto font-medium text-[0.8rem]">{{ cert.class_count }}</p>
-                </div>
-            </div>
-
-        </div>
-    </div>
-</div>
-
-<div class="w-full flex flex-col">
+  <div class="w-full flex flex-col">
     <div class="w-full mr-2">
-        <app-cv-dropdown *ngFor="let comp of components" [name]="comp"></app-cv-dropdown>
+      <app-cv-dropdown
+        *ngFor="let comp of components"
+        [name]="comp"
+      ></app-cv-dropdown>
     </div>
-</div>
+  </div>
 </div>
