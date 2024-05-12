@@ -107,6 +107,14 @@ export const loadCommexFailure = createAction(
     '[Commex College Global] Commex Load Failed',
     props<{ error: string }>()
 );
+export const updateProfile = createAction(
+  '[Profile Global] Update Profile',
+  props<{filename: string, faculty_ID: number}>()
+)
+export const updateCover = createAction(
+  '[Profile Global] Update Cover',
+  props<{filename: string, faculty_ID: number}>()
+)
 
 
 export const flushProfileState = createAction('[Profile Global] Flush Profile');

@@ -105,5 +105,19 @@ export const profileReducer = createReducer(
     ...state,
     courses: courses
   })),
-  on(CertActions.loadCourseFailure, (state) => ({ ...state, }))
+  on(CertActions.loadCourseFailure, (state) => ({ ...state, })),
+  on(CertActions.updateProfile, (state, action) => ({
+    ...state,
+    profile: {
+      ...state.profile!,
+      profile_image: `/GC-FaMS-API/API/Controller/../../Image_Assets/Faculty_Profile/${action.faculty_ID}/${action.filename}`  // Update the profile_image property
+    }
+  })),
+  on(CertActions.updateCover, (state, action) => ({
+    ...state,
+    profile: {
+      ...state.profile!,
+      cover_image: `/GC-FaMS-API/API/Controller/../../Image_Assets/Faculty_Cover/${action.faculty_ID}/${action.filename}`  // Update the profile_image property
+    }
+  })),
 )
