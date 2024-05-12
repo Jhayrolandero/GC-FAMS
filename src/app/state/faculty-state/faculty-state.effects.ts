@@ -16,13 +16,17 @@ import { Project } from "../../services/Interfaces/project";
 import { CryptoJSService } from "../../services/crypto-js.service";
 import { FacultyRequestService } from "../../services/faculty/faculty-request.service";
 import * as CvActions from "./faculty-state.actions";
+import { CommunityExtension } from "../../services/Interfaces/community-extension";
+import { AuthService } from "../../services/auth.service";
 
 @Injectable()
 export class CvEffects {
+
   constructor(
     private actions$: Actions,
     private facultyService: FacultyRequestService,
-    private cryptoJS: CryptoJSService
+    private cryptoJS: CryptoJSService,
+    private auth: AuthService
   ) { }
 
 
@@ -84,6 +88,16 @@ export class CvEffects {
       .pipe(
         map((data) => CvActions.loadProjSuccess({ proj: this.decryptData<Project[]>(data) })),
         catchError((error) => of(CvActions.loadProjFailure({ error })))
+      )
+    )
+  ));
+
+  loadCommex$ = createEffect(() => this.actions$.pipe(
+    ofType(CvActions.loadCommex),
+    switchMap(() => this.facultyService.fetchData<Encryption>('getcommex/?t=faculty')
+      .pipe(
+        map((data) => CvActions.loadCommexSuccess({ commex: this.decryptData<CommunityExtension[]>(data) })),
+        catchError((error) => of(CvActions.loadCommexFailure({ error })))
       )
     )
   ));

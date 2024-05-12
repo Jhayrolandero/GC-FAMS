@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, SimpleChanges } from '@angular/core';
 import { mainPort } from '../../../../app.component';
 import { Store } from '@ngrx/store';
-import { selectAllCerts, selectAllExistCerts } from '../../../../state/faculty-state/faculty-state.selector';
+import { selectAllCerts, selectFacultyCerts } from '../../../../state/faculty-state/faculty-state.selector';
 @Component({
   selector: 'app-faculty-certifications',
   standalone: true,
@@ -12,7 +12,7 @@ import { selectAllCerts, selectAllExistCerts } from '../../../../state/faculty-s
 })
 export class FacultyCertificationsComponent { 
   public certifications$ = this.store.select(selectAllCerts);
-  public existCertifications$ = this.store.select(selectAllExistCerts);
+  public existCertifications$ = this.store.select(selectFacultyCerts);
   public port = mainPort;
   constructor(private store: Store){}
 }

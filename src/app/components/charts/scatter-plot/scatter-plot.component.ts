@@ -1,5 +1,6 @@
 import { Component, ElementRef, Input, SimpleChanges, ViewChild } from '@angular/core';
-import { Chart } from 'chart.js';
+import { Chart, registerables } from 'chart.js';
+Chart.register(...registerables);
 
 @Component({
   selector: 'app-scatter-plot',
@@ -11,7 +12,7 @@ import { Chart } from 'chart.js';
 export class ScatterPlotComponent {
   public chart: any;
   public chartId: string = `doughnut-${Math.random().toString(36).substr(2, 9)}`;
-  @ViewChild('scatterGraphCanvas') private scatterGraphCanvas!: ElementRef<HTMLCanvasElement>;
+  @ViewChild('scatterGraphCanvas', {static: true}) private scatterGraphCanvas!: ElementRef<HTMLCanvasElement>;
 
   @Input() data: number[][] = [[]];
   @Input() labels: string[] = [];

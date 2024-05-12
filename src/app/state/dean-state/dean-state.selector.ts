@@ -11,7 +11,7 @@ export const selectDeanState = createFeatureSelector<DeanState>('dean');
 export const selectCollegeMilestoneCount = createSelector(
     selectDeanState,
     (state: DeanState) => {
-        let milestoneMap: Map<number, number> = new Map();
+        let milestoneMap: Map<number, number> = new Map([...Array(15)].map((_, i) => [new Date().getFullYear() - 14 + i, 0]));
 
         state.commex.forEach(comm => {
             const commYear = +comm.commex_date.slice(0,4);
@@ -80,6 +80,15 @@ export const selectAttainmentTimeline = createSelector(
             }
         })
 
+        attainmentTimeline.map((arr, idx) => {
+            arr.map((x, index) => {
+                if(index < 14){
+                    attainmentTimeline[idx][index + 1] = (attainmentTimeline[idx][index + 1] + x)
+                }
+            })
+        })
+        
+
         return attainmentTimeline;
     }
 );
@@ -115,6 +124,31 @@ export const selectCollegeFacultyCount = createSelector(
     selectDeanState,
     (state: DeanState) => state.profile.length
   );
+
+
+export const selectCollegeLevel = createSelector(
+selectDeanState,
+(state: DeanState) => {
+    let levelList: Map<string, number> = new Map();
+
+    state.profile.forEach(x => {
+        if(x.teaching_level == '') return;
+
+        if(levelList.has(x.teaching_level)){
+            levelList.set(x.teaching_level, levelList.get(x.teaching_level)! + 1);
+        }
+        else{
+            levelList.set(x.teaching_level, 1);
+        }
+    }
+    )
+
+    const sortedCerts = [...levelList.entries()].sort((a, b) => b[1] - a[1]);
+    const ret: [string[], number[]] = [sortedCerts.map(x => x[0]), sortedCerts.map(x => x[1])];
+
+    return ret;
+}
+);
 
 
 
@@ -337,7 +371,6 @@ export const selectTeachingLength = createSelector(
 
         const sortedTeaching = [...experienceName.entries()];
         // return sortedTeaching;
-        console.log(sortedTeaching);
         return [sortedTeaching.map(x => [x[1][0], x[1][1]]), [sortedTeaching.map(x => x[1][0]), sortedTeaching.map(x => x[1][1])]];
         // return [sortedTeaching.map(x => x[0]), sortedTeaching.map(x => x[1][0]), sortedTeaching.map(x => x[1][1]), sortedTeaching.map(x => x[1][2])]
     }

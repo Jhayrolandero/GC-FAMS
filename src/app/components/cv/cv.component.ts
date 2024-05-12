@@ -13,7 +13,7 @@ import { profile } from 'console';
 import { CommonModule } from '@angular/common';
 import { Schedule } from '../../services/admin/schedule';
 import { Store } from '@ngrx/store';
-import { selectAllProfile, selectCourseSched, selectAllExistCerts, selectAllExp, selectAllProj, selectAllExpertise, selectAllEduc, selectFacultyExpertise } from '../../state/faculty-state/faculty-state.selector';
+import { selectAllProfile, selectCourseSched, selectAllExp, selectAllProj, selectAllExpertise, selectAllEduc, selectFacultyExpertise, selectFacultyCerts } from '../../state/faculty-state/faculty-state.selector';
 
 @Component({
   selector: 'app-cv',
@@ -29,7 +29,7 @@ export class CvComponent {
   tempPort = mainPort;
   profiles$ = this.store.select(selectAllProfile);
   courses$ =this.store.select(selectCourseSched);
-  certs$ = this.store.select(selectAllExistCerts);
+  certs$ = this.store.select(selectFacultyCerts);
   exps$ = this.store.select(selectAllExp);
   projects$ = this.store.select(selectAllProj);
   specs$ = this.store.select(selectFacultyExpertise);

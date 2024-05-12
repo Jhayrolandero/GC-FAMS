@@ -1,5 +1,6 @@
 import { Component, ElementRef, Input, SimpleChanges, ViewChild } from '@angular/core';
-import { Chart } from 'chart.js';
+import { Chart, registerables } from 'chart.js';
+Chart.register(...registerables);
 
 @Component({
   selector: 'app-bar-chart',
@@ -11,7 +12,7 @@ import { Chart } from 'chart.js';
 export class BarChartComponent {
   public chart: any;
   public chartId: string = `doughnut-${Math.random().toString(36).substr(2, 9)}`;
-  @ViewChild('barGraphCanvas') private barGraphCanvas!: ElementRef<HTMLCanvasElement>;
+  @ViewChild('barGraphCanvas', {static: true}) private barGraphCanvas!: ElementRef<HTMLCanvasElement>;
 
   @Input() data: number[] = [];
   @Input() data2: number[] = [];

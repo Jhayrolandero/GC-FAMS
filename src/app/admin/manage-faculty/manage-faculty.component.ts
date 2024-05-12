@@ -29,6 +29,9 @@ import { AddFacultyComponent } from './add-faculty/add-faculty.component';
 export class ManageFacultyComponent {
   showAdd: boolean = false;
   editData?: Faculty;
+  certToggle = false;
+  commexToggle = false;
+  seminarToggle = false;
 
   constructor(
     private route: ActivatedRoute,
