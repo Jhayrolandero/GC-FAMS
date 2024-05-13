@@ -67,7 +67,6 @@ export class CommexsEffects {
       if (commexes) {
         return this.fetchCommex$('getcommex?t=faculty').
           pipe(
-            tap((commexes) => console.log('Faculty Community Extension has loaded:', commexes)),
             map(data => {
               const commexs = this.decryptData<CommunityExtension[]>(data)
 

@@ -1,0 +1,47 @@
+<div class="p-5 flex flex-col gap-y-3 text-blue">
+    <div class="bg-white shadow-main w-full rounded-[15px] flex justify-between items-center px-5">
+        <h1 class="font-Poppins font-semibold text-[2.5rem] py-2">
+            Evaluation Analytics
+        </h1>
+    </div>
+
+    <div *ngIf="(individualAverageTimeline$ | async) as main" class="w-full bg-white rounded-[15px] shadow-main p-5 pt-1">
+        <div class="flex flex-row items-center gap-3">
+            <div class="flex flex-row justify-between items-center w-full">
+                <p class="text-blue font-bold text-[1.7rem] my-2">Individual Average Timeline</p>
+                <div class="border-slate-400 border-solid border-2 w-[240px] h-[35px] rounded-[5px] relative flex items-center px-3">
+                    <p (click)="dropToggle = !dropToggle" class="font-Roboto font-medium">Select Faculty Timeline</p>
+
+                    <div 
+                    [ngClass]="dropToggle ? 'block' : 'hidden'"
+                    class="border-slate-400 border-solid border-2 w-[240px] rounded-[5px] top-[40px] left-[0px] absolute bg-white">
+                        <div *ngFor="let faculty of main; let i = index">
+                            <app-faculty-selector
+                            [facultyData]="faculty"
+                            (selectFaculty)="selectFaculty($event)"></app-faculty-selector>
+                        </div>
+                    </div>
+                
+                </div>
+            </div>
+            
+
+            <!-- <div class="flex flex-row gap-1">
+                <div 
+                class="w-[23px] h-[23px] rounded-[5px] shadow-main duration-300 hover:duration-300 hover:bg-opacity-50"
+                [ngClass]="certToggle ? 'bg-[#074287]' : 'bg-slate-200'"
+                (click)="certToggle = !certToggle"></div>
+                <p class="font-Roboto font-medium text-blue">Certifications</p>
+            </div> -->
+
+        </div>
+        <app-line-graph
+        [data]="selectedArray[0] != undefined ? selectedArray[0][1][1] : []"
+        [data2]="selectedArray[1] != undefined ? selectedArray[1][1][1] : []"
+        [data3]="selectedArray[2] != undefined ? selectedArray[2][1][1] : []"
+        [labels]="yearsArray"
+        [showLegend]="false">
+        </app-line-graph>
+    </div>
+
+</div>

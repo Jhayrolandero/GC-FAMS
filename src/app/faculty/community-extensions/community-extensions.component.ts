@@ -193,7 +193,6 @@ export class CommexFormComponent {
     FormsModule,
     MatFormFieldModule,
     MatDatepickerModule,
-    NgIf,
     MatMenuModule,
     MatButtonModule
   ],

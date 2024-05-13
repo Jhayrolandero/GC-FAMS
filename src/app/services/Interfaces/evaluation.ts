@@ -1,6 +1,8 @@
 export interface Evaluation {
     evaluation_ID: number,
     faculty_ID: number,
+    first_name: string,
+    last_name: string,
     semester: number,
     evaluation_year: number,
     param1_score: number,

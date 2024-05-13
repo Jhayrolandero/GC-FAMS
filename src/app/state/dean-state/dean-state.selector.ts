@@ -451,6 +451,49 @@ export const yearEvaluationAverage = createSelector(
     }
 );
 
+export const selectAllAverageTimeline = createSelector(
+    selectDeanState,
+    (state: DeanState) => {
+        let averageTimeline: Map<number, [string, number[]]> = new Map();
+        let floorYear = currentYear - 14;
+
+        state.evals.forEach(faculty => {
+            const id = faculty.faculty_ID;
+            const paramAverage = (
+                +faculty.param1_score + 
+                +faculty.param2_score + 
+                +faculty.param3_score + 
+                +faculty.param4_score + 
+                +faculty.param5_score + 
+                +faculty.param6_score) / 6
+
+            //If faculty already exists in map
+            if(averageTimeline.has(id)){
+                
+                //Check if it has an assigned average already
+                if(averageTimeline.get(id)![1][faculty.evaluation_year - floorYear] != 0){
+                    averageTimeline.get(id)![1][faculty.evaluation_year - floorYear] = (averageTimeline.get(id)![1][faculty.evaluation_year - floorYear] + paramAverage) / 2;
+                    averageTimeline.set(id, [averageTimeline.get(id)![0], averageTimeline.get(id)![1]])
+                }
+                else{
+                    console.log(id);
+                    console.log(paramAverage);
+                    averageTimeline.get(id)![1][faculty.evaluation_year - floorYear] = paramAverage;
+                    averageTimeline.set(id, [averageTimeline.get(id)![0], averageTimeline.get(id)![1]])
+                }
+            }
+            else{
+                averageTimeline.set(id, [faculty.first_name + " " + faculty.last_name,  Array.from({ length: 15 }, () => 0)]);
+                averageTimeline.get(id)![1][faculty.evaluation_year - floorYear] = paramAverage;
+                averageTimeline.set(id, [averageTimeline.get(id)![0], averageTimeline.get(id)![1]]);
+            }
+        })
+        console.log([...averageTimeline.entries()]);
+        return [...averageTimeline.entries()];
+        // return averageTimeline
+    }
+);
+
 
 
 
