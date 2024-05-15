@@ -11,6 +11,8 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { ProfileFormComponent } from './profile-form/profile-form.component';
 import { MatDialog } from '@angular/material/dialog';
 import { FormsErrorComponent } from '../../admin/manage-faculty/forms-error/forms-error.component';
+import { updateInfo } from '../../state/faculty-state/faculty-state.actions';
+import { UpdateFaculty } from '../../services/Interfaces/updateFaculty';
 @Component({
   selector: 'app-manage-profile',
   standalone: true,
@@ -119,8 +121,7 @@ export class ManageProfileComponent {
       Validators.required,
       Validators.pattern('[a-zA-Z ]*')
     ]),
-    email: new FormControl('', [
-      Validators.required,
+    email: new FormControl({value: "", disabled:true}, [
       Validators.email],
 
     ),
@@ -150,8 +151,8 @@ export class ManageProfileComponent {
     barangay: new FormControl('', [
       Validators.required,
     ]),
-    password: new FormControl<string>(''),
   });
+  // password: new FormControl<string>(''),
 
   openDialog(image : "cover" | "profile"): void {
     this.dialog.open(ProfileFormComponent, {
@@ -163,4 +164,10 @@ export class ManageProfileComponent {
       return this.facultyInfo.get(form);
     }
 
+    submitForm() {
+    if(!this.facultyInfo.valid) return
+
+    this.profileStore.dispatch(updateInfo({ facultyData : this.facultyInfo.value as UpdateFaculty}))
+      // console.log(this.facultyInfo.valid)
+    }
 }

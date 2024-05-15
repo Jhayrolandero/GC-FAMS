@@ -18,6 +18,7 @@ import { FacultyRequestService } from "../../services/faculty/faculty-request.se
 import * as CvActions from "./faculty-state.actions";
 import { CommunityExtension } from "../../services/Interfaces/community-extension";
 import { AuthService } from "../../services/auth.service";
+import { error } from "console";
 
 @Injectable()
 export class CvEffects {
@@ -33,6 +34,14 @@ export class CvEffects {
   decryptData<T>(ciphertext: Encryption): T {
     return this.cryptoJS.CryptoJSAesDecrypt<T>("ucj7XoyBfAMt/ZMF20SQ7sEzad+bKf4bha7bFBdl2HY=", ciphertext)
   }
+
+  updateProfile = createEffect(() => this.actions$.pipe(
+    ofType(CvActions.updateInfo),
+    switchMap((action) => this.facultyService.patchData(action.facultyData, "faculty").pipe(
+      map(() => CvActions.updateInfoSuccess({facultyData: action.facultyData})),
+      catchError((error) => of(CvActions.updateInfoFailure({error})))
+    ))
+  ))
 
   loadProfile$ = createEffect(() => this.actions$.pipe(
     ofType(CvActions.loadProfile),

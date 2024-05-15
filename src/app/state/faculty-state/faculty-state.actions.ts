@@ -11,6 +11,7 @@ import { Courses } from "../../services/Interfaces/courses";
 import { CoursesFaculty } from "../../services/Interfaces/courses-faculty";
 import { ExpertiseFaculty } from "../../services/Interfaces/expertise-faculty";
 import { CommunityExtension } from "../../services/Interfaces/community-extension";
+import { UpdateFaculty } from "../../services/Interfaces/updateFaculty";
 
 
 export const loadProfile = createAction('[Profile Global] Load Profile');
@@ -115,6 +116,18 @@ export const updateCover = createAction(
   '[Profile Global] Update Cover',
   props<{filename: string, faculty_ID: number}>()
 )
+export const updateInfo = createAction(
+  '[Profile Global] Update Profile Info',
+  props<{facultyData : UpdateFaculty}>()
+)
+export const updateInfoSuccess = createAction(
+  '[Profile Global] Update Profile Info Success',
+  props<{facultyData : UpdateFaculty}>()
+)
 
+export const updateInfoFailure = createAction(
+  '[Profile Global] Update Profile Info Fail',
+  props<{error : Error}>()
+)
 
 export const flushProfileState = createAction('[Profile Global] Flush Profile');
