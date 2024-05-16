@@ -12,6 +12,20 @@
   </p>
 </div>
 
+<div *ngIf="formControlPasswordMinLength">
+  <p class="bg bg-red-50 text-red-700">
+    <span><i class="fa-solid fa-triangle-exclamation mr-2"></i></span>Password
+    must be atleast 8 characters
+  </p>
+</div>
+
+<div *ngIf="newConfirmDontMatch">
+  <p class="bg bg-red-50 text-red-700">
+    <span><i class="fa-solid fa-triangle-exclamation mr-2"></i></span>Password
+    doesn't match
+  </p>
+</div>
+
 <div *ngIf="formControlEmail">
   <p class="bg bg-red-50 text-red-700">
     <span><i class="fa-solid fa-triangle-exclamation mr-2"></i></span>Not a

@@ -16,4 +16,6 @@ export class FormsErrorComponent {
   @Input('formControlEmail') formControlEmail!: FormControl;
   @Input('formControlPattern') formControlPattern!: FormControl;
   @Input('formControlNumber') formControlNumber!: FormControl;
+  @Input('formControlPasswordMinLength') formControlPasswordMinLength!: FormControl;
+  @Input('newConfirmDontMatch') newConfirmDontMatch: string | undefined;
 }

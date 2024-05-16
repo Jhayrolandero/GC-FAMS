@@ -20,7 +20,7 @@
       </div>
 
       <div
-        class="rounded-full ml-0 absolute top-0 tablet:ml-7 bg-greenBar max-h-[210px] max-w-[210px] border-[5px] border-white"
+        class="rounded-full ml-0 absolute top-0 tablet:ml-7 bg-greenBar max-h-[210px] max-w-[210px] border-[5px] border-white aspect-square"
       >
         <img
           class="rounded-full aspect-square"
@@ -52,415 +52,652 @@
   </div>
 
   <div
-    class="bg-white rounded-[15px] p-4"
+    class="flex gap-2 flex-col laptop:flex-row"
     *ngIf="facultyProfile$ | async as facultyProfile"
   >
-    <form
-      [formGroup]="facultyInfo"
-      action=""
-      class="grid grid-cols-5 gap-2 auto-cols-max auto-rows-max"
-      (ngSubmit)="submitForm()"
+    <div class="bg-white rounded-[15px] p-4 flex-1">
+      <form
+        [formGroup]="facultyInfo"
+        action=""
+        class="grid grid-cols-5 gap-2 auto-cols-max auto-rows-max"
+        (ngSubmit)="submitForm()"
+      >
+        <h4 class="col-span-5 text-2xl mb-4">Personal Information</h4>
+        <div
+          class="relative z-0 w-full mb-5 group col-span-5 tablet:col-span-2"
+        >
+          <input
+            type="email"
+            name="floating_email"
+            id="floating_email"
+            class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+            formControlName="email"
+            [value]="facultyProfile.email"
+          />
+          <label
+            for="floating_email"
+            class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            >Email address</label
+          >
+          <app-forms-error
+            *ngIf="
+              formControl('email')?.invalid &&
+              (formControl('email')?.dirty || formControl('email')?.touched)
+            "
+            [formControlRequired]="formControl('email')!.errors?.['required']"
+            [formControlEmail]="formControl('email')!.errors?.['email']"
+          ></app-forms-error>
+        </div>
+        <div
+          class="relative z-0 w-full mb-5 group col-span-5 tablet:col-span-2"
+        >
+          <input
+            type="text"
+            name="floating_email"
+            id="floating_email"
+            class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+            formControlName="phone_number"
+            [value]="facultyProfile.phone_number"
+            placeholder=" "
+            required
+          />
+          <label
+            for="floating_email"
+            class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            >Phone Number</label
+          >
+          <app-forms-error
+            *ngIf="
+              formControl('phone_number')?.invalid &&
+              (formControl('phone_number')?.dirty ||
+                formControl('phone_number')?.touched)
+            "
+            [formControlRequired]="formControl('phone_number')!.errors?.['required']"
+            [formControlNumber]="formControl('phone_number')!.errors?.['pattern']"
+          ></app-forms-error>
+        </div>
+        <div
+          class="relative z-0 w-full mb-5 group col-span-5 tablet:col-span-1"
+        >
+          <input
+            type="date"
+            name="floating_email"
+            id="floating_email"
+            class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+            formControlName="birthdate"
+            placeholder=" "
+            [value]="facultyProfile.birthdate"
+            required
+          />
+          <label
+            for="floating_email"
+            class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            >Birthdate</label
+          >
+          <app-forms-error
+            *ngIf="
+              formControl('birthdate')?.invalid &&
+              (formControl('birthdate')?.dirty ||
+                formControl('birthdate')?.touched)
+            "
+            [formControlRequired]="formControl('birthdate')!.errors?.['required']"
+          ></app-forms-error>
+        </div>
+        <div class="col-span-5 flex flex-col tablet:flex-row gap-2 flex-wrap">
+          <div class="relative z-0 w-full mb-5 group flex-1">
+            <input
+              type="text"
+              name="floating_email"
+              id="floating_email"
+              class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+              [value]="formControl('last_name')?.value"
+              formControlName="last_name"
+              placeholder=" "
+              required
+            />
+            <label
+              for="floating_email"
+              class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+              >Lastname</label
+            >
+            <app-forms-error
+              *ngIf="
+                formControl('last_name')!.invalid &&
+                (formControl('last_name')!.dirty ||
+                  formControl('last_name')!.touched)
+              "
+              [formControlRequired]="formControl('last_name')!.errors?.['required']"
+              [formControlPattern]="formControl('last_name')!.errors?.['pattern']"
+            ></app-forms-error>
+          </div>
+          <div class="relative z-0 w-full mb-5 group flex-1">
+            <input
+              type="text"
+              name="floating_email"
+              id="floating_email"
+              class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+              [value]="facultyProfile.first_name"
+              formControlName="first_name"
+              placeholder=" "
+              required
+            />
+            <label
+              for="floating_email"
+              class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+              >Firstname</label
+            >
+            <app-forms-error
+              *ngIf="
+                formControl('first_name')?.invalid &&
+                (formControl('first_name')?.dirty ||
+                  formControl('first_name')?.touched)
+              "
+              [formControlRequired]="formControl('first_name')!.errors?.['required']"
+              [formControlPattern]="formControl('first_name')!.errors?.['pattern']"
+            ></app-forms-error>
+          </div>
+          <div class="relative z-0 w-full mb-5 group flex-1">
+            <input
+              type="text"
+              name="floating_email"
+              id="floating_email"
+              class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+              [value]="facultyProfile.middle_name"
+              formControlName="middle_name"
+              placeholder=" "
+            />
+            <label
+              for="floating_email"
+              class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+              >Middlename</label
+            >
+          </div>
+          <div class="relative z-0 w-full mb-5 group flex-1">
+            <input
+              type="text"
+              name="floating_email"
+              id="floating_email"
+              class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+              [value]="facultyProfile.ext_name"
+              formControlName="ext_name"
+              placeholder=" "
+            />
+            <label
+              for="floating_email"
+              class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+              >Ext. name</label
+            >
+          </div>
+        </div>
+        <div class="col-span-5 flex flex-col tablet:flex-row gap-2 flex-wrap">
+          <div class="relative z-0 w-full mb-5 group flex-1">
+            <input
+              type="text"
+              name="floating_email"
+              id="floating_email"
+              class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+              [value]="facultyProfile.region"
+              formControlName="region"
+              placeholder=" "
+              required
+            />
+            <label
+              for="floating_email"
+              class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+              >Region</label
+            >
+            <app-forms-error
+              *ngIf="
+                formControl('region')?.invalid &&
+                (formControl('region')?.dirty || formControl('region')?.touched)
+              "
+              [formControlRequired]="formControl('region')!.errors?.['required']"
+              [formControlPattern]="formControl('region')!.errors?.['pattern']"
+            ></app-forms-error>
+          </div>
+          <div class="relative z-0 w-full mb-5 group flex-1">
+            <input
+              type="text"
+              name="floating_email"
+              id="floating_email"
+              class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+              [value]="facultyProfile.province"
+              formControlName="province"
+              placeholder=" "
+              required
+            />
+            <label
+              for="floating_email"
+              class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+              >Province</label
+            >
+            <app-forms-error
+              *ngIf="
+                formControl('province')?.invalid &&
+                (formControl('province')?.dirty ||
+                  formControl('province')?.touched)
+              "
+              [formControlRequired]="formControl('province')!.errors?.['required']"
+              [formControlPattern]="formControl('province')!.errors?.['pattern']"
+            ></app-forms-error>
+          </div>
+          <div class="relative z-0 w-full mb-5 group flex-1">
+            <input
+              type="text"
+              name="floating_email"
+              id="floating_email"
+              class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+              [value]="facultyProfile.city"
+              formControlName="city"
+              placeholder=" "
+              required
+            />
+            <label
+              for="floating_email"
+              class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+              >City</label
+            >
+            <app-forms-error
+              *ngIf="
+                formControl('city')?.invalid &&
+                (formControl('city')?.dirty || formControl('city')?.touched)
+              "
+              [formControlRequired]="formControl('city')!.errors?.['required']"
+              [formControlPattern]="formControl('city')!.errors?.['pattern']"
+            ></app-forms-error>
+          </div>
+          <div class="relative z-0 w-full mb-5 group flex-1">
+            <input
+              type="text"
+              name="floating_email"
+              id="floating_email"
+              class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+              [value]="facultyProfile.barangay"
+              formControlName="barangay"
+              placeholder=" "
+              required
+            />
+            <label
+              for="floating_email"
+              class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+              >Barangay</label
+            >
+            <app-forms-error
+              *ngIf="
+                formControl('barangay')?.invalid &&
+                (formControl('barangay')?.dirty ||
+                  formControl('barangay')?.touched)
+              "
+              [formControlRequired]="formControl('barangay')!.errors?.['required']"
+              [formControlPattern]="formControl('barangay')!.errors?.['pattern']"
+            ></app-forms-error>
+          </div>
+        </div>
+        <div
+          class="relative z-0 w-full mb-5 group col-span-5 tablet:col-span-1"
+        >
+          <input
+            type="text"
+            name="floating_email"
+            id="floating_email"
+            class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+            [value]="facultyProfile.sex"
+            formControlName="sex"
+            placeholder=" "
+            required
+          />
+          <label
+            for="floating_email"
+            class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            >Sex</label
+          >
+          <app-forms-error
+            *ngIf="
+              formControl('sex')?.invalid &&
+              (formControl('sex')?.dirty || formControl('sex')?.touched)
+            "
+            [formControlRequired]="formControl('sex')!.errors?.['required']"
+            [formControlPattern]="formControl('sex')!.errors?.['pattern']"
+          ></app-forms-error>
+        </div>
+        <div
+          class="relative z-0 w-full mb-5 group col-span-5 tablet:col-span-1"
+        >
+          <input
+            type="text"
+            name="floating_email"
+            id="floating_email"
+            class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+            [value]="facultyProfile.language"
+            formControlName="language"
+            placeholder=" "
+            required
+          />
+          <label
+            for="floating_email"
+            class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            >Language</label
+          >
+          <app-forms-error
+            *ngIf="
+              formControl('language')?.invalid &&
+              (formControl('language')?.dirty ||
+                formControl('language')?.touched)
+            "
+            [formControlRequired]="formControl('language')!.errors?.['required']"
+            [formControlPattern]="formControl('language')!.errors?.['pattern']"
+          ></app-forms-error>
+        </div>
+        <div
+          class="relative z-0 w-full mb-5 group col-span-5 tablet:col-span-1"
+        >
+          <input
+            type="text"
+            name="floating_email"
+            id="floating_email"
+            class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+            [value]="facultyProfile.citizenship"
+            formControlName="citizenship"
+            placeholder=" "
+            required
+          />
+          <label
+            for="floating_email"
+            class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            >Citizenship</label
+          >
+          <app-forms-error
+            *ngIf="
+              formControl('citizenship')?.invalid &&
+              (formControl('citizenship')?.dirty ||
+                formControl('citizenship')?.touched)
+            "
+            [formControlRequired]="formControl('citizenship')!.errors?.['required']"
+            [formControlPattern]="formControl('citizenship')!.errors?.['pattern']"
+          ></app-forms-error>
+        </div>
+        <div
+          class="relative z-0 w-full mb-5 group col-span-5 tablet:col-span-1"
+        >
+          <input
+            type="text"
+            name="floating_email"
+            id="floating_email"
+            class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+            [value]="facultyProfile.age"
+            formControlName="age"
+            placeholder=" "
+            required
+          />
+          <label
+            for="floating_email"
+            class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            >Age</label
+          >
+          <app-forms-error
+            *ngIf="
+              formControl('age')?.invalid &&
+              (formControl('age')?.dirty || formControl('age')?.touched)
+            "
+            [formControlRequired]="formControl('age')!.errors?.['required']"
+            [formControlNumber]="formControl('age')!.errors?.['pattern']"
+          ></app-forms-error>
+        </div>
+        <div
+          class="relative z-0 w-full mb-5 group col-span-5 tablet:col-span-1"
+        >
+          <input
+            type="text"
+            name="floating_email"
+            id="floating_email"
+            class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+            [value]="facultyProfile.civil_status"
+            formControlName="civil_status"
+            placeholder=" "
+            required
+          />
+          <label
+            for="floating_email"
+            class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            >Civil Status</label
+          >
+          <app-forms-error
+            *ngIf="
+              formControl('civil_status')?.invalid &&
+              (formControl('civil_status')?.dirty ||
+                formControl('civil_status')?.touched)
+            "
+            [formControlRequired]="formControl('civil_status')!.errors?.['required']"
+            [formControlPattern]="formControl('civil_status')!.errors?.['pattern']"
+          ></app-forms-error>
+        </div>
+        <input type="submit" value="Submit" />
+      </form>
+    </div>
+    <div
+      class="bg-white rounded-[15px] p-4 laptop:w-[220px] desktop:min-w-[320px]"
     >
-      <h4 class="col-span-5 text-2xl mb-4">Personal Information</h4>
+      <form
+        action=""
+        class="flex flex-col justify-between h-full"
+        (ngSubmit)="submitPassword()"
+        [formGroup]="newPasswordInfo"
+      >
+        <div>
+          <h4 class="text-[1.5rem] mb-4">Reset Password</h4>
+          <div
+            class="relative z-0 w-full mb-5 group col-span-5 tablet:col-span-1"
+          >
+            <div class="relative">
+              <input
+                [type]="oldPrivSwitch ? 'text' : 'password'"
+                name="floating_email"
+                id="floating_email"
+                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                formControlName="oldPassword"
+                placeholder=" "
+                required
+              />
+              @if(!oldPrivSwitch) {
 
-      <div class="relative z-0 w-full mb-5 group col-span-5 tablet:col-span-2">
-        <input
-          type="email"
-          name="floating_email"
-          id="floating_email"
-          class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-          formControlName="email"
-          [value]="facultyProfile.email"
-        />
-        <label
-          for="floating_email"
-          class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-          >Email address</label
-        >
-        <app-forms-error
-          *ngIf="
-            formControl('email')?.invalid &&
-            (formControl('email')?.dirty || formControl('email')?.touched)
-          "
-          [formControlRequired]="formControl('email')!.errors?.['required']"
-          [formControlEmail]="formControl('email')!.errors?.['email']"
-        ></app-forms-error>
-      </div>
-      <div class="relative z-0 w-full mb-5 group col-span-5 tablet:col-span-2">
-        <input
-          type="text"
-          name="floating_email"
-          id="floating_email"
-          class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-          formControlName="phone_number"
-          [value]="facultyProfile.phone_number"
-          placeholder=" "
-          required
-        />
-        <label
-          for="floating_email"
-          class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-          >Phone Number</label
-        >
-        <app-forms-error
-          *ngIf="
-            formControl('phone_number')?.invalid &&
-            (formControl('phone_number')?.dirty ||
-              formControl('phone_number')?.touched)
-          "
-          [formControlRequired]="formControl('phone_number')!.errors?.['required']"
-          [formControlNumber]="formControl('phone_number')!.errors?.['pattern']"
-        ></app-forms-error>
-      </div>
-      <div class="relative z-0 w-full mb-5 group col-span-5 tablet:col-span-1">
-        <input
-          type="date"
-          name="floating_email"
-          id="floating_email"
-          class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-          formControlName="birthdate"
-          placeholder=" "
-          [value]="facultyProfile.birthdate"
-          required
-        />
-        <label
-          for="floating_email"
-          class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-          >Birthdate</label
-        >
-        <app-forms-error
-          *ngIf="
-            formControl('birthdate')?.invalid &&
-            (formControl('birthdate')?.dirty ||
-              formControl('birthdate')?.touched)
-          "
-          [formControlRequired]="formControl('birthdate')!.errors?.['required']"
-        ></app-forms-error>
-      </div>
-      <div class="col-span-5 flex flex-row gap-2 flex-wrap">
-        <div class="relative z-0 w-full mb-5 group flex-1">
-          <input
-            type="text"
-            name="floating_email"
-            id="floating_email"
-            class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-            [value]="formControl('last_name')?.value"
-            formControlName="last_name"
-            placeholder=" "
-            required
-          />
-          <label
-            for="floating_email"
-            class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-            >Lastname</label
-          >
-          <app-forms-error
-            *ngIf="
-              formControl('last_name')!.invalid &&
-              (formControl('last_name')!.dirty ||
-                formControl('last_name')!.touched)
-            "
-            [formControlRequired]="formControl('last_name')!.errors?.['required']"
-            [formControlPattern]="formControl('last_name')!.errors?.['pattern']"
-          ></app-forms-error>
-        </div>
-        <div class="relative z-0 w-full mb-5 group flex-1">
-          <input
-            type="text"
-            name="floating_email"
-            id="floating_email"
-            class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-            [value]="facultyProfile.first_name"
-            formControlName="first_name"
-            placeholder=" "
-            required
-          />
-          <label
-            for="floating_email"
-            class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-            >Firstname</label
-          >
-          <app-forms-error
-            *ngIf="
-              formControl('first_name')?.invalid &&
-              (formControl('first_name')?.dirty ||
-                formControl('first_name')?.touched)
-            "
-            [formControlRequired]="formControl('first_name')!.errors?.['required']"
-            [formControlPattern]="formControl('first_name')!.errors?.['pattern']"
-          ></app-forms-error>
-        </div>
-        <div class="relative z-0 w-full mb-5 group flex-1">
-          <input
-            type="text"
-            name="floating_email"
-            id="floating_email"
-            class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-            [value]="facultyProfile.middle_name"
-            formControlName="middle_name"
-            placeholder=" "
-          />
-          <label
-            for="floating_email"
-            class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-            >Middlename</label
-          >
-        </div>
-        <div class="relative z-0 w-full mb-5 group flex-1">
-          <input
-            type="text"
-            name="floating_email"
-            id="floating_email"
-            class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-            [value]="facultyProfile.ext_name"
-            formControlName="ext_name"
-            placeholder=" "
-          />
-          <label
-            for="floating_email"
-            class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-            >Ext. name</label
-          >
-        </div>
-      </div>
-      <div class="col-span-5 flex flex-row gap-2 flex-wrap">
-        <div class="relative z-0 w-full mb-5 group flex-1">
-          <input
-            type="text"
-            name="floating_email"
-            id="floating_email"
-            class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-            [value]="facultyProfile.region"
-            formControlName="region"
-            placeholder=" "
-            required
-          />
-          <label
-            for="floating_email"
-            class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-            >Region</label
-          >
-          <app-forms-error
-            *ngIf="
-              formControl('region')?.invalid &&
-              (formControl('region')?.dirty || formControl('region')?.touched)
-            "
-            [formControlRequired]="formControl('region')!.errors?.['required']"
-            [formControlPattern]="formControl('region')!.errors?.['pattern']"
-          ></app-forms-error>
-        </div>
-        <div class="relative z-0 w-full mb-5 group flex-1">
-          <input
-            type="text"
-            name="floating_email"
-            id="floating_email"
-            class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-            [value]="facultyProfile.province"
-            formControlName="province"
-            placeholder=" "
-            required
-          />
-          <label
-            for="floating_email"
-            class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-            >Province</label
-          >
-          <app-forms-error
-            *ngIf="
-              formControl('province')?.invalid &&
-              (formControl('province')?.dirty ||
-                formControl('province')?.touched)
-            "
-            [formControlRequired]="formControl('province')!.errors?.['required']"
-            [formControlPattern]="formControl('province')!.errors?.['pattern']"
-          ></app-forms-error>
-        </div>
-        <div class="relative z-0 w-full mb-5 group flex-1">
-          <input
-            type="text"
-            name="floating_email"
-            id="floating_email"
-            class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-            [value]="facultyProfile.city"
-            formControlName="city"
-            placeholder=" "
-            required
-          />
-          <label
-            for="floating_email"
-            class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-            >City</label
-          >
-          <app-forms-error
-            *ngIf="
-              formControl('city')?.invalid &&
-              (formControl('city')?.dirty || formControl('city')?.touched)
-            "
-            [formControlRequired]="formControl('city')!.errors?.['required']"
-            [formControlPattern]="formControl('city')!.errors?.['pattern']"
-          ></app-forms-error>
-        </div>
-        <div class="relative z-0 w-full mb-5 group flex-1">
-          <input
-            type="text"
-            name="floating_email"
-            id="floating_email"
-            class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-            [value]="facultyProfile.barangay"
-            formControlName="barangay"
-            placeholder=" "
-            required
-          />
-          <label
-            for="floating_email"
-            class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-            >Barangay</label
-          >
-          <app-forms-error
-            *ngIf="
-              formControl('barangay')?.invalid &&
-              (formControl('barangay')?.dirty ||
-                formControl('barangay')?.touched)
-            "
-            [formControlRequired]="formControl('barangay')!.errors?.['required']"
-            [formControlPattern]="formControl('barangay')!.errors?.['pattern']"
-          ></app-forms-error>
-        </div>
-      </div>
+              <svg
+                [class.hide]="oldPrivSwitch"
+                (click)="oldPrivSwitch = !oldPrivSwitch"
+                class="w-[30px] h-[30px] text-gray-800 dark:text-red absolute right-0 top-0"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="m4 15.6 3-3V12a5 5 0 0 1 5-5h.5l1.8-1.7A9 9 0 0 0 12 5C6.6 5 2 10.3 2 12c.3 1.4 1 2.7 2 3.6Z"
+                />
+                <path
+                  d="m14.7 10.7 5-5a1 1 0 1 0-1.4-1.4l-5 5A3 3 0 0 0 9 12.7l.2.6-5 5a1 1 0 1 0 1.4 1.4l5-5 .6.2a3 3 0 0 0 3.6-3.6 3 3 0 0 0-.2-.6Z"
+                />
+                <path
+                  d="M19.8 8.6 17 11.5a5 5 0 0 1-5.6 5.5l-1.7 1.8 2.3.2c6.5 0 10-5.2 10-7 0-1.2-1.6-2.9-2.2-3.4Z"
+                />
+              </svg>
 
-      <div class="relative z-0 w-full mb-5 group col-span-5 tablet:col-span-1">
-        <input
-          type="text"
-          name="floating_email"
-          id="floating_email"
-          class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-          [value]="facultyProfile.sex"
-          formControlName="sex"
-          placeholder=" "
-          required
-        />
-        <label
-          for="floating_email"
-          class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-          >Sex</label
-        >
-        <app-forms-error
-          *ngIf="
-            formControl('sex')?.invalid &&
-            (formControl('sex')?.dirty || formControl('sex')?.touched)
-          "
-          [formControlRequired]="formControl('sex')!.errors?.['required']"
-          [formControlPattern]="formControl('sex')!.errors?.['pattern']"
-        ></app-forms-error>
-      </div>
-      <div class="relative z-0 w-full mb-5 group col-span-5 tablet:col-span-1">
-        <input
-          type="text"
-          name="floating_email"
-          id="floating_email"
-          class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-          [value]="facultyProfile.language"
-          formControlName="language"
-          placeholder=" "
-          required
-        />
-        <label
-          for="floating_email"
-          class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-          >Language</label
-        >
-        <app-forms-error
-          *ngIf="
-            formControl('language')?.invalid &&
-            (formControl('language')?.dirty || formControl('language')?.touched)
-          "
-          [formControlRequired]="formControl('language')!.errors?.['required']"
-          [formControlPattern]="formControl('language')!.errors?.['pattern']"
-        ></app-forms-error>
-      </div>
-      <div class="relative z-0 w-full mb-5 group col-span-5 tablet:col-span-1">
-        <input
-          type="text"
-          name="floating_email"
-          id="floating_email"
-          class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-          [value]="facultyProfile.citizenship"
-          formControlName="citizenship"
-          placeholder=" "
-          required
-        />
-        <label
-          for="floating_email"
-          class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-          >Citizenship</label
-        >
-        <app-forms-error
-          *ngIf="
-            formControl('citizenship')?.invalid &&
-            (formControl('citizenship')?.dirty ||
-              formControl('citizenship')?.touched)
-          "
-          [formControlRequired]="formControl('citizenship')!.errors?.['required']"
-          [formControlPattern]="formControl('citizenship')!.errors?.['pattern']"
-        ></app-forms-error>
-      </div>
-      <div class="relative z-0 w-full mb-5 group col-span-5 tablet:col-span-1">
-        <input
-          type="text"
-          name="floating_email"
-          id="floating_email"
-          class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-          [value]="facultyProfile.age"
-          formControlName="age"
-          placeholder=" "
-          required
-        />
-        <label
-          for="floating_email"
-          class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-          >Age</label
-        >
-        <app-forms-error
-          *ngIf="
-            formControl('age')?.invalid &&
-            (formControl('age')?.dirty || formControl('age')?.touched)
-          "
-          [formControlRequired]="formControl('age')!.errors?.['required']"
-          [formControlNumber]="formControl('age')!.errors?.['pattern']"
-        ></app-forms-error>
-      </div>
-      <div class="relative z-0 w-full mb-5 group col-span-5 tablet:col-span-1">
-        <input
-          type="text"
-          name="floating_email"
-          id="floating_email"
-          class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-          [value]="facultyProfile.civil_status"
-          formControlName="civil_status"
-          placeholder=" "
-          required
-        />
-        <label
-          for="floating_email"
-          class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-          >Civil Status</label
-        >
-        <app-forms-error
-          *ngIf="
-            formControl('civil_status')?.invalid &&
-            (formControl('civil_status')?.dirty ||
-              formControl('civil_status')?.touched)
-          "
-          [formControlRequired]="formControl('civil_status')!.errors?.['required']"
-          [formControlPattern]="formControl('civil_status')!.errors?.['pattern']"
-        ></app-forms-error>
-      </div>
-      <input type="submit" value="Submit" />
-    </form>
-  </div>
-  <div
-    class="min-w-mobileL w-full bg-white rounded-[15px] overflow-hidden shadow-main"
-  >
-    <h4>Reset Password</h4>
+              } @else {
+
+              <svg
+                [class.hide]="!oldPrivSwitch"
+                (click)="oldPrivSwitch = !oldPrivSwitch"
+                class="w-[30px] h-[30px] text-gray-800 dark:text-red absolute right-0 top-0"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M5 7.8C6.7 6.3 9.2 5 12 5s5.3 1.3 7 2.8a12.7 12.7 0 0 1 2.7 3.2c.2.2.3.6.3 1s-.1.8-.3 1a2 2 0 0 1-.6 1 12.7 12.7 0 0 1-9.1 5c-2.8 0-5.3-1.3-7-2.8A12.7 12.7 0 0 1 2.3 13c-.2-.2-.3-.6-.3-1s.1-.8.3-1c.1-.4.3-.7.6-1 .5-.7 1.2-1.5 2.1-2.2Zm7 7.2a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+              }
+            </div>
+            <label
+              for="floating_email"
+              class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+              >Old Password</label
+            >
+            <app-forms-error
+              *ngIf="
+                passwordFormControl('oldPassword')?.invalid &&
+                (passwordFormControl('oldPassword')?.dirty ||
+                  passwordFormControl('oldPassword')?.touched)
+              "
+              [formControlRequired]="passwordFormControl('oldPassword')!.errors?.['required']"
+              [formControlPattern]="passwordFormControl('oldPassword')!.errors?.['pattern']"
+            ></app-forms-error>
+          </div>
+          <div
+            class="relative z-0 w-full mb-5 group col-span-5 tablet:col-span-1"
+          >
+            <div class="relative">
+              <input
+                [type]="newPrivSwitch ? 'text' : 'password'"
+                name="floating_email"
+                id="floating_email"
+                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                formControlName="newPassword"
+                placeholder=" "
+                required
+              />
+              @if(!newPrivSwitch) {
+
+              <svg
+                [class.hide]="newPrivSwitch"
+                (click)="newPrivSwitch = !newPrivSwitch"
+                class="w-[30px] h-[30px] text-gray-800 dark:text-red absolute right-0 top-0"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="m4 15.6 3-3V12a5 5 0 0 1 5-5h.5l1.8-1.7A9 9 0 0 0 12 5C6.6 5 2 10.3 2 12c.3 1.4 1 2.7 2 3.6Z"
+                />
+                <path
+                  d="m14.7 10.7 5-5a1 1 0 1 0-1.4-1.4l-5 5A3 3 0 0 0 9 12.7l.2.6-5 5a1 1 0 1 0 1.4 1.4l5-5 .6.2a3 3 0 0 0 3.6-3.6 3 3 0 0 0-.2-.6Z"
+                />
+                <path
+                  d="M19.8 8.6 17 11.5a5 5 0 0 1-5.6 5.5l-1.7 1.8 2.3.2c6.5 0 10-5.2 10-7 0-1.2-1.6-2.9-2.2-3.4Z"
+                />
+              </svg>
+
+              } @else {
+
+              <svg
+                [class.hide]="!newPrivSwitch"
+                (click)="newPrivSwitch = !newPrivSwitch"
+                class="w-[30px] h-[30px] text-gray-800 dark:text-red absolute right-0 top-0"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M5 7.8C6.7 6.3 9.2 5 12 5s5.3 1.3 7 2.8a12.7 12.7 0 0 1 2.7 3.2c.2.2.3.6.3 1s-.1.8-.3 1a2 2 0 0 1-.6 1 12.7 12.7 0 0 1-9.1 5c-2.8 0-5.3-1.3-7-2.8A12.7 12.7 0 0 1 2.3 13c-.2-.2-.3-.6-.3-1s.1-.8.3-1c.1-.4.3-.7.6-1 .5-.7 1.2-1.5 2.1-2.2Zm7 7.2a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+              }
+            </div>
+            <label
+              for="floating_email"
+              class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+              >New Password</label
+            >
+            <app-forms-error
+              *ngIf="
+                passwordFormControl('newPassword')?.invalid &&
+                (passwordFormControl('newPassword')?.dirty ||
+                  passwordFormControl('newPassword')?.touched)
+              "
+              [formControlRequired]="passwordFormControl('newPassword')!.errors?.['required']"
+              [formControlPasswordMinLength]="passwordFormControl('newPassword')!.errors?.['minlength']"
+              [newConfirmDontMatch]="newConfirmdoesntMatchError"
+            ></app-forms-error>
+          </div>
+          <div
+            class="relative z-0 w-full mb-5 group col-span-5 tablet:col-span-1"
+          >
+            <div class="relative">
+              <input
+                [type]="privSwitch ? 'text' : 'password'"
+                name="floating_email"
+                id="floating_email"
+                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                formControlName="confirmPassword"
+                placeholder=" "
+                required
+              />
+
+              @if(!privSwitch) {
+
+              <svg
+                [class.hide]="privSwitch"
+                (click)="privSwitch = !privSwitch"
+                class="w-[30px] h-[30px] text-gray-800 dark:text-red absolute right-0 top-0"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="m4 15.6 3-3V12a5 5 0 0 1 5-5h.5l1.8-1.7A9 9 0 0 0 12 5C6.6 5 2 10.3 2 12c.3 1.4 1 2.7 2 3.6Z"
+                />
+                <path
+                  d="m14.7 10.7 5-5a1 1 0 1 0-1.4-1.4l-5 5A3 3 0 0 0 9 12.7l.2.6-5 5a1 1 0 1 0 1.4 1.4l5-5 .6.2a3 3 0 0 0 3.6-3.6 3 3 0 0 0-.2-.6Z"
+                />
+                <path
+                  d="M19.8 8.6 17 11.5a5 5 0 0 1-5.6 5.5l-1.7 1.8 2.3.2c6.5 0 10-5.2 10-7 0-1.2-1.6-2.9-2.2-3.4Z"
+                />
+              </svg>
+
+              }@else {
+
+              <svg
+                [class.hide]="!privSwitch"
+                (click)="privSwitch = !privSwitch"
+                class="w-[30px] h-[30px] text-gray-800 dark:text-red absolute right-0 top-0"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M5 7.8C6.7 6.3 9.2 5 12 5s5.3 1.3 7 2.8a12.7 12.7 0 0 1 2.7 3.2c.2.2.3.6.3 1s-.1.8-.3 1a2 2 0 0 1-.6 1 12.7 12.7 0 0 1-9.1 5c-2.8 0-5.3-1.3-7-2.8A12.7 12.7 0 0 1 2.3 13c-.2-.2-.3-.6-.3-1s.1-.8.3-1c.1-.4.3-.7.6-1 .5-.7 1.2-1.5 2.1-2.2Zm7 7.2a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+              }
+            </div>
+            <label
+              for="floating_email"
+              class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+              >Confirm Password</label
+            >
+            <app-forms-error
+              *ngIf="
+                passwordFormControl('confirmPassword')?.invalid &&
+                (passwordFormControl('confirmPassword')?.dirty ||
+                  passwordFormControl('confirmPassword')?.touched)
+              "
+              [formControlRequired]="passwordFormControl('confirmPassword')!.errors?.['required']"
+              [formControlPasswordMinLength]="passwordFormControl('confirmPassword')!.errors?.['minlength']"
+              [newConfirmDontMatch]="newConfirmdoesntMatchError"
+            ></app-forms-error>
+          </div>
+        </div>
+        <input type="submit" value="Reset Password" />
+      </form>
+    </div>
   </div>
 </div>

@@ -130,4 +130,19 @@ export const updateInfoFailure = createAction(
   props<{error : Error}>()
 )
 
+export const updatePassword = createAction(
+  '[Profile Global] Update Password',
+  props<{password : string}>()
+)
+
+export const updatePasswordSuccess = createAction(
+  '[Profile Global] Update Profile Info Success',
+  props<{password : string}>()
+)
+
+export const updatePasswordFailure = createAction(
+  '[Profile Global] Update Profile Info Fail',
+  props<{error : Error}>()
+)
+
 export const flushProfileState = createAction('[Profile Global] Flush Profile');

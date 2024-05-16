@@ -19,7 +19,7 @@ import * as CvActions from "./faculty-state.actions";
 import { CommunityExtension } from "../../services/Interfaces/community-extension";
 import { AuthService } from "../../services/auth.service";
 import { error } from "console";
-
+import { key } from "../../app.component";
 @Injectable()
 export class CvEffects {
 
@@ -30,10 +30,24 @@ export class CvEffects {
     private auth: AuthService
   ) { }
 
+  key: string = key
 
   decryptData<T>(ciphertext: Encryption): T {
     return this.cryptoJS.CryptoJSAesDecrypt<T>("ucj7XoyBfAMt/ZMF20SQ7sEzad+bKf4bha7bFBdl2HY=", ciphertext)
   }
+
+  encryptData(form : string) {
+    return this.cryptoJS.CryptoJSAesEncrypt(key, JSON.stringify(form))
+  }
+
+  updatePassword$ = createEffect(() => this.actions$.pipe(
+    ofType(CvActions.updatePassword),
+    switchMap((action) => this.facultyService.patchData(this.encryptData(action.password), "password").pipe(
+      map(() => CvActions.updatePasswordSuccess({ password : action.password})),
+      catchError((error) => of(CvActions.updatePasswordFailure({error})))
+    ))
+  ))
+
 
   updateProfile = createEffect(() => this.actions$.pipe(
     ofType(CvActions.updateInfo),
