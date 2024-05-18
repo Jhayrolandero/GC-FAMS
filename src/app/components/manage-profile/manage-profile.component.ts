@@ -34,14 +34,16 @@ export class ManageProfileComponent {
   oldPrivSwitch: boolean = false
   privSwitch: boolean = false;
   newPrivSwitch: boolean = false
-newConfirmdoesntMatchError: string | undefined = undefined
+  newConfirmdoesntMatchError: string | undefined = undefined
+  oldDontMatch: string | undefined
   port = mainPort
+
+  oldPassword: string = ""
   constructor(
     private profileStore: Store<{ profile: ProfileState }>,
     public dialog: MatDialog
   ) {
 
-    try {
 
       this.facultyProfile$.subscribe({
         next: res => {
@@ -64,34 +66,10 @@ newConfirmdoesntMatchError: string | undefined = undefined
             barangay: res!.barangay,
             // password: res!.password
           })
-        }
-      })
-    } catch {
 
-      this.facultyProfile$.subscribe({
-        next: res => {
-          this.facultyInfo.patchValue({
-            first_name: res!.first_name,
-            last_name: res!.last_name,
-            birthdate: res!.birthdate,
-            age: res!.age,
-            citizenship: res!.citizenship,
-            civil_status: res!.civil_status,
-            sex: res!.sex,
-            email: res!.email,
-            phone_number: res!.phone_number,
-            middle_name: res!.middle_name,
-            ext_name: res!.ext_name,
-            region: res!.region,
-            province: res!.province,
-            language: res!.language,
-            city: res!.city,
-            barangay: res!.barangay,
-            // password: res!.password
-          })
+          this.oldPassword = res!.password
         }
       })
-    }
   }
 
   facultyProfile$ = this.profileStore.select(selectAllProfile);
@@ -196,6 +174,16 @@ newConfirmdoesntMatchError: string | undefined = undefined
 
     submitPassword() {
       if(!this.newPasswordInfo.valid) return
+
+      if(this.passwordFormControl('oldPassword')?.value !== this.oldPassword) {
+        this.oldDontMatch = "Incorrect password"
+        this.newPasswordInfo.patchValue({
+          oldPassword: "",
+          newPassword: "",
+          confirmPassword: ""
+        })
+        return
+      }
 
 
       if(this.passwordFormControl('newPassword')?.value !== this.passwordFormControl('confirmPassword')?.value) {

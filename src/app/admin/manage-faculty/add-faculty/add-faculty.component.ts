@@ -208,7 +208,8 @@ export class AddFacultyComponent {
       this.selectedEmployeePosition = 'Instructor';
       // this.disabledBox = true;
       this.facultyInfo.patchValue({
-        teaching_position: 'Instructor'
+        teaching_position: 'Instructor',
+        isAdmin: 0
       })
     }
   }

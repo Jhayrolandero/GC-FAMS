@@ -18,4 +18,5 @@ export class FormsErrorComponent {
   @Input('formControlNumber') formControlNumber!: FormControl;
   @Input('formControlPasswordMinLength') formControlPasswordMinLength!: FormControl;
   @Input('newConfirmDontMatch') newConfirmDontMatch: string | undefined;
+  @Input('oldDontMatch') oldDontMatch: string | undefined;
 }

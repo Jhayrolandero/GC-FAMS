@@ -51,7 +51,7 @@ export class CvEffects {
 
   updateProfile = createEffect(() => this.actions$.pipe(
     ofType(CvActions.updateInfo),
-    switchMap((action) => this.facultyService.patchData(action.facultyData, "faculty").pipe(
+    switchMap((action) => this.facultyService.patchData(action.facultyData, "profile").pipe(
       map(() => CvActions.updateInfoSuccess({facultyData: action.facultyData})),
       catchError((error) => of(CvActions.updateInfoFailure({error})))
     ))

@@ -21,8 +21,15 @@
 
 <div *ngIf="newConfirmDontMatch">
   <p class="bg bg-red-50 text-red-700">
-    <span><i class="fa-solid fa-triangle-exclamation mr-2"></i></span>Password
-    doesn't match
+    <span><i class="fa-solid fa-triangle-exclamation mr-2"></i></span
+    >{{ newConfirmDontMatch }}
+  </p>
+</div>
+
+<div *ngIf="oldDontMatch">
+  <p class="bg bg-red-50 text-red-700">
+    <span><i class="fa-solid fa-triangle-exclamation mr-2"></i></span
+    >{{ oldDontMatch }}
   </p>
 </div>
 

@@ -552,6 +552,7 @@
               "
               [formControlRequired]="passwordFormControl('oldPassword')!.errors?.['required']"
               [formControlPattern]="passwordFormControl('oldPassword')!.errors?.['pattern']"
+              [oldDontMatch]="oldDontMatch"
             ></app-forms-error>
           </div>
           <div
