@@ -3,13 +3,7 @@ import { Schedule } from '../../services/admin/schedule';
 import { Router } from '@angular/router';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { mainPort } from '../../app.component';
-import { FacultyRequestService } from '../../services/faculty/faculty-request.service';
-import { Resume } from '../../services/Interfaces/resume';
-import { HttpClient } from '@angular/common/http';
 import { LoadingScreenComponent } from '../../components/loading-screen/loading-screen.component';
-import html2canvas from 'html2canvas';
-import jspdf from 'jspdf';
-import { forkJoin } from 'rxjs';
 import { MessageComponent } from '../../components/message/message.component';
 import { CvDropdownComponent } from "./Profile Dropdown/cv-dropdown.component";
 import { FacultyCertificationsComponent } from './Profile Components/faculty-certifications/faculty-certifications.component';
@@ -21,7 +15,8 @@ import { selectAllProfile, selectCourseSched, selectCourses } from '../../state/
 import { Store } from '@ngrx/store';
 import { CourseFormComponent } from './Profile Forms/course-form/course-form.component';
 import { MatDialog } from '@angular/material/dialog';
-import { loadProfile } from '../../state/faculty-state/faculty-state.actions';
+import { CvDeleteForm } from './Profile Forms/delete-form/cv-delete-form.component';
+import { loadCourse } from '../../state/faculty-state/faculty-state.actions';
 @Component({
   selector: 'app-profile',
   standalone: true,
@@ -45,8 +40,8 @@ export class ProfileComponent {
   isLoading: boolean = true;
   port = mainPort;
   public facultyProfile$ = this.store.select(selectAllProfile);
-  public certFaculty$ = this.store.select(selectCourseSched);
-  public certs$ = this.store.select(selectCourses);
+  public coursesFaculty$ = this.store.select(selectCourseSched);
+  public courses$ = this.store.select(selectCourses);
   schedules: Schedule[] = [];
 
   rotated = false;
@@ -65,6 +60,14 @@ export class ProfileComponent {
 
   openDialogue() {
     const courseRef = this.dialog.open(CourseFormComponent);
+  }
+
+  deleteDialog(deleteData: any){
+    const deleteForm = this.dialog.open(CvDeleteForm, {
+      data: ['deleteCourse/' + deleteData, 5]
+    }).afterClosed().subscribe(result => {
+      this.store.dispatch(loadCourse());
+    })
   }
 
   rotate() {
