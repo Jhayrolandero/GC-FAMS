@@ -29,8 +29,8 @@
     [formGroup]="facultyInfo"
     (ngSubmit)="onSubmit()"
   >
-    <div class="flex flex-col grid gap-3" id="contents">
-      <div class="bg-white rounded-[15px] grid gap-3 shadow-main p-5">
+    <div class="flex flex-col gap-3 w-full" id="contents">
+      <div class="bg-white rounded-[15px] grid gap-3 shadow-main p-5 w-full">
         <div>
           <h4 class="font-Poppins font-bold text-[2rem] text-blue">
             <span *ngIf="formControl('college_ID')!.errors?.['required']">
@@ -39,7 +39,9 @@
             College
             <hr class="border-[1.5px] border-slate-400" />
           </h4>
-          <div class="grid grid-cols-5 gap-2 items-stretch">
+          <div
+            class="grid grid-cols-1 tablet:grid-cols-2 desktop:grid-cols-5 gap-2 items-stretch"
+          >
             @for (college of colleges$ | async; track college.college_ID) {
             <app-gc-box
               [college]="college"
@@ -52,7 +54,7 @@
           </div>
         </div>
 
-        <div class="flex flex-row gap-3 w-full">
+        <div class="flex flex-col tablet:flex-row flex-wrap gap-3 w-full">
           <div class="flex flex-1 flex-col">
             <h4 class="font-Poppins font-bold text-[2rem] text-blue">
               <span
@@ -65,7 +67,7 @@
               Employment
               <hr class="border-[1.5px] border-slate-400" />
             </h4>
-            <div class="grid grid-cols-2 gap-2 pt-4">
+            <div class="grid grid-cols-1 tablet:grid-cols-2 gap-2 pt-4">
               <app-employee-type
                 *ngFor="let employment of employmentStatus"
                 [employment]="employment"
@@ -89,7 +91,7 @@
               Position
               <hr class="border-[1.5px] border-slate-400" />
             </h4>
-            <div class="flex flex-row gap-2 pt-4 w-full">
+            <div class="flex flex-col tablet:flex-row gap-2 pt-4 w-full">
               <app-employee-position
                 *ngFor="let position of positions"
                 [position]="position"
@@ -276,7 +278,9 @@
           </div>
         </div>
         <div class="flex flex-col gap-4">
-          <div class="flex justify-center items-center gap-4">
+          <div
+            class="flex flex-col tablet:flex-row justify-center items-start gap-4"
+          >
             <div class="flex flex-col flex-1" *ngFor="let col of column1">
               <label class="formTextFormat uppercase" [for]="col">{{
                 col
@@ -310,7 +314,9 @@
               ></app-forms-error>
             </div>
           </div>
-          <div class="flex justify-center items-center gap-4">
+          <div
+            class="flex flex-col tablet:flex-row justify-center items-start gap-4"
+          >
             <div class="flex flex-col flex-1 gap-2" *ngFor="let col of column2">
               <label class="formTextFormat uppercase" [for]="col">{{
                 col
@@ -337,7 +343,9 @@
               ></app-forms-error>
             </div>
           </div>
-          <div class="flex justify-center items-center gap-4">
+          <div
+            class="flex flex-col tablet:flex-row justify-center items-start gap-4"
+          >
             <div class="flex flex-col flex-1" *ngFor="let col of column3">
               <label class="formTextFormat uppercase" [for]="col">{{
                 col
@@ -364,7 +372,9 @@
               ></app-forms-error>
             </div>
           </div>
-          <div class="flex justify-center items-start gap-4">
+          <div
+            class="flex flex-col tablet:flex-row justify-center items-start gap-4"
+          >
             <div class="flex flex-col flex-1" *ngFor="let col of column4">
               <label class="formTextFormat uppercase" [for]="col">{{
                 col
