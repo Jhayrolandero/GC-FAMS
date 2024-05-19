@@ -5,7 +5,6 @@ import * as DeanSelector from '../../state/dean-state/dean-state.selector';
 import { FacultySelectorComponent } from './faculty-selector/faculty-selector.component';
 import { LineGraphComponent } from '../../components/charts/line-graph/line-graph.component';
 import { BarChartComponent } from '../../components/charts/bar-chart/bar-chart.component';
-import { Observable } from 'rxjs';
 import { RadarChartComponent } from '../../components/charts/radar-chart/radar-chart.component';
 import { EvaluationSelectorComponent } from './evaluation-selector/evaluation-selector.component';
 

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, SimpleChanges } from '@angular/core';
+import { Component } from '@angular/core';
 import { mainPort } from '../../../../app.component';
 import { Store } from '@ngrx/store';
 import { selectAllCerts, selectFacultyCerts } from '../../../../state/faculty-state/faculty-state.selector';

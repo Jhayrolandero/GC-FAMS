@@ -5,7 +5,6 @@ import { mainPort } from '../../app.component';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { LoadingScreenComponent } from '../../components/loading-screen/loading-screen.component';
 import { EvaluationService } from '../../services/evaluation.service';
-import { Schedule } from '../../services/admin/schedule';
 import * as FacultySelector from '../../state/faculty-state/faculty-state.selector';
 import { Store } from '@ngrx/store';
 import { BarChartComponent } from '../../components/charts/bar-chart/bar-chart.component';

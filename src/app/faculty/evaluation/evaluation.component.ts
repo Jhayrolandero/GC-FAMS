@@ -1,6 +1,5 @@
-import { Component, Inject, OnInit, Renderer2, ElementRef, SimpleChanges } from '@angular/core';
+import { Component, Inject, Renderer2, ElementRef, SimpleChanges } from '@angular/core';
 import { FacultyRequestService } from '../../services/faculty/faculty-request.service';
-import { Router } from '@angular/router';
 import { Evaluation } from '../../services/Interfaces/evaluation';
 import { NgxChartsModule, ScaleType } from '@swimlane/ngx-charts';
 import { CommonModule, NgFor } from '@angular/common';
