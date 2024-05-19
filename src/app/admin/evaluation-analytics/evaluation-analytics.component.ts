@@ -76,7 +76,6 @@ export class EvaluationAnalyticsComponent {
     else{
       this.selectedFacultyArray = this.selectedFacultyArray.filter(x => x[0] !== data[0][0]);
     }
-    console.log(this.selectedFacultyArray);
     //Converting the current selectedList to array each select and deselection.
     this.length = this.selectedArray.length;
   }

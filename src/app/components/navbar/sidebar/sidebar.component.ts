@@ -25,11 +25,7 @@ export class SidebarComponent {
     this.accountPath = this.route.snapshot.url[0].path;
     this.isFaculty = this.accountPath === "faculty";
   }
-
-  ngOnInit() {
-    console.log("I am at the navbar");
-  }
-
+  
   onSelect(index: number) {
     this.selectedBar = index + "";
   }

@@ -7,11 +7,11 @@
 
     <div class="w-full flex flex-row gap-3">
         <div class="bg-white w-[250px] overflow-hidden rounded-[15px] shadow-main flex flex-col items-center" *ngIf="(facultyProfile$ | async) as profile">
-            <div class="h-[150px] w-full overflow-hidden flex items-center">
-                <img class="object-cover" [src]="port + profile.profile_image">
+            <div class="h-[150px] w-full overflow-hidden flex items-center flex flex-col items-center justify-center">
+                <img class="object-cover" [src]="port + profile.profile_image" onerror="this.onerror=null; this.src='/assets/profiles/user.png'" >
             </div>
-            <p class="font-Poppins font-semibold text-blue text-[1.5rem]">{{ profile.first_name + " " + profile.last_name}}</p>
-            <div class="p-2 text-[0.7rem] rounded-full shadow-main text-blue font-Poppins font-semibold">{{ profile.teaching_level }}</div>
+            <p class="font-Poppins font-semibold text-blue text-[1.5rem] leading-[25px] p-2">{{ profile.first_name + " " + profile.last_name}}</p>
+            <div class="p-2 text-[0.7rem] rounded-full shadow-main text-blue font-Poppins font-semibold m-3">{{ profile.teaching_level }}</div>
         </div>
         <div class="flex flex-1 flex-col bg-white rounded-[15px] shadow-main p-3">
             <p class="text-blue text-[2rem] font-Poppins font-semibold">Milestone Calendar</p>

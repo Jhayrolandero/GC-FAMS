@@ -62,7 +62,6 @@ export class CommexsEffects {
 
   getCommexs$ = createEffect(() => this.actions$.pipe(
     ofType(CommexActions.getCommex),
-    tap(() => console.log("Hallo :D")),
     mergeMap((commexes) => {
       if (commexes) {
         return this.fetchCommex$('getcommex?t=faculty').

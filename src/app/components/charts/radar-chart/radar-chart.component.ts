@@ -20,6 +20,7 @@ export class RadarChartComponent {
   @Input() showLegend?: boolean;
 
   ngAfterViewInit() {
+    this.chart.destroy();
     this.createChart();
   }
 

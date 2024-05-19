@@ -5,7 +5,7 @@
     <div class="flex flex-row">
         <div class="select-none  w-full mx-10 hover:pl-4 hover:duration-300 duration-300">
             <div class="flex flex-row justify-between">
-                <p class="font-Roboto font-medium text-blue text-[1.6rem]">{{ proj.project_name }}</p>
+                <p class="flex-1 font-Roboto font-medium text-blue text-[1rem] tablet:text-[1.5rem]">{{ proj.project_name }}</p>
                 <div class="showChild flex flex-row items-center">
                     <svg (click)="editProject(proj)" class="[&>path]:hover:fill-blue mobileS:scale-75 tablet:hover:scale-105 hover:duration-300 duration-300 ml-5" width="25" height="25" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M3.95833 29.0417H6.51146L24.025 11.5281L21.4719 8.975L3.95833 26.4885V29.0417ZM0.375 32.625V25.0104L24.025 1.40521C24.3833 1.07674 24.7793 0.822917 25.2129 0.64375C25.6465 0.464584 26.1015 0.375 26.5781 0.375C27.0559 0.375 27.5188 0.464584 27.9667 0.64375C28.4146 0.822917 28.8028 1.09167 29.1313 1.45L31.5948 3.95833C31.9531 4.28681 32.2147 4.675 32.3795 5.12292C32.5444 5.57083 32.6262 6.01875 32.625 6.46667C32.625 6.94444 32.5432 7.40013 32.3795 7.83371C32.2159 8.26729 31.9543 8.66265 31.5948 9.01979L7.98958 32.625H0.375ZM22.726 10.274L21.4719 8.975L24.025 11.5281L22.726 10.274Z" fill="#BCBCBC"/>
@@ -15,7 +15,7 @@
                     </svg>
                 </div>
             </div>
-            <p class="ml-5 font-Roboto font-regular text-black text:[1.3rem] tablet:text-[1.5rem]">{{ proj.project_detail }}</p>
+            <p class="ml-5 font-Roboto font-regular text-black text:[1.3rem] tablet:text-[1.1rem]">{{ proj.project_detail }}</p>
         </div>
     </div>
     <hr class="h-[3px] my-4 mx-10 bg-black opacity-50">
