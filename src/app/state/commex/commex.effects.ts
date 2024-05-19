@@ -41,7 +41,7 @@ export class CommexsEffects {
     return this.facultyService.deleteData(`commex/${commex_ID}`)
   }
 
-  deleteCommex = createEffect(() => this.actions$.pipe(
+  deleteCommex$ = createEffect(() => this.actions$.pipe(
     ofType(CommexActions.deleteCommex),
     mergeMap((action) => {
 
@@ -60,13 +60,11 @@ export class CommexsEffects {
     })
   ))
 
-  getCommexs = createEffect(() => this.actions$.pipe(
+  getCommexs$ = createEffect(() => this.actions$.pipe(
     ofType(CommexActions.getCommex),
-    tap(() => console.log("Hallo :D")),
-    withLatestFrom(this.commexFacultyStore.select(parsedCommexSelector)),
-    concatMap(([action, commexes]) => {
-      if (commexes.length <= 0) {
-        return this.fetchCommex$(action.uri).
+    mergeMap((commexes) => {
+      if (commexes) {
+        return this.fetchCommex$('getcommex?t=faculty').
           pipe(
             map(data => {
               const commexs = this.decryptData<CommunityExtension[]>(data)
@@ -85,7 +83,7 @@ export class CommexsEffects {
   ))
 
 
-  getCollegeCommexs = createEffect(() => this.actions$.pipe(
+  getCollegeCommexs$ = createEffect(() => this.actions$.pipe(
     ofType(CommexActions.getCollegeCommex),
     withLatestFrom(this.commexCollegeStore.select(parsedCollegeCommexSelector)),
     concatMap(([action, commexes]) => {

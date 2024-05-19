@@ -24,6 +24,7 @@ export class BarChartComponent {
   @Input() bgColor2: string = ''
 
   ngAfterViewInit(){
+    this.chart.destroy();
     this.createChart();
   }
 

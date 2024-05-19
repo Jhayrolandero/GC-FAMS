@@ -5,10 +5,10 @@ import { mainPort } from '../../app.component';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { LoadingScreenComponent } from '../../components/loading-screen/loading-screen.component';
 import { EvaluationService } from '../../services/evaluation.service';
-import { Schedule } from '../../services/admin/schedule';
 import * as FacultySelector from '../../state/faculty-state/faculty-state.selector';
 import { Store } from '@ngrx/store';
 import { BarChartComponent } from '../../components/charts/bar-chart/bar-chart.component';
+import { LineGraphComponent } from '../../components/charts/line-graph/line-graph.component';
 
 @Component({
   selector: 'app-analytics',
@@ -18,7 +18,8 @@ import { BarChartComponent } from '../../components/charts/bar-chart/bar-chart.c
     NgOptimizedImage,
     LoadingScreenComponent,
     CommonModule,
-    BarChartComponent
+    BarChartComponent,
+    LineGraphComponent
   ],
   providers: [EvaluationService],
   templateUrl: './analytics.component.html',
@@ -27,12 +28,17 @@ import { BarChartComponent } from '../../components/charts/bar-chart/bar-chart.c
 export class AnalyticsComponent {
   port = mainPort;
   yearsArray: string[] = Array.from({ length: 15 }, (_, i) => (new Date().getFullYear() - 14) + i).map(String);
+  certToggle = false;
+  commexToggle = false;
+  seminarToggle = false;
 
   facultyProfile$ = this.store.select(FacultySelector.selectAllProfile);
   milestonesAchieved$ = this.store.select(FacultySelector.selectMilestoneCount);
   units$ = this.store.select(FacultySelector.selectTotalUnit);
   certCount$ = this.store.select(FacultySelector.selectCertCount);
+  seminarCount$ = this.store.select(FacultySelector.selectSeminarCount);
   evalAverage$ = this.store.select(FacultySelector.selectFacultyEvalAverage); 
+  attainmentTimeline$ = this.store.select(FacultySelector.selectAttainmentTimeline);
 
   constructor(
     private router: Router,
@@ -41,7 +47,7 @@ export class AnalyticsComponent {
   }
 
   ngOnInit(): void {
-    this.milestonesAchieved$.subscribe(next => {
+    this.seminarCount$.subscribe(next => {
       // console.log(next);
     })
   }

@@ -88,7 +88,7 @@ export class DeanEffects {
       .pipe(
         tap((data) => {
           const decryptedData = this.decryptData<IndustryExperience[]>(data);
-          console.log('Decrypted Data:', decryptedData); // Log decrypted data to console
+          // console.log('Decrypted Data:', decryptedData); Log decrypted data to console
         }),
         map((data) => CvActions.loadCollegeExpSuccess({ exps: this.decryptData<IndustryExperience[]>(data) })),
         catchError((error) => of(CvActions.loadCollegeExpFailure({ error })))

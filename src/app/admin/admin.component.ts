@@ -80,7 +80,7 @@ export class AdminComponent {
     store.dispatch(loadProj());
     store.dispatch(loadExpertise());
     store.dispatch(loadEval());
-    store.dispatch(getCommex({ uri: 'getcommex?t=faculty' }))
+    store.dispatch(getCommex())
 
     breakpointObserver
       .observe([

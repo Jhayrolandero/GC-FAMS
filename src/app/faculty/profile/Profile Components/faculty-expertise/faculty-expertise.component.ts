@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Expertise } from '../../../../services/Interfaces/expertise';
 import { FacultyRequestService } from '../../../../services/faculty/faculty-request.service';

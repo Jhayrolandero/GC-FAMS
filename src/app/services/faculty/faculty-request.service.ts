@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { mainPort } from '../../app.component';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { JwtToken } from '../jwt-token';
 import { FormGroup } from '@angular/forms';
 import { College } from '../Interfaces/college';

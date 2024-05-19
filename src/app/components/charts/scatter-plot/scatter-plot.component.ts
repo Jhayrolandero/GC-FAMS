@@ -22,6 +22,7 @@ export class ScatterPlotComponent {
   @Input() bgColor: string = '';
 
   ngAfterViewInit(){
+    this.chart.destroy();
     this.createChart();
   }
 

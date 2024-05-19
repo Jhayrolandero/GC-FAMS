@@ -7,8 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Store } from '@ngrx/store';
 import { FacultyRequestService } from '../../../../services/faculty/faculty-request.service';
-import { loadCert, loadCourse, loadExpertise } from '../../../../state/faculty-state/faculty-state.actions';
-import { ExpertiseFormComponent } from '../expertise-form/expertise-form.component';
+import { loadCourse } from '../../../../state/faculty-state/faculty-state.actions';
 import { selectCourses } from '../../../../state/faculty-state/faculty-state.selector';
 import { MessageService } from '../../../../services/message.service';
 

@@ -1,5 +1,4 @@
 import { Component, Output } from '@angular/core';
-import { EducationalAttainment } from '../../../../services/Interfaces/educational-attainment';
 import { CommonModule } from '@angular/common'; 
 import { FacultyRequestService } from '../../../../services/faculty/faculty-request.service';
 import { MatDialog } from '@angular/material/dialog';

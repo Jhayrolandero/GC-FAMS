@@ -19,6 +19,7 @@ export class PieChartComponent {
 
 
   ngAfterViewInit() {
+    this.chart.destroy();
     this.createChart();
   }
 

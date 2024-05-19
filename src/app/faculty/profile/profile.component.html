@@ -132,11 +132,11 @@
           </div>
         </div>
 
-        <div class="w-full rounded-[15px] bg-white flex flex-row px-5 py-2">
+        <div class="w-[93%] rounded-[15px] bg-white flex flex-row px-5 py-2">
           <p class="w-[20%] text-greenBar font-Roboto font-bold text-[0.9rem]">
             Course Code
           </p>
-          <p class="w-[60%] text-greenBar font-Roboto font-bold text-[0.9rem]">
+          <p class="w-[57%] text-greenBar font-Roboto font-bold text-[0.9rem]">
             Course Name
           </p>
           <p class="w-[10%] text-greenBar font-Roboto font-bold text-[0.9rem]">
@@ -148,21 +148,48 @@
         </div>
         <div class="grid gap-y-2 h-[150px] overflow-y-scroll">
           <div
-            *ngFor="let cert of certFaculty$ | async"
-            class="w-full rounded-[10px] bg-blue shadow-main flex flex-row flex-initial px-5 py-[7px] select-none"
+            *ngFor="let courseFa of coursesFaculty$ | async"
+            class="w-full rounded-[10px] bg-blue shadow-main flex flex-row justify-between flex-initial px-5 py-[7px] select-none duration-300 hover:bg-[#073871] hover:duration-300"
           >
-            <p class="w-[20%] text-white font-Roboto font-medium text-[0.8rem]">
-              {{ cert.course_code }}
-            </p>
-            <p class="w-[60%] text-white font-Roboto font-medium text-[0.8rem]">
-              {{ cert.course_name }}
-            </p>
-            <p class="w-[10%] text-white font-Roboto font-medium text-[0.8rem]">
-              {{ cert.unit }}
-            </p>
-            <p class="w-[10%] text-white font-Roboto font-medium text-[0.8rem]">
-              {{ cert.class_count }}
-            </p>
+            <div class="w-[93%] flex flex-row">
+              <p
+                class="w-[20%] text-white font-Roboto font-medium text-[0.8rem]"
+              >
+                {{ courseFa.course_code }}
+              </p>
+              <p
+                class="w-[60%] text-white font-Roboto font-medium text-[0.8rem]"
+              >
+                {{ courseFa.course_name }}
+              </p>
+              <p
+                class="w-[10%] text-white font-Roboto font-medium text-[0.8rem]"
+              >
+                {{ courseFa.unit }}
+              </p>
+              <p
+                class="w-[10%] text-white font-Roboto font-medium text-[0.8rem]"
+              >
+                {{ courseFa.class_count }}
+              </p>
+            </div>
+
+            <div>
+              <svg
+                (click)="deleteDialog(courseFa.course_code)"
+                class="[&>path]:hover:fill-red-500 mobileS:scale-75 tablet:hover:scale-[101%] hover:duration-300 duration-300"
+                width="23"
+                height="25"
+                viewBox="0 0 33 35"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M31.2812 5.875H24.5625V4.5625C24.5625 3.51821 24.1378 2.51669 23.3818 1.77827C22.6258 1.03984 21.6004 0.625 20.5312 0.625H12.4688C11.3996 0.625 10.3742 1.03984 9.61823 1.77827C8.86222 2.51669 8.4375 3.51821 8.4375 4.5625V5.875H1.71875C1.36237 5.875 1.02058 6.01328 0.768576 6.25942C0.516574 6.50556 0.375 6.8394 0.375 7.1875C0.375 7.5356 0.516574 7.86944 0.768576 8.11558C1.02058 8.36172 1.36237 8.5 1.71875 8.5H3.0625V32.125C3.0625 32.8212 3.34565 33.4889 3.84965 33.9812C4.35365 34.4734 5.03723 34.75 5.75 34.75H27.25C27.9628 34.75 28.6463 34.4734 29.1503 33.9812C29.6544 33.4889 29.9375 32.8212 29.9375 32.125V8.5H31.2812C31.6376 8.5 31.9794 8.36172 32.2314 8.11558C32.4834 7.86944 32.625 7.5356 32.625 7.1875C32.625 6.8394 32.4834 6.50556 32.2314 6.25942C31.9794 6.01328 31.6376 5.875 31.2812 5.875ZM13.8125 25.5625C13.8125 25.9106 13.6709 26.2444 13.4189 26.4906C13.1669 26.7367 12.8251 26.875 12.4688 26.875C12.1124 26.875 11.7706 26.7367 11.5186 26.4906C11.2666 26.2444 11.125 25.9106 11.125 25.5625V15.0625C11.125 14.7144 11.2666 14.3806 11.5186 14.1344C11.7706 13.8883 12.1124 13.75 12.4688 13.75C12.8251 13.75 13.1669 13.8883 13.4189 14.1344C13.6709 14.3806 13.8125 14.7144 13.8125 15.0625V25.5625ZM21.875 25.5625C21.875 25.9106 21.7334 26.2444 21.4814 26.4906C21.2294 26.7367 20.8876 26.875 20.5312 26.875C20.1749 26.875 19.8331 26.7367 19.5811 26.4906C19.3291 26.2444 19.1875 25.9106 19.1875 25.5625V15.0625C19.1875 14.7144 19.3291 14.3806 19.5811 14.1344C19.8331 13.8883 20.1749 13.75 20.5312 13.75C20.8876 13.75 21.2294 13.8883 21.4814 14.1344C21.7334 14.3806 21.875 14.7144 21.875 15.0625V25.5625ZM21.875 5.875H11.125V4.5625C11.125 4.2144 11.2666 3.88056 11.5186 3.63442C11.7706 3.38828 12.1124 3.25 12.4688 3.25H20.5312C20.8876 3.25 21.2294 3.38828 21.4814 3.63442C21.7334 3.88056 21.875 4.2144 21.875 4.5625V5.875Z"
+                  fill="#BCBCBC"
+                />
+              </svg>
+            </div>
           </div>
         </div>
       </div>

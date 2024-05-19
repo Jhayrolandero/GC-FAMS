@@ -23,6 +23,7 @@ export class LineGraphComponent {
 
 
   ngAfterViewInit(){
+    this.chart.destroy();
     this.createChart();
   }
 

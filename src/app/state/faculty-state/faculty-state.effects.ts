@@ -156,10 +156,6 @@ export class CvEffects {
     ofType(CvActions.loadExpertise),
     switchMap(() => this.facultyService.fetchData<Encryption>('expertise')
       .pipe(
-        tap((data) => {
-          const decryptedData = this.decryptData<[ExpertiseFaculty[], Expertise[]]>(data);
-          console.log('Decrypted Data:', decryptedData); // Log decrypted data to console
-        }),
         map((data) => CvActions.loadExpertiseSuccess({ expertises: this.decryptData<[ExpertiseFaculty[], Expertise[]]>(data) })),
         catchError((error) => of(CvActions.loadExpertiseFailure({ error })))
       )

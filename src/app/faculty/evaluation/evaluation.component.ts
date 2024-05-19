@@ -1,6 +1,5 @@
-import { Component, Inject, OnInit, Renderer2, ElementRef, SimpleChanges } from '@angular/core';
+import { Component, Inject, Renderer2, ElementRef, SimpleChanges } from '@angular/core';
 import { FacultyRequestService } from '../../services/faculty/faculty-request.service';
-import { Router } from '@angular/router';
 import { Evaluation } from '../../services/Interfaces/evaluation';
 import { NgxChartsModule, ScaleType } from '@swimlane/ngx-charts';
 import { CommonModule, NgFor } from '@angular/common';
@@ -86,20 +85,6 @@ export class EvaluationForm {
   }
 
   submitForm() {
-    //Proceed to next semester or year
-    // if (this.data.sem == 1) {
-    //   this.evalForm.patchValue({
-    //     semester: '2',
-    //     evaluation_year: (this.data.year) + ''
-    //   });
-    // }
-    // else {
-    //   this.evalForm.patchValue({
-    //     semester: '1',
-    //     evaluation_year: ((+this.data.year) + 1) + ""
-    //   })
-    // }
-
     console.log(this.evalForm);
     //Post request on form
     this.facultyRequest.postData(this.evalForm, "addEval").subscribe({

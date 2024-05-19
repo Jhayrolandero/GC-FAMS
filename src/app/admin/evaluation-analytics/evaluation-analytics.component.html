@@ -1,0 +1,107 @@
+<div class="p-5 flex flex-col gap-y-3 text-blue">
+    <div class="bg-white shadow-main w-full rounded-[15px] flex justify-between items-center px-5">
+        <h1 class="font-Poppins font-semibold text-[2.5rem] py-2">
+            Evaluation Analytics
+        </h1>
+    </div>
+
+    <div *ngIf="(individualAverageTimeline$ | async) as main" class="w-full bg-white rounded-[15px] shadow-main p-5 pt-1">
+        <div class="flex flex-row items-center gap-3">
+            <div class="flex flex-row justify-between items-center w-full">
+                <p class="text-blue font-bold text-[1.7rem] my-2">Individual Average Timeline</p>
+                <div class="border-slate-400 border-solid border-2 w-[240px] h-[35px] rounded-[5px] relative flex items-center px-3 duration-300 hover:shadow-main hover:duration-300 cursor-pointer">
+                    <div (click)="dropToggle = !dropToggle" class="w-full flex flex-row justify-between items-center">
+                        <p class="font-Roboto font-medium">Select Faculty Timeline</p>
+                        <svg width="17" height="9" viewBox="0 0 17 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M15.7655 1.43164L9.62346 7.57367C8.8981 8.29903 7.71114 8.29903 6.98578 7.57367L0.84375 1.43164" stroke="#686868" stroke-width="1.41304" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>     
+                    </div>
+
+                    <div 
+                    [ngClass]="dropToggle ? 'block' : 'hidden'"
+                    class="border-slate-400 border-solid border-2 w-[240px] rounded-[5px] top-[40px] left-[0px] absolute bg-white">
+                        <div *ngFor="let faculty of main; let i = index">
+                            <app-faculty-selector
+                            [facultyData]="faculty"
+                            (selectFaculty)="selectFaculty($event)"></app-faculty-selector>
+                        </div>
+                    </div>
+                
+                </div>
+            </div>
+        </div>
+        <app-line-graph
+        [data]="selectedArray[0] != undefined ? selectedArray[0][1][1] : []"
+        [data2]="selectedArray[1] != undefined ? selectedArray[1][1][1] : []"
+        [data3]="selectedArray[2] != undefined ? selectedArray[2][1][1] : []"
+        [labels]="yearsArray"
+        [showLegend]="false">
+        </app-line-graph>
+    </div>
+
+    <div class="flex flex-row w-full gap-x-3">
+        <div class="flex flex-col w-[60%] gap-3">
+    
+            <div *ngIf="(overallAverageTimeline$ | async) as timeline" class="w-full bg-white rounded-[15px] shadow-main p-5 pt-1">
+                <p class="text-blue font-bold text-[1.7rem] my-2">Educational Attainment Timeline</p>
+                <app-line-graph
+                [data]="timeline"
+                [labels]="yearsArray"
+                [showLegend]="false">
+                </app-line-graph>
+            </div>
+            
+            <div class="flex flex-col flex-1 bg-white rounded-[15px] shadow-main p-5 pt-1">
+                <p class="text-blue font-bold text-[1.7rem] my-2">Semestral Evaluation Difference</p>
+                <app-bar-chart
+                [data]="diffArr[2]"
+                [axis]="'x'"
+                [bgColor]="'rgb(7, 66, 135)'"
+                [labels]="diffArr[1]"
+                [showLegend]="false">
+                >  
+                </app-bar-chart>
+            </div>
+            
+        </div>
+
+
+        <div *ngIf="(evaluationRadar$ | async) as radar" class="flex flex-col flex-1 bg-white w-[100px] rounded-[15px] p-5 pt-1 shadow-main">
+            <p class="text-blue font-bold text-[1.7rem] my-2">Evaluation Radar Chart</p>
+            <div class="border-slate-400 border-solid border-2 w-[240px] h-[35px] rounded-[5px] relative flex items-center px-3 duration-300 hover:shadow-main hover:duration-300 cursor-pointer">
+                <div (click)="dropEvalToggle = !dropEvalToggle"  class="w-full flex flex-row justify-between items-center">
+                    <p class="font-Roboto font-medium">Select Faculty Member</p>
+                    <svg width="17" height="9" viewBox="0 0 17 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M15.7655 1.43164L9.62346 7.57367C8.8981 8.29903 7.71114 8.29903 6.98578 7.57367L0.84375 1.43164" stroke="#686868" stroke-width="1.41304" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>     
+                </div>
+
+                <div 
+                [ngClass]="dropEvalToggle ? 'block' : 'hidden'"
+                class="border-slate-400 border-solid border-2 w-[240px] rounded-[5px] top-[40px] left-[0px] absolute bg-white">
+                    <div *ngFor="let evalu of radar; let i = index">
+                        <app-evaluation-selector
+                        [facultyData]="evalu"
+                        (selectEvalFaculty)="selectEvalFaculty($event)"></app-evaluation-selector>
+                    </div>
+                </div>
+            
+            </div>
+
+            <app-radar-chart
+            [data]="selectedFacultyArray[0] !== undefined ? selectedFacultyArray[0][1] : []"
+            [data2]="selectedFacultyArray[1] !== undefined ? selectedFacultyArray[1][1] : []"
+            [data3]="selectedFacultyArray[2] !== undefined ? selectedFacultyArray[2][1] : []"
+            [labels]="['Knowledge of Content', 'Instructional Skills', 'Communication Skills', 'Teaching for Independent Learning', 'Managament of Learning', 'Flexible Learning Modality']"
+            [showLegend]="true">
+            </app-radar-chart>
+        </div>
+
+    </div>
+
+
+
+
+
+
+</div>

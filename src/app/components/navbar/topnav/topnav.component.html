@@ -28,7 +28,7 @@
         [src]="port + facultyProfile.profile_image"
         alt="facultyProfile.profile_image"
         class="h-full rounded-full aspect-square"
-        onerror="this.onerror=null; this.src='../../../assets/profiles/user.png'"
+        onerror="this.onerror=null; this.src='/assets/profiles/user.png'"
       />
       <p class="font-Roboto font-semibold text-blue">
         {{ facultyProfile.first_name }} {{ facultyProfile.last_name }}
@@ -40,8 +40,11 @@
       *ngIf="dropToggle"
       class="absolute right-[25px] top-[65px] w-[240px] bg-white rounded-[10px] shadow-main flex flex-col items-center py-5 z-50"
     >
-      <div class="w-[80px] h-[80px] bg-red-200 rounded-full overflow-hidden">
-        <img [src]="port + facultyProfile.profile_image" />
+      <div class="w-[80px] h-[80px] rounded-full overflow-hidden">
+        <img
+          [src]="port + facultyProfile.profile_image"
+          onerror="this.onerror=null; this.src='/assets/profiles/user.png'"
+        />
       </div>
 
       <h1 class="font-Poppins font-semibold text-blue text-[1.2rem]">

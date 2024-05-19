@@ -1,4 +1,4 @@
-import { MatDialog, MatDialogActions, MatDialogClose, MatDialogContent, MatDialogRef, MatDialogTitle } from '@angular/material/dialog';
+import { MatDialogActions, MatDialogClose, MatDialogContent, MatDialogRef, MatDialogTitle } from '@angular/material/dialog';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -9,7 +9,6 @@ import { FacultyRequestService } from '../../../../services/faculty/faculty-requ
 import { loadCert } from '../../../../state/faculty-state/faculty-state.actions';
 import { Store } from '@ngrx/store';
 import { selectAllCerts } from '../../../../state/faculty-state/faculty-state.selector';
-import { Certifications } from '../../../../services/Interfaces/certifications';
 import { MessageService } from '../../../../services/message.service';
 
 @Component({

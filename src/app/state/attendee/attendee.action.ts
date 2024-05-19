@@ -57,7 +57,7 @@ export const getAttendeeFailure = createAction('[Attendee] Fetch Attendee',
 export const FlushAttendee = createAction('[Attendee] Flush Attendee')
 
 export const leaveCommex = createAction('[Attendee Leave] Leave Commex',
-props<{ commex_ID: number, faculty_ID: number }>()
+props<{ commex_ID: number }>()
 )
 
 export const leaveCommexSuccess = createAction('[Attendee Leave] Leave Commex Success',
