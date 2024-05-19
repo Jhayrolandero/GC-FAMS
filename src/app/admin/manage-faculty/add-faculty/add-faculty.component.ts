@@ -16,6 +16,11 @@ import { EmployeePositionComponent } from "../employee-position/employee-positio
 import { FormsErrorComponent } from "../forms-error/forms-error.component";
 import { CommonModule } from '@angular/common';
 import { Faculty } from '../../../services/Interfaces/faculty';
+import { mainPort } from '../../../app.component';
+import { ProfileState } from '../../../state/faculty-state/faculty-state.reducer';
+import { updatePassword } from '../../../state/faculty-state/faculty-state.actions';
+import { Observable } from 'rxjs';
+import { selectPasswordLoading } from '../../../state/faculty-state/faculty-state.selector';
 
 @Component({
     selector: 'app-add-faculty',
@@ -38,15 +43,19 @@ export class AddFacultyComponent {
   @Input() editData?: Faculty;
   colleges$ = this.store.select(selectAllCollege);
   editMode: boolean = false;
+  passwordLoading$: Observable<boolean>
 
   constructor(
+    private profileStore: Store<{ profile: ProfileState }>,
     private messageService: MessageService,
     public facultyService: FacultyRequestService,
     public store: Store,
     private route: ActivatedRoute,
     private router: Router
   ) {
+    this.passwordLoading$ = this.profileStore.select(selectPasswordLoading)
   }
+
 
   goBack(){
     this.switchShowAdd.emit();
@@ -347,6 +356,48 @@ export class AddFacultyComponent {
         cover_image: file
       })
     };
+  }
+
+  newPasswordInfo = new FormGroup({
+    newPassword: new FormControl('', [
+      Validators.required,
+      Validators.minLength(8)
+    ]),
+    confirmPassword: new FormControl('', [
+      Validators.required,
+      Validators.minLength(8)
+    ]),
+  })
+
+  passwordFormControl(form:string) {
+    return this.newPasswordInfo.get(form);
+  }
+
+
+  privSwitch: boolean = false;
+  newPrivSwitch: boolean = false
+  newConfirmdoesntMatchError: string | undefined = undefined
+  port = mainPort
+
+  oldPassword: string = ""
+
+  submitPassword() {
+    if(!this.newPasswordInfo.valid) return
+
+    if(this.passwordFormControl('newPassword')?.value !== this.passwordFormControl('confirmPassword')?.value) {
+      this.newConfirmdoesntMatchError = "Password doesn't match"
+
+      this.newPasswordInfo.patchValue({
+        newPassword: "",
+        confirmPassword: ""
+      })
+      return
+    }
+
+
+    this.profileStore.dispatch(updatePassword(
+      { password: this.passwordFormControl('newPassword')?.value, id: this.editData?.faculty_ID}))
+    console.log(this.newPasswordInfo.value)
   }
 
 }

@@ -471,7 +471,16 @@
             [formControlPattern]="formControl('civil_status')!.errors?.['pattern']"
           ></app-forms-error>
         </div>
-        <input type="submit" value="Submit" />
+        <input
+          [ngClass]="{
+            'bg-red-700 cursor-not-allowed': !facultyInfo.valid,
+            'bg-blue cursor-pointer': facultyInfo.valid
+          }"
+          [disabled]="editLoading$ | async"
+          class="h-[40px] col-span-5 tablet:min-w-[80px] tablet:max-w-[160px] rounded-full transition-all text-white font-Poppins font-semibold shadow-main hover:scale-[101%] hover:duration-300 duration-300"
+          type="submit"
+          value="Submit"
+        />
       </form>
     </div>
     <div
@@ -485,76 +494,7 @@
       >
         <div>
           <h4 class="text-[1.5rem] mb-4">Reset Password</h4>
-          <div
-            class="relative z-0 w-full mb-5 group col-span-5 tablet:col-span-1"
-          >
-            <div class="relative">
-              <input
-                [type]="oldPrivSwitch ? 'text' : 'password'"
-                name="floating_email"
-                id="floating_email"
-                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                formControlName="oldPassword"
-                placeholder=" "
-                required
-              />
-              @if(!oldPrivSwitch) {
 
-              <svg
-                [class.hide]="oldPrivSwitch"
-                (click)="oldPrivSwitch = !oldPrivSwitch"
-                class="w-[30px] h-[30px] text-gray-800 dark:text-red absolute right-0 top-0"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  d="m4 15.6 3-3V12a5 5 0 0 1 5-5h.5l1.8-1.7A9 9 0 0 0 12 5C6.6 5 2 10.3 2 12c.3 1.4 1 2.7 2 3.6Z"
-                />
-                <path
-                  d="m14.7 10.7 5-5a1 1 0 1 0-1.4-1.4l-5 5A3 3 0 0 0 9 12.7l.2.6-5 5a1 1 0 1 0 1.4 1.4l5-5 .6.2a3 3 0 0 0 3.6-3.6 3 3 0 0 0-.2-.6Z"
-                />
-                <path
-                  d="M19.8 8.6 17 11.5a5 5 0 0 1-5.6 5.5l-1.7 1.8 2.3.2c6.5 0 10-5.2 10-7 0-1.2-1.6-2.9-2.2-3.4Z"
-                />
-              </svg>
-
-              } @else {
-
-              <svg
-                [class.hide]="!oldPrivSwitch"
-                (click)="oldPrivSwitch = !oldPrivSwitch"
-                class="w-[30px] h-[30px] text-gray-800 dark:text-red absolute right-0 top-0"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M5 7.8C6.7 6.3 9.2 5 12 5s5.3 1.3 7 2.8a12.7 12.7 0 0 1 2.7 3.2c.2.2.3.6.3 1s-.1.8-.3 1a2 2 0 0 1-.6 1 12.7 12.7 0 0 1-9.1 5c-2.8 0-5.3-1.3-7-2.8A12.7 12.7 0 0 1 2.3 13c-.2-.2-.3-.6-.3-1s.1-.8.3-1c.1-.4.3-.7.6-1 .5-.7 1.2-1.5 2.1-2.2Zm7 7.2a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"
-                  clip-rule="evenodd"
-                />
-              </svg>
-              }
-            </div>
-            <label
-              for="floating_email"
-              class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-              >Old Password</label
-            >
-            <app-forms-error
-              *ngIf="
-                passwordFormControl('oldPassword')?.invalid &&
-                (passwordFormControl('oldPassword')?.dirty ||
-                  passwordFormControl('oldPassword')?.touched)
-              "
-              [formControlRequired]="passwordFormControl('oldPassword')!.errors?.['required']"
-              [formControlPattern]="passwordFormControl('oldPassword')!.errors?.['pattern']"
-              [oldDontMatch]="oldDontMatch"
-            ></app-forms-error>
-          </div>
           <div
             class="relative z-0 w-full mb-5 group col-span-5 tablet:col-span-1"
           >
@@ -697,7 +637,16 @@
             ></app-forms-error>
           </div>
         </div>
-        <input type="submit" value="Reset Password" />
+        <input
+          [ngClass]="{
+            'bg-red-700 cursor-not-allowed': !newPasswordInfo.valid,
+            'bg-blue cursor-pointer': newPasswordInfo.valid
+          }"
+          [disabled]="passwordLoading$ | async"
+          class="h-[40px] rounded-full transition-all text-white font-Poppins font-semibold shadow-main hover:scale-[101%] hover:duration-300 duration-300"
+          type="submit"
+          value="Reset Password"
+        />
       </form>
     </div>
   </div>

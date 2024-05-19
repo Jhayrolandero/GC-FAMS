@@ -111,7 +111,6 @@ export class ProfileFormComponent {
       formData.append('profile_image', this.imageFile)
       this.facultyService.postData(formData, "profile").subscribe({
         next: res => {
-
           this.facultyID$.subscribe({
             next: res => {
               this.profileStore.dispatch(updateProfile({ faculty_ID: res, filename: this.imageFile!.name}))

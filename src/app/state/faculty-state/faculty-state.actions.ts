@@ -132,16 +132,16 @@ export const updateInfoFailure = createAction(
 
 export const updatePassword = createAction(
   '[Profile Global] Update Password',
-  props<{password : string}>()
+  props<{password : string, id? : number}>()
 )
 
 export const updatePasswordSuccess = createAction(
-  '[Profile Global] Update Profile Info Success',
+  '[Profile Global] Update Password Success',
   props<{password : string}>()
 )
 
 export const updatePasswordFailure = createAction(
-  '[Profile Global] Update Profile Info Fail',
+  '[Profile Global] Update Password Fail',
   props<{error : Error}>()
 )
 

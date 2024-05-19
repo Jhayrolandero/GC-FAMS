@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { ProfileState } from '../../state/faculty-state/faculty-state.reducer';
-import { selectAllProfile } from '../../state/faculty-state/faculty-state.selector';
+import { selectAllProfile, selectEditLoading, selectPasswordError, selectPasswordLoading } from '../../state/faculty-state/faculty-state.selector';
 import { LoadingScreenComponent } from '../loading-screen/loading-screen.component';
 import { CommonModule } from '@angular/common';
 import { mainPort } from '../../app.component';
@@ -13,6 +13,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { FormsErrorComponent } from '../../admin/manage-faculty/forms-error/forms-error.component';
 import { updateInfo, updatePassword } from '../../state/faculty-state/faculty-state.actions';
 import { UpdateFaculty } from '../../services/Interfaces/updateFaculty';
+import { Observable } from 'rxjs';
 @Component({
   selector: 'app-manage-profile',
   standalone: true,
@@ -35,15 +36,18 @@ export class ManageProfileComponent {
   privSwitch: boolean = false;
   newPrivSwitch: boolean = false
   newConfirmdoesntMatchError: string | undefined = undefined
-  oldDontMatch: string | undefined
   port = mainPort
-
   oldPassword: string = ""
+  passwordLoading$: Observable<boolean>
+  editLoading$: Observable<boolean>
+
   constructor(
     private profileStore: Store<{ profile: ProfileState }>,
     public dialog: MatDialog
   ) {
 
+    this.passwordLoading$ = this.profileStore.select(selectPasswordLoading)
+    this.editLoading$ = this.profileStore.select(selectEditLoading)
 
       this.facultyProfile$.subscribe({
         next: res => {
@@ -64,7 +68,6 @@ export class ManageProfileComponent {
             language: res!.language,
             city: res!.city,
             barangay: res!.barangay,
-            // password: res!.password
           })
 
           this.oldPassword = res!.password
@@ -76,9 +79,6 @@ export class ManageProfileComponent {
 
 
   newPasswordInfo = new FormGroup({
-    oldPassword: new FormControl('', [
-      Validators.required
-    ]),
     newPassword: new FormControl('', [
       Validators.required,
       Validators.minLength(8)
@@ -175,17 +175,6 @@ export class ManageProfileComponent {
     submitPassword() {
       if(!this.newPasswordInfo.valid) return
 
-      if(this.passwordFormControl('oldPassword')?.value !== this.oldPassword) {
-        this.oldDontMatch = "Incorrect password"
-        this.newPasswordInfo.patchValue({
-          oldPassword: "",
-          newPassword: "",
-          confirmPassword: ""
-        })
-        return
-      }
-
-
       if(this.passwordFormControl('newPassword')?.value !== this.passwordFormControl('confirmPassword')?.value) {
         this.newConfirmdoesntMatchError = "Password doesn't match"
 
@@ -196,9 +185,10 @@ export class ManageProfileComponent {
         return
       }
 
-
       this.profileStore.dispatch(updatePassword(
-        { password: this.passwordFormControl('newPassword')?.value}))
-      console.log(this.newPasswordInfo.value)
+        {
+        password: this.passwordFormControl('newPassword')?.value,
+      }))
+
     }
 }
