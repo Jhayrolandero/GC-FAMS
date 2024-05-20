@@ -18,7 +18,9 @@ import { FacultyRequestService } from "../../services/faculty/faculty-request.se
 import * as CvActions from "./faculty-state.actions";
 import { CommunityExtension } from "../../services/Interfaces/community-extension";
 import { AuthService } from "../../services/auth.service";
-
+import { error } from "console";
+import { key } from "../../app.component";
+import { MessageService } from "../../services/message.service";
 @Injectable()
 export class CvEffects {
 
@@ -26,13 +28,61 @@ export class CvEffects {
     private actions$: Actions,
     private facultyService: FacultyRequestService,
     private cryptoJS: CryptoJSService,
-    private auth: AuthService
+    private auth: AuthService,
+    private messageService: MessageService
   ) { }
 
+  key: string = key
 
   decryptData<T>(ciphertext: Encryption): T {
     return this.cryptoJS.CryptoJSAesDecrypt<T>("ucj7XoyBfAMt/ZMF20SQ7sEzad+bKf4bha7bFBdl2HY=", ciphertext)
   }
+
+  encryptData(form : string) {
+    return this.cryptoJS.CryptoJSAesEncrypt(key, JSON.stringify(form))
+  }
+
+  resetPassword(action : {
+    password: string;
+    id?: number | undefined;
+    }) {
+
+      if(action.id) {
+        return this.facultyService.patchData(this.encryptData(action.password), `password/${action.id}`)
+      }
+      return this.facultyService.patchData(this.encryptData(action.password), 'password')
+  }
+
+  updatePassword$ = createEffect(() => this.actions$.pipe(
+    ofType(CvActions.updatePassword),
+    tap(() => this.messageService.sendMessage("Updating password", 0)),
+    switchMap((action) => this.resetPassword(action).pipe(
+      map(() => {
+      this.messageService.sendMessage("Password updated successfully!", 1)
+      return CvActions.updatePasswordSuccess({ password : action.password})
+      }),
+      catchError((error) => {
+      this.messageService.sendMessage("Error in updating password", -1)
+      return of(CvActions.updatePasswordFailure({error}))
+      })
+    ))
+  ))
+
+
+  updateProfile = createEffect(() => this.actions$.pipe(
+    ofType(CvActions.updateInfo),
+    tap(() => this.messageService.sendMessage("Updating Profile", 0)),
+    switchMap((action) => this.facultyService.patchData(action.facultyData, "profile").pipe(
+      map(() => {
+        this.messageService.sendMessage("Profile updated successfully!", 1)
+        return CvActions.updateInfoSuccess({facultyData: action.facultyData})
+      }),
+      catchError((error) => {
+        this.messageService.sendMessage("Error in updating profile", -1)
+        return of(CvActions.updateInfoFailure({error}))
+      })
+    ))
+  ))
 
   loadProfile$ = createEffect(() => this.actions$.pipe(
     ofType(CvActions.loadProfile),

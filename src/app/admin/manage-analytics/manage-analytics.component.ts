@@ -4,7 +4,21 @@ import { FacultyMilestoneCalendarComponent } from "../../components/faculty/facu
 import { PieChartComponent } from '../../components/charts/pie-chart/pie-chart.component';
 import { LineGraphComponent } from '../../components/charts/line-graph/line-graph.component';
 import { Store } from '@ngrx/store';
-import { facultyCertsCountAverage, facultyCourseUnitAverage, selectAttainmentTimeline, selectCertTypes, selectCollegeEducTimeline, selectCollegeEmploymentType, selectCollegeFacultyCount, selectCollegeLevel, selectCollegeMilestoneCount, selectCommonSeminars, selectFacultyExpertise, selectTeachingLength, selectTopExpertise, yearEvaluationAverage } from '../../state/dean-state/dean-state.selector';
+import {
+  facultyCertsCountAverage,
+  facultyCourseUnitAverage,
+  selectAttainmentTimeline,
+  selectCertTypes,
+  selectCollegeEducTimeline,
+  selectCollegeEmploymentType,
+  selectCollegeFacultyCount,
+   selectCollegeLevel,
+    selectCollegeMilestoneCount,
+     selectCommonSeminars,
+      selectFacultyExpertise,
+       selectTeachingLength,
+       selectTopExpertise,
+       yearEvaluationAverage } from '../../state/dean-state/dean-state.selector';
 import { CommonModule, NgFor } from '@angular/common';
 import { BarChartComponent } from '../../components/charts/bar-chart/bar-chart.component';
 import { ScatterPlotComponent } from '../../components/charts/scatter-plot/scatter-plot.component';

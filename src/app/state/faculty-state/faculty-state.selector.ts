@@ -29,7 +29,7 @@ export const selectMilestoneCount = createSelector(
           else{
               milestoneMap.set(educYear, 1);
           }
-              
+
       })
       state.certs[0].forEach(cert => {
           const certYear = +(cert.accomplished_date + '').slice(0,4);
@@ -96,6 +96,22 @@ export const selectAttainmentTimeline = createSelector(
 export const selectAllProfile = createSelector(
   selectProfileState,
   (state: ProfileState) => state.profile
+);
+export const selectPasswordLoading = createSelector(
+  selectProfileState,
+  (state: ProfileState) => state.passwordLoading
+)
+export const selectEditLoading = createSelector(
+  selectProfileState,
+  (state: ProfileState) => state.editLoading
+)
+export const selectPasswordError = createSelector(
+  selectProfileState,
+  (state: ProfileState) => state.passwordError
+)
+export const selectProfileID = createSelector(
+  selectProfileState,
+  (state: ProfileState) => state.profile!.faculty_ID
 );
 
 export const selectAllEduc = createSelector(

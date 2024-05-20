@@ -1,403 +1,590 @@
 <app-loading-screen *ngIf="isLoading"></app-loading-screen>
 <div class="p-5 grid gap-3">
-    <div (click)="goBack()" class="w-[50px] h-[50px] bg-white rounded-full shadow-main flex justify-center items-center">
-        <svg width="35" height="35" viewBox="0 0 67 67" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M14.6562 31.4062H56.5312C57.0865 31.4062 57.6191 31.6268 58.0118 32.0195C58.4044 32.4121 58.625 32.9447 58.625 33.5C58.625 34.0553 58.4044 34.5879 58.0118 34.9805C57.6191 35.3732 57.0865 35.5938 56.5312 35.5938H14.6562C14.101 35.5938 13.5684 35.3732 13.1757 34.9805C12.7831 34.5879 12.5625 34.0553 12.5625 33.5C12.5625 32.9447 12.7831 32.4121 13.1757 32.0195C13.5684 31.6268 14.101 31.4062 14.6562 31.4062Z" fill="#074287"/>
-            <path d="M15.5229 33.4997L32.8885 50.8611C33.2816 51.2542 33.5025 51.7875 33.5025 52.3435C33.5025 52.8995 33.2816 53.4327 32.8885 53.8258C32.4953 54.219 31.9621 54.4399 31.4061 54.4399C30.8501 54.4399 30.3169 54.219 29.9237 53.8258L11.08 34.9821C10.885 34.7876 10.7303 34.5565 10.6247 34.3022C10.5192 34.0478 10.4648 33.7751 10.4648 33.4997C10.4648 33.2243 10.5192 32.9516 10.6247 32.6972C10.7303 32.4429 10.885 32.2118 11.08 32.0173L29.9237 13.1736C30.3169 12.7804 30.8501 12.5596 31.4061 12.5596C31.9621 12.5596 32.4953 12.7804 32.8885 13.1736C33.2816 13.5667 33.5025 14.1 33.5025 14.656C33.5025 15.212 33.2816 15.7452 32.8885 16.1383L15.5229 33.4997Z" fill="#074287"/>
-        </svg>
-            
-    </div>
-    
-    <form
-        *ngIf="!isLoading"
-        enctype="multipart/form-data"
-        action=""
-        [formGroup]="facultyInfo"
-        (ngSubmit)="onSubmit()"
+  <div
+    (click)="goBack()"
+    class="w-[50px] h-[50px] bg-white rounded-full shadow-main flex justify-center items-center"
+  >
+    <svg
+      width="35"
+      height="35"
+      viewBox="0 0 67 67"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
     >
-        
-        <div class="flex flex-col grid gap-3" id="contents">
-            <div class="bg-white rounded-[15px] grid gap-3 shadow-main p-5">
-                <div>
-                    <h4 class="font-Poppins font-bold text-[2rem] text-blue">
-                        <span *ngIf="formControl('college_ID')!.errors?.['required']">
-                        <i
-                            class="fa-solid fa-triangle-exclamation mr-2 text-red-700"
-                        ></i> 
-                        </span>
-                        College
-                        <hr class="border-[1.5px] border-slate-400">
-                    </h4>
-                    <div class="grid grid-cols-5 gap-2 items-stretch">
-                        @for (college of colleges$ | async; track college.college_ID) {
-                        <app-gc-box
-                        [college]="college"
-                        [selectedCollege]="selectedCollege"
-                        (setRole)="setCollege($event)"
-                        [radioGroup]="'college'"
-                        class="flex-1"
-                        ></app-gc-box>
-                        }
-                    </div>
-                </div>
+      <path
+        d="M14.6562 31.4062H56.5312C57.0865 31.4062 57.6191 31.6268 58.0118 32.0195C58.4044 32.4121 58.625 32.9447 58.625 33.5C58.625 34.0553 58.4044 34.5879 58.0118 34.9805C57.6191 35.3732 57.0865 35.5938 56.5312 35.5938H14.6562C14.101 35.5938 13.5684 35.3732 13.1757 34.9805C12.7831 34.5879 12.5625 34.0553 12.5625 33.5C12.5625 32.9447 12.7831 32.4121 13.1757 32.0195C13.5684 31.6268 14.101 31.4062 14.6562 31.4062Z"
+        fill="#074287"
+      />
+      <path
+        d="M15.5229 33.4997L32.8885 50.8611C33.2816 51.2542 33.5025 51.7875 33.5025 52.3435C33.5025 52.8995 33.2816 53.4327 32.8885 53.8258C32.4953 54.219 31.9621 54.4399 31.4061 54.4399C30.8501 54.4399 30.3169 54.219 29.9237 53.8258L11.08 34.9821C10.885 34.7876 10.7303 34.5565 10.6247 34.3022C10.5192 34.0478 10.4648 33.7751 10.4648 33.4997C10.4648 33.2243 10.5192 32.9516 10.6247 32.6972C10.7303 32.4429 10.885 32.2118 11.08 32.0173L29.9237 13.1736C30.3169 12.7804 30.8501 12.5596 31.4061 12.5596C31.9621 12.5596 32.4953 12.7804 32.8885 13.1736C33.2816 13.5667 33.5025 14.1 33.5025 14.656C33.5025 15.212 33.2816 15.7452 32.8885 16.1383L15.5229 33.4997Z"
+        fill="#074287"
+      />
+    </svg>
+  </div>
 
-                <div class="flex flex-row gap-3 w-full">
-                    <div class="flex flex-1 flex-col">
-                        <h4
-                            class="font-Poppins font-bold text-[2rem] text-blue"
-                        >
-                            <span
-                            *ngIf="formControl('employment_status')!.errors?.['required']"
-                            >
-                            <i class="fa-solid fa-triangle-exclamation mr-2 text-red-700"></i>
-                            </span>
-                            Employment
-                            <hr class="border-[1.5px] border-slate-400">
-                        </h4>
-                        <div class="grid grid-cols-2 gap-2 pt-4">
-                            <app-employee-type
-                            *ngFor="let employment of employmentStatus"
-                            [employment]="employment"
-                            [selectedEmployeeType]="selectedEmployeeType"
-                            (setRole)="setEmployment($event)"
-                            [radioGroup]="'employment_status'"
-                            class="select-none"
-                            ></app-employee-type>
-                        </div>
-                    </div>
-
-                    <div class="flex flex-1 flex-col">
-                        <h4
-                            class="font-Poppins font-bold text-[2rem] text-blue"
-                        >
-                            <span
-                            *ngIf="formControl('teaching_position')!.errors?.['required']"
-                            >
-                            <i class="fa-solid fa-triangle-exclamation mr-2 text-red-700"></i>
-                            </span>
-                            Position
-                            <hr class="border-[1.5px] border-slate-400">
-                        </h4>
-                        <div class="flex flex-row gap-2 pt-4 w-full">
-                            <app-employee-position
-                            *ngFor="let position of positions"
-                            [position]="position"
-                            [selectedEmployeePosition]="selectedEmployeePosition"
-                            (setRole)="setPosition($event)"
-                            [radioGroup]="'employment_position'"
-                            class="select-none"
-                            ></app-employee-position>
-                        </div>
-                    </div>
-
-                    <div class="flex flex-1 flex-col">
-                        <h4
-                            class="font-Poppins font-bold text-[2rem] text-blue"
-                        >
-                            Position
-                            <hr class="border-[1.5px] border-slate-400">
-                        </h4>
-                        <div class="flex flex-row gap-2 pt-4 w-full">
-                            <select
-                            type="text"
-                            placeholder="Add Certification Type"
-                            formControlName="teaching_level"
-                            class="w-full h-[50px] border-2 px-5 border-none font-Roboto font-regular text-[1.1rem] rounded-[15px] shadow-main text-black py-1 font-Poppins font-semibold text-[1.5rem] text-blue"
-                            >
-                                <option>Teacher 1</option>
-                                <option>Teacher 2</option>
-                                <option>Teacher 3</option>
-                                <option>Teacher 4</option>
-                                <option>Teacher 5</option>
-                                <option>Teacher 6</option>
-                                <option>Teacher 7</option>
-                                <option>Master Teacher 1</option>
-                                <option>Master Teacher 2</option>
-                                <option>Master Teacher 3</option>
-                                <option>Master Teacher 4</option>
-                                <option>Master Teacher 5</option>
-                                <option>Master Teacher 6</option>
-                                <option>Instructor 1</option>
-                                <option>Instructor 2</option>
-                                <option>Instructor 3</option>
-                                <option>Assistant Professor 1</option>
-                                <option>Assistant Professor 2</option>
-                                <option>Assistant Professor 3</option>
-                                <option>Assistant Professor 4</option>
-                                <option>Associate Professor 1</option>
-                                <option>Associate Professor 2</option>
-                                <option>Associate Professor 3</option>
-                                <option>Associate Professor 4</option>
-                                <option>Associate Professor 5</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-[15px] shadow-main p-5">
-
-                <h4 class="font-Poppins font-bold text-[2rem] text-blue">
-                    Personal Information
-                    <hr class="border-[1.5px] border-slate-400">
-                </h4>
-                <div class="flex flex-row w-full rounded-full shadow-main">
-                    <div
-                    class="rounded-full w-[200px] h-[200px] aspect-square overflow-hidden flex justify-center items-center shadow-main"
-                    >
-            
-                    @if(imageURL) {
-                    <label for="previewimgzone-file" class="cursor-pointer">
-                        <input
-                        id="previewimgzone-file"
-                        type="file"
-                        class="hidden"
-                        (change)="PreviewImage($event, 'profile')"
-                        accept="image/*"
-                        />
-                        <img
-                        [src]="imageURL"
-                        alt="image"
-                        class="w-full h-full object-cover"
-                        />
-                    </label>
-                    } @else {
-                    <label
-                        for="dropzone-file"
-                        class="flex flex-col items-center justify-center w-full cursor-pointer"
-                    >
-                        <svg
-                        width="30"
-                        height="31"
-                        viewBox="0 0 30 31"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                        >
-                        <g clip-path="url(#clip0_984_350)">
-                            <path
-                            fill-rule="evenodd"
-                            clip-rule="evenodd"
-                            d="M11.25 6.75C11.25 6.08696 11.5134 5.45107 11.9822 4.98223C12.4511 4.51339 13.087 4.25 13.75 4.25H16.25C16.913 4.25 17.5489 4.51339 18.0178 4.98223C18.4866 5.45107 18.75 6.08696 18.75 6.75V11.75H23.75C24.413 11.75 25.0489 12.0134 25.5178 12.4822C25.9866 12.9511 26.25 13.587 26.25 14.25V16.75C26.25 17.413 25.9866 18.0489 25.5178 18.5178C25.0489 18.9866 24.413 19.25 23.75 19.25H18.75V24.25C18.75 24.913 18.4866 25.5489 18.0178 26.0178C17.5489 26.4866 16.913 26.75 16.25 26.75H13.75C13.087 26.75 12.4511 26.4866 11.9822 26.0178C11.5134 25.5489 11.25 24.913 11.25 24.25V19.25H6.25C5.58696 19.25 4.95107 18.9866 4.48223 18.5178C4.01339 18.0489 3.75 17.413 3.75 16.75V14.25C3.75 13.587 4.01339 12.9511 4.48223 12.4822C4.95107 12.0134 5.58696 11.75 6.25 11.75H11.25V6.75Z"
-                            fill="#BCBCBC"
-                            />
-                        </g>
-                        <defs>
-                            <clipPath id="clip0_984_350">
-                            <rect
-                                width="30"
-                                height="30"
-                                fill="white"
-                                transform="translate(0 0.5)"
-                            />
-                            </clipPath>
-                        </defs>
-                        </svg>
-                        <p class="font-bold text-gray-300">Profile Upload</p>
-                        <input
-                        id="dropzone-file"
-                        type="file"
-                        class="hidden"
-                        (change)="PreviewImage($event, 'profile')"
-                        accept="image/*"
-                        />
-                    </label>
-                    }
-                    </div>
-                    <div
-                    class="flex flex-1 items-center justify-center h-[200px] w-full overflow-hidden rounded-full"
-                    >
-                    @if(coverURL) {
-                    <label for="previewcoverzone-file" class="cursor-pointer w-full h-full object-cover">
-                        <img
-                        [src]="coverURL"
-                        alt="cover"
-                        class="w-full h-full object-cover"
-                        />
-                        <input
-                        id="previewcoverzone-file"
-                        type="file"
-                        class="hidden"
-                        (change)="PreviewImage($event, 'cover')"
-                        accept="image/*"
-                    />
-                    </label>
-                    } @else {
-                    <label
-                        for="dropzone-file-cover"
-                        class="flex flex-col items-center justify-center w-full cursor-pointer"
-                    >
-                        <svg
-                        width="30"
-                        height="31"
-                        viewBox="0 0 30 31"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                        >
-                        <g clip-path="url(#clip0_984_350)">
-                            <path
-                            fill-rule="evenodd"
-                            clip-rule="evenodd"
-                            d="M11.25 6.75C11.25 6.08696 11.5134 5.45107 11.9822 4.98223C12.4511 4.51339 13.087 4.25 13.75 4.25H16.25C16.913 4.25 17.5489 4.51339 18.0178 4.98223C18.4866 5.45107 18.75 6.08696 18.75 6.75V11.75H23.75C24.413 11.75 25.0489 12.0134 25.5178 12.4822C25.9866 12.9511 26.25 13.587 26.25 14.25V16.75C26.25 17.413 25.9866 18.0489 25.5178 18.5178C25.0489 18.9866 24.413 19.25 23.75 19.25H18.75V24.25C18.75 24.913 18.4866 25.5489 18.0178 26.0178C17.5489 26.4866 16.913 26.75 16.25 26.75H13.75C13.087 26.75 12.4511 26.4866 11.9822 26.0178C11.5134 25.5489 11.25 24.913 11.25 24.25V19.25H6.25C5.58696 19.25 4.95107 18.9866 4.48223 18.5178C4.01339 18.0489 3.75 17.413 3.75 16.75V14.25C3.75 13.587 4.01339 12.9511 4.48223 12.4822C4.95107 12.0134 5.58696 11.75 6.25 11.75H11.25V6.75Z"
-                            fill="#BCBCBC"
-                            />
-                        </g>
-                        <defs>
-                            <clipPath id="clip0_984_350">
-                            <rect
-                                width="30"
-                                height="30"
-                                fill="white"
-                                transform="translate(0 0.5)"
-                            />
-                            </clipPath>
-                        </defs>
-                        </svg>
-                        <p class="font-bold text-gray-300">Cover Upload</p>
-                        <input
-                        id="dropzone-file-cover"
-                        type="file"
-                        class="hidden"
-                        (change)="PreviewImage($event, 'cover')"
-                        accept="image/*"
-                        />
-                    </label>
-            
-                    }
-                    </div>
-                </div>
-                <div class="flex flex-col gap-4">
-                    <div class="flex justify-center items-center gap-4">
-                    <div class="flex flex-col flex-1" *ngFor="let col of column1">
-                        <label class="formTextFormat uppercase" [for]="col">{{ col }}</label>
-                        <input
-                        [id]="col"
-                        [name]="col"
-                        [ngClass]="{
-                            'border-b-[4px] border-red-500':
-                            formControl(col)!.invalid &&
-                            (formControl(col)?.dirty || formControl(col)?.touched)
-                        }"
-                        [type]="
-                            col === 'email'
-                            ? 'email'
-                            : col === 'birthdate'
-                            ? 'date'
-                            : 'text'
-                        "
-                        class="formTemplate"
-                        [formControlName]="col"
-                        />
-                        <app-forms-error
-                        *ngIf="
-                            formControl(col)?.invalid &&
-                            (formControl(col)?.dirty || formControl(col)?.touched)
-                        "
-                        [formControlRequired]="formControl(col)!.errors?.['required']"
-                        [formControlEmail]="formControl(col)!.errors?.['email']"
-                        [formControlNumber]="col == 'phone_number' ? formControl(col)!.errors?.['pattern'] : null"
-                        ></app-forms-error>
-                    </div>
-                    </div>
-                    <div class="flex justify-center items-center gap-4">
-                    <div class="flex flex-col flex-1 gap-2" *ngFor="let col of column2">
-                        <label class="formTextFormat uppercase" [for]="col">{{
-                        col
-                        }}</label>
-                        <input
-                        [id]="col"
-                        [name]="col"
-                        [ngClass]="{
-                            'border-b-[4px] border-red-500':
-                            formControl(col)!.invalid &&
-                            (formControl(col)?.dirty || formControl(col)?.touched)
-                        }"
-                        type="text"
-                        class="formTemplate"
-                        [formControlName]="col"
-                        />
-                        <app-forms-error
-                        *ngIf="
-                            formControl(col)?.invalid &&
-                            (formControl(col)?.dirty || formControl(col)?.touched)
-                        "
-                        [formControlRequired]="formControl(col)!.errors?.['required']"
-                        [formControlPattern]="formControl(col)!.errors?.['pattern']"
-                        ></app-forms-error>
-                    </div>
-                    </div>
-                    <div class="flex justify-center items-center gap-4">
-                    <div class="flex flex-col flex-1" *ngFor="let col of column3">
-                        <label class="formTextFormat uppercase" [for]="col">{{
-                        col
-                        }}</label>
-                        <input
-                        [id]="col"
-                        [name]="col"
-                        [ngClass]="{
-                            'border-b-[4px] border-red-500':
-                            formControl(col)!.invalid &&
-                            (formControl(col)?.dirty || formControl(col)?.touched)
-                        }"
-                        type="text"
-                        class="formTemplate"
-                        [formControlName]="col"
-                        />
-                        <app-forms-error
-                        *ngIf="
-                            formControl(col)?.invalid &&
-                            (formControl(col)?.dirty || formControl(col)?.touched)
-                        "
-                        [formControlRequired]="formControl(col)!.errors?.['required']"
-                        [formControlPattern]="formControl(col)!.errors?.['pattern']"
-                        ></app-forms-error>
-                    </div>
-                    </div>
-                    <div class="flex justify-center items-start gap-4">
-                    <div class="flex flex-col flex-1" *ngFor="let col of column4">
-                        <label class="formTextFormat uppercase" [for]="col">{{
-                        col
-                        }}</label>
-                        <input
-                        [id]="col"
-                        [name]="col"
-                        [ngClass]="{
-                            'border-b-[4px] border-red-500':
-                            formControl(col)!.invalid &&
-                            (formControl(col)?.dirty || formControl(col)?.touched)
-                        }"
-                        type="text"
-                        class="formTemplate"
-                        [formControlName]="col"
-                        />
-                        <app-forms-error
-                        *ngIf="
-                            formControl(col)?.invalid &&
-                            (formControl(col)?.dirty || formControl(col)?.touched)
-                        "
-                        [formControlRequired]="formControl(col)!.errors?.['required']"
-                        [formControlPattern]="col !== 'age' ? formControl(col)!.errors?.['pattern'] : null"
-                        [formControlNumber]="col == 'age' ? formControl(col)!.errors?.['pattern'] : null"
-                        ></app-forms-error>
-                    </div>
-                    </div>
-                    <div class="w-full flex justify-end gap-4">
-                    <input
-                        [ngClass]="{
-                        'bg-red-700 cursor-not-allowed': facultyInfo.invalid,
-                        'bg-blue cursor-pointer': !facultyInfo.invalid
-                        }"
-                        [disabled]="facultyInfo.invalid"
-                        id="addFact"
-                        type="submit"
-                        value="{{ editMode ? 'Edit' : 'Add'}} Faculty"
-                        class="w-[130px] h-[40px] rounded-full transition-all text-white font-Poppins font-semibold shadow-main hover:scale-[101%] hover:duration-300 duration-300"
-                    />
-                    </div>
-                </div>
-            </div>
-
+  <form
+    *ngIf="!isLoading"
+    enctype="multipart/form-data"
+    action=""
+    [formGroup]="facultyInfo"
+    (ngSubmit)="onSubmit()"
+  >
+    <div class="flex flex-col gap-3 w-full" id="contents">
+      <div class="bg-white rounded-[15px] grid gap-3 shadow-main p-5 w-full">
+        <div>
+          <h4 class="font-Poppins font-bold text-[2rem] text-blue">
+            <span *ngIf="formControl('college_ID')!.errors?.['required']">
+              <i class="fa-solid fa-triangle-exclamation mr-2 text-red-700"></i>
+            </span>
+            College
+            <hr class="border-[1.5px] border-slate-400" />
+          </h4>
+          <div
+            class="grid grid-cols-1 tablet:grid-cols-2 desktop:grid-cols-5 gap-2 items-stretch"
+          >
+            @for (college of colleges$ | async; track college.college_ID) {
+            <app-gc-box
+              [college]="college"
+              [selectedCollege]="selectedCollege"
+              (setRole)="setCollege($event)"
+              [radioGroup]="'college'"
+              class="flex-1"
+            ></app-gc-box>
+            }
+          </div>
         </div>
-    </form>
-</div>
 
-  
+        <div class="flex flex-col tablet:flex-row flex-wrap gap-3 w-full">
+          <div class="flex flex-1 flex-col">
+            <h4 class="font-Poppins font-bold text-[2rem] text-blue">
+              <span
+                *ngIf="formControl('employment_status')!.errors?.['required']"
+              >
+                <i
+                  class="fa-solid fa-triangle-exclamation mr-2 text-red-700"
+                ></i>
+              </span>
+              Employment
+              <hr class="border-[1.5px] border-slate-400" />
+            </h4>
+            <div class="grid grid-cols-1 tablet:grid-cols-2 gap-2 pt-4">
+              <app-employee-type
+                *ngFor="let employment of employmentStatus"
+                [employment]="employment"
+                [selectedEmployeeType]="selectedEmployeeType"
+                (setRole)="setEmployment($event)"
+                [radioGroup]="'employment_status'"
+                class="select-none"
+              ></app-employee-type>
+            </div>
+          </div>
+
+          <div class="flex flex-1 flex-col">
+            <h4 class="font-Poppins font-bold text-[2rem] text-blue">
+              <span
+                *ngIf="formControl('teaching_position')!.errors?.['required']"
+              >
+                <i
+                  class="fa-solid fa-triangle-exclamation mr-2 text-red-700"
+                ></i>
+              </span>
+              Position
+              <hr class="border-[1.5px] border-slate-400" />
+            </h4>
+            <div class="flex flex-col tablet:flex-row gap-2 pt-4 w-full">
+              <app-employee-position
+                *ngFor="let position of positions"
+                [position]="position"
+                [selectedEmployeePosition]="selectedEmployeePosition"
+                (setRole)="setPosition($event)"
+                [radioGroup]="'employment_position'"
+                class="select-none"
+              ></app-employee-position>
+            </div>
+          </div>
+
+          <div class="flex flex-1 flex-col">
+            <h4 class="font-Poppins font-bold text-[2rem] text-blue">
+              Position
+              <hr class="border-[1.5px] border-slate-400" />
+            </h4>
+            <div class="flex flex-row gap-2 pt-4 w-full">
+              <select
+                type="text"
+                placeholder="Add Certification Type"
+                formControlName="teaching_level"
+                class="w-full h-[50px] border-2 px-5 border-none font-Roboto font-regular text-[1.1rem] rounded-[15px] shadow-main text-black py-1 font-Poppins font-semibold text-[1.5rem] text-blue"
+              >
+                <option>Teacher 1</option>
+                <option>Teacher 2</option>
+                <option>Teacher 3</option>
+                <option>Teacher 4</option>
+                <option>Teacher 5</option>
+                <option>Teacher 6</option>
+                <option>Teacher 7</option>
+                <option>Master Teacher 1</option>
+                <option>Master Teacher 2</option>
+                <option>Master Teacher 3</option>
+                <option>Master Teacher 4</option>
+                <option>Master Teacher 5</option>
+                <option>Master Teacher 6</option>
+                <option>Instructor 1</option>
+                <option>Instructor 2</option>
+                <option>Instructor 3</option>
+                <option>Assistant Professor 1</option>
+                <option>Assistant Professor 2</option>
+                <option>Assistant Professor 3</option>
+                <option>Assistant Professor 4</option>
+                <option>Associate Professor 1</option>
+                <option>Associate Professor 2</option>
+                <option>Associate Professor 3</option>
+                <option>Associate Professor 4</option>
+                <option>Associate Professor 5</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-[15px] shadow-main p-5">
+        <h4 class="font-Poppins font-bold text-[2rem] text-blue">
+          Personal Information
+          <hr class="border-[1.5px] border-slate-400" />
+        </h4>
+        <div class="flex flex-row w-full rounded-full shadow-main">
+          <div
+            class="rounded-full w-[200px] h-[200px] aspect-square overflow-hidden flex justify-center items-center shadow-main"
+          >
+            @if(imageURL) {
+            <label for="previewimgzone-file" class="cursor-pointer">
+              <input
+                id="previewimgzone-file"
+                type="file"
+                class="hidden"
+                (change)="PreviewImage($event, 'profile')"
+                accept="image/*"
+              />
+              <img
+                [src]="imageURL"
+                alt="image"
+                class="w-full h-full object-cover"
+              />
+            </label>
+            } @else {
+            <label
+              for="dropzone-file"
+              class="flex flex-col items-center justify-center w-full cursor-pointer"
+            >
+              <svg
+                width="30"
+                height="31"
+                viewBox="0 0 30 31"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g clip-path="url(#clip0_984_350)">
+                  <path
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M11.25 6.75C11.25 6.08696 11.5134 5.45107 11.9822 4.98223C12.4511 4.51339 13.087 4.25 13.75 4.25H16.25C16.913 4.25 17.5489 4.51339 18.0178 4.98223C18.4866 5.45107 18.75 6.08696 18.75 6.75V11.75H23.75C24.413 11.75 25.0489 12.0134 25.5178 12.4822C25.9866 12.9511 26.25 13.587 26.25 14.25V16.75C26.25 17.413 25.9866 18.0489 25.5178 18.5178C25.0489 18.9866 24.413 19.25 23.75 19.25H18.75V24.25C18.75 24.913 18.4866 25.5489 18.0178 26.0178C17.5489 26.4866 16.913 26.75 16.25 26.75H13.75C13.087 26.75 12.4511 26.4866 11.9822 26.0178C11.5134 25.5489 11.25 24.913 11.25 24.25V19.25H6.25C5.58696 19.25 4.95107 18.9866 4.48223 18.5178C4.01339 18.0489 3.75 17.413 3.75 16.75V14.25C3.75 13.587 4.01339 12.9511 4.48223 12.4822C4.95107 12.0134 5.58696 11.75 6.25 11.75H11.25V6.75Z"
+                    fill="#BCBCBC"
+                  />
+                </g>
+                <defs>
+                  <clipPath id="clip0_984_350">
+                    <rect
+                      width="30"
+                      height="30"
+                      fill="white"
+                      transform="translate(0 0.5)"
+                    />
+                  </clipPath>
+                </defs>
+              </svg>
+              <p class="font-bold text-gray-300">Profile Upload</p>
+              <input
+                id="dropzone-file"
+                type="file"
+                class="hidden"
+                (change)="PreviewImage($event, 'profile')"
+                accept="image/*"
+              />
+            </label>
+            }
+          </div>
+          <div
+            class="flex flex-1 items-center justify-center h-[200px] w-full overflow-hidden rounded-full"
+          >
+            @if(coverURL) {
+            <label
+              for="previewcoverzone-file"
+              class="cursor-pointer w-full h-full object-cover"
+            >
+              <img
+                [src]="coverURL"
+                alt="cover"
+                class="w-full h-full object-cover"
+              />
+              <input
+                id="previewcoverzone-file"
+                type="file"
+                class="hidden"
+                (change)="PreviewImage($event, 'cover')"
+                accept="image/*"
+              />
+            </label>
+            } @else {
+            <label
+              for="dropzone-file-cover"
+              class="flex flex-col items-center justify-center w-full cursor-pointer"
+            >
+              <svg
+                width="30"
+                height="31"
+                viewBox="0 0 30 31"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g clip-path="url(#clip0_984_350)">
+                  <path
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M11.25 6.75C11.25 6.08696 11.5134 5.45107 11.9822 4.98223C12.4511 4.51339 13.087 4.25 13.75 4.25H16.25C16.913 4.25 17.5489 4.51339 18.0178 4.98223C18.4866 5.45107 18.75 6.08696 18.75 6.75V11.75H23.75C24.413 11.75 25.0489 12.0134 25.5178 12.4822C25.9866 12.9511 26.25 13.587 26.25 14.25V16.75C26.25 17.413 25.9866 18.0489 25.5178 18.5178C25.0489 18.9866 24.413 19.25 23.75 19.25H18.75V24.25C18.75 24.913 18.4866 25.5489 18.0178 26.0178C17.5489 26.4866 16.913 26.75 16.25 26.75H13.75C13.087 26.75 12.4511 26.4866 11.9822 26.0178C11.5134 25.5489 11.25 24.913 11.25 24.25V19.25H6.25C5.58696 19.25 4.95107 18.9866 4.48223 18.5178C4.01339 18.0489 3.75 17.413 3.75 16.75V14.25C3.75 13.587 4.01339 12.9511 4.48223 12.4822C4.95107 12.0134 5.58696 11.75 6.25 11.75H11.25V6.75Z"
+                    fill="#BCBCBC"
+                  />
+                </g>
+                <defs>
+                  <clipPath id="clip0_984_350">
+                    <rect
+                      width="30"
+                      height="30"
+                      fill="white"
+                      transform="translate(0 0.5)"
+                    />
+                  </clipPath>
+                </defs>
+              </svg>
+              <p class="font-bold text-gray-300">Cover Upload</p>
+              <input
+                id="dropzone-file-cover"
+                type="file"
+                class="hidden"
+                (change)="PreviewImage($event, 'cover')"
+                accept="image/*"
+              />
+            </label>
+
+            }
+          </div>
+        </div>
+        <div class="flex flex-col gap-4">
+          <div
+            class="flex flex-col tablet:flex-row justify-center items-start gap-4"
+          >
+            <div class="flex flex-col flex-1" *ngFor="let col of column1">
+              <label class="formTextFormat uppercase" [for]="col">{{
+                col
+              }}</label>
+              <input
+                [id]="col"
+                [name]="col"
+                [ngClass]="{
+                  'border-b-[4px] border-red-500':
+                    formControl(col)!.invalid &&
+                    (formControl(col)?.dirty || formControl(col)?.touched)
+                }"
+                [type]="
+                  col === 'email'
+                    ? 'email'
+                    : col === 'birthdate'
+                    ? 'date'
+                    : 'text'
+                "
+                class="formTemplate"
+                [formControlName]="col"
+              />
+              <app-forms-error
+                *ngIf="
+                  formControl(col)?.invalid &&
+                  (formControl(col)?.dirty || formControl(col)?.touched)
+                "
+                [formControlRequired]="formControl(col)!.errors?.['required']"
+                [formControlEmail]="formControl(col)!.errors?.['email']"
+                [formControlNumber]="col == 'phone_number' ? formControl(col)!.errors?.['pattern'] : null"
+              ></app-forms-error>
+            </div>
+          </div>
+          <div
+            class="flex flex-col tablet:flex-row justify-center items-start gap-4"
+          >
+            <div class="flex flex-col flex-1 gap-2" *ngFor="let col of column2">
+              <label class="formTextFormat uppercase" [for]="col">{{
+                col
+              }}</label>
+              <input
+                [id]="col"
+                [name]="col"
+                [ngClass]="{
+                  'border-b-[4px] border-red-500':
+                    formControl(col)!.invalid &&
+                    (formControl(col)?.dirty || formControl(col)?.touched)
+                }"
+                type="text"
+                class="formTemplate"
+                [formControlName]="col"
+              />
+              <app-forms-error
+                *ngIf="
+                  formControl(col)?.invalid &&
+                  (formControl(col)?.dirty || formControl(col)?.touched)
+                "
+                [formControlRequired]="formControl(col)!.errors?.['required']"
+                [formControlPattern]="formControl(col)!.errors?.['pattern']"
+              ></app-forms-error>
+            </div>
+          </div>
+          <div
+            class="flex flex-col tablet:flex-row justify-center items-start gap-4"
+          >
+            <div class="flex flex-col flex-1" *ngFor="let col of column3">
+              <label class="formTextFormat uppercase" [for]="col">{{
+                col
+              }}</label>
+              <input
+                [id]="col"
+                [name]="col"
+                [ngClass]="{
+                  'border-b-[4px] border-red-500':
+                    formControl(col)!.invalid &&
+                    (formControl(col)?.dirty || formControl(col)?.touched)
+                }"
+                type="text"
+                class="formTemplate"
+                [formControlName]="col"
+              />
+              <app-forms-error
+                *ngIf="
+                  formControl(col)?.invalid &&
+                  (formControl(col)?.dirty || formControl(col)?.touched)
+                "
+                [formControlRequired]="formControl(col)!.errors?.['required']"
+                [formControlPattern]="formControl(col)!.errors?.['pattern']"
+              ></app-forms-error>
+            </div>
+          </div>
+          <div
+            class="flex flex-col tablet:flex-row justify-center items-start gap-4"
+          >
+            <div class="flex flex-col flex-1" *ngFor="let col of column4">
+              <label class="formTextFormat uppercase" [for]="col">{{
+                col
+              }}</label>
+              <input
+                [id]="col"
+                [name]="col"
+                [ngClass]="{
+                  'border-b-[4px] border-red-500':
+                    formControl(col)!.invalid &&
+                    (formControl(col)?.dirty || formControl(col)?.touched)
+                }"
+                type="text"
+                class="formTemplate"
+                [formControlName]="col"
+              />
+              <app-forms-error
+                *ngIf="
+                  formControl(col)?.invalid &&
+                  (formControl(col)?.dirty || formControl(col)?.touched)
+                "
+                [formControlRequired]="formControl(col)!.errors?.['required']"
+                [formControlPattern]="col !== 'age' ? formControl(col)!.errors?.['pattern'] : null"
+                [formControlNumber]="col == 'age' ? formControl(col)!.errors?.['pattern'] : null"
+              ></app-forms-error>
+            </div>
+          </div>
+          <div class="w-full flex justify-end gap-4">
+            <input
+              [ngClass]="{
+                'bg-red-700 cursor-not-allowed': facultyInfo.invalid,
+                'bg-blue cursor-pointer': !facultyInfo.invalid
+              }"
+              [disabled]="facultyInfo.invalid"
+              id="addFact"
+              type="submit"
+              value="{{ editMode ? 'Edit' : 'Add' }} Faculty"
+              class="w-[130px] h-[40px] rounded-full transition-all text-white font-Poppins font-semibold shadow-main hover:scale-[101%] hover:duration-300 duration-300"
+            />
+          </div>
+        </div>
+      </div>
+      @if(editMode) {
+      <div
+        class="bg-white rounded-[15px] p-4 laptop:w-[220px] desktop:min-w-[320px]"
+      >
+        <form
+          action=""
+          class="flex flex-col justify-between h-full"
+          (ngSubmit)="submitPassword()"
+          [formGroup]="newPasswordInfo"
+        >
+          <div>
+            <h4 class="text-[1.5rem] mb-4">Reset Password</h4>
+
+            <div
+              class="relative z-0 w-full mb-5 group col-span-5 tablet:col-span-1"
+            >
+              <div class="relative">
+                <input
+                  [type]="newPrivSwitch ? 'text' : 'password'"
+                  name="floating_email"
+                  id="floating_email"
+                  class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                  formControlName="newPassword"
+                  placeholder=" "
+                  required
+                />
+                @if(!newPrivSwitch) {
+
+                <svg
+                  [class.hide]="newPrivSwitch"
+                  (click)="newPrivSwitch = !newPrivSwitch"
+                  class="w-[30px] h-[30px] text-gray-800 dark:text-red absolute right-0 top-0"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="m4 15.6 3-3V12a5 5 0 0 1 5-5h.5l1.8-1.7A9 9 0 0 0 12 5C6.6 5 2 10.3 2 12c.3 1.4 1 2.7 2 3.6Z"
+                  />
+                  <path
+                    d="m14.7 10.7 5-5a1 1 0 1 0-1.4-1.4l-5 5A3 3 0 0 0 9 12.7l.2.6-5 5a1 1 0 1 0 1.4 1.4l5-5 .6.2a3 3 0 0 0 3.6-3.6 3 3 0 0 0-.2-.6Z"
+                  />
+                  <path
+                    d="M19.8 8.6 17 11.5a5 5 0 0 1-5.6 5.5l-1.7 1.8 2.3.2c6.5 0 10-5.2 10-7 0-1.2-1.6-2.9-2.2-3.4Z"
+                  />
+                </svg>
+
+                } @else {
+
+                <svg
+                  [class.hide]="!newPrivSwitch"
+                  (click)="newPrivSwitch = !newPrivSwitch"
+                  class="w-[30px] h-[30px] text-gray-800 dark:text-red absolute right-0 top-0"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M5 7.8C6.7 6.3 9.2 5 12 5s5.3 1.3 7 2.8a12.7 12.7 0 0 1 2.7 3.2c.2.2.3.6.3 1s-.1.8-.3 1a2 2 0 0 1-.6 1 12.7 12.7 0 0 1-9.1 5c-2.8 0-5.3-1.3-7-2.8A12.7 12.7 0 0 1 2.3 13c-.2-.2-.3-.6-.3-1s.1-.8.3-1c.1-.4.3-.7.6-1 .5-.7 1.2-1.5 2.1-2.2Zm7 7.2a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+                }
+              </div>
+              <label
+                for="floating_email"
+                class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                >New Password</label
+              >
+              <app-forms-error
+                *ngIf="
+                  passwordFormControl('newPassword')?.invalid &&
+                  (passwordFormControl('newPassword')?.dirty ||
+                    passwordFormControl('newPassword')?.touched)
+                "
+                [formControlRequired]="passwordFormControl('newPassword')!.errors?.['required']"
+                [formControlPasswordMinLength]="passwordFormControl('newPassword')!.errors?.['minlength']"
+                [newConfirmDontMatch]="newConfirmdoesntMatchError"
+              ></app-forms-error>
+            </div>
+            <div
+              class="relative z-0 w-full mb-5 group col-span-5 tablet:col-span-1"
+            >
+              <div class="relative">
+                <input
+                  [type]="privSwitch ? 'text' : 'password'"
+                  name="floating_email"
+                  id="floating_email"
+                  class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                  formControlName="confirmPassword"
+                  placeholder=" "
+                  required
+                />
+
+                @if(!privSwitch) {
+
+                <svg
+                  [class.hide]="privSwitch"
+                  (click)="privSwitch = !privSwitch"
+                  class="w-[30px] h-[30px] text-gray-800 dark:text-red absolute right-0 top-0"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="m4 15.6 3-3V12a5 5 0 0 1 5-5h.5l1.8-1.7A9 9 0 0 0 12 5C6.6 5 2 10.3 2 12c.3 1.4 1 2.7 2 3.6Z"
+                  />
+                  <path
+                    d="m14.7 10.7 5-5a1 1 0 1 0-1.4-1.4l-5 5A3 3 0 0 0 9 12.7l.2.6-5 5a1 1 0 1 0 1.4 1.4l5-5 .6.2a3 3 0 0 0 3.6-3.6 3 3 0 0 0-.2-.6Z"
+                  />
+                  <path
+                    d="M19.8 8.6 17 11.5a5 5 0 0 1-5.6 5.5l-1.7 1.8 2.3.2c6.5 0 10-5.2 10-7 0-1.2-1.6-2.9-2.2-3.4Z"
+                  />
+                </svg>
+
+                }@else {
+
+                <svg
+                  [class.hide]="!privSwitch"
+                  (click)="privSwitch = !privSwitch"
+                  class="w-[30px] h-[30px] text-gray-800 dark:text-red absolute right-0 top-0"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M5 7.8C6.7 6.3 9.2 5 12 5s5.3 1.3 7 2.8a12.7 12.7 0 0 1 2.7 3.2c.2.2.3.6.3 1s-.1.8-.3 1a2 2 0 0 1-.6 1 12.7 12.7 0 0 1-9.1 5c-2.8 0-5.3-1.3-7-2.8A12.7 12.7 0 0 1 2.3 13c-.2-.2-.3-.6-.3-1s.1-.8.3-1c.1-.4.3-.7.6-1 .5-.7 1.2-1.5 2.1-2.2Zm7 7.2a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+                }
+              </div>
+              <label
+                for="floating_email"
+                class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                >Confirm Password</label
+              >
+              <app-forms-error
+                *ngIf="
+                  passwordFormControl('confirmPassword')?.invalid &&
+                  (passwordFormControl('confirmPassword')?.dirty ||
+                    passwordFormControl('confirmPassword')?.touched)
+                "
+                [formControlRequired]="passwordFormControl('confirmPassword')!.errors?.['required']"
+                [formControlPasswordMinLength]="passwordFormControl('confirmPassword')!.errors?.['minlength']"
+                [newConfirmDontMatch]="newConfirmdoesntMatchError"
+              ></app-forms-error>
+            </div>
+          </div>
+          <input
+            [ngClass]="{
+              'bg-red-700 cursor-not-allowed': !newPasswordInfo.valid,
+              'bg-blue cursor-pointer': newPasswordInfo.valid
+            }"
+            class="h-[40px] rounded-full transition-all text-white font-Poppins font-semibold shadow-main hover:scale-[101%] hover:duration-300 duration-300"
+            type="submit"
+            [disabled]="passwordLoading$ | async"
+            value="Reset Password"
+          />
+        </form>
+      </div>
+      }
+    </div>
+  </form>
+</div>
