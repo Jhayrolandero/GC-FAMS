@@ -147,6 +147,5 @@ export class FacultyMilestoneCalendarComponent implements OnInit{
       }
       this.daysOfYear.push(week);
     }
-    console.log(this.daysOfYear);
   }
 }
