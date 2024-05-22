@@ -132,7 +132,9 @@
           </div>
         </div>
 
-        <div class="w-[93%] rounded-[15px] bg-white flex flex-row px-5 py-2">
+        <div
+          class="w-[93%] rounded-[15px] bg-white flex flex-row px-5 py-2 gap-4"
+        >
           <p class="w-[20%] text-greenBar font-Roboto font-bold text-[0.9rem]">
             Course Code
           </p>
@@ -149,11 +151,11 @@
         <div class="grid gap-y-2 h-[150px] overflow-y-scroll">
           <div
             *ngFor="let courseFa of coursesFaculty$ | async"
-            class="w-full rounded-[10px] bg-blue shadow-main flex flex-row justify-between flex-initial px-5 py-[7px] select-none duration-300 hover:bg-[#073871] hover:duration-300"
+            class="w-full rounded-[10px] bg-blue shadow-main flex flex-row justify-between flex-initial px-5 py-[7px] select-none duration-300 hover:bg-[#073871] hover:duration-300 mobileS:gap-4"
           >
-            <div class="w-[93%] flex flex-row">
+            <div class="w-[93%] flex flex-row mobileS:gap-4">
               <p
-                class="w-[20%] text-white font-Roboto font-medium text-[0.8rem]"
+                class="max-w-[15%] tablet:w-[20%] text-white font-Roboto font-medium text-[0.8rem]"
               >
                 {{ courseFa.course_code }}
               </p>
@@ -196,12 +198,31 @@
     </div>
   </div>
 
-  <div class="w-full flex flex-col">
-    <div class="w-full mr-2">
+  <div class="w-full flex flex-col overflow-y-hidden">
+    <mat-tab-group>
+      <mat-tab label="View CV" class="bg-black">
+        <div class="mt-2">
+          <ngx-doc-viewer
+            [url]="'../../../assets/Cv.pdf'"
+            viewer="pdf"
+            style="width: 100%; height: 100vh"
+          ></ngx-doc-viewer>
+        </div>
+      </mat-tab>
+      <mat-tab label="Add CV Details">
+        <div class="w-full mt-2">
+          <app-cv-dropdown
+            *ngFor="let comp of components"
+            [name]="comp"
+          ></app-cv-dropdown>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+    <!-- <div class="w-full mr-2">
       <app-cv-dropdown
         *ngFor="let comp of components"
         [name]="comp"
       ></app-cv-dropdown>
-    </div>
+    </div> -->
   </div>
 </div>

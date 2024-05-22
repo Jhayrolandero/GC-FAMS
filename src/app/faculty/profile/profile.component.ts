@@ -19,6 +19,8 @@ import { CvDeleteForm } from './Profile Forms/delete-form/cv-delete-form.compone
 import { loadCourse } from '../../state/faculty-state/faculty-state.actions';
 import { combineLatest } from 'rxjs';
 import { FacultyRequestService } from '../../services/faculty/faculty-request.service';
+import {MatTabsModule} from '@angular/material/tabs';
+import {    NgxDocViewerModule } from 'ngx-doc-viewer';
 @Component({
   selector: 'app-profile',
   standalone: true,
@@ -34,7 +36,9 @@ import { FacultyRequestService } from '../../services/faculty/faculty-request.se
     FacultyExperienceComponent,
     FacultyExpertiseComponent,
     FacultyProjectsComponent,
-    CvDropdownComponent
+    CvDropdownComponent,
+    MatTabsModule,
+    NgxDocViewerModule
   ]
 
 })
