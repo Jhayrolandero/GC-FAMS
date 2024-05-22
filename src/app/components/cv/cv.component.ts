@@ -39,10 +39,5 @@ export class CvComponent {
     public store: Store) {
   }
 
-  //OPEN PRINT SCREEN AFTER RENDER, TURN THIS OFF FOR DEV PURPOSES
-  // ngAfterViewInit(){
-  //   window.print();
-  // }
-
 }
 
