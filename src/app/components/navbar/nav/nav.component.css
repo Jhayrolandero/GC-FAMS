@@ -1,9 +1,3 @@
-/* li {
-  position: relative;
-  width: 100%;
-  display: block;
-} */
-
 li a {
   padding-left: 4px;
   height: 3.5em;
@@ -15,6 +9,7 @@ li a {
   font-weight: 400;
   color: #f0f0f0;
   font-size: 1em;
+  transition: all 0.3s;
 }
 li a:hover,
 li a.selected {
@@ -23,15 +18,3 @@ li a.selected {
   color: #074287;
   transition: all 0.3s;
 }
-
-/* a:hover::before {
-  box-shadow: 10px 4px white;
-}
-
-a:hover::after {
-  box-shadow: 10px -4px 0 white;
-}
-
-a:hover {
-  box-shadow: -20px 0 0 white;
-} */

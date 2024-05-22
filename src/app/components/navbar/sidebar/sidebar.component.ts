@@ -11,7 +11,7 @@ import { MessageService } from '../../../services/message.service';
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css'
 })
-export class SidebarComponent {
+export class SidebarComponent{
   isFaculty: boolean;
   selectedBar: string = '1';
   accountPath: string;
@@ -24,10 +24,13 @@ export class SidebarComponent {
   ) {
     this.accountPath = this.route.snapshot.url[0].path;
     this.isFaculty = this.accountPath === "faculty";
+    this.selectedBar = this.router.url.split("/")[2];
+    console.log(this.router.url.split("/")[2]);
   }
   
-  onSelect(index: number) {
-    this.selectedBar = index + "";
+  onSelect(linkRoute: string) {
+    this.selectedBar = linkRoute;
+    console.log(this.selectedBar);
   }
 
 

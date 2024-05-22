@@ -31,9 +31,7 @@
     >
       <div class="w-[5.62cm] h-[7.26cm]">
         <img
-          [src]="
-            getBase64ImageFromUrl(tempPort + cv.profile!.profile_image) | async
-          "
+          [src]="tempPort + cv.profile!.profile_image"
           alt=""
           class="w-full h-full object-cover"
         />

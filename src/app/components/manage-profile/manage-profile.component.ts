@@ -14,6 +14,7 @@ import { FormsErrorComponent } from '../../admin/manage-faculty/forms-error/form
 import { updateInfo, updatePassword } from '../../state/faculty-state/faculty-state.actions';
 import { UpdateFaculty } from '../../services/Interfaces/updateFaculty';
 import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-manage-profile',
   standalone: true,
@@ -43,7 +44,8 @@ export class ManageProfileComponent {
 
   constructor(
     private profileStore: Store<{ profile: ProfileState }>,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private router: Router
   ) {
 
     this.passwordLoading$ = this.profileStore.select(selectPasswordLoading)
@@ -150,6 +152,11 @@ export class ManageProfileComponent {
     ]),
   });
   // password: new FormControl<string>(''),
+
+  goBack(){
+    this.router.navigate(['admin/manage-faculty'])
+  }
+
 
   openDialog(image : "cover" | "profile"): void {
     this.dialog.open(ProfileFormComponent, {

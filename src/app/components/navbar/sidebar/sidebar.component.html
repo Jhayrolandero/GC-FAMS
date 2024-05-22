@@ -6,92 +6,74 @@
     <div class="faculty-side flex-1">
       <ul *ngIf="!isFaculty">
         <app-nav
-          (click)="onSelect(7)"
+          (click)="onSelect('manage-faculty')"
           [selectedBar]="selectedBar"
-          [index]="'7'"
           [title]="'Manage Faculty'"
           [source]="'Users.png'"
         ></app-nav>
         <app-nav
-          (click)="onSelect(2)"
+          (click)="onSelect('program-analytics')"
           [selectedBar]="selectedBar"
-          [index]="'2'"
           [title]="'Program Analytics'"
           [source]="'ScatterPlot.png'"
         ></app-nav>
         <app-nav
-        (click)="onSelect(420)"
-        [selectedBar]="selectedBar"
-        [index]="'420'"
-        [title]="'Evaluation Analytics'"
-        [source]="'ScatterPlot.png'"
-      ></app-nav>
-        <!-- <app-nav
-        (click)="onSelect(13)"
-        [selectedBar]="selectedBar"
-        [index]="'13'"
-        [title]="'Commex'"
-        [source]="'Users.png'"
-      ></app-nav> -->
+          (click)="onSelect('evaluation-analytics')"
+          [selectedBar]="selectedBar"
+          [title]="'Evaluation Analytics'"
+          [source]="'ScatterPlot.png'"
+        ></app-nav>
 
-      <app-nav
-      (click)="onSelect(69)"
-      [selectedBar]="selectedBar"
-      [index]="'69'"
-      [title]="'Curriculum Vitae'"
-      [source]="'Person.png'"
-    ></app-nav>
-    <app-nav
-      (click)="onSelect(8)"
-      [selectedBar]="selectedBar"
-      [index]="'8'"
-      [title]="'Analytics'"
-      [source]="'Signal.png'"
-    ></app-nav>
-    <app-nav
-      (click)="onSelect(13)"
-      [selectedBar]="selectedBar"
-      [index]="'13'"
-      [title]="'Community'"
-      [source]="'Users.png'"
-    ></app-nav>
-    <app-nav
-      (click)="onSelect(14)"
-      [selectedBar]="selectedBar"
-      [index]="'14'"
-      [title]="'Evaluation'"
-      [source]="'ScatterPlot.png'"
-    ></app-nav>
+        <app-nav
+          (click)="onSelect('curriculum-vitae')"
+          [selectedBar]="selectedBar"
+          [title]="'Curriculum Vitae'"
+          [source]="'Person.png'"
+        ></app-nav>
+        <app-nav
+          (click)="onSelect('analytics')"
+          [selectedBar]="selectedBar"
+          [title]="'Analytics'"
+          [source]="'Signal.png'"
+        ></app-nav>
+        <app-nav
+          (click)="onSelect('community')"
+          [selectedBar]="selectedBar"
+          [title]="'Community'"
+          [source]="'Users.png'"
+        ></app-nav>
+        <app-nav
+          (click)="onSelect('evaluation')"
+          [selectedBar]="selectedBar"
+          [title]="'Evaluation'"
+          [source]="'ScatterPlot.png'"
+        ></app-nav>
       </ul>
 
 
 
       <ul *ngIf="isFaculty">
         <app-nav
-          (click)="onSelect(7)"
+          (click)="onSelect('curriculum-vitae')"
           [selectedBar]="selectedBar"
-          [index]="'7'"
           [title]="'Curriculum Vitae'"
           [source]="'Person.png'"
         ></app-nav>
         <app-nav
-          (click)="onSelect(8)"
+          (click)="onSelect('analytics')"
           [selectedBar]="selectedBar"
-          [index]="'8'"
           [title]="'Analytics'"
           [source]="'Signal.png'"
         ></app-nav>
         <app-nav
-          (click)="onSelect(13)"
+          (click)="onSelect('community')"
           [selectedBar]="selectedBar"
-          [index]="'13'"
           [title]="'Community'"
           [source]="'Users.png'"
         ></app-nav>
         <app-nav
-          (click)="onSelect(14)"
+          (click)="onSelect('evaluation')"
           [selectedBar]="selectedBar"
-          [index]="'14'"
           [title]="'Evaluation'"
           [source]="'ScatterPlot.png'"
         ></app-nav>
