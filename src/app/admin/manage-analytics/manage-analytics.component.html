@@ -132,7 +132,7 @@
       <div class="flex flex-row gap-1">
         <div
           class="w-[23px] h-[23px] rounded-[5px] shadow-main duration-300 hover:duration-300 hover:bg-opacity-50"
-          [ngClass]="certToggle ? 'bg-greenBar' : 'bg-slate-200'"
+          [ngClass]="certToggle ? ' bg-blue' : 'bg-slate-200'"
           (click)="certToggle = !certToggle"
         ></div>
         <p class="font-Roboto font-medium text-blue">Certifications</p>
@@ -150,7 +150,7 @@
       <div class="flex flex-row gap-1">
         <div
           class="w-[23px] h-[23px] rounded-[5px] shadow-main duration-300 hover:duration-300 hover:bg-opacity-50"
-          [ngClass]="seminarToggle ? 'bg-greenBar' : 'bg-slate-200'"
+          [ngClass]="seminarToggle ? 'bg-orange-400' : 'bg-slate-200'"
           (click)="seminarToggle = !seminarToggle"
         ></div>
         <p class="font-Roboto font-medium text-blue">Seminars</p>
@@ -201,8 +201,8 @@
     </div>
   </div>
 
-  <div class="w-full flex flex-col laptop:flex-row gap-3">
-    <div class="w-full laptop:w-[50%] flex flex-col gap-3">
+  <div class="flex gap-2 flex-col tablet:flex-row">
+    <div class="w-full tablet:w-[50%] flex flex-col gap-2">
       <div
         *ngIf="topSeminar$ | async as seminar"
         class="bg-white shadow-main rounded-[15px] p-5 pt-1"
@@ -232,6 +232,158 @@
       </div>
 
       <div
+        *ngIf="teachingLength$ | async as teaching"
+        class="w-full bg-white rounded-[15px] shadow-main p-5 pt-1"
+      >
+        <p class="text-blue font-bold text-[2rem] my-2">
+          Teaching Length & Certification Count per Faculty Member
+        </p>
+        <app-bar-chart
+          [data]="teaching[1][0]"
+          [data2]="teaching[1][1]"
+          [axis]="'x'"
+          [bgColor]="'rgb(7,66,135)'"
+          [bgColor2]="'rgb(30,114,66)'"
+          [labels]="yearsArray"
+          [showLegend]="false"
+        >
+          >
+        </app-bar-chart>
+      </div>
+    </div>
+    <div class="w-full tablet:w-[50%]">
+      <div
+        *ngIf="teachingLength$ | async as teaching"
+        class="bg-white rounded-[15px] shadow-main p-5 pt-1 h-full"
+      >
+        <p class="text-blue font-bold text-[2rem] my-2">
+          Teaching Length and Evaluation Average Correlation
+        </p>
+        <app-scatter-plot [data]="teaching[0]" [showLegend]="false">
+        </app-scatter-plot>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex gap-2 flex-col tablet:flex-row">
+    <div
+      *ngIf="topSeminar$ | async as seminar"
+      class="bg-white shadow-main rounded-[15px] p-5 pt-1 flex-1"
+    >
+      <p class="text-blue font-bold text-[2rem] my-2">Top Seminars Completed</p>
+      <app-bar-chart
+        [data]="[
+          seminar[0][1],
+          seminar[1][1],
+          seminar[2][1],
+          seminar[3][1],
+          seminar[4][1]
+        ]"
+        [labels]="[
+          seminar[0][0],
+          seminar[1][0],
+          seminar[2][0],
+          seminar[3][0],
+          seminar[4][0]
+        ]"
+        [axis]="'y'"
+        [bgColor]="'rgb(30, 114, 66)'"
+        [showLegend]="false"
+      ></app-bar-chart>
+    </div>
+    <div
+      *ngIf="topLevel$ | async as level"
+      class="bg-white shadow-main rounded-[15px] p-5 pt-1 flex-1"
+    >
+      <p class="text-blue font-bold text-[2rem] my-2">Top Teaching Level</p>
+      <app-bar-chart
+        [data]="level[1]"
+        [labels]="level[0]"
+        [axis]="'y'"
+        [bgColor]="'rgb(255, 122, 0)'"
+        [showLegend]="false"
+      ></app-bar-chart>
+    </div>
+
+    <div
+      *ngIf="topExpertise$ | async as expertise"
+      class="bg-white shadow-main rounded-[15px] p-5 pt-1 flex-1"
+    >
+      <p class="text-blue font-bold text-[2rem] my-2">Top Expertise</p>
+      <app-bar-chart
+        [data]="expertise[1]"
+        [labels]="expertise[0]"
+        [axis]="'y'"
+        [bgColor]="'rgb(7, 66, 135)'"
+        [showLegend]="false"
+      ></app-bar-chart>
+    </div>
+  </div>
+
+  <div class="w-full flex flex-col laptop:flex-row gap-3">
+    <div class="w-full laptop:w-[50%] flex flex-col gap-3">
+      <!-- <div
+        *ngIf="topSeminar$ | async as seminar"
+        class="bg-white shadow-main rounded-[15px] p-5 pt-1"
+      >
+        <p class="text-blue font-bold text-[2rem] my-2">
+          Top Seminars Completed
+        </p>
+        <app-bar-chart
+          [data]="[
+            seminar[0][1],
+            seminar[1][1],
+            seminar[2][1],
+            seminar[3][1],
+            seminar[4][1]
+          ]"
+          [labels]="[
+            seminar[0][0],
+            seminar[1][0],
+            seminar[2][0],
+            seminar[3][0],
+            seminar[4][0]
+          ]"
+          [axis]="'y'"
+          [bgColor]="'rgb(30, 114, 66)'"
+          [showLegend]="false"
+        ></app-bar-chart>
+      </div>
+
+      <div
+        *ngIf="teachingLength$ | async as teaching"
+        class="w-full bg-white rounded-[15px] shadow-main p-5 pt-1"
+      >
+        <p class="text-blue font-bold text-[2rem] my-2">
+          Teaching Length & Certification Count per Faculty Member
+        </p>
+        <app-bar-chart
+          [data]="teaching[1][0]"
+          [data2]="teaching[1][1]"
+          [axis]="'x'"
+          [bgColor]="'rgb(7,66,135)'"
+          [bgColor2]="'rgb(30,114,66)'"
+          [labels]="yearsArray"
+          [showLegend]="false"
+        >
+          >
+        </app-bar-chart>
+      </div> -->
+
+      <!-- <div class="w-[50%]">
+        <div
+          *ngIf="teachingLength$ | async as teaching"
+          class="bg-white rounded-[15px] shadow-main p-5 pt-1 h-full"
+        >
+          <p class="text-blue font-bold text-[2rem] my-2">
+            Teaching Length and Evaluation Average Correlation
+          </p>
+          <app-scatter-plot [data]="teaching[0]" [showLegend]="false">
+          </app-scatter-plot>
+        </div>
+      </div> -->
+
+      <!-- <div
         *ngIf="attainmentTimeline$ | async as attainment"
         class="w-full bg-white rounded-[15px] shadow-main p-5 pt-1"
       >
@@ -276,50 +428,9 @@
           [showLegend]="false"
         >
         </app-line-graph>
-      </div>
+      </div> -->
 
-      <div class="w-full flex flex-row gap-3">
-        <div
-          *ngIf="educationalAttainmentTimeline$ | async as educTimeline"
-          class="bg-white flex flex-col items-center rounded-[15px] shadow-main flex-1"
-        >
-          <p class="text-blue font-bold text-[2rem] my-2">
-            Educational Attainment
-          </p>
-          <app-pie-chart
-            [data]="[
-              educTimeline[0][14],
-              educTimeline[1][14],
-              educTimeline[2][14]
-            ]"
-            [labels]="['Bachelor Degree', 'Master Degree', 'Doctorate Degree']"
-          >
-          </app-pie-chart>
-        </div>
-
-        <div
-          *ngIf="certTypes$ | async as certType"
-          class="bg-white flex flex-col items-center rounded-[15px] shadow-main flex-1"
-        >
-          <p class="text-blue font-bold text-[2rem] my-2">Certificate Type</p>
-          <app-pie-chart
-            [data]="[certType['Completion'], certType['Achievement']]"
-            [labels]="['Completion', 'Achievement']"
-          >
-          </app-pie-chart>
-        </div>
-
-        <div
-          *ngIf="employmentTypes$ | async as type"
-          class="bg-white flex flex-col items-center rounded-[15px] shadow-main flex-1"
-        >
-          <p class="text-blue font-bold text-[2rem] my-2">Employment Status</p>
-          <app-pie-chart [data]="type" [labels]="['Part-Time', 'Full-Time']">
-          </app-pie-chart>
-        </div>
-      </div>
-
-      <div class="w-full flex flex-row gap-3">
+      <!-- <div class="w-full flex flex-row gap-3">
         <div class="w-[50%] flex flex-col gap-3">
           <div
             *ngIf="topSeminar$ | async as seminar"
@@ -349,11 +460,58 @@
             ></app-bar-chart>
           </div>
         </div>
-      </div>
+      </div> -->
+
+      <!-- <div
+        *ngIf="attainmentTimeline$ | async as attainment"
+        class="w-full bg-white rounded-[15px] shadow-main p-5 pt-1"
+      >
+        <div class="flex flex-col tablet:flex-row items-center gap-3">
+          <p class="text-blue font-bold text-[2rem] my-2">
+            Attainment Timeline
+          </p>
+          <div class="flex flex-row gap-1">
+            <div
+              class="w-[23px] h-[23px] rounded-[5px] shadow-main duration-300 hover:duration-300 hover:bg-opacity-50"
+              [ngClass]="certToggle ? 'bg-greenBar' : 'bg-slate-200'"
+              (click)="certToggle = !certToggle"
+            ></div>
+            <p class="font-Roboto font-medium text-blue">Certifications</p>
+          </div>
+
+          <div class="flex flex-row gap-1">
+            <div
+              class="w-[23px] h-[23px] rounded-[5px] shadow-main duration-300 hover:duration-300 hover:bg-opacity-50"
+              [ngClass]="commexToggle ? 'bg-greenBar' : 'bg-slate-200'"
+              (click)="commexToggle = !commexToggle"
+            ></div>
+            <p class="font-Roboto font-medium text-blue">
+              Community Extensions
+            </p>
+          </div>
+
+          <div class="flex flex-row gap-1">
+            <div
+              class="w-[23px] h-[23px] rounded-[5px] shadow-main duration-300 hover:duration-300 hover:bg-opacity-50"
+              [ngClass]="seminarToggle ? 'bg-greenBar' : 'bg-slate-200'"
+              (click)="seminarToggle = !seminarToggle"
+            ></div>
+            <p class="font-Roboto font-medium text-blue">Seminars</p>
+          </div>
+        </div>
+        <app-line-graph
+          [data]="certToggle ? attainment[0] : []"
+          [data2]="commexToggle ? attainment[1] : []"
+          [data3]="seminarToggle ? attainment[2] : []"
+          [labels]="yearsArray"
+          [showLegend]="false"
+        >
+        </app-line-graph>
+      </div> -->
 
       <div class="w-full flex flex-row gap-3">
         <div class="w-[50%] flex flex-col gap-3">
-          <div
+          <!-- <div
             *ngIf="topLevel$ | async as level"
             class="bg-white shadow-main rounded-[15px] p-5 pt-1"
           >
@@ -381,41 +539,12 @@
               [bgColor]="'rgb(7, 66, 135)'"
               [showLegend]="false"
             ></app-bar-chart>
-          </div>
-        </div>
-
-        <div class="w-[50%]">
-          <div
-            *ngIf="teachingLength$ | async as teaching"
-            class="bg-white rounded-[15px] shadow-main p-5 pt-1 h-full"
-          >
-            <p class="text-blue font-bold text-[2rem] my-2">
-              Teaching Length and Evaluation Average Correlation
-            </p>
-            <app-scatter-plot [data]="teaching[0]" [showLegend]="false">
-            </app-scatter-plot>
-          </div>
+          </div> -->
         </div>
       </div>
-
-      <!-- <div
-        *ngIf="teachingLength$ | async as teaching"
-        class="w-full bg-white rounded-[15px] shadow-main p-5 pt-1"
-      >
-        <p class="text-blue font-bold text-[2rem] my-2">
-          Teaching Length & Certification Count per Faculty Member
-        </p>
-        <app-bar-chart
-          [data]="teaching[1]"
-          [labels]="teaching[0]"
-          [axis]="'y'"
-          [bgColor]="'rgb(7, 66, 135)'"
-          [showLegend]="false"
-        ></app-bar-chart>
-      </div> -->
     </div>
 
-    <div class="w-full laptop:w-[50%]">
+    <!-- <div class="w-full laptop:w-[50%]">
       <div
         *ngIf="teachingLength$ | async as teaching"
         class="bg-white rounded-[15px] shadow-main p-5 pt-1 h-full"
@@ -426,178 +555,6 @@
         <app-scatter-plot [data]="teaching[0]" [showLegend]="false">
         </app-scatter-plot>
       </div>
-    </div>
-  </div>
-
-  <div
-    *ngIf="teachingLength$ | async as teaching"
-    class="w-full bg-white rounded-[15px] shadow-main p-5 pt-1"
-  >
-    <p class="text-blue font-bold text-[2rem] my-2">
-      Teaching Length & Certification Count per Faculty Member
-    </p>
-    <app-bar-chart
-      [data]="teaching[1][0]"
-      [data2]="teaching[1][1]"
-      [axis]="'x'"
-      [bgColor]="'rgb(7,66,135)'"
-      [bgColor2]="'rgb(30,114,66)'"
-      [labels]="yearsArray"
-      [showLegend]="false"
-    >
-      >
-    </app-bar-chart>
-  </div>
-
-  <!-- <div class="w-full flex flex-row gap-3">
-        <p class="text-blue font-bold text-[2rem] my-2">Teaching Length & Certification Count per Faculty Member</p>
-        <app-line-graph
-        [data]="educTimeline[0]"
-        [labels]="yearsArray"
-        [showLegend]="true"
-        [legendLabel]="['Bachelor Degree', 'Masters Degree', 'Doctorate Degree']">
-        </app-line-graph>
     </div> -->
-
-  <!-- <div class="w-full h-[300px] flex flex-row gap-x-3 items-center">
-
-
-        <div class="bg-white bg-opacity-70 p-3 shadow-main w-full h-full rounded-[15px]">
-            <p class="text-[1.5rem] font-Poppins font-semibold">Educational Attainments</p>
-            <div class="flex flex-row gap-x-3">
-                <div class="w-[65%] h-[220px] flex flex-col gap-y-3 overflow-y-scroll">
-
-                    <div class="p-2 px-4 flex flex-col gap-y-2">
-                        <p class="font-Roboto font-semibold">Doctorate Degree</p>
-                        <hr class="border-[1.5px] border-slate-400">
-
-                        <div class="w-full rounded-full bg-white bg-opacity-100 shadow-main flex flex-row justify-between items-center">
-                            <div class=" w-[40%] flex flex-row items-center">
-                                <div class="h-[35px] w-[35px] aspect-square bg-slate-200 rounded-full"></div>
-                                <p class="text-blue text-[0.9rem] mx-2 font-Poppins font-semibold">Nami Navigator</p>
-                            </div>
-                            <p class="text-blue font-light italic">University of Herrscher</p>
-                            <svg class="mr-3" width="9" height="15" viewBox="0 0 9 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M1 1L6.97112 6.35101C7.67629 6.98295 7.67629 8.01705 6.97112 8.64899L1 14" stroke="#074287" stroke-width="29895" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </div>
-
-                        <div class="w-full rounded-full bg-white shadow-main flex flex-row justify-between items-center">
-                            <div class=" w-[40%] flex flex-row items-center">
-                                <div class="h-[35px] w-[35px] aspect-square bg-slate-200 rounded-full"></div>
-                                <p class="text-blue text-[0.9rem] mx-2 font-Poppins font-semibold">Kirk Nerdington Fitzgerald</p>
-                            </div>
-                            <p class="text-blue font-light italic">University of Herrscher</p>
-                            <svg class="mr-3" width="9" height="15" viewBox="0 0 9 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M1 1L6.97112 6.35101C7.67629 6.98295 7.67629 8.01705 6.97112 8.64899L1 14" stroke="#074287" stroke-width="29895" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </div>
-
-                        <div class="w-full rounded-full bg-white shadow-main flex flex-row justify-between items-center">
-                            <div class=" w-[40%] flex flex-row items-center">
-                                <div class="h-[35px] w-[35px] aspect-square bg-slate-200 rounded-full"></div>
-                                <p class="text-blue text-[0.9rem] mx-2 font-Poppins font-semibold">Kirk Nerdington Fitzgerald</p>
-                            </div>
-                            <p class="text-blue font-light italic">University of Herrscher</p>
-                            <svg class="mr-3" width="9" height="15" viewBox="0 0 9 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M1 1L6.97112 6.35101C7.67629 6.98295 7.67629 8.01705 6.97112 8.64899L1 14" stroke="#074287" stroke-width="29895" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </div>
-                    </div>
-
-                    <div class="p-2 px-4 flex flex-col gap-y-2">
-                        <p class="font-Roboto font-semibold">Master's Degree</p>
-                        <hr class="border-[1.5px] border-slate-400">
-
-                        <div class="w-full rounded-full bg-white shadow-main flex flex-row justify-between items-center">
-                            <div class=" w-[40%] flex flex-row items-center">
-                                <div class="h-[35px] w-[35px] aspect-square bg-slate-200 rounded-full"></div>
-                                <p class="text-blue text-[0.9rem] mx-2 font-Poppins font-semibold">Nami Navigator</p>
-                            </div>
-                            <p class="text-blue font-light italic">University of Herrscher</p>
-                            <svg class="mr-3" width="9" height="15" viewBox="0 0 9 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M1 1L6.97112 6.35101C7.67629 6.98295 7.67629 8.01705 6.97112 8.64899L1 14" stroke="#074287" stroke-width="29895" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </div>
-
-                        <div class="w-full rounded-full bg-white shadow-main flex flex-row justify-between items-center">
-                            <div class=" w-[40%] flex flex-row items-center">
-                                <div class="h-[35px] w-[35px] aspect-square bg-slate-200 rounded-full"></div>
-                                <p class="text-blue text-[0.9rem] mx-2 font-Poppins font-semibold">Kirk Nerdington Fitzgerald</p>
-                            </div>
-                            <p class="text-blue font-light italic">University of Herrscher</p>
-                            <svg class="mr-3" width="9" height="15" viewBox="0 0 9 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M1 1L6.97112 6.35101C7.67629 6.98295 7.67629 8.01705 6.97112 8.64899L1 14" stroke="#074287" stroke-width="29895" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </div>
-
-                        <div class="w-full rounded-full bg-white shadow-main flex flex-row justify-between items-center">
-                            <div class=" w-[40%] flex flex-row items-center">
-                                <div class="h-[35px] w-[35px] aspect-square bg-slate-200 rounded-full"></div>
-                                <p class="text-blue text-[0.9rem] mx-2 font-Poppins font-semibold">Kirk Nerdington Fitzgerald</p>
-                            </div>
-                            <p class="text-blue font-light italic">University of Herrscher</p>
-                            <svg class="mr-3" width="9" height="15" viewBox="0 0 9 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M1 1L6.97112 6.35101C7.67629 6.98295 7.67629 8.01705 6.97112 8.64899L1 14" stroke="#074287" stroke-width="29895" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-white bg-opacity-70 shadow-main w-[35%] p-3 rounded-[15px] shadow-[0px, 4px, 4px, 0px] flex flex-col">
-                    <div class="flex flex-row">
-                        <app-pie-chart class="w-[50%]" [data]="degree"></app-pie-chart>
-                        <div class="w-[50%] flex flex-col justify-center">
-                            <p class="font-Roboto font-semibold">Legend</p>
-                            <div class="p-3 bg-slate-200 bg-opacity-50 rounded-[10px] p-2 flex flex-col gap-y-2">
-                                <div class="flex flex-row items-center">
-                                    <div class="mr-2 w-[20px] h-[20px] bg-[#074287] rounded-[5px]"></div>
-                                    <p>Doctorate Degree</p>
-                                </div>
-                                <div class="flex flex-row items-center">
-                                    <div class="mr-2 w-[20px] h-[20px] bg-[#1E7242] rounded-[5px]"></div>
-                                    <p>Master's Degree</p>
-                                </div>
-                                <div class="flex flex-row items-center">
-                                    <div class="mr-2 w-[20px] h-[20px] bg-[#FF7A00] rounded-[5px]"></div>
-                                    <p>Bachelor's Degree</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="w-full h-[350px] flex flex-row gap-x-3 items-center">
-        <div class="bg-white shadow-main p-3 w-[65%] flex flex-col gap-y-3 h-full rounded-[15px]">
-            <p class="text-[1.5rem] font-Poppins font-semibold">Certifications</p>
-
-            <div class="w-full rounded-full bg-blue shadow-main flex flex-row items-center">
-                <div class=" w-[40%] flex flex-row items-center">
-                    <div class="h-[35px] w-[35px] aspect-square bg-slate-200 rounded-full"></div>
-                    <p class="text-white text-[0.9rem] mx-2 font-Poppins font-semibold">Nami Navigator</p>
-                </div>
-                <p class="text-white font-light italics">University of Herrscher</p>
-            </div>
-
-        </div>
-
-        <div class="bg-white bg-opacity-70 p-3 shadow-main w-[35%] h-full rounded-[15px]">
-            <p class="text-[1.5rem] font-Poppins font-semibold">Industry Experience</p>
-
-            <div class="px-4">
-
-                <div class="flex flex-row items-center">
-                    <p class="text-greenBar text-[2.8rem] font-Poppins font-bold">12%</p>
-                    <p class="text-blue text-[0.9rem] font-Poppins font-bold ml-3">of CCS Faculty Members have served
-                        more than 10 year(s) in Gordon College.</p>
-                </div>
-                <p class="text-blue text-[0.9rem] font-Poppins font-bold">All CCS faculty members have served by an
-                    average of 13.7 years.</p>
-
-            </div>
-        </div>
-    </div> -->
+  </div>
 </div>

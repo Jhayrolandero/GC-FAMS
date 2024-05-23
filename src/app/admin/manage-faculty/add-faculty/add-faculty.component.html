@@ -151,7 +151,10 @@
           Personal Information
           <hr class="border-[1.5px] border-slate-400" />
         </h4>
-        <div class="flex flex-row w-full rounded-full shadow-main">
+        <div
+          class="flex flex-row w-full rounded-full shadow-main"
+          *ngIf="!editMode"
+        >
           <div
             class="rounded-full w-[200px] h-[200px] aspect-square overflow-hidden flex justify-center items-center shadow-main"
           >

@@ -112,19 +112,23 @@ export class EvaluationComponent{
   selectedEvalSem!: Evaluation
   evalHistory: evalScoreHistory[] = []
   evalBar!: HTMLElement
-  
+
   constructor(
     private evaluationService: EvaluationService,
     public dialog: MatDialog,
     private renderer: Renderer2,
     private elementRef: ElementRef,
-    private store: Store) { 
+    private store: Store) {
       this.evaluation$.subscribe({
         next: value => {
+          const sortedEvals = this.sortByEvaluationYear(value)
+          // console.log(sortedEvals)
           this.evalHistory = this.evaluationService.setEvalHistory(value)
-          this.selectedEvalSem = value[value.length - 1]
-          this.selectEvalSem()
+          this.selectedEvalSem = sortedEvals[sortedEvals.length - 1]
+          // this.selectedEvalSem = sortedEvals[sortedEvals.length - 1]
+          this.selectEvalSem(undefined)
           this.isLoading = false
+
         },
       })
     }
@@ -135,7 +139,7 @@ export class EvaluationComponent{
 
   formToggle: boolean = false;
   // this.store.select(selectAllEvaluation);
-  
+
   openDialog() {
     let yearVal: any;
     let semVal: any;
@@ -155,17 +159,17 @@ export class EvaluationComponent{
     }).afterClosed().subscribe(result => {
       this.store.dispatch(loadEval());
     });
-  }  
+  }
 
   // Select a specific evaluation history
-  selectEvalSem(id?: number): void {
-    if (id) {
+  selectEvalSem(event: any | undefined): void {
+    if (event !== undefined) {
       let evalItem!: Evaluation[]
 
       this.evaluation$.subscribe({
-        next: value => evalItem = value.filter((evalItem: Evaluation) => evalItem.evaluation_ID == id)
+        next: value => evalItem = value.filter((evalItem: Evaluation) => evalItem.evaluation_ID == event.target.value)
       })
-      
+
       this.selectedEvalSem = evalItem[0]
       this.evalScoreCategory = this.evaluationService.setEvalScoreCategory(this.selectedEvalSem)
 
@@ -174,6 +178,13 @@ export class EvaluationComponent{
     }
   }
 
+  sortByEvaluationYear(evals : Evaluation[]) {
+
+    const evalsCopy = [...evals]
+    return evalsCopy.sort((a, b) => {
+        return a.evaluation_year - b.evaluation_year;
+    });
+}
   view: [] = [];
 
   // options
