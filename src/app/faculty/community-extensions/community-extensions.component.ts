@@ -241,9 +241,11 @@ export class CommunityExtensionsComponent {
   profileCollege$: Observable<Profile | undefined>
   profileCollegeID: number = 0
   profileFacultyID: number = 0
+
   fetchAttendeeNumber$ = (id: number) => {
     this.attendeeStore.dispatch(AttendeeActions.getAttendeeNumber({ id: id }))
   }
+  
   ngOnInit(): void {
 
     this.attendeeNumberFetch()
