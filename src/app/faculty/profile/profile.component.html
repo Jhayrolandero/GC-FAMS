@@ -200,21 +200,21 @@
 
   <div class="w-full flex flex-col overflow-y-hidden">
     <mat-tab-group>
-      <mat-tab label="View CV" class="bg-black">
-        <div class="mt-2">
-          <ngx-doc-viewer
-            [url]="'../../../assets/Cv.pdf'"
-            viewer="pdf"
-            style="width: 100%; height: 100vh"
-          ></ngx-doc-viewer>
-        </div>
-      </mat-tab>
       <mat-tab label="Add CV Details">
         <div class="w-full mt-2">
           <app-cv-dropdown
             *ngFor="let comp of components"
             [name]="comp"
           ></app-cv-dropdown>
+        </div>
+      </mat-tab>
+      <mat-tab label="View CV" class="bg-black">
+        <div *ngIf="facultyProfile$ | async as facultyProfile" class="mt-2">
+          <ngx-doc-viewer
+            [url]="port + '/GC-FaMS-API/CV_Assets/' + facultyProfile.faculty_ID + '.pdf'"
+            viewer="pdf"
+            style="width: 100%; height: 100vh"
+          ></ngx-doc-viewer>
         </div>
       </mat-tab>
     </mat-tab-group>
