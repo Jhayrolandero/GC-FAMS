@@ -1,16 +1,38 @@
-<app-loading-screen *ngIf="!(evaluation$ | async) as facultyProfile"></app-loading-screen>
+<app-loading-screen
+  *ngIf="!(evaluation$ | async) as facultyProfile"
+></app-loading-screen>
 
-<div class="p-5 flex flex-col gap-3 text-blue w-full" *ngIf="(evaluation$ | async) as facultyProfile">
+<div
+  class="p-5 flex flex-col gap-3 text-blue w-full"
+  *ngIf="evaluation$ | async as facultyProfile"
+>
   <div
-    class="bg-white shadow-main w-full rounded-[15px] flex justify-between items-center px-5"
+    class="bg-white shadow-main w-full rounded-[15px] flex flex-col tablet:flex-row justify-between items-center px-5"
   >
     <h1 class="font-Poppins font-semibold text-[2.5rem] py-2">Evaluation</h1>
     <div class="flex flex-row space-x-4">
-      <button
-      (click)="openDialog()" class="bg-gradient-to-r from-blue to-greenBar text-white font-Poppins font-semibold px-11 py-2 rounded-full shadow-main hover:scale-[102%] hover:duration-300 duration-300"
+      <select
+        type="text"
+        id="cert_exist"
+        class="w-full border-2 px-2 font-Roboto font-regular text-[1.1rem] rounded-[5px] text-black py-1"
+        (change)="selectEvalSem($event)"
       >
-        + Encode
-      </button>    
+        <option
+          *ngFor="let evalItem of evaluation$ | async"
+          [value]="evalItem.evaluation_ID"
+        >
+          {{ evalItem.semester }}@if( evalItem.semester == 1){st}@else if
+          (evalItem.semester == 2) {nd}, A.Y. {{ evalItem.evaluation_year }} -
+          {{ +evalItem.evaluation_year + 1 }}
+        </option>
+      </select>
+
+      <button
+        (click)="openDialog()"
+        class="bg-gradient-to-r from-blue to-greenBar text-white font-Poppins font-semibold px-11 py-2 rounded-full shadow-main hover:scale-[102%] hover:duration-300 duration-300"
+      >
+        Encode
+      </button>
     </div>
   </div>
 
@@ -18,7 +40,7 @@
     *ngIf="(evaluation$ | async)?.length"
     class="w-full flex flex-col justify-between items-center gap-3"
   >
-    <div class="flex flex-row w-full justify-between gap-2 px-5">
+    <!-- <div class="flex flex-row w-full justify-between gap-2 px-5">
       <p
         *ngFor="let evalItem of evaluation$ | async"
         class="hover:font-bold transition-all cursor-pointer font-Poppins justify-between text-[1rem]"
@@ -28,7 +50,7 @@
         (evalItem.semester == 2) {nd}, A.Y. {{ evalItem.evaluation_year }} -
         {{ +evalItem.evaluation_year + 1 }}
       </p>
-    </div>
+    </div> -->
 
     <div class="w-full flex flex-col laptop:flex-row gap-3">
       <div
@@ -70,9 +92,12 @@
           </div>
           <div class="w-full rounded-full">
             <div
-            class=" rounded-full h-[10px] my-1 bar"
-            [ngStyle]="{'--width': (evalItem.value / 5.00) * 100 + '%', 'background-color': '#D4D4D4'}">
-            </div>
+              class="rounded-full h-[10px] my-1 bar"
+              [ngStyle]="{
+                '--width': (evalItem.value / 5.0) * 100 + '%',
+                'background-color': '#D4D4D4'
+              }"
+            ></div>
           </div>
         </div>
       </div>

@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Inject } from '@angular/core';
-import { FormsModule, ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -31,8 +31,12 @@ export class CourseFormComponent {
     ){}
 
     courseForm = new FormGroup({
-        course_code: new FormControl(''),
-        class_count: new FormControl('')
+        course_code: new FormControl('',[
+          Validators.required
+        ]),
+        class_count: new FormControl('',[
+          Validators.required
+        ])
     })
 
     onNoClick(): void {
@@ -40,14 +44,15 @@ export class CourseFormComponent {
     }
 
     existCourseSelect(event: any){
+      console.log(event.target.value);
         this.courseForm.patchValue({
             course_code: event.target.value
         });
     }
 
     submitForm() {
-        console.log(this.courseForm);
-        this.messageService.sendMessage("Adding Courses...", 0)
+      if(!this.courseForm.valid) return
+      this.messageService.sendMessage("Adding Courses...", 0)
         this.facultyRequest.postData(this.courseForm, 'addCourse').subscribe({
             next: (next: any) => { console.log(next); },
             error: (error) => { this.messageService.sendMessage("Failed to add course.", -1) },
