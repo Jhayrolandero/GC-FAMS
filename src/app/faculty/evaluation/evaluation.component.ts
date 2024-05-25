@@ -18,7 +18,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { selectAllEvaluation } from '../../state/faculty-state/faculty-state.selector';
+import { selectAllEvaluation, selectSortedEvals } from '../../state/faculty-state/faculty-state.selector';
 import { Store, select } from '@ngrx/store';
 import { loadEval } from '../../state/faculty-state/faculty-state.actions';
 
@@ -108,6 +108,7 @@ export class EvaluationComponent{
 
   isLoading: boolean = true;
   evaluation$ = this.store.select(selectAllEvaluation);
+  sortedEvaluation$ = this.store.select(selectSortedEvals);
   evalScoreCategory!: ScoreCategory[]
   selectedEvalSem!: Evaluation
   evalHistory: evalScoreHistory[] = []
@@ -119,18 +120,25 @@ export class EvaluationComponent{
     private renderer: Renderer2,
     private elementRef: ElementRef,
     private store: Store) {
-      this.evaluation$.subscribe({
+      this.sortedEvaluation$.subscribe({
         next: value => {
-          const sortedEvals = this.sortByEvaluationYear(value)
-          // console.log(sortedEvals)
           this.evalHistory = this.evaluationService.setEvalHistory(value)
-          this.selectedEvalSem = sortedEvals[sortedEvals.length - 1]
-          // this.selectedEvalSem = sortedEvals[sortedEvals.length - 1]
+          this.selectedEvalSem = value[value.length - 1]
           this.selectEvalSem(undefined)
           this.isLoading = false
 
         },
       })
+      // this.evaluation$.subscribe({
+      //   next: value => {
+      //     const sortedEvals = this.sortByEvaluationYear(value)
+      //     this.evalHistory = this.evaluationService.setEvalHistory(sortedEvals)
+      //     this.selectedEvalSem = sortedEvals[sortedEvals.length - 1]
+      //     this.selectEvalSem(undefined)
+      //     this.isLoading = false
+
+      //   },
+      // })
     }
 
   ngOnChanges(changes: SimpleChanges): void {
