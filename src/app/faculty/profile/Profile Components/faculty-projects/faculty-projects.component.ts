@@ -5,6 +5,8 @@ import { FacultyRequestService } from '../../../../services/faculty/faculty-requ
 import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { selectAllProj } from '../../../../state/faculty-state/faculty-state.selector';
+import { MessageService } from '../../../../services/message.service';
+import { loadProj } from '../../../../state/faculty-state/faculty-state.actions';
 
 @Component({
   selector: 'app-faculty-projects',
@@ -22,8 +24,19 @@ export class FacultyProjectsComponent {
   constructor(
     private facultyRequest: FacultyRequestService, 
     public dialog: MatDialog, 
+    private messageService: MessageService,
     private store: Store){}
 
+  selectCv(educ: any){
+    this.facultyRequest.patchData([4, educ], 'selectCv').subscribe({
+      next: (next: any) => {console.log(next);},
+      error: (error) => {console.log(error);},
+      complete: () => {
+        this.store.dispatch(loadProj());
+        this.messageService.sendMessage("Record added to CV.", 1)
+      }
+    });
+  }
 
   editProject(value: Project){
     this.editEvent.emit(value);

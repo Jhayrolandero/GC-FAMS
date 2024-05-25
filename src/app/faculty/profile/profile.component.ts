@@ -75,10 +75,10 @@ export class ProfileComponent {
           profile: faculty,
           courses: courseFaculty,
           certificates: certs,
-          experience: exps,
-          projects: proj,
-          expertise: specs,
-          education: educs
+          experience: exps.filter((x) => x.isSelected),
+          projects: proj.filter((x) => x.isSelected),
+          expertise: specs.filter((x) => x.isSelected),
+          education: educs.filter((x) => x.isSelected)
         }
       }
     )

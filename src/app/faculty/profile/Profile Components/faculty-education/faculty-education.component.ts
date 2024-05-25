@@ -6,6 +6,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { EventEmitter } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { selectAllEduc } from '../../../../state/faculty-state/faculty-state.selector';
+import { loadEduc } from '../../../../state/faculty-state/faculty-state.actions';
+import { MessageService } from '../../../../services/message.service';
 
 @Component({
   selector: 'app-faculty-education',
@@ -23,7 +25,19 @@ export class FacultyEducationComponent {
   constructor(
     private facultyRequest: FacultyRequestService, 
     public dialog: MatDialog, 
+    private messageService: MessageService,
     private store: Store){}
+
+  selectCv(educ: any){
+    this.facultyRequest.patchData([1, educ], 'selectCv').subscribe({
+      next: (next: any) => {console.log(next);},
+      error: (error) => {console.log(error);},
+      complete: () => {
+        this.store.dispatch(loadEduc());
+        this.messageService.sendMessage("Record added to CV.", 1)
+      }
+    });
+  }
 
 
   editEducation(value: EducationalAttainment){

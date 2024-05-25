@@ -5,6 +5,8 @@ import { FacultyRequestService } from '../../../../services/faculty/faculty-requ
 import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { selectFacultyExpertise } from '../../../../state/faculty-state/faculty-state.selector';
+import { loadExpertise } from '../../../../state/faculty-state/faculty-state.actions';
+import { MessageService } from '../../../../services/message.service';
 
 @Component({
   selector: 'app-faculty-expertise',
@@ -22,8 +24,19 @@ export class FacultyExpertiseComponent {
   constructor(
     private facultyRequest: FacultyRequestService, 
     public dialog: MatDialog, 
+    private messageService: MessageService,
     private store: Store){}
 
+  selectCv(educ: any){
+    this.facultyRequest.patchData([5, educ], 'selectCv').subscribe({
+      next: (next: any) => {console.log(next);},
+      error: (error) => {console.log(error);},
+      complete: () => {
+        this.store.dispatch(loadExpertise());
+        this.messageService.sendMessage("Record added to CV.", 1)
+      }
+    });
+  }
 
   editExpertise(value: Expertise){
     this.editEvent.emit(value);
