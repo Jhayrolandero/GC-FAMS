@@ -15,6 +15,7 @@ import { updateInfo, updatePassword } from '../../state/faculty-state/faculty-st
 import { UpdateFaculty } from '../../services/Interfaces/updateFaculty';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
+import { FormComponent } from '../form/form.component';
 @Component({
   selector: 'app-manage-profile',
   standalone: true,
@@ -26,7 +27,8 @@ import { Router } from '@angular/router';
     ProfileFormComponent,
     FormsModule,
     ReactiveFormsModule,
-    FormsErrorComponent
+    FormsErrorComponent,
+    FormComponent
   ],
   templateUrl: './manage-profile.component.html',
   styleUrl: './manage-profile.component.css'

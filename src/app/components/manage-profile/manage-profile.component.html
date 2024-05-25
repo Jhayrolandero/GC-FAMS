@@ -7,8 +7,8 @@
   id="mainPage"
 >
   <div
-  (click)="goBack()"
-  class="w-[50px] h-[50px] bg-white rounded-full shadow-main flex justify-center items-center"
+    (click)="goBack()"
+    class="w-[50px] h-[50px] bg-white rounded-full shadow-main flex justify-center items-center"
   >
     <svg
       width="35"
@@ -27,7 +27,6 @@
       />
     </svg>
   </div>
-
 
   <div
     class="min-w-mobileL w-full bg-white rounded-[15px] overflow-hidden shadow-main"
@@ -95,7 +94,6 @@
             id="floating_email"
             class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
             formControlName="email"
-            [value]="facultyProfile.email"
           />
           <label
             for="floating_email"
@@ -120,7 +118,6 @@
             id="floating_email"
             class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
             formControlName="phone_number"
-            [value]="facultyProfile.phone_number"
             placeholder=" "
             required
           />
@@ -149,7 +146,6 @@
             class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
             formControlName="birthdate"
             placeholder=" "
-            [value]="facultyProfile.birthdate"
             required
           />
           <label
@@ -173,7 +169,6 @@
               name="floating_email"
               id="floating_email"
               class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-              [value]="formControl('last_name')?.value"
               formControlName="last_name"
               placeholder=" "
               required
@@ -199,7 +194,6 @@
               name="floating_email"
               id="floating_email"
               class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-              [value]="facultyProfile.first_name"
               formControlName="first_name"
               placeholder=" "
               required
@@ -225,7 +219,6 @@
               name="floating_email"
               id="floating_email"
               class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-              [value]="facultyProfile.middle_name"
               formControlName="middle_name"
               placeholder=" "
             />
@@ -241,7 +234,6 @@
               name="floating_email"
               id="floating_email"
               class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-              [value]="facultyProfile.ext_name"
               formControlName="ext_name"
               placeholder=" "
             />
@@ -259,7 +251,6 @@
               name="floating_email"
               id="floating_email"
               class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-              [value]="facultyProfile.region"
               formControlName="region"
               placeholder=" "
               required
@@ -284,7 +275,6 @@
               name="floating_email"
               id="floating_email"
               class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-              [value]="facultyProfile.province"
               formControlName="province"
               placeholder=" "
               required
@@ -310,7 +300,6 @@
               name="floating_email"
               id="floating_email"
               class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-              [value]="facultyProfile.city"
               formControlName="city"
               placeholder=" "
               required
@@ -335,7 +324,6 @@
               name="floating_email"
               id="floating_email"
               class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-              [value]="facultyProfile.barangay"
               formControlName="barangay"
               placeholder=" "
               required
@@ -364,7 +352,6 @@
             name="floating_email"
             id="floating_email"
             class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-            [value]="facultyProfile.sex"
             formControlName="sex"
             placeholder=" "
             required
@@ -391,7 +378,6 @@
             name="floating_email"
             id="floating_email"
             class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-            [value]="facultyProfile.language"
             formControlName="language"
             placeholder=" "
             required
@@ -419,7 +405,6 @@
             name="floating_email"
             id="floating_email"
             class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-            [value]="facultyProfile.citizenship"
             formControlName="citizenship"
             placeholder=" "
             required
@@ -447,7 +432,6 @@
             name="floating_email"
             id="floating_email"
             class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-            [value]="facultyProfile.age"
             formControlName="age"
             placeholder=" "
             required
@@ -474,7 +458,6 @@
             name="floating_email"
             id="floating_email"
             class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-            [value]="facultyProfile.civil_status"
             formControlName="civil_status"
             placeholder=" "
             required
@@ -506,6 +489,7 @@
         />
       </form>
     </div>
+    <!-- Password -->
     <div
       class="bg-white rounded-[15px] p-4 laptop:w-[220px] desktop:min-w-[320px]"
     >

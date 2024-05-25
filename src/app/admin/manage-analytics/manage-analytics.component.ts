@@ -22,6 +22,7 @@ import {
 import { CommonModule, NgFor } from '@angular/common';
 import { BarChartComponent } from '../../components/charts/bar-chart/bar-chart.component';
 import { ScatterPlotComponent } from '../../components/charts/scatter-plot/scatter-plot.component';
+import { selectAllProfile } from '../../state/faculty-state/faculty-state.selector';
 
 @Component({
     selector: 'app-manage-analytics',
@@ -41,7 +42,7 @@ export class ManageAnalyticsComponent implements OnInit{
   seminarToggle = true;
 
 
-
+  profile$ = this.store.select(selectAllProfile)
   facultyCount$ = this.store.select(selectCollegeFacultyCount);
   evaluationYearAverage$ = this.store.select(yearEvaluationAverage);
   unitFacultyAverage$ = this.store.select(facultyCourseUnitAverage);
@@ -61,6 +62,13 @@ export class ManageAnalyticsComponent implements OnInit{
   ngOnInit(): void {
     this.topLevel$.subscribe(next => {
       console.log(next);
+    })
+
+    this.educationalAttainmentTimeline$.subscribe(next => {
+      console.log(next)
+    })
+    this.certCountAverage$.subscribe(next => {
+      console.log(next)
     })
   }
 }

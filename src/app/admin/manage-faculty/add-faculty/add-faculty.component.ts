@@ -21,6 +21,7 @@ import { ProfileState } from '../../../state/faculty-state/faculty-state.reducer
 import { updatePassword } from '../../../state/faculty-state/faculty-state.actions';
 import { Observable } from 'rxjs';
 import { selectPasswordLoading } from '../../../state/faculty-state/faculty-state.selector';
+import { AddressesService } from '../../../services/addresses.service';
 
 @Component({
     selector: 'app-add-faculty',
@@ -51,14 +52,27 @@ export class AddFacultyComponent {
     public facultyService: FacultyRequestService,
     public store: Store,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    public address: AddressesService
   ) {
     this.passwordLoading$ = this.profileStore.select(selectPasswordLoading)
   }
 
 
+  regions: any = this.address.region
+  municipalities: any = this.address.municipalities
+  provinces: string[] = []
+  barangay: string[] = []
   goBack(){
     this.switchShowAdd.emit();
+  }
+
+  renderProvince(region: any | undefined) {
+    this.provinces =  this.regions[region.target.value]
+  }
+
+  renderBrngy(municipality: any | undefined) {
+    this.barangay = this.municipalities[municipality.target.value]
   }
 
   ngOnChanges(changes: SimpleChanges): void {
