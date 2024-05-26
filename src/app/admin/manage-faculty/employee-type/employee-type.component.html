@@ -1,20 +1,22 @@
 <input
-type="radio"
-id="{{ employment?.employmentType }}"
-name="{{ radioGroup }}"
-value="{{ employment?.empStatus }}"
-#role
-(click)="setEmployeeType(role.value)"
-class="hidden peer"
-[disabled]="disabled"
+  type="radio"
+  id="{{ employment?.employmentType }}"
+  name="{{ radioGroup }}"
+  value="{{ employment?.empStatus }}"
+  #role
+  (click)="setEmployeeType(role.value)"
+  class="hidden peer"
+  [disabled]="disabled"
 />
-<label
-for="{{ employment?.employmentType }}"
-class="text-blue"
->
-  <div class="flex justify-center items-center h-[50px] w-full shadow-main rounded-[15px] hover:scale-[101%] hover:duration-300 duration:300"
-            [ngClass]="{'bg-blue text-white': selectedEmployeeType == employment?.empStatus}"
+<label for="{{ employment?.employmentType }}" class="text-blue">
+  <div
+    class="flex justify-center items-center h-[50px] w-full shadow-main rounded-[15px] hover:scale-[101%] hover:duration-300 duration:300"
+    [ngClass]="{
+      'bg-blue text-white': selectedEmployeeType == employment?.empStatus
+    }"
   >
-    <p class="font-Poppins font-semibold text-[1.5rem]">{{ employment?.employmentType }}</p>
+    <p class="font-Poppins font-semibold text-[1.5rem]">
+      {{ employment?.employmentType }}
+    </p>
   </div>
 </label>

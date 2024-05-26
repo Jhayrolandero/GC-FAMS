@@ -238,7 +238,9 @@ export class AddFacultyComponent {
       // this.disabledBox = true;
       this.facultyInfo.patchValue({
         teaching_position: 'Instructor',
-        isAdmin: 0
+        isAdmin: 0,
+        employment_status: 0
+
       })
     }
   }
@@ -255,11 +257,13 @@ export class AddFacultyComponent {
 
     if (value === 'Dean' || value === 'Coordinator') {
       this.facultyInfo.patchValue({
-        isAdmin: 1
+        isAdmin: 1,
+        employment_status: 1
       });
     } else {
       this.facultyInfo.patchValue({
-        isAdmin: 0
+        isAdmin: 0,
+        employment_status: 0
       });
     }
   }

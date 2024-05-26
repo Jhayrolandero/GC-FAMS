@@ -16,6 +16,7 @@ import { FormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { selectCollegeFaculty } from '../../../state/dean-state/dean-state.selector';
 import { Profile } from '../../../services/Interfaces/profile';
+import { selectCollegeAbbrev, selectPrivilege } from '../../../state/faculty-state/faculty-state.selector';
 @Component({
   selector: 'app-faculty-section',
   standalone: true,
@@ -42,6 +43,9 @@ export class FacultySectionComponent {
   //I know there's ngrx already so no passing of data is needed, but this is  the only situation that merits the passing of a faculty edit data lol
   @Output() editDataEvent = new EventEmitter<Faculty>();
   facultyMembers$ = this.store.select(selectCollegeFaculty);
+  profileCollege$ = this.store.select(selectCollegeAbbrev)
+privilege$ = this.store.select(selectPrivilege);
+
   colleges: College[] = [];
   filteredArray: Profile[] = []
   searchQuery: string = ''

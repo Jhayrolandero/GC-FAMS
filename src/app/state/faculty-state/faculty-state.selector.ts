@@ -97,6 +97,17 @@ export const selectAllProfile = createSelector(
   selectProfileState,
   (state: ProfileState) => state.profile
 );
+
+export const selectCollegeAbbrev = createSelector(
+  selectProfileState,
+  (state: ProfileState) => state.profile?.college_abbrev
+);
+
+export const selectPrivilege = createSelector(
+  selectProfileState,
+  (state: ProfileState) => state.profile?.teaching_position
+);
+
 export const selectPasswordLoading = createSelector(
   selectProfileState,
   (state: ProfileState) => state.passwordLoading
