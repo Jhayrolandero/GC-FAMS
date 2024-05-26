@@ -5,5 +5,6 @@ export interface IndustryExperience {
     experience_title: string,
     experience_details: string,
     experience_from: Date,
-    experience_to?: Date
+    experience_to?: Date,
+    isSelected: boolean
 }
