@@ -216,10 +216,11 @@ export class CommunityExtensionsComponent {
   ) {
 
     this.attendeeLoading$ = this.attendeeStore.pipe(select(AttendeeSelector.attendeeLoadingSelector))
-    this.commexs$ = merge(
-      this.commexFacultyStore.pipe(select(CommexsSelector.parsedCommexSelector)),
-      this.commexCollegeStore.pipe(select(CommexsSelector.parsedCollegeCommexSelector))
-    )
+    // this.commexs$ = merge(
+    //   this.commexFacultyStore.pipe(select(CommexsSelector.parsedCommexSelector)),
+    //   this.commexCollegeStore.pipe(select(CommexsSelector.parsedCollegeCommexSelector))
+    // )
+    this.commexs$ = this.commexFacultyStore.pipe(select(CommexsSelector.parsedCommexSelector)),
     this.isLoading$ = this.commexFacultyStore.pipe(select(CommexsSelector.isLoadingSelector))
     this.latestCommex$ = this.commexFacultyStore.pipe(select(CommexsSelector.latestCommexSelector))
     this.profileCollege$ = this.profileStore.pipe(select(ProfileSelectors.selectAllProfile))
@@ -245,7 +246,7 @@ export class CommunityExtensionsComponent {
   fetchAttendeeNumber$ = (id: number) => {
     this.attendeeStore.dispatch(AttendeeActions.getAttendeeNumber({ id: id }))
   }
-  
+
   ngOnInit(): void {
 
     this.attendeeNumberFetch()
@@ -348,7 +349,7 @@ export class CommunityExtensionsComponent {
       this.switch = 'college'
 
       this.profileCollege$.pipe(first()).subscribe(
-        res => {
+        () => {
           this.commexCollegeStore.dispatch(CommexActions.getCollegeCommex({ uri: `getcommex/?t=college` }))
         }
       )

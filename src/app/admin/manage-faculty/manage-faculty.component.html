@@ -1,27 +1,27 @@
-<div
-  *ngIf="!showAdd"
-  class="shadow-main w-full  flex flex-col p-5 gap-3"
->
+<div *ngIf="!showAdd" class="shadow-main w-full flex flex-col p-5 gap-3">
   <div
-    class="bg-white shadow-main bg-opacity-70 w-full rounded-[15px] flex flex-col tablet:flex-row tablet:justify-between items-center px-5"
+    class="bg-white shadow-main bg-opacity-70 w-full py-2 rounded-[15px] flex flex-col tablet:flex-row tablet:justify-between items-center px-5"
   >
-    <h1 class="font-Poppins font-semibold text-[2.5rem] py-2 text-blue">
+    <h1
+      class="font-Poppins font-semibold text-[1.75rem] tablet:text-[2.5rem] py-2 text-blue"
+    >
       Faculty Management
     </h1>
     <button
-    (click)="switchShow()"
-    class="bg-gradient-to-r from-blue to-greenBar text-white font-Poppins font-semibold w-[125px] h-[40px] rounded-full shadow-main hover:scale-[102%] hover:duration-300 duration-300"
+      (click)="switchShow()"
+      class="bg-gradient-to-r from-blue to-greenBar text-white font-Poppins font-semibold w-[125px] h-[40px] rounded-full shadow-main hover:scale-[102%] hover:duration-300 duration-300"
     >
       +Add
     </button>
   </div>
 
   <app-faculty-section
-  (editDataEvent)="editFaculty($event)"
+    (editDataEvent)="editFaculty($event)"
   ></app-faculty-section>
 </div>
 
-<app-add-faculty 
-*ngIf="showAdd"
-(switchShowAdd)="switchShow()"
-[editData]="editData"></app-add-faculty>
+<app-add-faculty
+  *ngIf="showAdd"
+  (switchShowAdd)="switchShow()"
+  [editData]="editData"
+></app-add-faculty>
