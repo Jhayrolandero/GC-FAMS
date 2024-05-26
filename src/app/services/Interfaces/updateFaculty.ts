@@ -13,5 +13,6 @@ export interface UpdateFaculty {
   phone_number : string
   province : string
   region : string
-  sex : string
+  sex : string;
+  street: string
 }

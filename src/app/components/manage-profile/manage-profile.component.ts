@@ -16,6 +16,7 @@ import { UpdateFaculty } from '../../services/Interfaces/updateFaculty';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { FormComponent } from '../form/form.component';
+import { AddressesService } from '../../services/addresses.service';
 @Component({
   selector: 'app-manage-profile',
   standalone: true,
@@ -47,7 +48,8 @@ export class ManageProfileComponent {
   constructor(
     private profileStore: Store<{ profile: ProfileState }>,
     public dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    public address: AddressesService
   ) {
 
     this.passwordLoading$ = this.profileStore.select(selectPasswordLoading)
@@ -72,11 +74,31 @@ export class ManageProfileComponent {
             language: res!.language,
             city: res!.city,
             barangay: res!.barangay,
+            street: res!.street,
+
           })
 
           this.oldPassword = res!.password
+
+          this.provinces =  this.regions[res!.region]
+          this.barangay = this.municipalities[res!.city]
+
         }
       })
+  }
+
+  regions: any = this.address.region
+  municipalities: any = this.address.municipalities
+  provinces: string[] = []
+  barangay: string[] = []
+
+
+  renderProvince(region: any | undefined) {
+    this.provinces =  this.regions[region.target.value]
+  }
+
+  renderBrngy(municipality: any | undefined) {
+    this.barangay = this.municipalities[municipality.target.value]
   }
 
   facultyProfile$ = this.profileStore.select(selectAllProfile);
@@ -124,7 +146,6 @@ export class ManageProfileComponent {
     ]),
     email: new FormControl({value: "", disabled:true}, [
       Validators.email],
-
     ),
     phone_number: new FormControl('', [
       Validators.required,
@@ -150,6 +171,9 @@ export class ManageProfileComponent {
       Validators.pattern('[a-zA-Z ]*')
     ]),
     barangay: new FormControl('', [
+      Validators.required,
+    ]),
+    street: new FormControl('', [
       Validators.required,
     ]),
   });

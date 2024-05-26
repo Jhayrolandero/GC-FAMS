@@ -98,9 +98,13 @@ export class AddFacultyComponent {
         language: this.editData?.language,
         city: this.editData?.city,
         barangay: this.editData?.barangay,
+        street: this.editData?.street,
         isAdmin: this.editData?.isAdmin,
         password: this.editData?.password
       })
+
+      this.provinces =  this.regions[this.editData!.region]
+      this.barangay = this.municipalities[this.editData!.city]
 
       this.facultyInfo.get('email')?.disable();
       this.setCollege(this.editData!.college_ID)
@@ -170,7 +174,6 @@ export class AddFacultyComponent {
     email: new FormControl('', [
       Validators.required,
       Validators.email],
-
     ),
     employment_status: new FormControl<number | null>(null, [
       Validators.required,
@@ -199,6 +202,9 @@ export class AddFacultyComponent {
       Validators.pattern('[a-zA-Z ]*')
     ]),
     barangay: new FormControl('', [
+      Validators.required,
+    ]),
+    street: new FormControl('', [
       Validators.required,
     ]),
     profile_image: new FormControl<File | null>(null),

@@ -184,5 +184,6 @@ function updateProfile(profile: Profile, newProfile: UpdateFaculty) {
       province: newProfile.province,
       region: newProfile.region,
       sex: newProfile.sex,
+      street: newProfile.street
     };
 }

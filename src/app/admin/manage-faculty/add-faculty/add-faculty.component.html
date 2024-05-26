@@ -113,9 +113,9 @@
                 type="text"
                 placeholder="Add Certification Type"
                 formControlName="teaching_level"
-                class="w-full h-[50px] border-2 px-5 border-none font-Roboto font-regular text-[1.1rem] rounded-[15px] shadow-main text-black py-1 font-Poppins font-semibold text-[1.5rem] text-blue"
+                class="w-full h-[50px] border-2 px-5 border-none font-Roboto font-regular rounded-[15px] shadow-main text-black py-1 font-Poppins font-semibold text-[1.5rem] text-blue"
               >
-                <option>Teacher 1</option>
+                <option selected>Teacher 1</option>
                 <option>Teacher 2</option>
                 <option>Teacher 3</option>
                 <option>Teacher 4</option>
@@ -280,7 +280,7 @@
             }
           </div>
         </div>
-        <div class="grid grid-cols-5 gap-2 auto-cols-max auto-rows-max">
+        <div class="grid grid-cols-5 gap-2 auto-cols-max auto-rows-max mt-4">
           <div
             class="relative z-0 w-full mb-5 group col-span-5 tablet:col-span-2"
           >
@@ -446,25 +446,15 @@
                 formControlName="region"
                 (change)="renderProvince($event)"
                 id="underline_select"
-                class="block py-2.5 px-0 w-full text-sm text-blue bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
+                class="block py-2.5 px-0 w-full text-sm text-blue` bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
               >
                 @for (region of regions | keyvalue; track $index) {
                 <option [value]="region.key">{{ region.key }}</option>
                 }
               </select>
-              <!-- <input
-                type="text"
-                name="floating_email"
-                id="floating_email"
-                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                formControlName="region"
-                placeholder=" "
-                required
-                />
-                > -->
               <label
                 for="floating_email"
-                class="peer-focus:font-medium absolute text-sm text-blue dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                class="peer-focus:font-medium absolute text-sm text-blue` dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
                 >Region</label
               >
               <app-forms-error
@@ -481,25 +471,15 @@
               <select
                 id="underline_select"
                 formControlName="province"
-                class="block py-2.5 px-0 w-full text-sm text-blue bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
+                class="block py-2.5 px-0 w-full text-sm text-blue` bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
               >
                 @for (province of provinces; track $index) {
                 <option [value]="province">{{ province }}</option>
                 }
               </select>
-
-              <!-- <input
-                type="text"
-                name="floating_email"
-                id="floating_email"
-                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                placeholder=" "
-                required
-              />
-            -->
               <label
                 for="floating_email"
-                class="peer-focus:font-medium absolute text-sm text-blue dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                class="peer-focus:font-medium absolute text-sm text-blue` dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
                 >Province</label
               >
               <app-forms-error
@@ -516,7 +496,7 @@
                 (change)="renderBrngy($event)"
                 id="underline_select"
                 formControlName="city"
-                class="block py-2.5 px-0 w-full text-sm text-blue bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
+                class="block py-2.5 px-0 w-full text-sm text-blue` bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
               >
                 @for (municipality of municipalities | keyvalue; track $index) {
                 <option [value]="municipality.key">
@@ -524,18 +504,9 @@
                 </option>
                 }
               </select>
-              <!-- <input
-                type="text"
-                name="floating_email"
-                id="floating_email"
-                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                placeholder=" "
-                required
-              />
-            -->
               <label
                 for="floating_email"
-                class="peer-focus:font-medium absolute text-sm text-blue dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                class="peer-focus:font-medium absolute text-sm text-blue` dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
                 >City</label
               >
               <app-forms-error
@@ -550,25 +521,15 @@
               <select
                 id="underline_select"
                 formControlName="barangay"
-                class="block py-2.5 px-0 w-full text-sm text-blue bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
+                class="block py-2.5 px-0 w-full text-sm text-blue` bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
               >
                 @for (brngy of barangay; track $index) {
                 <option [value]="brngy">{{ brngy }}</option>
                 }
               </select>
-
-              <!-- <input
-                type="text"
-                name="floating_email"
-                id="floating_email"
-                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                placeholder=" "
-                required
-              />
-            -->
               <label
                 for="floating_email"
-                class="peer-focus:font-medium absolute text-sm text-blue dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                class="peer-focus:font-medium absolute text-sm text-blue` dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
                 >Barangay</label
               >
               <app-forms-error
@@ -580,31 +541,46 @@
                 [formControlRequired]="formControl('barangay')!.errors?.['required']"
               ></app-forms-error>
             </div>
+
+            <div class="relative z-0 w-full mb-5 group flex-1">
+              <input
+                type="text"
+                name="floating_email"
+                id="floating_email"
+                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                formControlName="street"
+                placeholder=" "
+                required
+              />
+              <label
+                for="floating_email"
+                class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                >Street</label
+              >
+              <app-forms-error
+                *ngIf="
+                  formControl('street')?.invalid &&
+                  (formControl('street')?.dirty ||
+                    formControl('street')?.touched)
+                "
+                [formControlRequired]="formControl('street')!.errors?.['required']"
+              ></app-forms-error>
+            </div>
           </div>
           <div
             class="relative z-0 w-full mb-5 group col-span-5 tablet:col-span-1"
           >
             <select
               id="underline_select"
-              class="block py-2.5 px-0 w-full text-sm text-blue bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
+              class="block py-2.5 px-0 w-full text-sm text-blue` bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
               formControlName="sex"
             >
               <option value="Male">Male</option>
               <option value="Female">Female</option>
             </select>
-
-            <!-- <input
-              type="text"
-              name="floating_email"
-              id="floating_email"
-              class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-              placeholder=" "
-              required
-            />
-          -->
             <label
               for="floating_email"
-              class="peer-focus:font-medium absolute text-sm text-blue dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+              class="peer-focus:font-medium absolute text-sm text-blue` dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
               >Sex</label
             >
             <app-forms-error
@@ -621,7 +597,7 @@
           >
             <select
               id="underline_select"
-              class="block py-2.5 px-0 w-full text-sm text-blue bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
+              class="block py-2.5 px-0 w-full text-sm text-blue` bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
               formControlName="language"
             >
               <option value="English">English</option>
@@ -632,19 +608,9 @@
               <option value="Korean">Korean</option>
               <option value="Other">Other</option>
             </select>
-
-            <!-- <input
-              type="text"
-              name="floating_email"
-              id="floating_email"
-              class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-              placeholder=" "
-              required
-            />
-          -->
             <label
               for="floating_email"
-              class="peer-focus:font-medium absolute text-sm text-blue dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+              class="peer-focus:font-medium absolute text-sm text-blue` dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
               >Language</label
             >
             <app-forms-error
@@ -662,7 +628,7 @@
           >
             <select
               id="underline_select"
-              class="block py-2.5 px-0 w-full text-sm text-blue bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
+              class="block py-2.5 px-0 w-full text-sm text-blue` bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
               formControlName="citizenship"
             >
               <option value="American">American</option>
@@ -674,18 +640,9 @@
               <option value="Taiwanese">Taiwanese</option>
               <option value="Other">Other</option>
             </select>
-            <!-- <input
-              type="text"
-              name="floating_email"
-              id="floating_email"
-              class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-              placeholder=" "
-              required
-            />
-          -->
             <label
               for="floating_email"
-              class="peer-focus:font-medium absolute text-sm text-blue dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+              class="peer-focus:font-medium absolute text-sm text-blue` dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
               >Citizenship</label
             >
             <app-forms-error
@@ -712,7 +669,7 @@
             />
             <label
               for="floating_email"
-              class="peer-focus:font-medium absolute text-sm text-blue dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+              class="peer-focus:font-medium absolute text-sm text-blue` dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
               >Age</label
             >
             <app-forms-error
@@ -729,7 +686,7 @@
           >
             <select
               id="underline_select"
-              class="block py-2.5 px-0 w-full text-sm text-blue bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
+              class="block py-2.5 px-0 w-full text-sm text-blue` bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
               formControlName="civil_status"
             >
               <option value="Single">Single</option>
@@ -737,19 +694,9 @@
               <option value="Widowed">Widowed</option>
               <option value="Seperated">Seperated</option>
             </select>
-
-            <!-- <input
-              type="text"
-              name="floating_email"
-              id="floating_email"
-              class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-              placeholder=" "
-              required
-            />
-          -->
             <label
               for="floating_email"
-              class="peer-focus:font-medium absolute text-sm text-blue dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+              class="peer-focus:font-medium absolute text-sm text-blue` dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
               >Civil Status</label
             >
             <app-forms-error
@@ -889,7 +836,7 @@
           </div> -->
 
           <!-- Submit -->
-          <div class="w-full flex justify-end gap-4">
+          <div class="col-span-5 justify-end gap-4">
             <input
               [ngClass]="{
                 'bg-red-700 cursor-not-allowed': facultyInfo.invalid,
