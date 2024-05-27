@@ -23,6 +23,7 @@ export interface Profile {
     language: string,
     city: string,
     barangay: string,
+    street: string,
     profile_image: string,
     cover_image: string,
     password: string

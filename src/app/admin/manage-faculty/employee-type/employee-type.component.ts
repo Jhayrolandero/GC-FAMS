@@ -19,4 +19,5 @@ export class EmployeeTypeComponent {
   setEmployeeType(value: string) {
     this.setRole.emit(value);
   }
+
 }

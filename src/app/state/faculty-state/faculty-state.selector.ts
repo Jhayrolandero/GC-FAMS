@@ -53,8 +53,8 @@ export const selectAttainmentTimeline = createSelector(
   (state: ProfileState) => {
       const floorYear = currentYear - 14;
       let attainmentTimeline = [
-          Array.from({ length: 15 }, () => 0), 
-          Array.from({ length: 15 }, () => 0), 
+          Array.from({ length: 15 }, () => 0),
+          Array.from({ length: 15 }, () => 0),
           Array.from({ length: 15 }, () => 0)
       ];
 
@@ -86,7 +86,7 @@ export const selectAttainmentTimeline = createSelector(
               }
           })
       })
-      
+
 
       return attainmentTimeline;
   }
@@ -97,6 +97,17 @@ export const selectAllProfile = createSelector(
   selectProfileState,
   (state: ProfileState) => state.profile
 );
+
+export const selectCollegeAbbrev = createSelector(
+  selectProfileState,
+  (state: ProfileState) => state.profile?.college_abbrev
+);
+
+export const selectPrivilege = createSelector(
+  selectProfileState,
+  (state: ProfileState) => state.profile?.teaching_position
+);
+
 export const selectPasswordLoading = createSelector(
   selectProfileState,
   (state: ProfileState) => state.passwordLoading
@@ -200,6 +211,11 @@ export const selectAllEvaluation = createSelector(
   (state: ProfileState) => state.evals
 );
 
+export const selectSortedEvals = createSelector(
+  selectProfileState,
+  (state: ProfileState) => sortByEvaluationYear(state.evals)
+)
+
 export const selectFacultyEvalAverage = createSelector(
   selectProfileState,
   (state: ProfileState) => {
@@ -236,3 +252,11 @@ export const selectCommex = createSelector(
   selectProfileState,
   (state: ProfileState) => state.commex
 );
+
+function sortByEvaluationYear(evals : Evaluation[]) {
+
+  const evalsCopy = [...evals]
+  return evalsCopy.sort((a, b) => {
+      return a.evaluation_year - b.evaluation_year;
+  });
+}

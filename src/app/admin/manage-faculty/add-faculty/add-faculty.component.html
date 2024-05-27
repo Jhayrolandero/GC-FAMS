@@ -113,9 +113,9 @@
                 type="text"
                 placeholder="Add Certification Type"
                 formControlName="teaching_level"
-                class="w-full h-[50px] border-2 px-5 border-none font-Roboto font-regular text-[1.1rem] rounded-[15px] shadow-main text-black py-1 font-Poppins font-semibold text-[1.5rem] text-blue"
+                class="w-full h-[50px] border-2 px-5 border-none font-Roboto font-regular rounded-[15px] shadow-main text-black py-1 font-Poppins font-semibold text-[1.5rem] text-blue"
               >
-                <option>Teacher 1</option>
+                <option selected>Teacher 1</option>
                 <option>Teacher 2</option>
                 <option>Teacher 3</option>
                 <option>Teacher 4</option>
@@ -280,8 +280,437 @@
             }
           </div>
         </div>
-        <div class="flex flex-col gap-4">
+        <div class="grid grid-cols-5 gap-2 auto-cols-max auto-rows-max mt-4">
           <div
+            class="relative z-0 w-full mb-5 group col-span-5 tablet:col-span-2"
+          >
+            <input
+              type="email"
+              name="floating_email"
+              id="floating_email"
+              class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+              formControlName="email"
+            />
+            <label
+              for="floating_email"
+              class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+              >Email address</label
+            >
+            <app-forms-error
+              *ngIf="
+                formControl('email')?.invalid &&
+                (formControl('email')?.dirty || formControl('email')?.touched)
+              "
+              [formControlRequired]="formControl('email')!.errors?.['required']"
+              [formControlEmail]="formControl('email')!.errors?.['email']"
+            ></app-forms-error>
+          </div>
+          <div
+            class="relative z-0 w-full mb-5 group col-span-5 tablet:col-span-2"
+          >
+            <input
+              type="text"
+              name="floating_email"
+              id="floating_email"
+              class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+              formControlName="phone_number"
+              placeholder=" "
+              required
+            />
+            <label
+              for="floating_email"
+              class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+              >Phone Number</label
+            >
+            <app-forms-error
+              *ngIf="
+                formControl('phone_number')?.invalid &&
+                (formControl('phone_number')?.dirty ||
+                  formControl('phone_number')?.touched)
+              "
+              [formControlRequired]="formControl('phone_number')!.errors?.['required']"
+              [formControlNumber]="formControl('phone_number')!.errors?.['pattern']"
+            ></app-forms-error>
+          </div>
+          <div
+            class="relative z-0 w-full mb-5 group col-span-5 tablet:col-span-1"
+          >
+            <input
+              type="date"
+              name="floating_email"
+              id="floating_email"
+              class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+              formControlName="birthdate"
+              placeholder=" "
+              required
+            />
+            <label
+              for="floating_email"
+              class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+              >Birthdate</label
+            >
+            <app-forms-error
+              *ngIf="
+                formControl('birthdate')?.invalid &&
+                (formControl('birthdate')?.dirty ||
+                  formControl('birthdate')?.touched)
+              "
+              [formControlRequired]="formControl('birthdate')!.errors?.['required']"
+            ></app-forms-error>
+          </div>
+          <div class="col-span-5 flex flex-col tablet:flex-row gap-2 flex-wrap">
+            <div class="relative z-0 w-full mb-5 group flex-1">
+              <input
+                type="text"
+                name="floating_email"
+                id="floating_email"
+                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                formControlName="last_name"
+                placeholder=" "
+                required
+              />
+              <label
+                for="floating_email"
+                class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                >Lastname</label
+              >
+              <app-forms-error
+                *ngIf="
+                  formControl('last_name')!.invalid &&
+                  (formControl('last_name')!.dirty ||
+                    formControl('last_name')!.touched)
+                "
+                [formControlRequired]="formControl('last_name')!.errors?.['required']"
+                [formControlPattern]="formControl('last_name')!.errors?.['pattern']"
+              ></app-forms-error>
+            </div>
+            <div class="relative z-0 w-full mb-5 group flex-1">
+              <input
+                type="text"
+                name="floating_email"
+                id="floating_email"
+                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                formControlName="first_name"
+                placeholder=" "
+                required
+              />
+              <label
+                for="floating_email"
+                class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                >Firstname</label
+              >
+              <app-forms-error
+                *ngIf="
+                  formControl('first_name')?.invalid &&
+                  (formControl('first_name')?.dirty ||
+                    formControl('first_name')?.touched)
+                "
+                [formControlRequired]="formControl('first_name')!.errors?.['required']"
+                [formControlPattern]="formControl('first_name')!.errors?.['pattern']"
+              ></app-forms-error>
+            </div>
+            <div class="relative z-0 w-full mb-5 group flex-1">
+              <input
+                type="text"
+                name="floating_email"
+                id="floating_email"
+                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                formControlName="middle_name"
+                placeholder=" "
+              />
+              <label
+                for="floating_email"
+                class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                >Middlename</label
+              >
+            </div>
+            <div class="relative z-0 w-full mb-5 group flex-1">
+              <input
+                type="text"
+                name="floating_email"
+                id="floating_email"
+                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                formControlName="ext_name"
+                placeholder=" "
+              />
+              <label
+                for="floating_email"
+                class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                >Ext. name</label
+              >
+            </div>
+          </div>
+          <div class="col-span-5 flex flex-col tablet:flex-row gap-2 flex-wrap">
+            <div class="relative z-0 w-full mb-5 group flex-1">
+              <select
+                formControlName="region"
+                (change)="renderProvince($event)"
+                id="underline_select"
+                class="block py-2.5 px-0 w-full text-sm text-blue` bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
+              >
+                @for (region of regions | keyvalue; track $index) {
+                <option [value]="region.key">{{ region.key }}</option>
+                }
+              </select>
+              <label
+                for="floating_email"
+                class="peer-focus:font-medium absolute text-sm text-blue` dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                >Region</label
+              >
+              <app-forms-error
+                *ngIf="
+                  formControl('region')?.invalid &&
+                  (formControl('region')?.dirty ||
+                    formControl('region')?.touched)
+                "
+                [formControlRequired]="formControl('region')!.errors?.['required']"
+              ></app-forms-error>
+            </div>
+
+            <div class="relative z-0 w-full mb-5 group flex-1">
+              <select
+                id="underline_select"
+                formControlName="province"
+                class="block py-2.5 px-0 w-full text-sm text-blue` bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
+              >
+                @for (province of provinces; track $index) {
+                <option [value]="province">{{ province }}</option>
+                }
+              </select>
+              <label
+                for="floating_email"
+                class="peer-focus:font-medium absolute text-sm text-blue` dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                >Province</label
+              >
+              <app-forms-error
+                *ngIf="
+                  formControl('province')?.invalid &&
+                  (formControl('province')?.dirty ||
+                    formControl('province')?.touched)
+                "
+                [formControlRequired]="formControl('province')!.errors?.['required']"
+              ></app-forms-error>
+            </div>
+            <div class="relative z-0 w-full mb-5 group flex-1">
+              <select
+                (change)="renderBrngy($event)"
+                id="underline_select"
+                formControlName="city"
+                class="block py-2.5 px-0 w-full text-sm text-blue` bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
+              >
+                @for (municipality of municipalities | keyvalue; track $index) {
+                <option [value]="municipality.key">
+                  {{ municipality.key }}
+                </option>
+                }
+              </select>
+              <label
+                for="floating_email"
+                class="peer-focus:font-medium absolute text-sm text-blue` dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                >City</label
+              >
+              <app-forms-error
+                *ngIf="
+                  formControl('city')?.invalid &&
+                  (formControl('city')?.dirty || formControl('city')?.touched)
+                "
+                [formControlRequired]="formControl('city')!.errors?.['required']"
+              ></app-forms-error>
+            </div>
+            <div class="relative z-0 w-full mb-5 group flex-1">
+              <select
+                id="underline_select"
+                formControlName="barangay"
+                class="block py-2.5 px-0 w-full text-sm text-blue` bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
+              >
+                @for (brngy of barangay; track $index) {
+                <option [value]="brngy">{{ brngy }}</option>
+                }
+              </select>
+              <label
+                for="floating_email"
+                class="peer-focus:font-medium absolute text-sm text-blue` dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                >Barangay</label
+              >
+              <app-forms-error
+                *ngIf="
+                  formControl('barangay')?.invalid &&
+                  (formControl('barangay')?.dirty ||
+                    formControl('barangay')?.touched)
+                "
+                [formControlRequired]="formControl('barangay')!.errors?.['required']"
+              ></app-forms-error>
+            </div>
+
+            <div class="relative z-0 w-full mb-5 group flex-1">
+              <input
+                type="text"
+                name="floating_email"
+                id="floating_email"
+                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                formControlName="street"
+                placeholder=" "
+                required
+              />
+              <label
+                for="floating_email"
+                class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                >Street</label
+              >
+              <app-forms-error
+                *ngIf="
+                  formControl('street')?.invalid &&
+                  (formControl('street')?.dirty ||
+                    formControl('street')?.touched)
+                "
+                [formControlRequired]="formControl('street')!.errors?.['required']"
+              ></app-forms-error>
+            </div>
+          </div>
+          <div
+            class="relative z-0 w-full mb-5 group col-span-5 tablet:col-span-1"
+          >
+            <select
+              id="underline_select"
+              class="block py-2.5 px-0 w-full text-sm text-blue` bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
+              formControlName="sex"
+            >
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
+            <label
+              for="floating_email"
+              class="peer-focus:font-medium absolute text-sm text-blue` dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+              >Sex</label
+            >
+            <app-forms-error
+              *ngIf="
+                formControl('sex')?.invalid &&
+                (formControl('sex')?.dirty || formControl('sex')?.touched)
+              "
+              [formControlRequired]="formControl('sex')!.errors?.['required']"
+              [formControlPattern]="formControl('sex')!.errors?.['pattern']"
+            ></app-forms-error>
+          </div>
+          <div
+            class="relative z-0 w-full mb-5 group col-span-5 tablet:col-span-1"
+          >
+            <select
+              id="underline_select"
+              class="block py-2.5 px-0 w-full text-sm text-blue` bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
+              formControlName="language"
+            >
+              <option value="English">English</option>
+              <option value="Mandarin">Mandarin</option>
+              <option value="Tagalog">Tagalog</option>
+              <option value="Hindi">Hindi</option>
+              <option value="Nihongo">Nihongo</option>
+              <option value="Korean">Korean</option>
+              <option value="Other">Other</option>
+            </select>
+            <label
+              for="floating_email"
+              class="peer-focus:font-medium absolute text-sm text-blue` dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+              >Language</label
+            >
+            <app-forms-error
+              *ngIf="
+                formControl('language')?.invalid &&
+                (formControl('language')?.dirty ||
+                  formControl('language')?.touched)
+              "
+              [formControlRequired]="formControl('language')!.errors?.['required']"
+              [formControlPattern]="formControl('language')!.errors?.['pattern']"
+            ></app-forms-error>
+          </div>
+          <div
+            class="relative z-0 w-full mb-5 group col-span-5 tablet:col-span-1"
+          >
+            <select
+              id="underline_select"
+              class="block py-2.5 px-0 w-full text-sm text-blue` bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
+              formControlName="citizenship"
+            >
+              <option value="American">American</option>
+              <option value="Chinese">Chinese</option>
+              <option value="Filipino">Filipino</option>
+              <option value="Indian">Indian</option>
+              <option value="Japanese">Japanese</option>
+              <option value="Korean">Korean</option>
+              <option value="Taiwanese">Taiwanese</option>
+              <option value="Other">Other</option>
+            </select>
+            <label
+              for="floating_email"
+              class="peer-focus:font-medium absolute text-sm text-blue` dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+              >Citizenship</label
+            >
+            <app-forms-error
+              *ngIf="
+                formControl('citizenship')?.invalid &&
+                (formControl('citizenship')?.dirty ||
+                  formControl('citizenship')?.touched)
+              "
+              [formControlRequired]="formControl('citizenship')!.errors?.['required']"
+              [formControlPattern]="formControl('citizenship')!.errors?.['pattern']"
+            ></app-forms-error>
+          </div>
+          <div
+            class="relative z-0 w-full mb-5 group col-span-5 tablet:col-span-1"
+          >
+            <input
+              type="text"
+              name="floating_email"
+              id="floating_email"
+              class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-blue dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+              formControlName="age"
+              placeholder=" "
+              required
+            />
+            <label
+              for="floating_email"
+              class="peer-focus:font-medium absolute text-sm text-blue` dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+              >Age</label
+            >
+            <app-forms-error
+              *ngIf="
+                formControl('age')?.invalid &&
+                (formControl('age')?.dirty || formControl('age')?.touched)
+              "
+              [formControlRequired]="formControl('age')!.errors?.['required']"
+              [formControlNumber]="formControl('age')!.errors?.['pattern']"
+            ></app-forms-error>
+          </div>
+          <div
+            class="relative z-0 w-full mb-5 group col-span-5 tablet:col-span-1"
+          >
+            <select
+              id="underline_select"
+              class="block py-2.5 px-0 w-full text-sm text-blue` bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
+              formControlName="civil_status"
+            >
+              <option value="Single">Single</option>
+              <option value="Married">Married</option>
+              <option value="Widowed">Widowed</option>
+              <option value="Seperated">Seperated</option>
+            </select>
+            <label
+              for="floating_email"
+              class="peer-focus:font-medium absolute text-sm text-blue` dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+              >Civil Status</label
+            >
+            <app-forms-error
+              *ngIf="
+                formControl('civil_status')?.invalid &&
+                (formControl('civil_status')?.dirty ||
+                  formControl('civil_status')?.touched)
+              "
+              [formControlRequired]="formControl('civil_status')!.errors?.['required']"
+              [formControlPattern]="formControl('civil_status')!.errors?.['pattern']"
+            ></app-forms-error>
+          </div>
+
+          <!-- <div
             class="flex flex-col tablet:flex-row justify-center items-start gap-4"
           >
             <div class="flex flex-col flex-1" *ngFor="let col of column1">
@@ -404,8 +833,10 @@
                 [formControlNumber]="col == 'age' ? formControl(col)!.errors?.['pattern'] : null"
               ></app-forms-error>
             </div>
-          </div>
-          <div class="w-full flex justify-end gap-4">
+          </div> -->
+
+          <!-- Submit -->
+          <div class="col-span-5 justify-end gap-4">
             <input
               [ngClass]="{
                 'bg-red-700 cursor-not-allowed': facultyInfo.invalid,

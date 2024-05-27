@@ -4,7 +4,9 @@
   <div
     class="bg-white shadow-main w-full rounded-[15px] flex justify-between items-center px-5"
   >
-    <h1 class="font-Poppins font-semibold text-[2.5rem] py-2">
+    <h1
+      class="font-Poppins font-semibold text-[1.75rem] text-center tablet:text-[2.5rem] py-2"
+    >
       Program Analytics
     </h1>
   </div>
@@ -49,8 +51,11 @@
         class="text-greenBar text-[5rem] font-Poppins font-bold leading-[90%]"
         [textContent]="evaluationYearAverage$ | async | number : '1.1-1'"
       ></p>
-      <p class="text-center text-blue text-[1.2rem] font-Poppins font-semibold">
-        CCS Average Faculty<br />Evaluation Score
+      <p
+        class="text-center text-blue text-[1.2rem] font-Poppins font-semibold"
+        *ngIf="profile$ | async as profile"
+      >
+        {{ profile.college_abbrev }} Average Faculty<br />Evaluation Score
       </p>
     </div>
     <div
@@ -318,243 +323,5 @@
         [showLegend]="false"
       ></app-bar-chart>
     </div>
-  </div>
-
-  <div class="w-full flex flex-col laptop:flex-row gap-3">
-    <div class="w-full laptop:w-[50%] flex flex-col gap-3">
-      <!-- <div
-        *ngIf="topSeminar$ | async as seminar"
-        class="bg-white shadow-main rounded-[15px] p-5 pt-1"
-      >
-        <p class="text-blue font-bold text-[2rem] my-2">
-          Top Seminars Completed
-        </p>
-        <app-bar-chart
-          [data]="[
-            seminar[0][1],
-            seminar[1][1],
-            seminar[2][1],
-            seminar[3][1],
-            seminar[4][1]
-          ]"
-          [labels]="[
-            seminar[0][0],
-            seminar[1][0],
-            seminar[2][0],
-            seminar[3][0],
-            seminar[4][0]
-          ]"
-          [axis]="'y'"
-          [bgColor]="'rgb(30, 114, 66)'"
-          [showLegend]="false"
-        ></app-bar-chart>
-      </div>
-
-      <div
-        *ngIf="teachingLength$ | async as teaching"
-        class="w-full bg-white rounded-[15px] shadow-main p-5 pt-1"
-      >
-        <p class="text-blue font-bold text-[2rem] my-2">
-          Teaching Length & Certification Count per Faculty Member
-        </p>
-        <app-bar-chart
-          [data]="teaching[1][0]"
-          [data2]="teaching[1][1]"
-          [axis]="'x'"
-          [bgColor]="'rgb(7,66,135)'"
-          [bgColor2]="'rgb(30,114,66)'"
-          [labels]="yearsArray"
-          [showLegend]="false"
-        >
-          >
-        </app-bar-chart>
-      </div> -->
-
-      <!-- <div class="w-[50%]">
-        <div
-          *ngIf="teachingLength$ | async as teaching"
-          class="bg-white rounded-[15px] shadow-main p-5 pt-1 h-full"
-        >
-          <p class="text-blue font-bold text-[2rem] my-2">
-            Teaching Length and Evaluation Average Correlation
-          </p>
-          <app-scatter-plot [data]="teaching[0]" [showLegend]="false">
-          </app-scatter-plot>
-        </div>
-      </div> -->
-
-      <!-- <div
-        *ngIf="attainmentTimeline$ | async as attainment"
-        class="w-full bg-white rounded-[15px] shadow-main p-5 pt-1"
-      >
-        <div class="flex flex-row items-center gap-3">
-          <p class="text-blue font-bold text-[2rem] my-2">
-            Attainment Timeline
-          </p>
-          <div class="flex flex-row gap-1">
-            <div
-              class="w-[23px] h-[23px] rounded-[5px] shadow-main duration-300 hover:duration-300 hover:bg-opacity-50"
-              [ngClass]="certToggle ? 'bg-[#074287]' : 'bg-slate-200'"
-              (click)="certToggle = !certToggle"
-            ></div>
-            <p class="font-Roboto font-medium text-blue">Certifications</p>
-          </div>
-
-          <div class="flex flex-row gap-1">
-            <div
-              class="w-[23px] h-[23px] rounded-[5px] shadow-main duration-300 hover:duration-300 hover:bg-opacity-50"
-              [ngClass]="commexToggle ? 'bg-[#1E7242]' : 'bg-slate-200'"
-              (click)="commexToggle = !commexToggle"
-            ></div>
-            <p class="font-Roboto font-medium text-blue">
-              Community Extensions
-            </p>
-          </div>
-
-          <div class="flex flex-row gap-1">
-            <div
-              class="w-[23px] h-[23px] rounded-[5px] shadow-main duration-300 hover:duration-300 hover:bg-opacity-50"
-              [ngClass]="seminarToggle ? 'bg-[#FF7A00]' : 'bg-slate-200'"
-              (click)="seminarToggle = !seminarToggle"
-            ></div>
-            <p class="font-Roboto font-medium text-blue">Seminars</p>
-          </div>
-        </div>
-        <app-line-graph
-          [data]="certToggle ? attainment[0] : []"
-          [data2]="commexToggle ? attainment[1] : []"
-          [data3]="seminarToggle ? attainment[2] : []"
-          [labels]="yearsArray"
-          [showLegend]="false"
-        >
-        </app-line-graph>
-      </div> -->
-
-      <!-- <div class="w-full flex flex-row gap-3">
-        <div class="w-[50%] flex flex-col gap-3">
-          <div
-            *ngIf="topSeminar$ | async as seminar"
-            class="bg-white shadow-main rounded-[15px] p-5 pt-1"
-          >
-            <p class="text-blue font-bold text-[2rem] my-2">
-              Top Seminars Completed
-            </p>
-            <app-bar-chart
-              [data]="[
-                seminar[0][1],
-                seminar[1][1],
-                seminar[2][1],
-                seminar[3][1],
-                seminar[4][1]
-              ]"
-              [labels]="[
-                seminar[0][0],
-                seminar[1][0],
-                seminar[2][0],
-                seminar[3][0],
-                seminar[4][0]
-              ]"
-              [axis]="'y'"
-              [bgColor]="'rgb(30, 114, 66)'"
-              [showLegend]="false"
-            ></app-bar-chart>
-          </div>
-        </div>
-      </div> -->
-
-      <!-- <div
-        *ngIf="attainmentTimeline$ | async as attainment"
-        class="w-full bg-white rounded-[15px] shadow-main p-5 pt-1"
-      >
-        <div class="flex flex-col tablet:flex-row items-center gap-3">
-          <p class="text-blue font-bold text-[2rem] my-2">
-            Attainment Timeline
-          </p>
-          <div class="flex flex-row gap-1">
-            <div
-              class="w-[23px] h-[23px] rounded-[5px] shadow-main duration-300 hover:duration-300 hover:bg-opacity-50"
-              [ngClass]="certToggle ? 'bg-greenBar' : 'bg-slate-200'"
-              (click)="certToggle = !certToggle"
-            ></div>
-            <p class="font-Roboto font-medium text-blue">Certifications</p>
-          </div>
-
-          <div class="flex flex-row gap-1">
-            <div
-              class="w-[23px] h-[23px] rounded-[5px] shadow-main duration-300 hover:duration-300 hover:bg-opacity-50"
-              [ngClass]="commexToggle ? 'bg-greenBar' : 'bg-slate-200'"
-              (click)="commexToggle = !commexToggle"
-            ></div>
-            <p class="font-Roboto font-medium text-blue">
-              Community Extensions
-            </p>
-          </div>
-
-          <div class="flex flex-row gap-1">
-            <div
-              class="w-[23px] h-[23px] rounded-[5px] shadow-main duration-300 hover:duration-300 hover:bg-opacity-50"
-              [ngClass]="seminarToggle ? 'bg-greenBar' : 'bg-slate-200'"
-              (click)="seminarToggle = !seminarToggle"
-            ></div>
-            <p class="font-Roboto font-medium text-blue">Seminars</p>
-          </div>
-        </div>
-        <app-line-graph
-          [data]="certToggle ? attainment[0] : []"
-          [data2]="commexToggle ? attainment[1] : []"
-          [data3]="seminarToggle ? attainment[2] : []"
-          [labels]="yearsArray"
-          [showLegend]="false"
-        >
-        </app-line-graph>
-      </div> -->
-
-      <div class="w-full flex flex-row gap-3">
-        <div class="w-[50%] flex flex-col gap-3">
-          <!-- <div
-            *ngIf="topLevel$ | async as level"
-            class="bg-white shadow-main rounded-[15px] p-5 pt-1"
-          >
-            <p class="text-blue font-bold text-[2rem] my-2">
-              Top Teaching Level
-            </p>
-            <app-bar-chart
-              [data]="level[1]"
-              [labels]="level[0]"
-              [axis]="'y'"
-              [bgColor]="'rgb(255, 122, 0)'"
-              [showLegend]="false"
-            ></app-bar-chart>
-          </div>
-
-          <div
-            *ngIf="topExpertise$ | async as expertise"
-            class="bg-white shadow-main rounded-[15px] p-5 pt-1"
-          >
-            <p class="text-blue font-bold text-[2rem] my-2">Top Expertise</p>
-            <app-bar-chart
-              [data]="expertise[1]"
-              [labels]="expertise[0]"
-              [axis]="'y'"
-              [bgColor]="'rgb(7, 66, 135)'"
-              [showLegend]="false"
-            ></app-bar-chart>
-          </div> -->
-        </div>
-      </div>
-    </div>
-
-    <!-- <div class="w-full laptop:w-[50%]">
-      <div
-        *ngIf="teachingLength$ | async as teaching"
-        class="bg-white rounded-[15px] shadow-main p-5 pt-1 h-full"
-      >
-        <p class="text-blue font-bold text-[2rem] my-2">
-          Teaching Length and Evaluation Average Correlation
-        </p>
-        <app-scatter-plot [data]="teaching[0]" [showLegend]="false">
-        </app-scatter-plot>
-      </div>
-    </div> -->
   </div>
 </div>

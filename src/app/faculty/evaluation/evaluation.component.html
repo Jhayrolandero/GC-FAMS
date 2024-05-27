@@ -16,9 +16,10 @@
         id="cert_exist"
         class="w-full border-2 px-2 font-Roboto font-regular text-[1.1rem] rounded-[5px] text-black py-1"
         (change)="selectEvalSem($event)"
+        *ngIf="sortedEvaluation$ | async as sortedEvals"
       >
         <option
-          *ngFor="let evalItem of evaluation$ | async"
+          *ngFor="let evalItem of sortedEvals.slice().reverse()"
           [value]="evalItem.evaluation_ID"
         >
           {{ evalItem.semester }}@if( evalItem.semester == 1){st}@else if

@@ -21,6 +21,7 @@ import { ProfileState } from '../../../state/faculty-state/faculty-state.reducer
 import { updatePassword } from '../../../state/faculty-state/faculty-state.actions';
 import { Observable } from 'rxjs';
 import { selectPasswordLoading } from '../../../state/faculty-state/faculty-state.selector';
+import { AddressesService } from '../../../services/addresses.service';
 
 @Component({
     selector: 'app-add-faculty',
@@ -51,14 +52,27 @@ export class AddFacultyComponent {
     public facultyService: FacultyRequestService,
     public store: Store,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    public address: AddressesService
   ) {
     this.passwordLoading$ = this.profileStore.select(selectPasswordLoading)
   }
 
 
+  regions: any = this.address.region
+  municipalities: any = this.address.municipalities
+  provinces: string[] = []
+  barangay: string[] = []
   goBack(){
     this.switchShowAdd.emit();
+  }
+
+  renderProvince(region: any | undefined) {
+    this.provinces =  this.regions[region.target.value]
+  }
+
+  renderBrngy(municipality: any | undefined) {
+    this.barangay = this.municipalities[municipality.target.value]
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -84,9 +98,13 @@ export class AddFacultyComponent {
         language: this.editData?.language,
         city: this.editData?.city,
         barangay: this.editData?.barangay,
+        street: this.editData?.street,
         isAdmin: this.editData?.isAdmin,
         password: this.editData?.password
       })
+
+      this.provinces =  this.regions[this.editData!.region]
+      this.barangay = this.municipalities[this.editData!.city]
 
       this.facultyInfo.get('email')?.disable();
       this.setCollege(this.editData!.college_ID)
@@ -156,7 +174,6 @@ export class AddFacultyComponent {
     email: new FormControl('', [
       Validators.required,
       Validators.email],
-
     ),
     employment_status: new FormControl<number | null>(null, [
       Validators.required,
@@ -185,6 +202,9 @@ export class AddFacultyComponent {
       Validators.pattern('[a-zA-Z ]*')
     ]),
     barangay: new FormControl('', [
+      Validators.required,
+    ]),
+    street: new FormControl('', [
       Validators.required,
     ]),
     profile_image: new FormControl<File | null>(null),
@@ -218,7 +238,9 @@ export class AddFacultyComponent {
       // this.disabledBox = true;
       this.facultyInfo.patchValue({
         teaching_position: 'Instructor',
-        isAdmin: 0
+        isAdmin: 0,
+        employment_status: 0
+
       })
     }
   }
@@ -235,11 +257,13 @@ export class AddFacultyComponent {
 
     if (value === 'Dean' || value === 'Coordinator') {
       this.facultyInfo.patchValue({
-        isAdmin: 1
+        isAdmin: 1,
+        employment_status: 1
       });
     } else {
       this.facultyInfo.patchValue({
-        isAdmin: 0
+        isAdmin: 0,
+        employment_status: 0
       });
     }
   }

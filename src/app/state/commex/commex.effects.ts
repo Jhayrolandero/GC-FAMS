@@ -62,10 +62,12 @@ export class CommexsEffects {
 
   getCommexs$ = createEffect(() => this.actions$.pipe(
     ofType(CommexActions.getCommex),
+    withLatestFrom(this.commexFacultyStore.select(parsedCommexSelector)),
     mergeMap((commexes) => {
-      if (commexes) {
+      if (commexes[1].length <= 0) {
+        console.log(commexes)
         return this.fetchCommex$('getcommex?t=faculty').
-          pipe(
+        pipe(
             map(data => {
               const commexs = this.decryptData<CommunityExtension[]>(data)
 
@@ -88,6 +90,7 @@ export class CommexsEffects {
     withLatestFrom(this.commexCollegeStore.select(parsedCollegeCommexSelector)),
     concatMap(([action, commexes]) => {
       if (commexes.length <= 0) {
+        console.log(commexes)
 
         return this.fetchCommex$(action.uri).
           pipe(

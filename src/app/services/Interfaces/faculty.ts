@@ -14,7 +14,7 @@
   teaching_level: string,
   sex: string,
   college_abbrev: string,
-  email: string, 
+  email: string,
   password: string,
   employment_status: number,
   phone_number: string,
@@ -23,6 +23,7 @@
   language: string,
   city: string,
   barangay: string,
+  street: string,
   profile_image: string,
   cover_image: string,
   college: string
