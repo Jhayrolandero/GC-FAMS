@@ -350,7 +350,7 @@ export class CommunityExtensionsComponent {
 
       this.profileCollege$.pipe(first()).subscribe(
         () => {
-          this.commexCollegeStore.dispatch(CommexActions.getCollegeCommex({ uri: `getcommex/?t=college` }))
+          this.commexCollegeStore.dispatch(CommexActions.getCollegeCommex({ uri: `getcommex/?t=college`, refresh: false }))
         }
       )
       this.commexs$ = this.commexCollegeStore.pipe(select(CommexsSelector.parsedCollegeCommexSelector))
@@ -360,7 +360,7 @@ export class CommunityExtensionsComponent {
       // this.attendedFetch()
     } else {
       this.switch = 'faculty'
-      this.store.dispatch(CommexActions.getCommex());
+      // this.store.dispatch(CommexActions.getCommex());
       this.commexs$ = this.commexFacultyStore.pipe(select(CommexsSelector.parsedCommexSelector))
       this.isLoading$ = this.commexFacultyStore.pipe(select(CommexsSelector.isLoadingSelector))
       this.latestCommex$ = this.commexFacultyStore.pipe(select(CommexsSelector.latestCommexSelector))

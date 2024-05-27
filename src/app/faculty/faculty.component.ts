@@ -71,7 +71,7 @@ export class FacultyComponent {
     store.dispatch(loadProj());
     store.dispatch(loadExpertise());
     store.dispatch(loadEval());
-    store.dispatch(getCommex());
+    store.dispatch(getCommex({refresh: false}));
 
 
     breakpointObserver
