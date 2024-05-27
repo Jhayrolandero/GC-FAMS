@@ -45,18 +45,16 @@ export class CommexsEffects {
     ofType(CommexActions.deleteCommex),
     mergeMap((action) => {
 
-      if (action.view === 'faculty') {
+      return this.removeCommex$(action.commex_ID).pipe(
+        map(() => {
 
-        return this.removeCommex$(action.commex_ID).pipe(
-          map(() => CommexActions.deleteCommexSuccess({ commex_ID: action.commex_ID })),
-          catchError(error => of(CommexActions.deleteCommexFailure({ error: error.message })))
-        )
-      } else {
-        return this.removeCommex$(action.commex_ID).pipe(
-          map(() => CommexActions.deleteCollegeCommexSuccess({ commex_ID: action.commex_ID })),
-          catchError(error => of(CommexActions.deleteCollegeCommexFailure({ error: error.message })))
-        )
-      }
+          this.commexCollegeStore.dispatch(
+            CommexActions.deleteCollegeCommexSuccess({ commex_ID: action.commex_ID })
+          )
+        return CommexActions.deleteCommexSuccess({ commex_ID: action.commex_ID })
+        }),
+        catchError(error => of(CommexActions.deleteCommexFailure({ error: error.message })))
+      )
     })
   ))
 

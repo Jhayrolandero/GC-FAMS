@@ -400,10 +400,11 @@ export class CommunityExtensionsComponent {
   leaveCommex(commex_ID: number) {
     this.attendeeStore.dispatch(AttendeeActions.leaveCommex({ commex_ID: commex_ID}))
     // reset the attendees to fetch new
-    this.store.dispatch(CommexActions.getCommex());
+    // this.store.dispatch(CommexActions.getCommex());
   }
 
-  attendCommex(commex_ID: number) {
+  attendCommex(commex_ID: number, commex: CommunityExtension) {
+    console.log("Nay")
     const attendCommex = new FormData()
 
     let faculty_ID = undefined
@@ -415,14 +416,31 @@ export class CommunityExtensionsComponent {
     )
     const attendeeForm = { commex_ID, faculty_ID }
 
+
     attendCommex.append("attendees[]", JSON.stringify(attendeeForm))
-    this.attendeeStore.dispatch(AttendeeActions.joinCommex({ commex_ID: commex_ID, formData: attendCommex }))
+
+
+    this.attendeeStore.dispatch(AttendeeActions.joinCommex({
+      commex_ID: commex_ID,
+      formData: attendCommex,
+      commex: this.removeHTTP(commex, mainPort)
+    }))
     // reset the attendees to fetch new
   }
 
+  // Band aid function just to remove the http://
+
+  removeHTTP(commex : CommunityExtension, mainPort: string) {
+    const commexCopy = {...commex}
+    return {
+      ...commexCopy,
+      commex_header_img: commexCopy.commex_header_img.replace(mainPort, '')
+    }
+    }
+
 
   openConfirm(commex_ID: number): void {
-    let deleteDialog = this.dialog.open(ConfirmDeleteComponent, {
+    this.dialog.open(ConfirmDeleteComponent, {
       data: { commex_ID, view: this.switch },
     });
   }
