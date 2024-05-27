@@ -1,7 +1,9 @@
 import { createAction, props } from "@ngrx/store";
 import { CommunityExtension } from "../../services/Interfaces/community-extension";
 
-export const getCommex = createAction('[Commex] Fetch Commex')
+export const getCommex = createAction('[Commex] Fetch Commex',
+props<{ refresh: boolean }>()
+)
 
 export const getCommexSuccess = createAction('[Commex] Fetch Commex Success',
   props<{ commexs: CommunityExtension[] }>()
@@ -15,7 +17,7 @@ export const setLoading = createAction('[Commex] Set Load',
 )
 
 export const getCollegeCommex = createAction('[College Commex] Fetch Commex',
-  props<{ uri: string }>()
+  props<{ uri: string, refresh: boolean }>()
 )
 export const getCollegeCommexSuccess = createAction('[College Commex] Fetch Commex Success',
   props<{ commexs: CommunityExtension[] }>()

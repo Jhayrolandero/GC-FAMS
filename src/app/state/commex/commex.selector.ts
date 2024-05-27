@@ -29,6 +29,9 @@ export const commexSelector = createSelector(selectFeature,
   (state) => state.commexs
 )
 
+export const commexSelectorOne = (commex_ID: number) => createSelector(selectFeature,
+  (state) => getCommexDetail(commex_ID, state.commexs)
+)
 export const filterCommexSelector = (startDate: string, endDate: string) => createSelector(selectFeature,
   (state) => parsedCommex(filterDateRange(startDate, endDate, state.commexs), mainPort)
 )
@@ -114,4 +117,11 @@ function filterDateRange(startDateStr: string, endDateStr: string, commexs: Comm
 
   const filteredCommexs = filterCommexByDate(commexs, startDate, endDate);
   return filteredCommexs;
+}
+
+function getCommexDetail (commex_ID: number, commex: CommunityExtension[]) {
+  console.log("Hello there")
+  const commexCopy = [...commex]
+  console.log(commexCopy.filter(item => item.commex_ID == commex_ID))
+  return commexCopy.filter(item => item.commex_ID == commex_ID)[0]
 }

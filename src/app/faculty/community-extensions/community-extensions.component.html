@@ -128,7 +128,7 @@
           } @else {
           <button
             class="bg-blue text-white px-2 py-1 rounded-lg"
-            (click)="attendCommex(latestCommex.commex_ID)"
+            (click)="attendCommex(latestCommex.commex_ID, latestCommex)"
           >
             Attend
           </button>
@@ -254,7 +254,7 @@
               } @else {
               <button
                 class="bg-blue text-white px-2 py-1 rounded-lg"
-                (click)="attendCommex(commex.commex_ID)"
+                (click)="attendCommex(commex.commex_ID, commex)"
               >
                 Attend
               </button>

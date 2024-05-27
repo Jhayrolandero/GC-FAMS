@@ -2,6 +2,7 @@ import { createReducer, on } from "@ngrx/store";
 import { CommexState } from "../../services/Interfaces/commexState";
 import { CommunityExtension } from "../../services/Interfaces/community-extension";
 import * as CommexActions from "./commex.action";
+import { joinCommexSuccess } from "../attendee/attendee.action";
 
 // For Faculty
 export const initialState: CommexState = {
@@ -67,7 +68,13 @@ export const commexReducer = createReducer(
       deleteLoading: false,
       error: action.error
     }
-  ))
+  )),
+  on(joinCommexSuccess, (state, action ) => (
+    {
+      ...state,
+      commexs: [...state.commexs, action.commex],
+    }
+))
 )
 
 export const collegeCommexReducer = createReducer(
@@ -111,3 +118,4 @@ export const collegeCommexReducer = createReducer(
 function removeCommex(commexs: CommunityExtension[], commex_ID: number) {
   return commexs.filter(commex => commex.commex_ID !== commex_ID);
 }
+

@@ -14,17 +14,23 @@ import { FacultyRequestService } from "../../services/faculty/faculty-request.se
 import * as AttendeeActions from "./attendee.action";
 import { attendedSelector, attendeeNumberSelector } from "./attendee.selector";
 import { NumberCardComponent } from "@swimlane/ngx-charts";
+import { CommexState } from "../../services/Interfaces/commexState";
+import { deleteCommexSuccess } from "../commex/commex.action";
+import { commexSelectorOne } from "../commex/commex.selector";
+import { CommunityExtension } from "../../services/Interfaces/community-extension";
 @Injectable()
 
 
 export class AttendeeEffects {
 
+  commex!: CommunityExtension
 
   constructor(
     private actions$: Actions,
     private facultyService: FacultyRequestService,
     private attendeeStore: Store<{ attendees: AttendeeNumberState }>,
     private attendedStore: Store<{ attended: AttendedState }>,
+    private commexFacultyStore: Store<{ commexs: CommexState }>,
     private cryptoJS: CryptoJSService
   ) { }
 
@@ -59,8 +65,8 @@ export class AttendeeEffects {
       return this.joinCommex$(action.formData).pipe(
         map(() => {
           this.attendeeStore.dispatch(AttendeeActions.getAttendedSuccess({ attended: { [action.commex_ID]: 1 } }))
-          return AttendeeActions.joinCommexSuccess({ commex_ID: action.commex_ID })
-          // return AttendeeActions.getAttendedSuccess({ attended: { [action.commex_ID]: 1 } })
+
+          return AttendeeActions.joinCommexSuccess({ commex_ID: action.commex_ID, commex: action.commex })
         }),
         catchError(err => of(AttendeeActions.joinCommexFailure({ error: err.message })))
       )
@@ -73,8 +79,15 @@ export class AttendeeEffects {
     mergeMap((action) => {
       return this.leaveCommex$(action.commex_ID).pipe(
         map(() => {
-          this.attendeeStore.dispatch(AttendeeActions.getAttendedSuccess({ attended: { [action.commex_ID]: 0 } }))
-          return AttendeeActions.leaveCommexSuccess({ commex_ID: action.commex_ID })
+          this.attendeeStore.dispatch(AttendeeActions.getAttendedSuccess({
+             attended: { [action.commex_ID]: 0 },
+            }))
+
+            // Delete the commex from the display
+            this.commexFacultyStore.dispatch(deleteCommexSuccess({ commex_ID : action.commex_ID}))
+          return AttendeeActions.leaveCommexSuccess({
+            commex_ID: action.commex_ID
+          })
         }),
         catchError(err => of(AttendeeActions.leaveCommexFailure({ error: err.message })))
       )

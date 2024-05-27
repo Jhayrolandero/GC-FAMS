@@ -69,11 +69,11 @@ export const leaveCommexFailure = createAction('[Attendee Leave] Leave Commex Fa
 )
 
 export const joinCommex = createAction('[Commex Join] Join Commex',
-props<{ commex_ID: number, formData: FormData }>()
+props<{ commex_ID: number, formData: FormData, commex: CommunityExtension }>()
 )
 
 export const joinCommexSuccess = createAction('[Attendee Join] Join Commex Success',
-  props<{ commex_ID: number }>()
+  props<{ commex_ID: number, commex: CommunityExtension }>()
 )
 
 export const joinCommexFailure = createAction('[Attendee Join] Join Commex Failure',
