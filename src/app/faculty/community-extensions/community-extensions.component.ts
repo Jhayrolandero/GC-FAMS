@@ -239,6 +239,10 @@ export class CommexFormComponent {
 
   }
 }
+
+ngOnDestroy() {
+  this.dialogRef.close()
+}
 }
 
 
@@ -289,7 +293,7 @@ export class CommunityExtensionsComponent {
   }
 
   commexs$: Observable<CommunityExtension[]>
-
+  attending$ = this.attendedStore.pipe(select(AttendeeSelector.attendingSelector))
   latestCommex$: Observable<CommunityExtension | null>
   isLoading$: Observable<boolean>
   isAttendedLoading$: Observable<boolean>
@@ -461,6 +465,7 @@ export class CommunityExtensionsComponent {
 
   leaveCommex(commex_ID: number) {
     this.attendeeStore.dispatch(AttendeeActions.leaveCommex({ commex_ID: commex_ID}))
+    this.attendeeStore.dispatch(AttendeeActions.setAttendedLoading({ status: true}))
     // reset the attendees to fetch new
     // this.store.dispatch(CommexActions.getCommex());
   }
@@ -487,6 +492,8 @@ export class CommunityExtensionsComponent {
       formData: attendCommex,
       commex: this.removeHTTP(commex, mainPort)
     }))
+    this.attendeeStore.dispatch(AttendeeActions.setAttendedLoading({ status: true}))
+
     // reset the attendees to fetch new
   }
 

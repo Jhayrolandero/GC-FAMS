@@ -65,7 +65,7 @@ export class AttendeeEffects {
       return this.joinCommex$(action.formData).pipe(
         map(() => {
           this.attendeeStore.dispatch(AttendeeActions.getAttendedSuccess({ attended: { [action.commex_ID]: 1 } }))
-
+          this.attendeeStore.dispatch(AttendeeActions.setAttendedLoading({ status: false}))
           return AttendeeActions.joinCommexSuccess({ commex_ID: action.commex_ID, commex: action.commex })
         }),
         catchError(err => of(AttendeeActions.joinCommexFailure({ error: err.message })))
@@ -83,15 +83,20 @@ export class AttendeeEffects {
              attended: { [action.commex_ID]: 0 },
             }))
 
-            // this.commexFacultyStore.dispatch(getCommex({ refresh:true }));
-
+            this.attendeeStore.dispatch(AttendeeActions.setAttendedLoading({ status: false}))
             // Delete the commex from the display
             this.commexFacultyStore.dispatch(deleteCommexSuccess({ commex_ID : action.commex_ID}))
-          return AttendeeActions.leaveCommexSuccess({
+            return AttendeeActions.leaveCommexSuccess({
             commex_ID: action.commex_ID
           })
         }),
-        catchError(err => of(AttendeeActions.leaveCommexFailure({ error: err.message })))
+        catchError(err =>  {
+
+          this.attendeeStore.dispatch(AttendeeActions.setAttendedLoading({ status: false}))
+
+        return of(AttendeeActions.leaveCommexFailure({ error: err.message }))
+        }
+      )
       )
     })
   ))
