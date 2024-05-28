@@ -196,12 +196,13 @@
           >
             <div
               *ngIf="commex.commex_header_img != tempPort"
-              class="bg-red-300 flex justify-center items-center"
+              class="bg-black flex justify-center items-center"
             >
               <img
                 [src]="commex.commex_header_img"
-                alt=""
+                alt="commex header"
                 class="w-full aspect-video"
+                onerror="this.onerror=null; this.src='/assets/img/noimage.jpg'"
               />
             </div>
             <div class="p-3">

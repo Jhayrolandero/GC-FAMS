@@ -23,7 +23,6 @@ import { Attendee } from '../../services/Interfaces/attendee';
 import { Observable, Subscription, catchError, first, from, map, merge, mergeMap, of, take } from 'rxjs';
 import { Dictionary } from '../../services/Interfaces/dictionary';
 import { Response } from '../../services/Interfaces/response';
-import { MessageService } from '../../services/message.service';
 import { Store, select } from '@ngrx/store';
 import { CommexState } from '../../services/Interfaces/commexState';
 import * as CommexActions from '../../state/commex/commex.action';
