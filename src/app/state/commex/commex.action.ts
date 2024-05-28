@@ -43,6 +43,16 @@ export const postCommexFailure = createAction('[Commex] Post Commex Failure',
   props<{ error: string }>()
 )
 
+export const editCommex = createAction('[Commex] Edit Commex',
+  props<{ commex: any, commex_ID: number }>()
+)
+
+export const editCommexSuccess = createAction('[Commex] Edit Commex Success')
+
+export const editCommexFailure = createAction('[Commex] Edit Commex Failure',
+  props<{ error: string }>()
+)
+
 export const deleteCommex = createAction('[Commex] Delete Commex',
   props<{ commex_ID: number, view: 'college' | 'faculty' }>()
 )

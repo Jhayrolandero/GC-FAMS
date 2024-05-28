@@ -57,7 +57,7 @@ export class AdminComponent {
 
   constructor(
     public store: Store,
-    breakpointObserver: BreakpointObserver,
+    private breakpointObserver: BreakpointObserver,
     private _formBuilder: FormBuilder
   ) {
     store.dispatch(loadProfile());
@@ -104,4 +104,10 @@ export class AdminComponent {
     this.sideBarToggle = !this.sideBarToggle;
     console.log(this.sideBarToggle);
   }
+
+  ngOnDestroy() {
+    this.destroyed.next();
+    this.destroyed.complete();
+  }
+
 }

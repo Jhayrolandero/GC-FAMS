@@ -1,5 +1,5 @@
 import { MatDialogActions, MatDialogClose, MatDialogContent, MatDialogRef, MatDialogTitle } from '@angular/material/dialog';
-import { FormsModule, ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -19,34 +19,56 @@ import { MessageService } from '../../../../services/message.service';
     templateUrl: 'faculty-certifications-form.component.html',
     styleUrl: 'faculty-certifications-form.component.css'
   })
-  
-  export class FacultyCertificationsFormComponent { 
+
+  export class FacultyCertificationsFormComponent {
     public certifications$ = this.store.select(selectAllCerts);
     public selectedExisting: boolean = false;
 
     constructor(
-      public dialogRef: MatDialogRef<FacultyCertificationsFormComponent>, 
+      public dialogRef: MatDialogRef<FacultyCertificationsFormComponent>,
       private facultyRequest: FacultyRequestService,
       private messageService: MessageService,
       private store: Store
     ){}
 
+    formType: any;
+
     newCertForm = new FormGroup({
-      cert_name: new FormControl(''),
-      cert_type: new FormControl(''),
-      cert_abbrev: new FormControl(''),
-      cert_details: new FormControl(''),
-      cert_corporation: new FormControl(''),
-      accomplished_date: new FormControl(''),
+      cert_name: new FormControl('', [
+        Validators.required,
+      ]),
+      cert_type: new FormControl('', [
+        Validators.required,
+      ]
+
+      ),
+      cert_abbrev: new FormControl('' ),
+      cert_details: new FormControl('',
+
+      ),
+      cert_corporation: new FormControl('',
+      [
+        Validators.required,
+      ]
+      ),
+      accomplished_date: new FormControl('',
+      [
+        Validators.required,
+      ]
+      ),
       cert_image: new FormControl<File | null>(null)
     })
 
     existCertForm = new FormGroup({
-      cert_ID: new FormControl(''),
-      accomplished_date: new FormControl(''),
+      cert_ID: new FormControl('', [
+        Validators.required,
+      ]),
+      accomplished_date: new FormControl('',  [
+        Validators.required,
+      ]),
       cert_image: new FormControl<File | null>(null)
     })
-  
+
     onNoClick(): void {
       this.dialogRef.close();
     }
@@ -62,24 +84,28 @@ import { MessageService } from '../../../../services/message.service';
         cert_ID: event.target.value
       });
     }
-  
+
     submitForm(){
       let submitType;
-      let formType;
+      this.formType;
 
       if(this.selectedExisting == true){
         submitType = 'addFacultyCert';
-        formType = this.existCertForm;
+        this.formType = this.existCertForm;
       }
       else{
         submitType = 'addNewCert';
-        formType = this.newCertForm;
+        this.formType = this.newCertForm;
       }
 
-      console.log(formType);
+
+      if(this.formType.get('cert_image').value === null) return
+      if(!this.formType.valid) return
+
+      console.log(this.formType);
       this.messageService.sendMessage("Adding Certification...", 0)
-  
-      const formData = this.facultyRequest.formDatanalize(formType);
+
+      const formData = this.facultyRequest.formDatanalize(this.formType);
       this.facultyRequest.postData(formData, submitType).subscribe({
         next(value) {console.log(value);},
         error: (error) => {
@@ -93,13 +119,15 @@ import { MessageService } from '../../../../services/message.service';
         }
       });
     }
-  
+
     imageURL?: string = undefined;
     PreviewImage(event: Event) {
+      const allowedFileType = ["image/png", "image/jpeg"]
+
       const inputElement = event.target as HTMLInputElement;
       const file = inputElement.files?.[0]; // Using optional chaining to handle null or undefined
-  
-      if (file) {
+
+      if (file && allowedFileType.includes(file.type)) {
           // File Preview
           const reader = new FileReader();
           reader.onload = () => {
@@ -112,6 +140,8 @@ import { MessageService } from '../../../../services/message.service';
               })
           };
           reader.readAsDataURL(file);
+      } else {
+        this.messageService.sendMessage("File type should be .png or .jpeg/.jpg", -1)
       }
     }
   }

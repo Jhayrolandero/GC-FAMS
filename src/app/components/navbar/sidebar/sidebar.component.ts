@@ -27,10 +27,9 @@ export class SidebarComponent{
     this.selectedBar = this.router.url.split("/")[2];
     console.log(this.router.url.split("/")[2]);
   }
-  
+
   onSelect(linkRoute: string) {
     this.selectedBar = linkRoute;
-    console.log(this.selectedBar);
   }
 
 

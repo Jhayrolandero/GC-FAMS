@@ -3,38 +3,16 @@
     class="bg-white shadow-main bg-opacity-70 w-full rounded-[15px] flex flex-col tablet:flex-row tablet:justify-between items-center px-5"
   >
     <h1
-      class="font-Poppins font-semibold mobileS:text-[1rem] mobileM:text-[1.5rem] tablet:text-[2.5rem] py-2"
+      class="font-Poppins text-blue font-semibold mobileS:text-[1rem] mobileM:text-[1.5rem] tablet:text-[2.5rem] py-2"
     >
       Community Extensions
     </h1>
-    <div class="flex flex-row space-x-4 flex-1">
-      <div class="flex-1 flex justify-end items-end">
-        <input
-          type="checkbox"
-          id="switch"
-          class="hidden peer"
-          (click)="toggleView()"
-        />
-        <label
-          for="switch"
-          label1="My Commex"
-          label2="All Commex"
-          class="relative w-8/12 max-w-52 py-4 bg-white rounded-[25px] after:py-1 after:absolute after:w-1/2 after:h-full after:rounded-full after:bg-blue after:top-0 after:left-0 after:transition-all after:duration-150 after:content-[attr(label1)] after:text-center after:font-bold peer-checked:after:left-1/2 peer-checked:after:content-[attr(label2)] after:flex after:justify-center after:items-center after:text-white"
-        >
-          <span
-            class="select-none absolute top-0 inset-x-1/2 right-0 text-blue text-center font-bold py-1 flex justify-center items-center h-full"
-            >All Commex</span
-          >
-
-          <span
-            class="select-none absolute top-0 inset-x-1/2 left-0 text-blue text-center font-bold py-1 flex justify-center items-center h-full"
-            >My Commex</span
-          >
-        </label>
-      </div>
+    <div
+      class="flex flex-row space-x-4 flex-1 w-full items-center justify-center tablet:justify-end"
+    >
       <button
         (click)="openDialog()"
-        class="bg-gradient-to-r from-blue to-greenBar text-white font-Poppins font-semibold w-[125px] h-[40px] rounded-full shadow-xl hover:scale-[102%] hover:duration-300 duration-300"
+        class="m-0 bg-gradient-to-r from-blue to-greenBar text-white font-Poppins font-semibold w-[125px] h-[40px] rounded-full shadow-xl hover:scale-[102%] hover:duration-300 duration-300"
       >
         +Add
       </button>
@@ -42,159 +20,66 @@
   </div>
 </div>
 
-@if( isLoading$ | async ) {
-<app-loading-screen></app-loading-screen>
-} @else {
-<div class="p-5 flex flex-col gap-3 text-blue">
-  <h1
-    class="font-Poppins font-semibold mobileS:text-[1rem] mobileM:text-[1.5rem] py-2 mobileS:text-center tablet:text-start"
-  >
-    Latest Community Extensions
-  </h1>
-  <hr class="border-[1.5px] border-slate-400" />
+<div class="p-5">
   <div
-    *ngIf="latestCommex$ | async as latestCommex"
-    class="bg-white shadow-main w-full rounded-[15px] flex mobileS:flex-col tablet:flex-row overflow-hidden hover:scale-[101%] hover:duration-300 duration-300 min-h[10rem]"
+    class="flex-1 flex justify-center tablet:justify-start items-center tablet:items-end"
   >
-    <div
-      *ngIf="latestCommex.commex_header_img != tempPort"
-      class="bg-black mobileS:w-full tablet:w-[35%] desktop:w-[25%] flex justify-center items-center"
+    <input
+      type="checkbox"
+      id="switch"
+      class="hidden peer"
+      (click)="toggleView()"
+    />
+    <label
+      for="switch"
+      label1="My Commex"
+      label2="All Commex"
+      class="relative w-full py-4 px-2 bg-white rounded-tr-[24px] rounded-tl-[24px] after:py-1 after:absolute after:w-1/2 after:h-full after:rounded-tr-[24px] after:rounded-tl-[24px] after:bg-blue after:top-0 after:left-0 after:transition-all after:duration-150 after:content-[attr(label1)] after:text-center after:font-bold peer-checked:after:left-1/2 peer-checked:after:content-[attr(label2)] after:flex after:justify-center after:items-center after:text-white blue"
     >
-      <img [src]="latestCommex.commex_header_img" class="w-full aspect-video" />
-    </div>
-    <div
-      class="p-4 mobileS:w-full tablet:w-[65%] desktop:w-[75%] flex flex-col gap-2"
-    >
-      <div class="flex gap-2 justify-between items-center">
-        <h1 class="font-Poppins font-semibold text-[1.5rem]">
-          {{ latestCommex.commex_title }}
-        </h1>
-        @if((attended$ | async)?.[latestCommex.commex_ID] == 1) {
-        <button mat-button [matMenuTriggerFor]="menu" class="w-[5%] max-w-3">
-          <i class="fa-solid fa-ellipsis-vertical"></i>
-        </button>
-        <mat-menu #menu="matMenu">
-          <button mat-menu-item (click)="openConfirm(latestCommex.commex_ID)">
-            Delete Commex
-          </button>
-        </mat-menu>
-        }
-      </div>
-      <div class="flex flex-row opacity-70">
-        <img
-          src="../../../assets/faculty-dashboard/BlueVector.png"
-          class="w-[20px] h-full mr-[5px]"
-        />
-        <h2 class="font-Poppins font-semibold text-[1rem]">
-          {{ latestCommex.commex_date }}
-        </h2>
-      </div>
-      <p class="">
-        {{ latestCommex.commex_details }}
-      </p>
-      <div class="flex flex-col flex-wrap justify-end flex-1 gap-2">
-        <hr class="text-black text-[0.5rem] bg-black" />
-        <div class="flex justify-between">
-          <div
-            class="flex gap-2"
-            (mouseenter)="toggleVisible(latestCommex.commex_ID)"
-            (mouseleave)="toggleHide()"
-          >
-            @if( attendeeLoading$ | async ) { ...loading } @else {
-            <span><i class="fa-solid fa-users"></i></span>
-            <p>{{ attendeesNumber[latestCommex.commex_ID] }}</p>
-            }
-            <span class="relative">
-              <app-tooltip
-                [attendees]="attendee"
-                [isVisible]="isVisible"
-                [id]="latestCommex.commex_ID"
-                [activeID]="activeID"
-              ></app-tooltip>
-            </span>
-          </div>
-          <!-- check first if loading before joining -->
-          @if(isAttendedLoading$ | async){
-          <button class="bg-blue text-white px-2 py-1 rounded-lg">
-            Loading...
-          </button>
-          }@else { @if((attended$ | async)?.[latestCommex.commex_ID] == 1) {
-          <button
-            class="bg-blue text-white px-2 py-1 rounded-lg"
-            (click)="leaveCommex(latestCommex.commex_ID)"
-          >
-            Attended
-          </button>
-          } @else {
-          <button
-            class="bg-blue text-white px-2 py-1 rounded-lg"
-            (click)="attendCommex(latestCommex.commex_ID, latestCommex)"
-          >
-            Attend
-          </button>
-          } }
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+      <span
+        class="select-none absolute top-0 inset-x-1/2 right-0 text-blue text-center font-bold py-2 flex justify-center items-center h-full"
+        >All Commex</span
+      >
 
-<div class="text-blue p-5">
-  <!-- Other -->
-  <div class="flex mobileS:flex-col tablet:flex-row justify-between">
-    <h1
-      class="font-Poppins font-semibold mobileS:text-[1rem] mobileM:text-[1.5rem] py-2 mobileS:text-center tablet:text-start"
-    >
-      Other Community Extensions
-    </h1>
-    <mat-form-field>
-      <mat-label>Enter a date range</mat-label>
-      <mat-date-range-input [rangePicker]="picker">
-        <input
-          matStartDate
-          placeholder="Start date"
-          (dateChange)="setStartDate($event.value)"
-        />
-        <input
-          matEndDate
-          placeholder="End date"
-          (dateChange)="setEndDate($event.value)"
-        />
-      </mat-date-range-input>
-      <!-- <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint> -->
-      <mat-datepicker-toggle
-        matIconSuffix
-        [for]="picker"
-      ></mat-datepicker-toggle>
-      <mat-date-range-picker #picker></mat-date-range-picker>
-    </mat-form-field>
+      <span
+        class="select-none absolute top-0 inset-x-1/2 left-0 text-blue text-center font-bold py-2 flex justify-center items-center h-full"
+        >My Commex</span
+      >
+    </label>
   </div>
-  <hr class="border-[1.5px] border-slate-400" />
-  <app-other-commex>
-    <div *ngFor="let commex of commexs$ | async; let i = index">
+  <div class="bg-white p-2 rounded-br-[24px] rounded-bl-[24px] shadow-main">
+    @if( isLoading$ | async ) {
+    <app-loading-screen></app-loading-screen>
+    } @else {
+    <div class="p-2 flex flex-col gap-3 text-blue">
+      <h1
+        class="font-Poppins font-semibold mobileS:text-[1rem] mobileM:text-[1.5rem] py-2 mobileS:text-center tablet:text-start"
+      >
+        Latest Community Extensions
+      </h1>
+      <hr class="border-[1.5px] border-slate-400" />
       <div
-        *ngIf="i != 0"
-        class="bg-white rounded-xl shadow-main flex flex-col gap-2 duration-300 hover:scale-[102%] hover:shadow-xl hover:duration-300 break-inside-avoid mb-2 overflow-hidden"
+        *ngIf="latestCommex$ | async as latestCommex; else emptyBlock"
+        class="bg-white shadow-main w-full rounded-[15px] flex mobileS:flex-col tablet:flex-row overflow-hidden hover:scale-[101%] hover:duration-300 duration-300 min-h[10rem]"
       >
         <div
-          *ngIf="commex.commex_header_img != tempPort"
-          class="bg-red-300 flex justify-center items-center"
+          *ngIf="latestCommex.commex_header_img != tempPort"
+          class="bg-black mobileS:w-full tablet:w-[35%] desktop:w-[25%] flex justify-center items-center"
         >
           <img
-            [src]="commex.commex_header_img"
-            alt=""
+            [src]="latestCommex.commex_header_img"
+            onerror="this.onerror=null; this.src='/assets/img/noimage.jpg'"
             class="w-full aspect-video"
           />
         </div>
-        <div class="p-3">
+        <div
+          class="p-4 mobileS:w-full tablet:w-[65%] desktop:w-[75%] flex flex-col gap-2"
+        >
           <div class="flex gap-2 justify-between items-center">
-            <h4
-              class="font-Poppins font-semibold text-[1.5rem] w-[200px] break-words"
-            >
-              {{ commex.commex_title }}
-            </h4>
-            @if((attended$ | async)?.[commex.commex_ID] == 1) {
-
+            <h1 class="font-Poppins font-semibold text-[1.5rem]">
+              {{ latestCommex.commex_title }}
+            </h1>
+            @if((attended$ | async)?.[latestCommex.commex_ID] == 1) {
             <button
               mat-button
               [matMenuTriggerFor]="menu"
@@ -203,38 +88,47 @@
               <i class="fa-solid fa-ellipsis-vertical"></i>
             </button>
             <mat-menu #menu="matMenu">
-              <button mat-menu-item (click)="openConfirm(commex.commex_ID)">
+              <button
+                mat-menu-item
+                (click)="openConfirm(latestCommex.commex_ID)"
+              >
                 Delete Commex
+              </button>
+              <button mat-menu-item (click)="openEdit(latestCommex.commex_ID)">
+                Edit Commex
               </button>
             </mat-menu>
             }
           </div>
-          <!-- <h4 class="text-xl font-bold">{{ commex.commex_title }}</h4> -->
-          <img
-            src="../../../assets/faculty-dashboard/BlueVector.png"
-            class="w-[20px] h-[20px] mr-[5px] inline-block"
-          />
-          <span>{{ commex.commex_date }}</span>
-          <p>
-            {{ commex.commex_details }}
+          <div class="flex flex-row opacity-70">
+            <img
+              src="../../../assets/faculty-dashboard/BlueVector.png"
+              class="w-[20px] h-full mr-[5px]"
+            />
+            <h2 class="font-Poppins font-semibold text-[1rem]">
+              {{ latestCommex.commex_date }}
+            </h2>
+          </div>
+          <p class="">
+            {{ latestCommex.commex_details }}
           </p>
           <div class="flex flex-col flex-wrap justify-end flex-1 gap-2">
             <hr class="text-black text-[0.5rem] bg-black" />
             <div class="flex justify-between">
               <div
                 class="flex gap-2"
-                (mouseenter)="toggleVisible(commex.commex_ID)"
+                (mouseenter)="toggleVisible(latestCommex.commex_ID)"
                 (mouseleave)="toggleHide()"
               >
                 @if( attendeeLoading$ | async ) { ...loading } @else {
                 <span><i class="fa-solid fa-users"></i></span>
-                <p>{{ attendeesNumber[commex.commex_ID] }}</p>
+                <p>{{ attendeesNumber[latestCommex.commex_ID] }}</p>
                 }
                 <span class="relative">
                   <app-tooltip
                     [attendees]="attendee"
                     [isVisible]="isVisible"
-                    [id]="commex.commex_ID"
+                    [id]="latestCommex.commex_ID"
                     [activeID]="activeID"
                   ></app-tooltip>
                 </span>
@@ -244,17 +138,17 @@
               <button class="bg-blue text-white px-2 py-1 rounded-lg">
                 Loading...
               </button>
-              }@else { @if((attended$ | async)?.[commex.commex_ID] == 1) {
+              }@else { @if((attended$ | async)?.[latestCommex.commex_ID] == 1) {
               <button
                 class="bg-blue text-white px-2 py-1 rounded-lg"
-                (click)="leaveCommex(commex.commex_ID)"
+                (click)="leaveCommex(latestCommex.commex_ID)"
               >
-                Attended
+                Leave
               </button>
               } @else {
               <button
                 class="bg-blue text-white px-2 py-1 rounded-lg"
-                (click)="attendCommex(commex.commex_ID, commex)"
+                (click)="attendCommex(latestCommex.commex_ID, latestCommex)"
               >
                 Attend
               </button>
@@ -262,11 +156,145 @@
             </div>
           </div>
         </div>
-        <!-- <button class="bg-blue text-white font-bold p-2 rounded-main">
-                Read More
-              </button> -->
       </div>
+      <ng-template #emptyBlock><h4>Empty lols</h4> </ng-template>
     </div>
-  </app-other-commex>
+
+    <div class="text-blue p-2">
+      <!-- Other -->
+      <div class="flex mobileS:flex-col tablet:flex-row justify-between">
+        <h1
+          class="font-Poppins font-semibold mobileS:text-[1rem] mobileM:text-[1.5rem] py-2 mobileS:text-center tablet:text-start"
+        >
+          Other Community Extension
+        </h1>
+        <mat-form-field>
+          <mat-label>Enter a date range</mat-label>
+          <mat-date-range-input [rangePicker]="picker">
+            <input
+              matStartDate
+              placeholder="Start date"
+              (dateChange)="setStartDate($event.value)"
+            />
+            <input
+              matEndDate
+              placeholder="End date"
+              (dateChange)="setEndDate($event.value)"
+            />
+          </mat-date-range-input>
+          <!-- <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint> -->
+          <mat-datepicker-toggle
+            matIconSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-date-range-picker #picker></mat-date-range-picker>
+        </mat-form-field>
+      </div>
+      <hr class="border-[1.5px] border-slate-400" />
+      <app-other-commex>
+        <div *ngIf="commexs$ | async as commexs">
+          @for (commex of commexs; track $index) {
+          <div
+            *ngIf="$index != 0"
+            class="bg-white rounded-xl shadow-main flex flex-col gap-2 duration-300 hover:scale-[102%] hover:shadow-xl hover:duration-300 break-inside-avoid mb-2 overflow-hidden"
+          >
+            <div
+              *ngIf="commex.commex_header_img != tempPort"
+              class="bg-black flex justify-center items-center"
+            >
+              <img
+                [src]="commex.commex_header_img"
+                alt="commex header"
+                class="w-full aspect-video"
+                onerror="this.onerror=null; this.src='/assets/img/noimage.jpg'"
+              />
+            </div>
+            <div class="p-3">
+              <div class="flex gap-2 justify-between items-center">
+                <h4
+                  class="font-Poppins font-semibold text-[1.5rem] w-[200px] break-words"
+                >
+                  {{ commex.commex_title }}
+                </h4>
+                @if((attended$ | async)?.[commex.commex_ID] == 1) {
+                <button
+                  mat-button
+                  [matMenuTriggerFor]="menu"
+                  class="w-[5%] max-w-3"
+                >
+                  <i class="fa-solid fa-ellipsis-vertical"></i>
+                </button>
+                <mat-menu #menu="matMenu">
+                  <button mat-menu-item (click)="openConfirm(commex.commex_ID)">
+                    Delete Commex
+                  </button>
+                  <button mat-menu-item (click)="openEdit(commex.commex_ID)">
+                    Edit Commex
+                  </button>
+                </mat-menu>
+                }
+              </div>
+              <img
+                src="../../../assets/faculty-dashboard/BlueVector.png"
+                class="w-[20px] h-[20px] mr-[5px] inline-block"
+              />
+              <span>{{ commex.commex_date }}</span>
+              <p>
+                {{ commex.commex_details }}
+              </p>
+              <div class="flex flex-col flex-wrap justify-end flex-1 gap-2">
+                <hr class="text-black text-[0.5rem] bg-black" />
+                <div class="flex justify-between">
+                  <div
+                    class="flex gap-2"
+                    (mouseenter)="toggleVisible(commex.commex_ID)"
+                    (mouseleave)="toggleHide()"
+                  >
+                    @if( attendeeLoading$ | async ) { ...loading } @else {
+                    <span><i class="fa-solid fa-users"></i></span>
+                    <p>{{ attendeesNumber[commex.commex_ID] }}</p>
+                    }
+                    <span class="relative">
+                      <app-tooltip
+                        [attendees]="attendee"
+                        [isVisible]="isVisible"
+                        [id]="commex.commex_ID"
+                        [activeID]="activeID"
+                      ></app-tooltip>
+                    </span>
+                  </div>
+                  <!-- check first if loading before joining -->
+                  @if(isAttendedLoading$ | async){
+                  <button class="bg-blue text-white px-2 py-1 rounded-lg">
+                    Loading...
+                  </button>
+                  }@else { @if((attended$ | async)?.[commex.commex_ID] == 1) {
+                  <button
+                    class="bg-blue text-white px-2 py-1 rounded-lg"
+                    (click)="leaveCommex(commex.commex_ID)"
+                    [disabled]="attending$ | async"
+                  >
+                    Leave
+                  </button>
+                  } @else {
+                  <button
+                    [disabled]="attending$ | async"
+                    class="bg-blue text-white px-2 py-1 rounded-lg"
+                    (click)="attendCommex(commex.commex_ID, commex)"
+                  >
+                    Attend
+                  </button>
+                  } }
+                </div>
+              </div>
+            </div>
+          </div>
+          } @empty {
+          <h4>Empty lols</h4>
+          }
+        </div>
+      </app-other-commex>
+    </div>
+    }
+  </div>
 </div>
-}

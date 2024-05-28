@@ -41,6 +41,28 @@ export class CommexsEffects {
     return this.facultyService.deleteData(`commex/${commex_ID}`)
   }
 
+  editCommex$ = (commex_ID: number, commex: FormData) => {
+    return this.facultyService.patchData(commex, `commex/${commex_ID}`)
+  }
+
+  patchCommex$ = createEffect(() => this.actions$.pipe(
+    ofType(CommexActions.editCommex),
+    tap(() => this.messageService.sendMessage("Editing Commex", 0)),
+    exhaustMap((action) => {
+      return this.editCommex$(action.commex_ID, action.commex).
+      pipe(
+        map(() => {
+          this.commexFacultyStore.dispatch(CommexActions.getCommex({ refresh:true }));
+          this.messageService.sendMessage("Commex has been edited!", 1)
+          return CommexActions.editCommexSuccess()}),
+        catchError(err => {
+          this.messageService.sendMessage("Unexpected Error!", 0)
+          return of(CommexActions.editCommexFailure({error:err}))
+       })
+      )
+    })
+  ))
+
   deleteCommex$ = createEffect(() => this.actions$.pipe(
     ofType(CommexActions.deleteCommex),
     mergeMap((action) => {
@@ -53,7 +75,11 @@ export class CommexsEffects {
           )
         return CommexActions.deleteCommexSuccess({ commex_ID: action.commex_ID })
         }),
-        catchError(error => of(CommexActions.deleteCommexFailure({ error: error.message })))
+        catchError(error =>
+          {
+            return of(CommexActions.deleteCommexFailure({ error: error.message }))
+          }
+        )
       )
     })
   ))
