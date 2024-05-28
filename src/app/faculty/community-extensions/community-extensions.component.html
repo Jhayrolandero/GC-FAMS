@@ -3,7 +3,7 @@
     class="bg-white shadow-main bg-opacity-70 w-full rounded-[15px] flex flex-col tablet:flex-row tablet:justify-between items-center px-5"
   >
     <h1
-      class="font-Poppins font-semibold mobileS:text-[1rem] mobileM:text-[1.5rem] tablet:text-[2.5rem] py-2"
+      class="font-Poppins text-blue font-semibold mobileS:text-[1rem] mobileM:text-[1.5rem] tablet:text-[2.5rem] py-2"
     >
       Community Extensions
     </h1>
@@ -68,6 +68,7 @@
         >
           <img
             [src]="latestCommex.commex_header_img"
+            onerror="this.onerror=null; this.src='/assets/img/noimage.jpg'"
             class="w-full aspect-video"
           />
         </div>
@@ -92,6 +93,9 @@
                 (click)="openConfirm(latestCommex.commex_ID)"
               >
                 Delete Commex
+              </button>
+              <button mat-menu-item (click)="openEdit(latestCommex.commex_ID)">
+                Edit Commex
               </button>
             </mat-menu>
             }
@@ -223,6 +227,9 @@
                 <mat-menu #menu="matMenu">
                   <button mat-menu-item (click)="openConfirm(commex.commex_ID)">
                     Delete Commex
+                  </button>
+                  <button mat-menu-item (click)="openEdit(commex.commex_ID)">
+                    Edit Commex
                   </button>
                 </mat-menu>
                 }
