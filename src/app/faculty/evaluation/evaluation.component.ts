@@ -21,6 +21,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { selectAllEvaluation, selectSortedEvals } from '../../state/faculty-state/faculty-state.selector';
 import { Store, select } from '@ngrx/store';
 import { loadEval } from '../../state/faculty-state/faculty-state.actions';
+import { EmptyTitleComponent } from '../../components/empty-title/empty-title.component';
 
 type Series = {
   'name': string,
@@ -100,7 +101,7 @@ export class EvaluationForm {
 @Component({
   selector: 'app-evaluation',
   standalone: true,
-  imports: [NgxChartsModule, CommonModule, NgFor, LoadingScreenComponent],
+  imports: [NgxChartsModule, CommonModule, NgFor, LoadingScreenComponent, EmptyTitleComponent],
   templateUrl: './evaluation.component.html',
   styleUrl: './evaluation.component.css'
 })

@@ -220,22 +220,22 @@
       <!-- Attendee -->
       <mat-step [stepControl]="commexForm" class="p-0">
         <ng-template matStepLabel>Attendees</ng-template>
-        <div class="max-h-[640px] overflow-y-scroll">
-          <form
-            action=""
-            [formGroup]="commexForm"
-            (onsubmit)="submitAttendee()"
+        <form
+          action=""
+          [formGroup]="commexForm"
+          (onsubmit)="submitAttendee()"
+          class="max-h-[640px]"
+        >
+          <!-- some.component.html -->
+          <ng-container
+            *ngIf="{
+              users: fetchAttendee$ | async,
+              error: fetchAttendeeError$ | async,
+              profile_ID: profile$ | async
+            } as data"
           >
-            <!-- some.component.html -->
-            <ng-container
-              *ngIf="{
-                users: fetchAttendee$ | async,
-                error: fetchAttendeeError$ | async,
-                profile_ID: profile$ | async
-              } as data"
-            >
-              <ng-container *ngIf="data.users; else loading">
-                <input type="text" placeholder="Search Attendee" />
+            <ng-container *ngIf="data.users; else loading">
+              <div class="max-h-[600px] overflow-y-auto">
                 @for (user of data.users; track $index) {
                 @if(data.profile_ID?.faculty_ID != user.faculty_ID) {
                 <label
@@ -267,6 +267,8 @@
                   /><br />
                 </label>
                 } }
+              </div>
+              <div class="flex justify-end px-4 py-1">
                 <button
                   (click)="submitAttendee()"
                   [disabled]="postLoading$ | async"
@@ -277,18 +279,59 @@
                   ></span>
                   }
                 </button>
-              </ng-container>
-              <ng-template #loading>
-                <div *ngIf="!data.error">
-                  <h4>Loading...</h4>
-                </div>
-                <div *ngIf="data.error">
-                  <h4>{{ data.error }}</h4>
-                </div>
-              </ng-template>
+              </div>
+              <!-- @for (user of data.users; track $index) {
+                @if(data.profile_ID?.faculty_ID != user.faculty_ID) {
+                <label
+                  [for]="user.faculty_ID"
+                  class="grid grid-cols-3 justify-items-center content-center"
+                >
+                  <span
+                    ><img
+                      [src]="mainPort + user.profile_image"
+                      alt=""
+                      width="50"
+                      height="50"
+                      class="aspect-square rounded-full"
+                  /></span>
+                  <p class="place-self-start">
+                    {{ user.first_name }} {{ user.middle_name }}
+                    {{ user.last_name }} {{ user.ext_name }}
+                  </p>
+                  <input
+                    type="checkbox"
+                    [id]="user.faculty_ID"
+                    [name]="user.faculty_ID"
+                    (change)="
+                      onCheckChange($event, {
+                        faculty_ID: user.faculty_ID,
+                        college_ID: user.college_ID
+                      })
+                    "
+                  /><br />
+                </label>
+                } } -->
+              <!-- <button
+                  (click)="submitAttendee()"
+                  [disabled]="postLoading$ | async"
+                >
+                  Submit @if(postLoading$ | async) {
+                  <span
+                    ><i class="fa-duotone fa-spinner-third animate-spin"></i
+                  ></span>
+                  }
+                </button> -->
             </ng-container>
-          </form>
-        </div>
+            <ng-template #loading>
+              <div *ngIf="!data.error">
+                <h4>Loading...</h4>
+              </div>
+              <div *ngIf="data.error">
+                <h4>{{ data.error }}</h4>
+              </div>
+            </ng-template>
+          </ng-container>
+        </form>
       </mat-step>
     </mat-stepper>
     }

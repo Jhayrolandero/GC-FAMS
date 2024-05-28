@@ -48,8 +48,8 @@
       class="bg-white shadow-main rounded-[15px] overflow-hidden flex flex-col flex-1 justify-center items-center py-3"
     >
       <p
-      class="text-center text-blue text-[0.9rem] font-Poppins font-semibold"
-      *ngIf="profile$ | async as profile"
+        class="text-center text-blue text-[0.9rem] font-Poppins font-semibold"
+        *ngIf="profile$ | async as profile"
       >
         {{ profile.college_abbrev }} Average Faculty Evaluation Score
       </p>
@@ -57,7 +57,6 @@
         class="text-greenBar text-[4rem] font-Poppins font-bold leading-[90%]"
         [textContent]="evaluationYearAverage$ | async | number : '1.1-1'"
       ></p>
-
     </div>
     <div
       class="bg-white shadow-main rounded-[15px] overflow-hidden flex flex-col flex-1 justify-center items-center py-3"
@@ -69,7 +68,6 @@
         class="text-greenBar text-[4rem] font-Poppins font-bold leading-[90%]"
         [textContent]="unitFacultyAverage$ | async | number : '1.1-1'"
       ></p>
-
     </div>
     <div
       class="bg-white shadow-main rounded-[15px] overflow-hidden flex flex-col flex-1 justify-center items-center py-3"
@@ -81,7 +79,6 @@
         class="text-greenBar text-[4rem] font-Poppins font-bold leading-[90%]"
         [textContent]="certCountAverage$ | async | number : '1.1-1'"
       ></p>
-
     </div>
     <div
       class="bg-white shadow-main rounded-[15px] overflow-hidden flex flex-col flex-1 justify-center items-center py-3"
@@ -89,12 +86,10 @@
       <p class="text-center text-blue text-[0.9rem] font-Poppins font-semibold">
         Average Faculty Seminars Attended
       </p>
-      <p 
+      <p
         class="text-greenBar text-[4rem] font-Poppins font-bold leading-[90%]"
         [textContent]="seminarYearAverageFaculty$ | async | number : '1.1-1'"
-      >
-      </p>
-
+      ></p>
     </div>
   </div>
 
@@ -276,10 +271,13 @@
     </div>
   </div>
 
-  <div class="flex gap-2 flex-col tablet:flex-row">
+  <div class="grid grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-3 gap-2">
+    <!-- <div
+    class="flex gap-2 flex-col laptop:flex-row tablet:flex-wrap desktop:flex-nowrap"
+  > -->
     <div
       *ngIf="topSeminar$ | async as seminar"
-      class="bg-white shadow-main rounded-[15px] p-5 pt-1 flex-1"
+      class="bg-white shadow-main rounded-[15px] p-5 pt-1 laptop:flex-1"
     >
       <p class="text-blue font-bold text-[2rem] my-2">Top Seminars Completed</p>
       <app-bar-chart
@@ -304,7 +302,7 @@
     </div>
     <div
       *ngIf="topLevel$ | async as level"
-      class="bg-white shadow-main rounded-[15px] p-5 pt-1 flex-1"
+      class="bg-white shadow-main rounded-[15px] p-5 pt-1 laptop:flex-1"
     >
       <p class="text-blue font-bold text-[2rem] my-2">Top Teaching Level</p>
       <app-bar-chart
@@ -318,7 +316,7 @@
 
     <div
       *ngIf="topExpertise$ | async as expertise"
-      class="bg-white shadow-main rounded-[15px] p-5 pt-1 flex-1"
+      class="bg-white shadow-main rounded-[15px] p-5 pt-1 laptop:flex-1 tablet:col-span-2 laptop:col-span-1"
     >
       <p class="text-blue font-bold text-[2rem] my-2">Top Expertise</p>
       <app-bar-chart
