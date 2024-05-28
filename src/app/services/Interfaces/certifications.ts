@@ -5,5 +5,6 @@ export interface Certifications {
     cert_type: string,
     cert_abbrev: string,
     cert_details: string,
-    cert_corporation: string
+    cert_corporation: string,
+
 }

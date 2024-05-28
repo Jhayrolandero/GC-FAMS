@@ -26,7 +26,8 @@ export class FacultyEducationComponent {
     private facultyRequest: FacultyRequestService, 
     public dialog: MatDialog, 
     private messageService: MessageService,
-    private store: Store){}
+    private store: Store
+  ){}
 
   selectCv(educ: any){
     this.facultyRequest.patchData([1, educ], 'selectCv').subscribe({
