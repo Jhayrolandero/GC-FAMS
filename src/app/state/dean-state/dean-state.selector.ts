@@ -1,6 +1,7 @@
 import { createSelector, createFeatureSelector } from "@ngrx/store";
 import { DeanState } from "./dean-state.reducer";
 import { Evaluation } from "../../services/Interfaces/evaluation";
+import { CommunityExtension } from "../../services/Interfaces/community-extension";
 
 const date = new Date();
 const currentYear: number  = date.getFullYear();
@@ -244,6 +245,30 @@ export const selectCommonSeminars = createSelector(
         return sortedCerts;
     }
 );
+
+export const selectCurrYearAverageSeminarCount = createSelector(
+    selectDeanState,
+    (state: DeanState) => {
+        let certNames: Map<string, number> = new Map();
+
+
+        state.certs.forEach(cert => {
+            let certYear = new Date(cert.accomplished_date).getFullYear()
+            if (+certYear === +currentYear && cert.cert_type === "Completion"){
+                if(certNames.has(cert.cert_name)){
+                    certNames.set(cert.cert_name, certNames.get(cert.cert_name)! + 1);
+                }
+                else{
+                    certNames.set(cert.cert_name, 1);
+                }
+            }
+        })
+
+        const sortedCerts = [...certNames.entries()];
+        return sortedCerts.reduce((sum, [_, count]) => sum + count, 0) / state.profile.length;
+    }
+);
+
 
 
 
@@ -599,4 +624,195 @@ export const selectCollegeCommex = createSelector(
     selectDeanState,
     (state: DeanState) => state.commex
 );
-          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//Faculty analytics selectors
+//Selectors on faculty state are hardcoded to only request data based on cookies, so i have to copypasta code here then apply facultyid filter
+export const selectProfile = (id: number) => createSelector(
+    selectDeanState,
+    (state: DeanState) => {
+        console.log(id)
+    }
+);
+
+
+export const selectFacultyEvalAverage = (id: number) => createSelector(
+    selectDeanState,
+    (state: DeanState) => {
+
+
+        //Filters entire evaluation to current year only
+        const yearEvaluation = state.evals.filter((evaluation: Evaluation) => evaluation.evaluation_year == currentYear && evaluation.faculty_ID == id);
+        const params: number[] = Array.from({ length: 6 }, () => 0);
+
+        //Iterates each filtered year, add each params of each iterable to the params array
+        yearEvaluation.forEach((evaluation: Evaluation) => {
+            params[0] += +evaluation.param1_score;
+            params[1] += +evaluation.param2_score;
+            params[2] += +evaluation.param3_score;
+            params[3] += +evaluation.param4_score;
+            params[4] += +evaluation.param5_score;
+            params[5] += +evaluation.param6_score;
+        });
+
+        //Averages each param sum based on how long the filtered array is.
+        params.forEach((sum, index) => {
+            params[index] = sum / yearEvaluation.length;
+        })
+
+        //Average out the averaged 6 params. Return
+        return params.reduce((acc , curr) => acc + curr, 0) / 6;
+    }
+);
+
+
+export const selectTotalUnit = (id: number) => createSelector(
+    selectDeanState,
+    (state: DeanState) => {
+        let units = 0;
+        state.courses[0].forEach(course => {
+            if(course.faculty_ID === id){
+                units += (course.unit + course.class_count)
+            }
+        })
+        return units;
+    }
+);
+
+export const selectCertCount = (id: number) => createSelector(
+    selectDeanState,
+    (state: DeanState) => {
+        let count = 0
+        state.certs.forEach(cert => {
+            if(cert.faculty_ID === id){
+                count += 1;
+            }
+        })
+        return count;
+    }
+);
+
+
+export const selectSeminarCount = (id: number) => createSelector(
+    selectDeanState,
+    (state: DeanState) => {
+      let count = 0;
+      state.certs.forEach(cert => {
+        if(cert.cert_type == 'Completion' && cert.faculty_ID === id){
+          count += 1;
+        }
+      })
+      return count;
+    }
+  );
+
+export const selectMilestoneCount = (commex: CommunityExtension[], id: number) => createSelector(
+    selectDeanState,
+    (state: DeanState) => {
+        let milestoneMap: Map<number, number> = new Map([...Array(15)].map((_, i) => [new Date().getFullYear() - 14 + i, 0]));
+
+        commex.forEach(comm => {
+            if(comm.faculty_ID !== id) return
+
+            const commYear = +comm.commex_date.slice(0,4);
+            if(milestoneMap.has(commYear)){
+                milestoneMap.set(commYear, milestoneMap.get(commYear)! + 1);
+            }
+            else{
+                milestoneMap.set(commYear, 1);
+            }
+        })
+        state.educs.forEach(educ => {
+            if(educ.faculty_ID !== id) return
+
+            const educYear = +educ.year_end.slice(0,4);
+            if(milestoneMap.has(educYear)){
+                milestoneMap.set(educYear, milestoneMap.get(educYear)! + 1);
+            }
+            else{
+                milestoneMap.set(educYear, 1);
+            }
+
+        })
+        state.certs.forEach(cert => {
+            if(cert.faculty_ID !== id) return
+
+            const certYear = +(cert.accomplished_date + '').slice(0,4);
+            if(milestoneMap.has(certYear)){
+                milestoneMap.set(certYear, milestoneMap.get(certYear)! + 1);
+            }
+            else{
+                milestoneMap.set(certYear, 1);
+            }
+        })
+
+
+        const sortedMilestone = [...milestoneMap.entries()].sort((a, b) => a[0] - b[0]);
+        const ret = sortedMilestone.map(x => x[1]);
+        return ret.slice(ret.length - 15, ret.length);
+    }
+);
+
+
+export const selectAttainmentTimelineFaculty = (commex: CommunityExtension[], id: number) => createSelector(
+    selectDeanState,
+    (state: DeanState) => {
+        const floorYear = currentYear - 14;
+        let attainmentTimeline = [
+            Array.from({ length: 15 }, () => 0),
+            Array.from({ length: 15 }, () => 0),
+            Array.from({ length: 15 }, () => 0)
+        ];
+  
+        state.certs.forEach(cert => {
+            if(cert.faculty_ID !== id) return
+
+            const currYear = +(cert.accomplished_date+'').slice(0,4);
+            if(currYear >= floorYear){
+                attainmentTimeline[0][currYear - floorYear] += 1
+            }
+        })
+  
+        state.commex.forEach(commex => {
+            if(commex.faculty_ID !== id) return
+
+            const currYear = +commex.commex_date.slice(0,4);
+            if(currYear >= floorYear){
+                attainmentTimeline[1][currYear - floorYear] += 1
+            }
+        })
+  
+        state.certs.forEach(cert => {
+            if(cert.faculty_ID !== id) return
+
+            const currYear = +(cert.accomplished_date+'').slice(0,4);
+            if(currYear >= floorYear && cert.cert_type == "Completion"){
+                attainmentTimeline[2][currYear - floorYear] += 1
+            }
+        })
+  
+        attainmentTimeline.map((arr, idx) => {
+            arr.map((x, index) => {
+                if(index < 14){
+                    attainmentTimeline[idx][index + 1] = (attainmentTimeline[idx][index + 1] + x)
+                }
+            })
+        })
+  
+  
+        return attainmentTimeline;
+    }
+  );

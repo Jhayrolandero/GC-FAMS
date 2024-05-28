@@ -104,7 +104,7 @@
         'tablet:col-span-4': (privilege$ | async) === 'Admin'
       }"
       class="grid-cols-subgrid grid items-center col-span-2 border-l-4 justify-items-start gap-3 py-1 transition hover:translate-x-1 hover:bg-gray-200 hover:duration-300 duration-300 1"
-    >
+      >
       <div class="flex items-center gap-3">
         <img
           [src]="port + faculty.profile_image"
@@ -142,6 +142,7 @@
         </button>
         <mat-menu #menu="matMenu">
           <ng-template matMenuContent>
+            <button mat-menu-item (click)="triggerAnalytics(faculty)">View Analytics</button>
             <button mat-menu-item (click)="editFaculty(faculty)">Edit</button>
             <button mat-menu-item (click)="deleteForm(faculty.faculty_ID)">
               Delete

@@ -32,6 +32,7 @@ interface Event {
 
 export class FacultyMilestoneCalendarComponent implements OnInit{
   @Input() type: string = '';
+  @Input() id: number = -1;
   educAttainment!: EducationalAttainment[];
   certifications!: Certifications[];
   industryExp!: IndustryExperience[];
@@ -65,6 +66,35 @@ export class FacultyMilestoneCalendarComponent implements OnInit{
         )
       });
     }
+
+    else if (this.type === 'manage-admin'){
+      //Admin loading for calendar. opens a subscription for each observable and places each of their dates and data into the calendar.
+      this.store.select(selectAllCollegeEduc).subscribe(data => {
+        data.forEach(educ => {
+          if(educ.faculty_ID !== this.id) return
+          this.addEvent(new Date(educ.year_end), this.eventParser("Educational Attainment", educ.educ_title, educ.educ_school))
+        }
+        
+        )
+      });
+
+      this.store.select(selectCollegeCommex).subscribe(data => {
+        data.forEach(commex =>{
+          if(commex.faculty_ID !== this.id) return
+          this.addEvent(new Date(commex.commex_date), this.eventParser("Community Extension", commex.commex_title, ""))
+        }
+        )
+      });
+
+      this.store.select(selectAllExistCerts).subscribe(data => {
+        data.forEach(certs => {
+          if(certs.faculty_ID !== this.id) return
+          this.addEvent(new Date(certs.accomplished_date), this.eventParser("Certifications", certs.cert_name, certs.cert_corporation))
+        }
+        )
+      });
+    }
+
     else{
       //Admin loading for calendar. opens a subscription for each observable and places each of their dates and data into the calendar.
       this.store.select(selectAllCollegeEduc).subscribe(data => {

@@ -21,6 +21,7 @@ import { combineLatest } from 'rxjs';
 import { FacultyRequestService } from '../../services/faculty/faculty-request.service';
 import {MatTabsModule} from '@angular/material/tabs';
 import {    NgxDocViewerModule } from 'ngx-doc-viewer';
+import { MessageService } from '../../services/message.service';
 @Component({
   selector: 'app-profile',
   standalone: true,
@@ -67,6 +68,7 @@ export class ProfileComponent {
     private store: Store,
     public dialog: MatDialog,
     private router: Router,
+    private messageService: MessageService,
     private facultyRequest: FacultyRequestService
   ) {
     combineLatest([this.facultyProfile$, this.coursesFaculty$, this.certs$, this.exps$, this.projects$, this.specs$, this.educs$]).subscribe(
@@ -85,12 +87,12 @@ export class ProfileComponent {
   }
 
   updateCV() {
-
+    this.messageService.sendMessage("Updating CV...", 0)
     this.facultyRequest.postData(this.mainCv, 'addCv').subscribe({
       next: (next: any) => {console.log(next);},
       error: (error) => {console.log(error)},
       complete: () => {
-
+        this.messageService.sendMessage("CV has been updated.", 1)
       }
     });
   }

@@ -9,11 +9,11 @@
 
   <div class="w-full flex flex-col tablet:flex-row gap-3">
     <div
-      class="bg-white w-[250px] overflow-hidden rounded-[15px] shadow-main flex flex-col items-center"
+      class="bg-white tablet:max-w-[250px] max-w-full min-w-full tablet:min-w-[250px] overflow-hidden rounded-[15px] shadow-main flex flex-col items-center"
       *ngIf="facultyProfile$ | async as profile"
     >
       <div
-        class="h-[150px] w-full overflow-hidden flex items-center flex flex-col items-center justify-center"
+        class="flex-1 w-full overflow-hidden hidden tablet:flex flex-col justify-center items-center "
       >
         <img
           class="object-cover"
@@ -26,70 +26,74 @@
       >
         {{ profile.first_name + " " + profile.last_name }}
       </p>
-      <div
-        class="p-2 text-[0.7rem] rounded-full shadow-main text-blue font-Poppins font-semibold m-3"
-      >
-        {{ profile.teaching_level }}
-      </div>
     </div>
-    <div
-      class="flex flex-1 flex-col bg-white rounded-[15px] shadow-main p-3 overflow-y-auto"
-    >
-      <p class="text-blue text-[2rem] font-Poppins font-semibold">
-        Milestone Calendar
-      </p>
-      <app-faculty-milestone-calendar
-        [type]="'faculty'"
-      ></app-faculty-milestone-calendar>
+
+    <div class="grid flex-1 gap-3 flex flex-row table:flex-col">
+      <div
+        class="flex flex-col bg-white rounded-[15px] shadow-main p-3 overflow-x-auto"
+      >
+        <p class="text-blue text-[2rem] font-Poppins font-semibold">
+          Milestone Calendar
+        </p>
+        <p class="italic">As of {{ currentYear }}</p>
+        <app-faculty-milestone-calendar
+          [type]="'faculty'"
+        ></app-faculty-milestone-calendar>
+      </div>
+
+      <div class="w-full flex flex-col tablet:flex-row gap-3">
+        <div
+          class="bg-white shadow-main rounded-[15px] overflow-hidden flex flex-col flex-1 justify-center items-center py-3"
+        >
+          <p class="text-center text-blue text-[0.9rem] font-Poppins font-semibold">
+            Average Faculty Evaluation Score
+          </p>
+          <p
+            class="text-greenBar text-[4rem] font-Poppins font-bold leading-[90%]"
+            [textContent]="evalAverage$ | async | number : '1.1-1'"
+          ></p>
+    
+        </div>
+        <div
+          class="bg-white shadow-main rounded-[15px] overflow-hidden flex flex-col flex-1 justify-center items-center py-3"
+        >
+          <p class="text-center text-blue text-[0.9rem] font-Poppins font-semibold">
+            Units Undertaken
+          </p>
+          <p
+            class="text-greenBar text-[4rem] font-Poppins font-bold leading-[90%]"
+            [textContent]="units$ | async"
+          ></p>
+    
+        </div>
+        <div
+          class="bg-white shadow-main rounded-[15px] overflow-hidden flex flex-col flex-1 justify-center items-center py-3"
+        >
+          <p class="text-center text-blue text-[0.9rem] font-Poppins font-semibold">
+            Total Certificates
+          </p>
+          <p
+            class="text-greenBar text-[4rem] font-Poppins font-bold leading-[90%]"
+            [textContent]="certCount$ | async"
+          ></p>
+    
+        </div>
+        <div
+          class="bg-white shadow-main rounded-[15px] overflow-hidden flex flex-col flex-1 justify-center items-center py-3"
+        >
+          <p class="text-center text-blue text-[0.9rem] font-Poppins font-semibold">
+            Seminars Completed
+          </p>
+          <p
+            class="text-greenBar text-[4rem] font-Poppins font-bold leading-[90%]"
+            [textContent]="seminarCount$ | async"
+          ></p>
+    
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="w-full flex flex-col tablet:flex-row gap-3">
-    <div
-      class="bg-white shadow-main rounded-[15px] overflow-hidden flex flex-col flex-1 justify-center items-center py-3"
-    >
-      <p
-        class="text-greenBar text-[5rem] font-Poppins font-bold leading-[90%]"
-        [textContent]="evalAverage$ | async | number : '1.1-1'"
-      ></p>
-      <p class="text-center text-blue text-[1.2rem] font-Poppins font-semibold">
-        Average Faculty<br />Evaluation Score
-      </p>
-    </div>
-    <div
-      class="bg-white shadow-main rounded-[15px] overflow-hidden flex flex-col flex-1 justify-center items-center py-3"
-    >
-      <p
-        class="text-greenBar text-[5rem] font-Poppins font-bold leading-[90%]"
-        [textContent]="units$ | async"
-      ></p>
-      <p class="text-center text-blue text-[1.2rem] font-Poppins font-semibold">
-        Units Undertaken
-      </p>
-    </div>
-    <div
-      class="bg-white shadow-main rounded-[15px] overflow-hidden flex flex-col flex-1 justify-center items-center py-3"
-    >
-      <p
-        class="text-greenBar text-[5rem] font-Poppins font-bold leading-[90%]"
-        [textContent]="certCount$ | async"
-      ></p>
-      <p class="text-center text-blue text-[1.2rem] font-Poppins font-semibold">
-        Total Certificates
-      </p>
-    </div>
-    <div
-      class="bg-white shadow-main rounded-[15px] overflow-hidden flex flex-col flex-1 justify-center items-center py-3"
-    >
-      <p
-        class="text-greenBar text-[5rem] font-Poppins font-bold leading-[90%]"
-        [textContent]="seminarCount$ | async"
-      ></p>
-      <p class="text-center text-blue text-[1.2rem] font-Poppins font-semibold">
-        Seminars Completed
-      </p>
-    </div>
-  </div>
 
   <div
     *ngIf="milestonesAchieved$ | async as milestone"
@@ -113,9 +117,9 @@
     *ngIf="attainmentTimeline$ | async as attainment"
     class="w-full bg-white rounded-[15px] shadow-main p-5 pt-1"
   >
-    <div class="flex flex-row items-center gap-3">
+    <div class="flex flex-col justify-center">
       <p class="text-blue font-bold text-[2rem] my-2">Attainment Timeline</p>
-      <div class="flex flex-col tablet:flex-row gap-2">
+      <div class="flex flex-col tablet:flex-row gap-2 mb-2">
         <div class="flex flex-row gap-1">
           <div
             class="w-[23px] h-[23px] rounded-[5px] shadow-main duration-300 hover:duration-300 hover:bg-opacity-50"

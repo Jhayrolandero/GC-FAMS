@@ -27,6 +27,7 @@ import { LineGraphComponent } from '../../components/charts/line-graph/line-grap
 })
 export class AnalyticsComponent {
   port = mainPort;
+  currentYear = new Date().getFullYear();
   yearsArray: string[] = Array.from({ length: 15 }, (_, i) => (new Date().getFullYear() - 14) + i).map(String);
   certToggle = false;
   commexToggle = false;

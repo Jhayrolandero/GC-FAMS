@@ -15,6 +15,7 @@ import {
    selectCollegeLevel,
     selectCollegeMilestoneCount,
      selectCommonSeminars,
+      selectCurrYearAverageSeminarCount,
       selectFacultyExpertise,
        selectTeachingLength,
        selectTopExpertise,
@@ -56,19 +57,13 @@ export class ManageAnalyticsComponent implements OnInit{
   attainmentTimeline$ = this.store.select(selectAttainmentTimeline);
   topLevel$ = this.store.select(selectCollegeLevel);
   teachingLength$ = this.store.select(selectTeachingLength);
+  seminarYearAverageFaculty$ = this.store.select(selectCurrYearAverageSeminarCount);
 
 
   constructor(public store: Store){}
   ngOnInit(): void {
-    this.topLevel$.subscribe(next => {
+    this.seminarYearAverageFaculty$.subscribe(next => {
       console.log(next);
-    })
-
-    this.educationalAttainmentTimeline$.subscribe(next => {
-      console.log(next)
-    })
-    this.certCountAverage$.subscribe(next => {
-      console.log(next)
     })
   }
 }

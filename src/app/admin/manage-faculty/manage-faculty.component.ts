@@ -8,27 +8,32 @@ import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { Faculty } from '../../services/Interfaces/faculty';
 import { EventEmitter } from '@angular/core';
 import { AddFacultyComponent } from './add-faculty/add-faculty.component';
+import { ManageindividualanalyticsComponent } from "./manageindividualanalytics/manageindividualanalytics.component";
 
 @Component({
-  selector: 'app-manage-faculty',
-  standalone: true,
-  imports: [
-    NgFor,
-    LoadingScreenComponent,
-    CommonModule,
-    MatButtonModule,
-    MatDialogModule,
-    FacultySectionComponent,
-    AddFacultyComponent
-  ],
-  templateUrl: './manage-faculty.component.html',
-  styleUrl: './manage-faculty.component.css'
+    selector: 'app-manage-faculty',
+    standalone: true,
+    templateUrl: './manage-faculty.component.html',
+    styleUrl: './manage-faculty.component.css',
+    imports: [
+        NgFor,
+        LoadingScreenComponent,
+        CommonModule,
+        MatButtonModule,
+        MatDialogModule,
+        FacultySectionComponent,
+        AddFacultyComponent,
+        ManageindividualanalyticsComponent
+    ]
 })
 
 
 export class ManageFacultyComponent {
   showAdd: boolean = false;
+  showAnalytics: boolean = false;
+  selectedFaculty!: Faculty;
   editData?: Faculty;
+  analyticsData?: Faculty;
   certToggle = false;
   commexToggle = false;
   seminarToggle = false;
@@ -45,8 +50,15 @@ export class ManageFacultyComponent {
     this.showAdd = !this.showAdd;
   }
 
+
+
   editFaculty(faculty: Faculty){
     this.editData = faculty;
     this.switchShow();
+  }
+
+  triggerAnalytics(faculty: Faculty){
+    this.showAnalytics = !this.showAnalytics;
+    this.selectedFaculty = faculty;
   }
 }

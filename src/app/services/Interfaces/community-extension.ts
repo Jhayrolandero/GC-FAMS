@@ -1,4 +1,5 @@
 export interface CommunityExtension {
+  faculty_ID: number,
   commex_ID: number,
   commex_title: string,
   commex_details: string,

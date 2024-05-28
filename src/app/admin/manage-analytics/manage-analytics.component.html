@@ -48,47 +48,53 @@
       class="bg-white shadow-main rounded-[15px] overflow-hidden flex flex-col flex-1 justify-center items-center py-3"
     >
       <p
-        class="text-greenBar text-[5rem] font-Poppins font-bold leading-[90%]"
+      class="text-center text-blue text-[0.9rem] font-Poppins font-semibold"
+      *ngIf="profile$ | async as profile"
+      >
+        {{ profile.college_abbrev }} Average Faculty Evaluation Score
+      </p>
+      <p
+        class="text-greenBar text-[4rem] font-Poppins font-bold leading-[90%]"
         [textContent]="evaluationYearAverage$ | async | number : '1.1-1'"
       ></p>
-      <p
-        class="text-center text-blue text-[1.2rem] font-Poppins font-semibold"
-        *ngIf="profile$ | async as profile"
-      >
-        {{ profile.college_abbrev }} Average Faculty<br />Evaluation Score
-      </p>
+
     </div>
     <div
       class="bg-white shadow-main rounded-[15px] overflow-hidden flex flex-col flex-1 justify-center items-center py-3"
     >
+      <p class="text-center text-blue text-[0.9rem] font-Poppins font-semibold">
+        Average Class Units per Faculty
+      </p>
       <p
-        class="text-greenBar text-[5rem] font-Poppins font-bold leading-[90%]"
+        class="text-greenBar text-[4rem] font-Poppins font-bold leading-[90%]"
         [textContent]="unitFacultyAverage$ | async | number : '1.1-1'"
       ></p>
-      <p class="text-center text-blue text-[1.2rem] font-Poppins font-semibold">
-        Average Class Units <br />per Faculty
-      </p>
+
     </div>
     <div
       class="bg-white shadow-main rounded-[15px] overflow-hidden flex flex-col flex-1 justify-center items-center py-3"
     >
+      <p class="text-center text-blue text-[0.9rem] font-Poppins font-semibold">
+        Average Faculty Total Certificate Count
+      </p>
       <p
-        class="text-greenBar text-[5rem] font-Poppins font-bold leading-[90%]"
+        class="text-greenBar text-[4rem] font-Poppins font-bold leading-[90%]"
         [textContent]="certCountAverage$ | async | number : '1.1-1'"
       ></p>
-      <p class="text-center text-blue text-[1.2rem] font-Poppins font-semibold">
-        Average Faculty <br />Total Certificate Count
-      </p>
+
     </div>
     <div
       class="bg-white shadow-main rounded-[15px] overflow-hidden flex flex-col flex-1 justify-center items-center py-3"
     >
-      <p class="text-greenBar text-[5rem] font-Poppins font-bold leading-[90%]">
-        4.3
+      <p class="text-center text-blue text-[0.9rem] font-Poppins font-semibold">
+        Average Faculty Seminars Attended
       </p>
-      <p class="text-center text-blue text-[1.2rem] font-Poppins font-semibold">
-        Average Faculty<br />Seminars Attended
+      <p 
+        class="text-greenBar text-[4rem] font-Poppins font-bold leading-[90%]"
+        [textContent]="seminarYearAverageFaculty$ | async | number : '1.1-1'"
+      >
       </p>
+
     </div>
   </div>
 
