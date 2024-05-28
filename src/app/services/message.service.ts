@@ -22,11 +22,6 @@ export class MessageService {
     })
   }
 
-  // sendMessage(message: string, status: number): void  {
-  //   this.messages.update(value => [...value, {'message': message, 'status': status}])
-  //   console.log(this.messages().length)
-  // }
-
   get getMessage(): Message[] {
     return this.messages
   }

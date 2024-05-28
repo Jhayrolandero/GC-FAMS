@@ -209,17 +209,10 @@ export class CommunityExtensionsComponent {
     private attendedStore: Store<{ attended: AttendedState }>,
     private commexCollegeStore: Store<{ collegeCommexs: CommexState }>,
     private profileStore: Store<{ profile: ProfileState }>,
-    private messageService: MessageService,
     private cryptoJS: CryptoJSService,
-    private store: Store
-
   ) {
 
     this.attendeeLoading$ = this.attendeeStore.pipe(select(AttendeeSelector.attendeeLoadingSelector))
-    // this.commexs$ = merge(
-    //   this.commexFacultyStore.pipe(select(CommexsSelector.parsedCommexSelector)),
-    //   this.commexCollegeStore.pipe(select(CommexsSelector.parsedCollegeCommexSelector))
-    // )
     this.commexs$ = this.commexFacultyStore.pipe(select(CommexsSelector.parsedCommexSelector)),
     this.isLoading$ = this.commexFacultyStore.pipe(select(CommexsSelector.isLoadingSelector))
     this.latestCommex$ = this.commexFacultyStore.pipe(select(CommexsSelector.latestCommexSelector))
@@ -231,7 +224,7 @@ export class CommunityExtensionsComponent {
 
   commexs$: Observable<CommunityExtension[]>
 
-  latestCommex$: Observable<CommunityExtension>
+  latestCommex$: Observable<CommunityExtension | null>
   isLoading$: Observable<boolean>
   isAttendedLoading$: Observable<boolean>
   isProfileLoading$: Observable<boolean>
@@ -250,8 +243,6 @@ export class CommunityExtensionsComponent {
   ngOnInit(): void {
 
     this.attendeeNumberFetch()
-    // this.attendedFetch()
-
     // Switch the view depending on state
     if (this.switch === "faculty") {
       this.commexs$ = this.commexFacultyStore.pipe(select(CommexsSelector.parsedCommexSelector))

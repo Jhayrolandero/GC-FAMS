@@ -15,7 +15,7 @@ import * as AttendeeActions from "./attendee.action";
 import { attendedSelector, attendeeNumberSelector } from "./attendee.selector";
 import { NumberCardComponent } from "@swimlane/ngx-charts";
 import { CommexState } from "../../services/Interfaces/commexState";
-import { deleteCommexSuccess } from "../commex/commex.action";
+import { deleteCommexSuccess, getCommex } from "../commex/commex.action";
 import { commexSelectorOne } from "../commex/commex.selector";
 import { CommunityExtension } from "../../services/Interfaces/community-extension";
 @Injectable()
@@ -82,6 +82,8 @@ export class AttendeeEffects {
           this.attendeeStore.dispatch(AttendeeActions.getAttendedSuccess({
              attended: { [action.commex_ID]: 0 },
             }))
+
+            // this.commexFacultyStore.dispatch(getCommex({ refresh:true }));
 
             // Delete the commex from the display
             this.commexFacultyStore.dispatch(deleteCommexSuccess({ commex_ID : action.commex_ID}))

@@ -53,7 +53,7 @@
   </h1>
   <hr class="border-[1.5px] border-slate-400" />
   <div
-    *ngIf="latestCommex$ | async as latestCommex"
+    *ngIf="latestCommex$ | async as latestCommex; else emptyBlock"
     class="bg-white shadow-main w-full rounded-[15px] flex mobileS:flex-col tablet:flex-row overflow-hidden hover:scale-[101%] hover:duration-300 duration-300 min-h[10rem]"
   >
     <div
@@ -137,6 +137,7 @@
       </div>
     </div>
   </div>
+  <ng-template #emptyBlock><h4>Empty lols</h4> </ng-template>
 </div>
 
 <div class="text-blue p-5">
@@ -171,9 +172,9 @@
   </div>
   <hr class="border-[1.5px] border-slate-400" />
   <app-other-commex>
-    <div *ngFor="let commex of commexs$ | async; let i = index">
+    <div *ngIf="commexs$ | async as commexs">
+      @for (commex of commexs; track $index) {
       <div
-        *ngIf="i != 0"
         class="bg-white rounded-xl shadow-main flex flex-col gap-2 duration-300 hover:scale-[102%] hover:shadow-xl hover:duration-300 break-inside-avoid mb-2 overflow-hidden"
       >
         <div
@@ -194,7 +195,6 @@
               {{ commex.commex_title }}
             </h4>
             @if((attended$ | async)?.[commex.commex_ID] == 1) {
-
             <button
               mat-button
               [matMenuTriggerFor]="menu"
@@ -209,7 +209,6 @@
             </mat-menu>
             }
           </div>
-          <!-- <h4 class="text-xl font-bold">{{ commex.commex_title }}</h4> -->
           <img
             src="../../../assets/faculty-dashboard/BlueVector.png"
             class="w-[20px] h-[20px] mr-[5px] inline-block"
@@ -262,11 +261,12 @@
             </div>
           </div>
         </div>
-        <!-- <button class="bg-blue text-white font-bold p-2 rounded-main">
-                Read More
-              </button> -->
       </div>
+      } @empty {
+      <h4>Empty lols</h4>
+      }
     </div>
+    >
   </app-other-commex>
 </div>
 }
