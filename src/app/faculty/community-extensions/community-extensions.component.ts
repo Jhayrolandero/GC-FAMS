@@ -15,7 +15,7 @@ import {
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
-import { FormArray, FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { TooltipComponent } from '../../components/tooltip/tooltip.component';
@@ -23,7 +23,6 @@ import { Attendee } from '../../services/Interfaces/attendee';
 import { Observable, Subscription, catchError, first, from, map, merge, mergeMap, of, take } from 'rxjs';
 import { Dictionary } from '../../services/Interfaces/dictionary';
 import { Response } from '../../services/Interfaces/response';
-import { MessageService } from '../../services/message.service';
 import { Store, select } from '@ngrx/store';
 import { CommexState } from '../../services/Interfaces/commexState';
 import * as CommexActions from '../../state/commex/commex.action';
@@ -41,6 +40,9 @@ import { AttendedState } from '../../services/Interfaces/attendedState';
 import { MatMenuModule } from '@angular/material/menu';
 import { CryptoJSService } from '../../services/crypto-js.service';
 import { Encryption } from '../../services/Interfaces/encryption';
+import { MatTabsModule } from '@angular/material/tabs';
+import { commexSelectorOne } from '../../state/commex/commex.selector';
+import { MessageService } from '../../services/message.service';
 
 @Component({
   selector: 'app-commex-form',
@@ -73,13 +75,17 @@ export class CommexFormComponent {
   fetchAttendeeError$: Observable<Error> = this.fetchAttendee$.pipe(catchError((err) => of(err)));
   profile$: Observable<Profile | undefined>
   postLoading$: Observable<boolean>
+  isEditMode: boolean = false
+  imgSrc: string | undefined
   constructor(
+    private messageService: MessageService,
     private facultyService: FacultyRequestService,
     public dialogRef: MatDialogRef<CommexFormComponent>,
     private store: Store<{ commexs: CommexState }>,
     private profileStore: Store<{ profile: ProfileState }>,
     private commexFacultyStore: Store<{ commexs: CommexState }>,
     private _fb: FormBuilder,
+    @Inject(MAT_DIALOG_DATA) public data: { commex_ID?: number, editMode: boolean  },
     private cryptoJS: CryptoJSService
   ) {
     this.commexForm = this._fb.group({
@@ -101,6 +107,48 @@ export class CommexFormComponent {
 
     this.profile$ = this.profileStore.pipe(select(ProfileSelectors.selectAllProfile))
     this.postLoading$ = this.commexFacultyStore.pipe(select(CommexsSelector.postLoadingSelector))
+  }
+
+  // fetchCommexDetails() : Subscription {
+  //   return this.commexFacultyStore.select(commexSelectorOne(this.data.commex_ID)).subscribe( res => {
+  //     this.commexForm.patchValue({
+  //       commex_title: res.commex_title,
+  //       commex_details: res.commex_details,
+  //       commex_date: res.commex_date
+  //     })
+  //   }
+  //   )
+  // }
+
+
+  editCommexForm = new FormGroup({
+    commex_title: new FormControl('', [
+      Validators.required
+    ]),
+    commex_details: new FormControl('', [
+      Validators.required
+    ]),
+    commex_date: new FormControl('', [
+      Validators.required
+    ]),
+  })
+
+  ngOnInit() {
+    if(this.data.editMode) {
+      this.isEditMode = true
+      this.commexFacultyStore.select(commexSelectorOne(this.data.commex_ID!)).subscribe(res => {
+        this.editCommexForm.patchValue({
+          commex_title: res.commex_title,
+          commex_details: res.commex_details,
+          commex_date: res.commex_date
+        })
+        this.imgSrc = mainPort + res.commex_header_img
+      })
+
+    } else {
+      this.isEditMode = false
+
+    }
   }
 
 
@@ -137,7 +185,6 @@ export class CommexFormComponent {
   }
 
   submitAttendee() {
-
     const formArray: FormArray = this.commexForm.get('attendees') as FormArray;
     this.commexformData = this.facultyService.formDatanalize(this.commexForm);
     formArray.value.forEach((val: any) => {
@@ -145,6 +192,7 @@ export class CommexFormComponent {
     })
 
     this.store.dispatch(CommexActions.postCommex({ commex: this.commexformData }))
+    this.dialogRef.close()
   }
 
   onNoClick(): void {
@@ -152,16 +200,30 @@ export class CommexFormComponent {
   }
 
   submitForm() {
+    if(!this.commexForm.valid) return;
+
     const formData = this.facultyService.formDatanalize(this.commexForm);
     this.store.dispatch(CommexActions.postCommex({ commex: formData }))
+    this.dialogRef.close()
+  }
+
+  editForm() {
+    if(!this.editCommexForm.valid) return;
+    this.store.dispatch(CommexActions.editCommex({ commex: this.editCommexForm, commex_ID: this.data.commex_ID! }))
+
+    this.dialogRef.close()
   }
 
   imageURL?: string = undefined;
   PreviewImage(event: Event) {
+
+    const allowedFileType = ["image/png", "image/jpeg"]
     const inputElement = event.target as HTMLInputElement;
     const file = inputElement.files?.[0]; // Using optional chaining to handle null or undefined
 
-    if (file) {
+
+
+    if (file && allowedFileType.includes(file.type)) {
       // File Preview
       const reader = new FileReader();
       reader.onload = () => {
@@ -172,8 +234,15 @@ export class CommexFormComponent {
       };
       reader.readAsDataURL(file);
     }
-    console.log(this.commexForm);
+  else {
+    this.messageService.sendMessage("File type should be .png or .jpeg/.jpg", -1)
+
   }
+}
+
+ngOnDestroy() {
+  this.dialogRef.close()
+}
 }
 
 
@@ -182,7 +251,8 @@ export class CommexFormComponent {
 @Component({
   selector: 'app-community-extensions',
   standalone: true,
-  imports: [OtherCommexComponent,
+  imports: [
+    OtherCommexComponent,
     NgFor,
     SlicePipe,
     CommonModule,
@@ -194,8 +264,8 @@ export class CommexFormComponent {
     MatFormFieldModule,
     MatDatepickerModule,
     MatMenuModule,
-    MatButtonModule
-  ],
+    MatButtonModule,
+    MatTabsModule  ],
   templateUrl: './community-extensions.component.html',
   styleUrl: './community-extensions.component.css'
 })
@@ -209,17 +279,10 @@ export class CommunityExtensionsComponent {
     private attendedStore: Store<{ attended: AttendedState }>,
     private commexCollegeStore: Store<{ collegeCommexs: CommexState }>,
     private profileStore: Store<{ profile: ProfileState }>,
-    private messageService: MessageService,
     private cryptoJS: CryptoJSService,
-    private store: Store
-
   ) {
 
     this.attendeeLoading$ = this.attendeeStore.pipe(select(AttendeeSelector.attendeeLoadingSelector))
-    // this.commexs$ = merge(
-    //   this.commexFacultyStore.pipe(select(CommexsSelector.parsedCommexSelector)),
-    //   this.commexCollegeStore.pipe(select(CommexsSelector.parsedCollegeCommexSelector))
-    // )
     this.commexs$ = this.commexFacultyStore.pipe(select(CommexsSelector.parsedCommexSelector)),
     this.isLoading$ = this.commexFacultyStore.pipe(select(CommexsSelector.isLoadingSelector))
     this.latestCommex$ = this.commexFacultyStore.pipe(select(CommexsSelector.latestCommexSelector))
@@ -230,8 +293,8 @@ export class CommunityExtensionsComponent {
   }
 
   commexs$: Observable<CommunityExtension[]>
-
-  latestCommex$: Observable<CommunityExtension>
+  attending$ = this.attendedStore.pipe(select(AttendeeSelector.attendingSelector))
+  latestCommex$: Observable<CommunityExtension | null>
   isLoading$: Observable<boolean>
   isAttendedLoading$: Observable<boolean>
   isProfileLoading$: Observable<boolean>
@@ -250,8 +313,6 @@ export class CommunityExtensionsComponent {
   ngOnInit(): void {
 
     this.attendeeNumberFetch()
-    // this.attendedFetch()
-
     // Switch the view depending on state
     if (this.switch === "faculty") {
       this.commexs$ = this.commexFacultyStore.pipe(select(CommexsSelector.parsedCommexSelector))
@@ -314,9 +375,14 @@ export class CommunityExtensionsComponent {
   }
 
   openDialog() {
-    this.dialog.open(CommexFormComponent).afterClosed().subscribe(result => {
-      // this.getCommex(this.switch);
-      // this.checkCache()
+    this.dialog.open(CommexFormComponent, {
+      data: { undefined, editMode: false },
+    })
+  }
+
+  openEdit(commex_ID: number): void {
+    this.dialog.open(CommexFormComponent, {
+      data: { commex_ID, editMode: true },
     });
   }
 
@@ -350,7 +416,7 @@ export class CommunityExtensionsComponent {
 
       this.profileCollege$.pipe(first()).subscribe(
         () => {
-          this.commexCollegeStore.dispatch(CommexActions.getCollegeCommex({ uri: `getcommex/?t=college` }))
+          this.commexCollegeStore.dispatch(CommexActions.getCollegeCommex({ uri: `getcommex/?t=college`, refresh: false }))
         }
       )
       this.commexs$ = this.commexCollegeStore.pipe(select(CommexsSelector.parsedCollegeCommexSelector))
@@ -360,7 +426,7 @@ export class CommunityExtensionsComponent {
       // this.attendedFetch()
     } else {
       this.switch = 'faculty'
-      this.store.dispatch(CommexActions.getCommex());
+      // this.store.dispatch(CommexActions.getCommex());
       this.commexs$ = this.commexFacultyStore.pipe(select(CommexsSelector.parsedCommexSelector))
       this.isLoading$ = this.commexFacultyStore.pipe(select(CommexsSelector.isLoadingSelector))
       this.latestCommex$ = this.commexFacultyStore.pipe(select(CommexsSelector.latestCommexSelector))
@@ -399,11 +465,13 @@ export class CommunityExtensionsComponent {
 
   leaveCommex(commex_ID: number) {
     this.attendeeStore.dispatch(AttendeeActions.leaveCommex({ commex_ID: commex_ID}))
+    this.attendeeStore.dispatch(AttendeeActions.setAttendedLoading({ status: true}))
     // reset the attendees to fetch new
-    this.store.dispatch(CommexActions.getCommex());
+    // this.store.dispatch(CommexActions.getCommex());
   }
 
-  attendCommex(commex_ID: number) {
+  attendCommex(commex_ID: number, commex: CommunityExtension) {
+    console.log("Nay")
     const attendCommex = new FormData()
 
     let faculty_ID = undefined
@@ -415,17 +483,38 @@ export class CommunityExtensionsComponent {
     )
     const attendeeForm = { commex_ID, faculty_ID }
 
+
     attendCommex.append("attendees[]", JSON.stringify(attendeeForm))
-    this.attendeeStore.dispatch(AttendeeActions.joinCommex({ commex_ID: commex_ID, formData: attendCommex }))
+
+
+    this.attendeeStore.dispatch(AttendeeActions.joinCommex({
+      commex_ID: commex_ID,
+      formData: attendCommex,
+      commex: this.removeHTTP(commex, mainPort)
+    }))
+    this.attendeeStore.dispatch(AttendeeActions.setAttendedLoading({ status: true}))
+
     // reset the attendees to fetch new
   }
 
+  // Band aid function just to remove the http://
+
+  removeHTTP(commex : CommunityExtension, mainPort: string) {
+    const commexCopy = {...commex}
+    return {
+      ...commexCopy,
+      commex_header_img: commexCopy.commex_header_img.replace(mainPort, '')
+    }
+    }
+
 
   openConfirm(commex_ID: number): void {
-    let deleteDialog = this.dialog.open(ConfirmDeleteComponent, {
+    this.dialog.open(ConfirmDeleteComponent, {
       data: { commex_ID, view: this.switch },
     });
   }
+
+
 }
 
 

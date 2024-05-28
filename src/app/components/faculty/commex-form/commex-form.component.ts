@@ -17,7 +17,6 @@ export class CommexFormComponent {
   @Output() setToggle = new EventEmitter<string>();
 
 
-
   attendeeForm;
   constructor(
     private facultyPostService: FacultyRequestService,
@@ -31,6 +30,12 @@ export class CommexFormComponent {
     commex_title: new FormControl(''),
     commex_details: new FormControl(''),
     commex_header_img: new FormControl<File | null>(null),
+    commex_date: new FormControl(''),
+  })
+
+  editCommexForm = new FormGroup({
+    commex_title: new FormControl(''),
+    commex_details: new FormControl(''),
     commex_date: new FormControl(''),
   })
 
@@ -51,32 +56,9 @@ export class CommexFormComponent {
     });
   }
 
-  //Dynamic Create, Edit, and Delete function call for faculty post service.
-  addRes(form: FormGroup, type: string) {
-    // this.facultyService.addRes(form, type).subscribe({
-    //   next: value => {console.log(value);
-    //                   this.emptyType('');},
-    //   error: err => console.log(err),
-    // });
+  editForm() {
+
   }
-
-  editRes(form: FormGroup, type: string, id: number) {
-    // this.facultyService.editRes(form, type, id).subscribe({
-    //   next: value => {console.log(value);
-    //                   this.emptyType('');},
-    //   error: err => console.log(err),
-    // });
-  }
-
-  deleteRes(id: number, type: string) {
-    // this.facultyService.deleteRes(id, type).subscribe({
-    //   next: value => {console.log(value);
-    //                   this.emptyType('');},
-    //   error: err => console.log(err),
-    // });
-  }
-
-
 
   imageURL?: string = undefined;
   PreviewImage(event: Event) {

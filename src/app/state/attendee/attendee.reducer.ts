@@ -19,6 +19,7 @@ export const initialAttendeeState: AttendeeState = {
 }
 
 export const initialAttendedState: AttendedState = {
+  attending: false,
   isLoading: false,
   attended: {},
   error: null
@@ -44,7 +45,7 @@ export const attendedReducer = createReducer(
   })),
   on(AttendeeActions.setAttendedLoading, (state, action) => ({
     ...state,
-    isLoading: action.status,
+    attending: action.status
   }))
 )
 

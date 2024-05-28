@@ -32,7 +32,7 @@ import { selectAllProfile } from '../../state/faculty-state/faculty-state.select
     styleUrl: './manage-analytics.component.css',
     imports: [LoadingScreenComponent, FacultyMilestoneCalendarComponent, PieChartComponent, LineGraphComponent,  BarChartComponent, ScatterPlotComponent, CommonModule, NgFor]
 })
-export class ManageAnalyticsComponent implements OnInit{
+export class ManageAnalyticsComponent{
   isLoading: boolean = true;
   date = new Date();
   currentYear: number  = this.date.getFullYear();

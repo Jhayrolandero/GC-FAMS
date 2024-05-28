@@ -40,6 +40,10 @@ export const attendedLoadingSelector = createSelector(attendedFeature,
   (state) => state.isLoading
 )
 
+export const attendingSelector = createSelector(attendedFeature,
+  (state) => state.attending
+)
+
 
 
 

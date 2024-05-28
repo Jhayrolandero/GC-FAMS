@@ -27,7 +27,9 @@
     <div
       class="bg-blue p-5 rounded-[15px] tablet:w-10/12 laptop:w-8/12 max-w-screen-md"
     >
-      <p class="p-3 pt-0 text-center mobileS:text-[1rem] tablet:text-3xl font-Poppins font-bold">
+      <p
+        class="p-3 pt-0 text-center mobileS:text-[1rem] tablet:text-3xl font-Poppins font-bold"
+      >
         Welcome Faculty Members!
       </p>
 
@@ -148,10 +150,8 @@
           The email or password is incorrect.
         </p>
 
-        <a href="" class="text-end text-blue justify-self-end select-none"
-          >Forgot Password?</a
-        >
         <input
+          [disabled]="isLoggin"
           type="submit"
           value="Login"
           class="bg-blue rounded-full py-2 px-20 max-w-min font-semibold"
