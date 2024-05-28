@@ -43,6 +43,7 @@ import { Encryption } from '../../services/Interfaces/encryption';
 import { MatTabsModule } from '@angular/material/tabs';
 import { commexSelectorOne } from '../../state/commex/commex.selector';
 import { MessageService } from '../../services/message.service';
+import { EmptyTitleComponent } from '../../components/empty-title/empty-title.component';
 
 @Component({
   selector: 'app-commex-form',
@@ -265,7 +266,10 @@ ngOnDestroy() {
     MatDatepickerModule,
     MatMenuModule,
     MatButtonModule,
-    MatTabsModule  ],
+    MatTabsModule,
+    EmptyTitleComponent
+
+  ],
   templateUrl: './community-extensions.component.html',
   styleUrl: './community-extensions.component.css'
 })
