@@ -53,6 +53,8 @@ export class CommexsEffects {
       pipe(
         map(() => {
           this.commexFacultyStore.dispatch(CommexActions.getCommex({ refresh:true }));
+          this.commexCollegeStore.dispatch(CommexActions.getCollegeCommex({ uri: `getcommex/?t=college`, refresh: true }))
+
           this.messageService.sendMessage("Commex has been edited!", 1)
           return CommexActions.editCommexSuccess()}),
         catchError(err => {
