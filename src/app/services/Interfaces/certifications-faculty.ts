@@ -8,5 +8,6 @@ export interface CertificationsFaculty {
     cert_details: string,
     cert_corporation: string
     accomplished_date: Date,
-    cert_image: string
+    cert_image: string,
+    isSelected: boolean
 }

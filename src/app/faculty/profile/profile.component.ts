@@ -76,7 +76,7 @@ export class ProfileComponent {
         this.mainCv = {
           profile: faculty,
           courses: courseFaculty,
-          certificates: certs,
+          certificates: certs.filter((x) => x.isSelected),
           experience: exps.filter((x) => x.isSelected),
           projects: proj.filter((x) => x.isSelected),
           expertise: specs.filter((x) => x.isSelected),

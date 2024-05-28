@@ -63,7 +63,7 @@
             <app-faculty-education (deleteEvent)="deleteDialog($event)" (editEvent)="openDialog('Educational Attainment', $event)" *ngIf="rotated"></app-faculty-education>
         }
         @case("Certifications"){
-            <app-faculty-certifications *ngIf="rotated"></app-faculty-certifications>
+            <app-faculty-certifications (deleteEvent)="deleteDialog($event)"  *ngIf="rotated"></app-faculty-certifications>
         }
         @case("Industry Experience"){
             <app-faculty-experience (deleteEvent)="deleteDialog($event)" (editEvent)="openDialog('Industry Experience', $event)" *ngIf="rotated"></app-faculty-experience>
