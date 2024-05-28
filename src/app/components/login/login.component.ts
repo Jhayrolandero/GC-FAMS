@@ -24,6 +24,7 @@ export class LoginComponent {
   subTitle: string = "Faculty Profiling and Development Monitoring System"
   privSwitch!: boolean;
   validForm = true;
+  isLoggin: boolean =  false
 
   // url = mainPort + '/GC-FaMS-API/API/test';
   url = mainPort + '/GC-FaMS-API/API/login';
@@ -47,11 +48,12 @@ export class LoginComponent {
   }
 
   onLogin(): void {
+    this.isLoggin = true
     this.store.dispatch(logOut());
     this.authService.flushToken();
     this.messageService.sendMessage("Logging In", 0)
     this.validForm = true;
-    
+
     //Main http post request, uses JwtToken interface, and stringified loginForm
     this.http.post<JwtToken>(
       this.url,
@@ -67,19 +69,19 @@ export class LoginComponent {
             res.privilege == 0 ? this.router.navigate(['/faculty']) : this.router.navigate(['/admin']);
 
             this.messageService.sendMessage("Welcome Back!", 1)
+
           } else if (res.code == 403) {
             console.log("Invalid parameters: ");
-            console.log(res);
             this.validForm = false;
           } else if (res.code == 404) {
             console.log("Invalid query: ")
-            console.log(res);
             this.validForm = false;
           }
+          this.isLoggin = false
         },
         error: (err) => {
           this.messageService.sendMessage("An unexpected Error has occurred!", -1)
-          console.log(err)
+          this.isLoggin = false
         }
       })
   }

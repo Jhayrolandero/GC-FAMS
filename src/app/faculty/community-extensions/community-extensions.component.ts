@@ -41,6 +41,7 @@ import { AttendedState } from '../../services/Interfaces/attendedState';
 import { MatMenuModule } from '@angular/material/menu';
 import { CryptoJSService } from '../../services/crypto-js.service';
 import { Encryption } from '../../services/Interfaces/encryption';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @Component({
   selector: 'app-commex-form',
@@ -73,6 +74,8 @@ export class CommexFormComponent {
   fetchAttendeeError$: Observable<Error> = this.fetchAttendee$.pipe(catchError((err) => of(err)));
   profile$: Observable<Profile | undefined>
   postLoading$: Observable<boolean>
+
+
   constructor(
     private facultyService: FacultyRequestService,
     public dialogRef: MatDialogRef<CommexFormComponent>,
@@ -182,7 +185,8 @@ export class CommexFormComponent {
 @Component({
   selector: 'app-community-extensions',
   standalone: true,
-  imports: [OtherCommexComponent,
+  imports: [
+    OtherCommexComponent,
     NgFor,
     SlicePipe,
     CommonModule,
@@ -194,8 +198,8 @@ export class CommexFormComponent {
     MatFormFieldModule,
     MatDatepickerModule,
     MatMenuModule,
-    MatButtonModule
-  ],
+    MatButtonModule,
+    MatTabsModule  ],
   templateUrl: './community-extensions.component.html',
   styleUrl: './community-extensions.component.css'
 })
