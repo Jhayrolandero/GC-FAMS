@@ -14,7 +14,11 @@
   <div
     class="w-full items-center bg-white bg-opacity-70 shadow-main rounded-[15px] p-5"
   >
-    <h1 class="font-Poppins font-semibold text-[2rem]">Milestone Calendar</h1>
+    <h1
+      class="font-Poppins font-semibold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] my-2 tablet:text-start text-center"
+    >
+      Milestone Calendar
+    </h1>
     <div class="flex items-center flex-col laptop:flex-row">
       <div
         class="w-full tablet:w-[220px] bg-white rounded-[15px] shadow-main flex flex-col items-center py-5"
@@ -97,7 +101,9 @@
     *ngIf="educationalAttainmentTimeline$ | async as educTimeline"
     class="w-full bg-white rounded-[15px] shadow-main p-5 pt-1"
   >
-    <p class="text-blue font-bold text-[2rem] my-2">
+    <p
+      class="text-blue font-bold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] my-2 tablet:text-start text-center my-2"
+    >
       Educational Attainment Timeline
     </p>
     <app-line-graph
@@ -115,7 +121,9 @@
     *ngIf="milestoneCount$ | async as milestone"
     class="w-full bg-white rounded-[15px] shadow-main p-5 pt-1"
   >
-    <p class="text-blue font-bold text-[2rem] my-2">
+    <p
+      class="text-blue font-bold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] my-2 tablet:text-start text-center my-2"
+    >
       Milestones Achieved Each Year
     </p>
     <app-bar-chart
@@ -134,7 +142,11 @@
     class="w-full bg-white rounded-[15px] shadow-main p-5 pt-1"
   >
     <div class="flex flex-col tablet:flex-row items-center gap-3">
-      <p class="text-blue font-bold text-[2rem] my-2">Attainment Timeline</p>
+      <p
+        class="text-blue font-bold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] my-2 tablet:text-start text-center my-2"
+      >
+        Attainment Timeline
+      </p>
       <div class="flex flex-row gap-1">
         <div
           class="w-[23px] h-[23px] rounded-[5px] shadow-main duration-300 hover:duration-300 hover:bg-opacity-50"
@@ -177,7 +189,11 @@
       *ngIf="educationalAttainmentTimeline$ | async as educTimeline"
       class="bg-white flex flex-col items-center rounded-[15px] shadow-main flex-1"
     >
-      <p class="text-blue font-bold text-[2rem] my-2">Educational Attainment</p>
+      <p
+        class="text-blue font-bold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] my-2 tablet:text-start text-center my-2"
+      >
+        Educational Attainment
+      </p>
       <app-pie-chart
         [data]="[educTimeline[0][14], educTimeline[1][14], educTimeline[2][14]]"
         [labels]="['Bachelor Degree', 'Master Degree', 'Doctorate Degree']"
@@ -189,7 +205,11 @@
       *ngIf="certTypes$ | async as certType"
       class="bg-white flex flex-col items-center rounded-[15px] shadow-main flex-1"
     >
-      <p class="text-blue font-bold text-[2rem] my-2">Certificate Type</p>
+      <p
+        class="text-blue font-bold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] my-2 tablet:text-start text-center my-2"
+      >
+        Certificate Type
+      </p>
       <app-pie-chart
         [data]="[certType['Completion'], certType['Achievement']]"
         [labels]="['Completion', 'Achievement']"
@@ -201,7 +221,11 @@
       *ngIf="employmentTypes$ | async as type"
       class="bg-white flex flex-col items-center rounded-[15px] shadow-main flex-1"
     >
-      <p class="text-blue font-bold text-[2rem] my-2">Employment Status</p>
+      <p
+        class="text-blue font-bold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] my-2 tablet:text-start text-center my-2"
+      >
+        Employment Status
+      </p>
       <app-pie-chart [data]="type" [labels]="['Part-Time', 'Full-Time']">
       </app-pie-chart>
     </div>
@@ -213,7 +237,9 @@
         *ngIf="topSeminar$ | async as seminar"
         class="bg-white shadow-main rounded-[15px] p-5 pt-1"
       >
-        <p class="text-blue font-bold text-[2rem] my-2">
+        <p
+          class="text-blue font-bold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] my-2 tablet:text-start text-center my-2"
+        >
           Top Seminars Completed
         </p>
         <app-bar-chart
@@ -241,7 +267,9 @@
         *ngIf="teachingLength$ | async as teaching"
         class="w-full bg-white rounded-[15px] shadow-main p-5 pt-1"
       >
-        <p class="text-blue font-bold text-[2rem] my-2">
+        <p
+          class="text-blue font-bold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] tablet:text-start text-center my-2"
+        >
           Teaching Length & Certification Count per Faculty Member
         </p>
         <app-bar-chart
@@ -262,7 +290,9 @@
         *ngIf="teachingLength$ | async as teaching"
         class="bg-white rounded-[15px] shadow-main p-5 pt-1 h-full"
       >
-        <p class="text-blue font-bold text-[2rem] my-2">
+        <p
+          class="text-blue font-bold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] tablet:text-start text-center my-2"
+        >
           Teaching Length and Evaluation Average Correlation
         </p>
         <app-scatter-plot [data]="teaching[0]" [showLegend]="false">
@@ -279,7 +309,11 @@
       *ngIf="topSeminar$ | async as seminar"
       class="bg-white shadow-main rounded-[15px] p-5 pt-1 laptop:flex-1"
     >
-      <p class="text-blue font-bold text-[2rem] my-2">Top Seminars Completed</p>
+      <p
+        class="text-blue font-bold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] my-2 tablet:text-start text-center my-2"
+      >
+        Top Seminars Completed
+      </p>
       <app-bar-chart
         [data]="[
           seminar[0][1],
@@ -304,7 +338,11 @@
       *ngIf="topLevel$ | async as level"
       class="bg-white shadow-main rounded-[15px] p-5 pt-1 laptop:flex-1"
     >
-      <p class="text-blue font-bold text-[2rem] my-2">Top Teaching Level</p>
+      <p
+        class="text-blue font-bold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] my-2 tablet:text-start text-center my-2"
+      >
+        Top Teaching Level
+      </p>
       <app-bar-chart
         [data]="level[1]"
         [labels]="level[0]"
@@ -318,7 +356,11 @@
       *ngIf="topExpertise$ | async as expertise"
       class="bg-white shadow-main rounded-[15px] p-5 pt-1 laptop:flex-1 tablet:col-span-2 laptop:col-span-1"
     >
-      <p class="text-blue font-bold text-[2rem] my-2">Top Expertise</p>
+      <p
+        class="text-blue font-bold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] my-2 tablet:text-start text-center my-2"
+      >
+        Top Expertise
+      </p>
       <app-bar-chart
         [data]="expertise[1]"
         [labels]="expertise[0]"

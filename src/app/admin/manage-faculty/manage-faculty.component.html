@@ -1,17 +1,20 @@
-<div *ngIf="!showAdd && !showAnalytics" class="shadow-main w-full flex flex-col p-5 gap-3">
+<div
+  *ngIf="!showAdd && !showAnalytics"
+  class="shadow-main w-full flex flex-col p-5 gap-3"
+>
   <div
-  class="bg-white shadow-main w-full rounded-[15px] flex justify-between items-center px-5"
+    class="bg-white shadow-main w-full rounded-[15px] flex justify-between items-center px-5 tablet:flex-row flex-col py-2"
   >
     <h1
-    class="font-Poppins font-semibold text-[1.75rem] tablet:text-[2.5rem] py-2 text-blue"
+      class="font-Poppins font-semibold text-[1.75rem] tablet:text-[2.5rem] py-2 text-blue"
     >
-    Faculty Management
+      Faculty Management
     </h1>
     <button
-    (click)="switchShow()"
-    class="bg-gradient-to-r from-blue to-greenBar text-white font-Poppins font-semibold w-[125px] h-[40px] rounded-full shadow-main hover:scale-[102%] hover:duration-300 duration-300"
+      (click)="switchShow()"
+      class="bg-gradient-to-r from-blue to-greenBar text-white font-Poppins font-semibold w-[125px] h-[40px] rounded-full shadow-main hover:scale-[102%] hover:duration-300 duration-300"
     >
-    +Add
+      +Add
     </button>
   </div>
 

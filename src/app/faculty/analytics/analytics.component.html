@@ -3,7 +3,7 @@
     class="bg-white shadow-main w-full rounded-[15px] flex flex-col tablet:flex-row tablet:justify-between items-center px-5"
   >
     <h1
-      class="font-Poppins font-semibold text-[2rem] tablet:text-[2.5rem] py-2"
+      class="font-Poppins font-semibold text-[1.5rem] tablet:text-[2.5rem] tablet:text-start text-center py-2"
     >
       Individual Analytics
     </h1>
@@ -15,7 +15,7 @@
       *ngIf="facultyProfile$ | async as profile"
     >
       <div
-        class="flex-1 w-full overflow-hidden hidden tablet:flex flex-col justify-center items-center "
+        class="flex-1 w-full overflow-hidden hidden tablet:flex flex-col justify-center items-center"
       >
         <img
           class="object-cover"
@@ -34,7 +34,9 @@
       <div
         class="flex flex-col bg-white rounded-[15px] shadow-main p-3 overflow-x-auto"
       >
-        <p class="text-blue text-[2rem] font-Poppins font-semibold">
+        <p
+          class="text-blue text-[1.5rem] font-Poppins font-semibold tablet:text-start text-center"
+        >
           Milestone Calendar
         </p>
         <p class="italic">As of {{ currentYear }}</p>
@@ -47,61 +49,66 @@
         <div
           class="bg-white shadow-main rounded-[15px] overflow-hidden flex flex-col flex-1 justify-center items-center py-3"
         >
-          <p class="text-center text-blue text-[0.9rem] font-Poppins font-semibold">
+          <p
+            class="text-center text-blue text-[0.9rem] font-Poppins font-semibold"
+          >
             Average Faculty Evaluation Score
           </p>
           <p
             class="text-greenBar text-[4rem] font-Poppins font-bold leading-[90%]"
             [textContent]="evalAverage$ | async | number : '1.1-1'"
           ></p>
-    
         </div>
         <div
           class="bg-white shadow-main rounded-[15px] overflow-hidden flex flex-col flex-1 justify-center items-center py-3"
         >
-          <p class="text-center text-blue text-[0.9rem] font-Poppins font-semibold">
+          <p
+            class="text-center text-blue text-[0.9rem] font-Poppins font-semibold"
+          >
             Units Undertaken
           </p>
           <p
             class="text-greenBar text-[4rem] font-Poppins font-bold leading-[90%]"
             [textContent]="units$ | async"
           ></p>
-    
         </div>
         <div
           class="bg-white shadow-main rounded-[15px] overflow-hidden flex flex-col flex-1 justify-center items-center py-3"
         >
-          <p class="text-center text-blue text-[0.9rem] font-Poppins font-semibold">
+          <p
+            class="text-center text-blue text-[0.9rem] font-Poppins font-semibold"
+          >
             Total Certificates
           </p>
           <p
             class="text-greenBar text-[4rem] font-Poppins font-bold leading-[90%]"
             [textContent]="certCount$ | async"
           ></p>
-    
         </div>
         <div
           class="bg-white shadow-main rounded-[15px] overflow-hidden flex flex-col flex-1 justify-center items-center py-3"
         >
-          <p class="text-center text-blue text-[0.9rem] font-Poppins font-semibold">
+          <p
+            class="text-center text-blue text-[0.9rem] font-Poppins font-semibold"
+          >
             Seminars Completed
           </p>
           <p
             class="text-greenBar text-[4rem] font-Poppins font-bold leading-[90%]"
             [textContent]="seminarCount$ | async"
           ></p>
-    
         </div>
       </div>
     </div>
   </div>
 
-
   <div
     *ngIf="milestonesAchieved$ | async as milestone"
     class="w-full bg-white rounded-[15px] shadow-main p-5 pt-1"
   >
-    <p class="text-blue font-bold text-[2rem] my-2">
+    <p
+      class="text-blue font-bold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] my-2 tablet:text-start text-center"
+    >
       Milestones Achieved Each Year
     </p>
     <app-bar-chart
@@ -120,7 +127,11 @@
     class="w-full bg-white rounded-[15px] shadow-main p-5 pt-1"
   >
     <div class="flex flex-col justify-center">
-      <p class="text-blue font-bold text-[2rem] my-2">Attainment Timeline</p>
+      <p
+        class="text-blue font-bold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] my-2 tablet:text-start text-center my-2"
+      >
+        Attainment Timeline
+      </p>
       <div class="flex flex-col tablet:flex-row gap-2 mb-2">
         <div class="flex flex-row gap-1">
           <div
