@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { mainPort } from '../../app.component';
 import { AuthService } from '../../services/auth.service';
 import { JwtToken } from '../../services/jwt-token';
@@ -24,7 +24,9 @@ export class LoginComponent {
   subTitle: string = "Faculty Profiling and Development Monitoring System"
   privSwitch!: boolean;
   validForm = true;
+  isAdmin: boolean = true
   isLoggin: boolean =  false
+  role!: 'faculty' | 'admin'
 
   // url = mainPort + '/GC-FaMS-API/API/test';
   url = mainPort + '/GC-FaMS-API/API/login';
@@ -42,9 +44,15 @@ export class LoginComponent {
   constructor(
     private store: Store,
     private messageService: MessageService,
-    private cryptoJS: CryptoJSService
+    private cryptoJS: CryptoJSService,
+    private route: ActivatedRoute
   ) {
     this.authService.flushToken();
+  }
+
+
+  ngOnInit() {
+    this.role = this.route.snapshot.data['role'];
   }
 
   onLogin(): void {
@@ -53,7 +61,6 @@ export class LoginComponent {
     this.authService.flushToken();
     this.messageService.sendMessage("Logging In", 0)
     this.validForm = true;
-
     //Main http post request, uses JwtToken interface, and stringified loginForm
     this.http.post<JwtToken>(
       this.url,
@@ -66,9 +73,27 @@ export class LoginComponent {
             document.cookie = `token=${res.token}; ${expireDate}; path=/`
             console.log("Created token: " + res.privilege);
 
-            res.privilege == 0 ? this.router.navigate(['/faculty']) : this.router.navigate(['/admin']);
 
-            this.messageService.sendMessage("Welcome Back!", 1)
+            switch(this.role) {
+              case 'admin':
+                if(res.privilege != 1) {
+                  console.log("Access not granted");
+                  this.isAdmin = false
+                  break
+                }
+                this.router.navigate(['/admin/manage-faculty'])
+                this.messageService.sendMessage("Welcome Back!", 1)
+                break
+              case 'faculty':
+                this.router.navigate(['/faculty/curriculum-vitae'])
+                this.messageService.sendMessage("Welcome Back!", 1)
+                break
+              default:
+                this.messageService.sendMessage("Error Something", -1)
+                break;
+            }
+            // res.privilege == 0 ? this.router.navigate(['/faculty/curriculum-vitae']) : this.router.navigate(['/admin']);
+
 
           } else if (res.code == 403) {
             console.log("Invalid parameters: ");

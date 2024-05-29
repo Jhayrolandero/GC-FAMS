@@ -50,7 +50,7 @@ export class TopnavComponent {
 
   openDialog(): void {
     this.store.dispatch(logOut());
-    this.router.navigate(['/']);
+    this.router.navigate(['/faculty']);
     // console.log("Checking dialogue");
     // this.dialog.open(TopnavLogout);
   }
@@ -77,7 +77,7 @@ export class TopnavLogout {
   ) { }
   logout() {
     this.authService.flushToken();
-    this.router.navigate(['/']);
+    this.router.navigate(['/faculty']);
     this.dialogRef.close()
   }
   onNoClick(): void {
