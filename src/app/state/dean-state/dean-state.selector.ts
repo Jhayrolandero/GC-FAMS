@@ -2,6 +2,7 @@ import { createSelector, createFeatureSelector } from "@ngrx/store";
 import { DeanState } from "./dean-state.reducer";
 import { Evaluation } from "../../services/Interfaces/evaluation";
 import { CommunityExtension } from "../../services/Interfaces/community-extension";
+import { Faculty } from "../../services/Interfaces/faculty";
 
 const date = new Date();
 const currentYear: number  = date.getFullYear();
@@ -31,7 +32,7 @@ export const selectCollegeMilestoneCount = createSelector(
             else{
                 milestoneMap.set(educYear, 1);
             }
-                
+
         })
         state.certs.forEach(cert => {
             const certYear = +(cert.accomplished_date + '').slice(0,4);
@@ -55,8 +56,8 @@ export const selectAttainmentTimeline = createSelector(
     (state: DeanState) => {
         const floorYear = currentYear - 14;
         let attainmentTimeline = [
-            Array.from({ length: 15 }, () => 0), 
-            Array.from({ length: 15 }, () => 0), 
+            Array.from({ length: 15 }, () => 0),
+            Array.from({ length: 15 }, () => 0),
             Array.from({ length: 15 }, () => 0)
         ];
 
@@ -88,7 +89,7 @@ export const selectAttainmentTimeline = createSelector(
                 }
             })
         })
-        
+
 
         return attainmentTimeline;
     }
@@ -101,7 +102,6 @@ export const selectAllCollege = createSelector(
     selectDeanState,
     (state: DeanState) => state.colleges
   );
-
 
 export const selectCollegeFaculty = createSelector(
   selectDeanState,
@@ -164,8 +164,8 @@ export const selectCollegeEducTimeline = createSelector(
     (state: DeanState) => {
         const floorYear = currentYear - 14;
         let educTimeline = [
-            Array.from({ length: 15 }, () => 0), 
-            Array.from({ length: 15 }, () => 0), 
+            Array.from({ length: 15 }, () => 0),
+            Array.from({ length: 15 }, () => 0),
             Array.from({ length: 15 }, () => 0)
         ];
 
@@ -343,7 +343,7 @@ export const selectTeachingLength = createSelector(
     (state: DeanState) => {
         let experienceName: Map<number, [number, number, number]> = new Map();
 
-        //Gets teaching year 
+        //Gets teaching year
         state.exps.forEach(exp => {
             let fromDate = new Date(exp.experience_from).getTime();
             let toDate: number;
@@ -456,11 +456,11 @@ export const selectOverallAverageTimeline = createSelector(
         state.evals.forEach(ev =>{
             if(ev.evaluation_year >= floorYear){
                 const paramAverage = (
-                    +ev.param1_score + 
-                    +ev.param2_score + 
-                    +ev.param3_score + 
-                    +ev.param4_score + 
-                    +ev.param5_score + 
+                    +ev.param1_score +
+                    +ev.param2_score +
+                    +ev.param3_score +
+                    +ev.param4_score +
+                    +ev.param5_score +
                     +ev.param6_score) / 6;
 
                 if(overallTimeline[ev.evaluation_year - floorYear] == 0){
@@ -515,16 +515,16 @@ export const selectAllAverageTimeline = createSelector(
         state.evals.forEach(faculty => {
             const id = faculty.faculty_ID;
             const paramAverage = (
-                +faculty.param1_score + 
-                +faculty.param2_score + 
-                +faculty.param3_score + 
-                +faculty.param4_score + 
-                +faculty.param5_score + 
+                +faculty.param1_score +
+                +faculty.param2_score +
+                +faculty.param3_score +
+                +faculty.param4_score +
+                +faculty.param5_score +
                 +faculty.param6_score) / 6
 
             //If faculty already exists in map
             if(averageTimeline.has(id)){
-                
+
                 //Check if it has an assigned average already
                 if(averageTimeline.get(id)![1][faculty.evaluation_year - floorYear] != 0){
                     averageTimeline.get(id)![1][faculty.evaluation_year - floorYear] = (averageTimeline.get(id)![1][faculty.evaluation_year - floorYear] + paramAverage) / 2;
@@ -559,14 +559,14 @@ export const selectEvaluationDifference = createSelector(
 
 
         state.evals.forEach(ev => {
-            
+
             if(ev.evaluation_year == currentYear && ev.semester == sem){
                 const paramAverage = (
-                    +ev.param1_score + 
-                    +ev.param2_score + 
-                    +ev.param3_score + 
-                    +ev.param4_score + 
-                    +ev.param5_score + 
+                    +ev.param1_score +
+                    +ev.param2_score +
+                    +ev.param3_score +
+                    +ev.param4_score +
+                    +ev.param5_score +
                     +ev.param6_score) / 6
 
                 tempMap.set(ev.faculty_ID, [ev.first_name + " " + ev.last_name, +paramAverage]);
@@ -576,11 +576,11 @@ export const selectEvaluationDifference = createSelector(
         state.evals.forEach(ev => {
             if((sem == 2 && ev.evaluation_year == currentYear && ev.semester == 1) || (sem == 1 && ev.evaluation_year == (currentYear - 1) && ev.semester == 2)){
                 const paramAverage = (
-                    +ev.param1_score + 
-                    +ev.param2_score + 
-                    +ev.param3_score + 
-                    +ev.param4_score + 
-                    +ev.param5_score + 
+                    +ev.param1_score +
+                    +ev.param2_score +
+                    +ev.param3_score +
+                    +ev.param4_score +
+                    +ev.param5_score +
                     +ev.param6_score) / 6;
 
                 if(tempMap.has(ev.faculty_ID)){
@@ -776,7 +776,7 @@ export const selectAttainmentTimelineFaculty = (commex: CommunityExtension[], id
             Array.from({ length: 15 }, () => 0),
             Array.from({ length: 15 }, () => 0)
         ];
-  
+
         state.certs.forEach(cert => {
             if(cert.faculty_ID !== id) return
 
@@ -785,7 +785,7 @@ export const selectAttainmentTimelineFaculty = (commex: CommunityExtension[], id
                 attainmentTimeline[0][currYear - floorYear] += 1
             }
         })
-  
+
         state.commex.forEach(commex => {
             if(commex.faculty_ID !== id) return
 
@@ -794,7 +794,7 @@ export const selectAttainmentTimelineFaculty = (commex: CommunityExtension[], id
                 attainmentTimeline[1][currYear - floorYear] += 1
             }
         })
-  
+
         state.certs.forEach(cert => {
             if(cert.faculty_ID !== id) return
 
@@ -803,7 +803,7 @@ export const selectAttainmentTimelineFaculty = (commex: CommunityExtension[], id
                 attainmentTimeline[2][currYear - floorYear] += 1
             }
         })
-  
+
         attainmentTimeline.map((arr, idx) => {
             arr.map((x, index) => {
                 if(index < 14){
@@ -811,8 +811,23 @@ export const selectAttainmentTimelineFaculty = (commex: CommunityExtension[], id
                 }
             })
         })
-  
-  
+
+
         return attainmentTimeline;
     }
   );
+
+  export const selectProfileOne = (faculty_ID : number) => createSelector(
+    selectDeanState,
+    (state: DeanState) => getProfile(faculty_ID, state.profile))
+
+
+
+  function getProfile(faculty_ID: number, faculties: Faculty[]) {
+
+
+    const facultyCopy = [...faculties]
+    console.log(facultyCopy.filter((item) => item.faculty_ID == faculty_ID))
+    console.log(faculty_ID)
+return facultyCopy.find((item) => item.faculty_ID == faculty_ID)
+  }

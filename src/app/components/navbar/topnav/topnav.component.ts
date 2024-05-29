@@ -32,16 +32,13 @@ export class TopnavComponent {
   port = mainPort
   public facultyProfile$ = this.store.select(selectAllProfile);
   accountPath: string;
-  isFaculty: boolean;
 
   constructor(
     private route: ActivatedRoute,
     private store: Store,
     public dialog: MatDialog,
     private router: Router) {
-
       this.accountPath = this.route.snapshot.url[0].path;
-      this.isFaculty = this.accountPath === "faculty";
     }
 
   triggerToggle() {
@@ -50,7 +47,7 @@ export class TopnavComponent {
 
   openDialog(): void {
     this.store.dispatch(logOut());
-    this.router.navigate(['/faculty']);
+    this.router.navigate([`/${this.accountPath}`]);
     // console.log("Checking dialogue");
     // this.dialog.open(TopnavLogout);
   }

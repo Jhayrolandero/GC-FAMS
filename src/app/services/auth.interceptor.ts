@@ -22,7 +22,7 @@ export function loggingInterceptor(req: HttpRequest<unknown>, next: HttpHandlerF
 
         msgSrvc.sendMessage("Session Expired!", -1)
         console.error(err);
-        router.navigate(['/']);
+        router.navigate(['/faculty']);
       }
       return throwError(err);
     })

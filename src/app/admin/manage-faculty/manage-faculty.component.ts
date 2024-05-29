@@ -9,6 +9,7 @@ import { Faculty } from '../../services/Interfaces/faculty';
 import { EventEmitter } from '@angular/core';
 import { AddFacultyComponent } from './add-faculty/add-faculty.component';
 import { ManageindividualanalyticsComponent } from "./manageindividualanalytics/manageindividualanalytics.component";
+import { CvComponent } from './cv/cv.component';
 
 @Component({
     selector: 'app-manage-faculty',
@@ -23,7 +24,8 @@ import { ManageindividualanalyticsComponent } from "./manageindividualanalytics/
         MatDialogModule,
         FacultySectionComponent,
         AddFacultyComponent,
-        ManageindividualanalyticsComponent
+        ManageindividualanalyticsComponent,
+        CvComponent
     ]
 })
 
@@ -37,11 +39,13 @@ export class ManageFacultyComponent {
   certToggle = false;
   commexToggle = false;
   seminarToggle = false;
+  cvToggle = false;
+  pdfID!: number
 
   constructor(
     private route: ActivatedRoute,
     private router: Router
-  ) { 
+  ) {
     this.editData = undefined;
   }
 
@@ -60,5 +64,10 @@ export class ManageFacultyComponent {
   triggerAnalytics(faculty: Faculty){
     this.showAnalytics = !this.showAnalytics;
     this.selectedFaculty = faculty;
+  }
+
+  triggerCV(faculty_ID: number){
+    this.cvToggle = !this.cvToggle;
+    this.pdfID = faculty_ID
   }
 }

@@ -1,183 +1,182 @@
 <div class="p-5 grid gap-3">
-    <div
-      (click)="goBack()"
-      class="w-[50px] h-[50px] bg-white rounded-full shadow-main flex justify-center items-center"
+  <div
+    (click)="goBack()"
+    class="w-[50px] h-[50px] bg-white rounded-full shadow-main flex justify-center items-center"
+  >
+    <svg
+      width="35"
+      height="35"
+      viewBox="0 0 67 67"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
     >
-      <svg
-        width="35"
-        height="35"
-        viewBox="0 0 67 67"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M14.6562 31.4062H56.5312C57.0865 31.4062 57.6191 31.6268 58.0118 32.0195C58.4044 32.4121 58.625 32.9447 58.625 33.5C58.625 34.0553 58.4044 34.5879 58.0118 34.9805C57.6191 35.3732 57.0865 35.5938 56.5312 35.5938H14.6562C14.101 35.5938 13.5684 35.3732 13.1757 34.9805C12.7831 34.5879 12.5625 34.0553 12.5625 33.5C12.5625 32.9447 12.7831 32.4121 13.1757 32.0195C13.5684 31.6268 14.101 31.4062 14.6562 31.4062Z"
-          fill="#074287"
-        />
-        <path
-          d="M15.5229 33.4997L32.8885 50.8611C33.2816 51.2542 33.5025 51.7875 33.5025 52.3435C33.5025 52.8995 33.2816 53.4327 32.8885 53.8258C32.4953 54.219 31.9621 54.4399 31.4061 54.4399C30.8501 54.4399 30.3169 54.219 29.9237 53.8258L11.08 34.9821C10.885 34.7876 10.7303 34.5565 10.6247 34.3022C10.5192 34.0478 10.4648 33.7751 10.4648 33.4997C10.4648 33.2243 10.5192 32.9516 10.6247 32.6972C10.7303 32.4429 10.885 32.2118 11.08 32.0173L29.9237 13.1736C30.3169 12.7804 30.8501 12.5596 31.4061 12.5596C31.9621 12.5596 32.4953 12.7804 32.8885 13.1736C33.2816 13.5667 33.5025 14.1 33.5025 14.656C33.5025 15.212 33.2816 15.7452 32.8885 16.1383L15.5229 33.4997Z"
-          fill="#074287"
-        />
-      </svg>
-    </div>
-
-
-    <div
-        class="bg-white shadow-main w-full rounded-[15px] flex flex-col tablet:flex-row tablet:justify-between items-center px-5"
-    >
-        <h1 class="text-blue font-Poppins font-semibold text-[2.5rem] py-2">
-        Individual Analytics
-        </h1>
-    </div>
-    
-    <div class="w-full flex flex-col tablet:flex-row gap-3">
-        <div
-        class="bg-white tablet:max-w-[250px] max-w-full min-w-full tablet:min-w-[250px] overflow-hidden rounded-[15px] shadow-main flex flex-col items-center"
-        >
-        <div
-            class="flex-1 w-full overflow-hidden hidden tablet:flex flex-col justify-center items-center "
-        >
-            <img
-            class="object-cover"
-            [src]="port + selectedFaculty.profile_image"
-            onerror="this.onerror=null; this.src='/assets/profiles/user.png'"
-            />
-        </div>
-        <p
-            class="font-Poppins font-semibold text-blue text-[1.5rem] leading-[25px] p-2"
-        >
-            {{ selectedFaculty.first_name + " " + selectedFaculty.last_name }}
-        </p>
-        </div>
-    
-        <div class="grid flex-1 gap-3 flex flex-row table:flex-col">
-            <div
-                class="flex flex-col bg-white rounded-[15px] shadow-main p-3 overflow-x-auto"
-            >
-                <p class="text-blue text-[2rem] font-Poppins font-semibold">
-                Milestone Calendar
-                </p>
-                <p class="italic">As of {{ currentYear }}</p>
-                <app-faculty-milestone-calendar
-                [type]="'manage-admin'"
-                [id]="selectedFaculty.faculty_ID"
-                ></app-faculty-milestone-calendar>
-            </div>
-        
-            <div class="w-full flex flex-col tablet:flex-row gap-3">
-                <div
-                class="bg-white shadow-main rounded-[15px] overflow-hidden flex flex-col flex-1 justify-center items-center py-3"
-                >
-                    <p class="text-center text-blue text-[0.9rem] font-Poppins font-semibold">
-                        Average Faculty Evaluation Score
-                    </p>
-                    <p
-                        class="text-greenBar text-[4rem] font-Poppins font-bold leading-[90%]"
-                        [textContent]="evalAverage$ | async | number : '1.1-1'"
-                    ></p>
-                
-                </div>
-                <div
-                class="bg-white shadow-main rounded-[15px] overflow-hidden flex flex-col flex-1 justify-center items-center py-3"
-                >
-                    <p class="text-center text-blue text-[0.9rem] font-Poppins font-semibold">
-                        Units Undertaken
-                    </p>
-                    <p
-                        class="text-greenBar text-[4rem] font-Poppins font-bold leading-[90%]"
-                        [textContent]="units$ | async"
-                    ></p>
-            
-                </div>
-                <div
-                class="bg-white shadow-main rounded-[15px] overflow-hidden flex flex-col flex-1 justify-center items-center py-3"
-                >
-                    <p class="text-center text-blue text-[0.9rem] font-Poppins font-semibold">
-                        Total Certificates
-                    </p>
-                    <p
-                        class="text-greenBar text-[4rem] font-Poppins font-bold leading-[90%]"
-                        [textContent]="certCount$ | async"
-                    ></p>
-            
-                </div>
-                <div
-                class="bg-white shadow-main rounded-[15px] overflow-hidden flex flex-col flex-1 justify-center items-center py-3"
-                >
-                    <p class="text-center text-blue text-[0.9rem] font-Poppins font-semibold">
-                        Seminars Completed
-                    </p>
-                    <p
-                        class="text-greenBar text-[4rem] font-Poppins font-bold leading-[90%]"
-                        [textContent]="seminarCount$ | async"
-                    ></p>
-            
-                </div>
-            </div>
-        </div>
-    </div>
-        
-    <div
-        *ngIf="milestonesAchieved$ | async as milestone"
-        class="w-full bg-white rounded-[15px] shadow-main p-5 pt-1"
-    >
-        <p class="text-blue font-bold text-[2rem] my-2">
-        Milestones Achieved Each Year
-        </p>
-        <app-bar-chart
-        [data]="milestone"
-        [axis]="'x'"
-        [bgColor]="'rgb(7, 66, 135)'"
-        [labels]="yearsArray"
-        [showLegend]="false"
-        >
-        >
-        </app-bar-chart>
-    </div>
-    
-    <div
-        *ngIf="attainmentTimeline$ | async as attainment"
-        class="w-full bg-white rounded-[15px] shadow-main p-5 pt-1"
-    >
-        <div class="flex flex-col justify-center">
-        <p class="text-blue font-bold text-[2rem] my-2">Attainment Timeline</p>
-        <div class="flex flex-col tablet:flex-row gap-2 mb-2">
-            <div class="flex flex-row gap-1">
-            <div
-                class="w-[23px] h-[23px] rounded-[5px] shadow-main duration-300 hover:duration-300 hover:bg-opacity-50"
-                [ngClass]="certToggle ? 'bg-greenBar' : 'bg-slate-200'"
-                (click)="certToggle = !certToggle"
-            ></div>
-            <p class="font-Roboto font-medium text-blue">Certifications</p>
-            </div>
-            <div class="flex flex-row gap-1">
-            <div
-                class="w-[23px] h-[23px] rounded-[5px] shadow-main duration-300 hover:duration-300 hover:bg-opacity-50"
-                [ngClass]="commexToggle ? 'bg-greenBar' : 'bg-slate-200'"
-                (click)="commexToggle = !commexToggle"
-            ></div>
-            <p class="font-Roboto font-medium text-blue">Community Extensions</p>
-            </div>
-            <div class="flex flex-row gap-1">
-            <div
-                class="w-[23px] h-[23px] rounded-[5px] shadow-main duration-300 hover:duration-300 hover:bg-opacity-50"
-                [ngClass]="seminarToggle ? 'bg-greenBar' : 'bg-slate-200'"
-                (click)="seminarToggle = !seminarToggle"
-            ></div>
-            <p class="font-Roboto font-medium text-blue">Seminars</p>
-            </div>
-        </div>
-        </div>
-        <app-line-graph
-        [data]="certToggle ? attainment[0] : []"
-        [data2]="commexToggle ? attainment[1] : []"
-        [data3]="seminarToggle ? attainment[2] : []"
-        [labels]="yearsArray"
-        [showLegend]="false"
-        >
-        </app-line-graph>
-    </div>
-
-      
-
+      <path
+        d="M14.6562 31.4062H56.5312C57.0865 31.4062 57.6191 31.6268 58.0118 32.0195C58.4044 32.4121 58.625 32.9447 58.625 33.5C58.625 34.0553 58.4044 34.5879 58.0118 34.9805C57.6191 35.3732 57.0865 35.5938 56.5312 35.5938H14.6562C14.101 35.5938 13.5684 35.3732 13.1757 34.9805C12.7831 34.5879 12.5625 34.0553 12.5625 33.5C12.5625 32.9447 12.7831 32.4121 13.1757 32.0195C13.5684 31.6268 14.101 31.4062 14.6562 31.4062Z"
+        fill="#074287"
+      />
+      <path
+        d="M15.5229 33.4997L32.8885 50.8611C33.2816 51.2542 33.5025 51.7875 33.5025 52.3435C33.5025 52.8995 33.2816 53.4327 32.8885 53.8258C32.4953 54.219 31.9621 54.4399 31.4061 54.4399C30.8501 54.4399 30.3169 54.219 29.9237 53.8258L11.08 34.9821C10.885 34.7876 10.7303 34.5565 10.6247 34.3022C10.5192 34.0478 10.4648 33.7751 10.4648 33.4997C10.4648 33.2243 10.5192 32.9516 10.6247 32.6972C10.7303 32.4429 10.885 32.2118 11.08 32.0173L29.9237 13.1736C30.3169 12.7804 30.8501 12.5596 31.4061 12.5596C31.9621 12.5596 32.4953 12.7804 32.8885 13.1736C33.2816 13.5667 33.5025 14.1 33.5025 14.656C33.5025 15.212 33.2816 15.7452 32.8885 16.1383L15.5229 33.4997Z"
+        fill="#074287"
+      />
+    </svg>
   </div>
+  <div
+    class="bg-white shadow-main w-full rounded-[15px] flex flex-col tablet:flex-row tablet:justify-between items-center px-5"
+  >
+    <h1 class="text-blue font-Poppins font-semibold text-[2.5rem] py-2">
+      Individual Analytics
+    </h1>
+  </div>
+
+  <div class="w-full flex flex-col tablet:flex-row gap-3">
+    <div
+      class="bg-white tablet:max-w-[250px] max-w-full min-w-full tablet:min-w-[250px] overflow-hidden rounded-[15px] shadow-main flex flex-col items-center"
+    >
+      <div
+        class="flex-1 w-full overflow-hidden hidden tablet:flex flex-col justify-center items-center"
+      >
+        <img
+          class="object-cover"
+          [src]="port + selectedFaculty.profile_image"
+          onerror="this.onerror=null; this.src='/assets/profiles/user.png'"
+        />
+      </div>
+      <p
+        class="font-Poppins font-semibold text-blue text-[1.5rem] leading-[25px] p-2"
+      >
+        {{ selectedFaculty.first_name + " " + selectedFaculty.last_name }}
+      </p>
+    </div>
+
+    <div class="grid flex-1 gap-3 flex flex-row table:flex-col">
+      <div
+        class="flex flex-col bg-white rounded-[15px] shadow-main p-3 overflow-x-auto"
+      >
+        <p class="text-blue text-[2rem] font-Poppins font-semibold">
+          Milestone Calendar
+        </p>
+        <p class="italic">As of {{ currentYear }}</p>
+        <app-faculty-milestone-calendar
+          [type]="'manage-admin'"
+          [id]="selectedFaculty.faculty_ID"
+        ></app-faculty-milestone-calendar>
+      </div>
+
+      <div class="w-full flex flex-col tablet:flex-row gap-3">
+        <div
+          class="bg-white shadow-main rounded-[15px] overflow-hidden flex flex-col flex-1 justify-center items-center py-3"
+        >
+          <p
+            class="text-center text-blue text-[0.9rem] font-Poppins font-semibold"
+          >
+            Average Faculty Evaluation Score
+          </p>
+          <p
+            class="text-greenBar text-[4rem] font-Poppins font-bold leading-[90%]"
+            [textContent]="evalAverage$ | async | number : '1.1-1'"
+          ></p>
+        </div>
+        <div
+          class="bg-white shadow-main rounded-[15px] overflow-hidden flex flex-col flex-1 justify-center items-center py-3"
+        >
+          <p
+            class="text-center text-blue text-[0.9rem] font-Poppins font-semibold"
+          >
+            Units Undertaken
+          </p>
+          <p
+            class="text-greenBar text-[4rem] font-Poppins font-bold leading-[90%]"
+            [textContent]="units$ | async"
+          ></p>
+        </div>
+        <div
+          class="bg-white shadow-main rounded-[15px] overflow-hidden flex flex-col flex-1 justify-center items-center py-3"
+        >
+          <p
+            class="text-center text-blue text-[0.9rem] font-Poppins font-semibold"
+          >
+            Total Certificates
+          </p>
+          <p
+            class="text-greenBar text-[4rem] font-Poppins font-bold leading-[90%]"
+            [textContent]="certCount$ | async"
+          ></p>
+        </div>
+        <div
+          class="bg-white shadow-main rounded-[15px] overflow-hidden flex flex-col flex-1 justify-center items-center py-3"
+        >
+          <p
+            class="text-center text-blue text-[0.9rem] font-Poppins font-semibold"
+          >
+            Seminars Completed
+          </p>
+          <p
+            class="text-greenBar text-[4rem] font-Poppins font-bold leading-[90%]"
+            [textContent]="seminarCount$ | async"
+          ></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div
+    *ngIf="milestonesAchieved$ | async as milestone"
+    class="w-full bg-white rounded-[15px] shadow-main p-5 pt-1"
+  >
+    <p class="text-blue font-bold text-[2rem] my-2">
+      Milestones Achieved Each Year
+    </p>
+    <app-bar-chart
+      [data]="milestone"
+      [axis]="'x'"
+      [bgColor]="'rgb(7, 66, 135)'"
+      [labels]="yearsArray"
+      [showLegend]="false"
+    >
+      >
+    </app-bar-chart>
+  </div>
+
+  <div
+    *ngIf="attainmentTimeline$ | async as attainment"
+    class="w-full bg-white rounded-[15px] shadow-main p-5 pt-1"
+  >
+    <div class="flex flex-col justify-center">
+      <p class="text-blue font-bold text-[2rem] my-2">Attainment Timeline</p>
+      <div class="flex flex-col tablet:flex-row gap-2 mb-2">
+        <div class="flex flex-row gap-1">
+          <div
+            class="w-[23px] h-[23px] rounded-[5px] shadow-main duration-300 hover:duration-300 hover:bg-opacity-50"
+            [ngClass]="certToggle ? 'bg-greenBar' : 'bg-slate-200'"
+            (click)="certToggle = !certToggle"
+          ></div>
+          <p class="font-Roboto font-medium text-blue">Certifications</p>
+        </div>
+        <div class="flex flex-row gap-1">
+          <div
+            class="w-[23px] h-[23px] rounded-[5px] shadow-main duration-300 hover:duration-300 hover:bg-opacity-50"
+            [ngClass]="commexToggle ? 'bg-greenBar' : 'bg-slate-200'"
+            (click)="commexToggle = !commexToggle"
+          ></div>
+          <p class="font-Roboto font-medium text-blue">Community Extensions</p>
+        </div>
+        <div class="flex flex-row gap-1">
+          <div
+            class="w-[23px] h-[23px] rounded-[5px] shadow-main duration-300 hover:duration-300 hover:bg-opacity-50"
+            [ngClass]="seminarToggle ? 'bg-greenBar' : 'bg-slate-200'"
+            (click)="seminarToggle = !seminarToggle"
+          ></div>
+          <p class="font-Roboto font-medium text-blue">Seminars</p>
+        </div>
+      </div>
+    </div>
+    <app-line-graph
+      [data]="certToggle ? attainment[0] : []"
+      [data2]="commexToggle ? attainment[1] : []"
+      [data3]="seminarToggle ? attainment[2] : []"
+      [labels]="yearsArray"
+      [showLegend]="false"
+    >
+    </app-line-graph>
+  </div>
+</div>
