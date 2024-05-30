@@ -150,6 +150,15 @@
           The email or password is incorrect.
         </p>
 
+        @if(role === 'admin') {
+        <p
+          *ngIf="isAdmin == false"
+          class="text-red-400 font-Roboto font-semibold p-0"
+        >
+          Insufficient privilege
+        </p>
+        }
+
         <input
           [disabled]="isLoggin"
           type="submit"

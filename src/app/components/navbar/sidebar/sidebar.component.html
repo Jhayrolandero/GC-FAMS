@@ -1,30 +1,31 @@
-<aside class="w-full h-full overflow-x-hidden bg-transparent flex flex-col bg-gradient-to-b from-greenBar from-0% via-blue via-[180px] to-blue to-100%  pb-6 py-4">
+<aside
+  class="w-full h-full overflow-x-hidden bg-transparent flex flex-col bg-gradient-to-b from-greenBar from-0% via-blue via-[180px] to-blue to-100% pb-6 py-4"
+>
+  <div class="pt-4 pb-10 flex justify-center items-center">
+    <img src="../../../assets/img/Logo_mockup 1.png" class="w-[60%]" />
+  </div>
+  <div class="faculty-side flex-1">
+    <ul *ngIf="!isFaculty">
+      <app-nav
+        (click)="onSelect('manage-faculty')"
+        [selectedBar]="selectedBar"
+        [title]="'Manage Faculty'"
+        [source]="'Users.png'"
+      ></app-nav>
+      <app-nav
+        (click)="onSelect('program-analytics')"
+        [selectedBar]="selectedBar"
+        [title]="'Program Analytics'"
+        [source]="'ProgramAnalytics.svg'"
+      ></app-nav>
+      <app-nav
+        (click)="onSelect('evaluation-analytics')"
+        [selectedBar]="selectedBar"
+        [title]="'Evaluation Analytics'"
+        [source]="'ScatterPlot.png'"
+      ></app-nav>
 
-    <div class="pt-4 pb-10 flex justify-center items-center">
-      <img src="../../../assets/img/Logo_mockup 1.png" class="w-[60%]" />
-    </div>
-    <div class="faculty-side flex-1">
-      <ul *ngIf="!isFaculty">
-        <app-nav
-          (click)="onSelect('manage-faculty')"
-          [selectedBar]="selectedBar"
-          [title]="'Manage Faculty'"
-          [source]="'Users.png'"
-        ></app-nav>
-        <app-nav
-          (click)="onSelect('program-analytics')"
-          [selectedBar]="selectedBar"
-          [title]="'Program Analytics'"
-          [source]="'ProgramAnalytics.svg'"
-        ></app-nav>
-        <app-nav
-          (click)="onSelect('evaluation-analytics')"
-          [selectedBar]="selectedBar"
-          [title]="'Evaluation Analytics'"
-          [source]="'ScatterPlot.png'"
-        ></app-nav>
-
-        <app-nav
+      <!-- <app-nav
           (click)="onSelect('curriculum-vitae')"
           [selectedBar]="selectedBar"
           [title]="'Curriculum Vitae'"
@@ -47,37 +48,34 @@
           [selectedBar]="selectedBar"
           [title]="'Evaluation'"
           [source]="'ScatterPlot.png'"
-        ></app-nav>
-      </ul>
+        ></app-nav> -->
+    </ul>
 
-
-
-      <ul *ngIf="isFaculty">
-        <app-nav
-          (click)="onSelect('curriculum-vitae')"
-          [selectedBar]="selectedBar"
-          [title]="'Curriculum Vitae'"
-          [source]="'Person.png'"
-        ></app-nav>
-        <app-nav
-          (click)="onSelect('analytics')"
-          [selectedBar]="selectedBar"
-          [title]="'Analytics'"
-          [source]="'Signal.png'"
-        ></app-nav>
-        <app-nav
-          (click)="onSelect('community')"
-          [selectedBar]="selectedBar"
-          [title]="'Community'"
-          [source]="'CommunityExtension.svg'"
-        ></app-nav>
-        <app-nav
-          (click)="onSelect('evaluation')"
-          [selectedBar]="selectedBar"
-          [title]="'Evaluation'"
-          [source]="'ScatterPlot.png'"
-        ></app-nav>
-      </ul>
-    </div>
-
+    <ul *ngIf="isFaculty">
+      <app-nav
+        (click)="onSelect('curriculum-vitae')"
+        [selectedBar]="selectedBar"
+        [title]="'Curriculum Vitae'"
+        [source]="'Person.png'"
+      ></app-nav>
+      <app-nav
+        (click)="onSelect('analytics')"
+        [selectedBar]="selectedBar"
+        [title]="'Analytics'"
+        [source]="'Signal.png'"
+      ></app-nav>
+      <app-nav
+        (click)="onSelect('community')"
+        [selectedBar]="selectedBar"
+        [title]="'Community'"
+        [source]="'CommunityExtension.svg'"
+      ></app-nav>
+      <app-nav
+        (click)="onSelect('evaluation')"
+        [selectedBar]="selectedBar"
+        [title]="'Evaluation'"
+        [source]="'ScatterPlot.png'"
+      ></app-nav>
+    </ul>
+  </div>
 </aside>

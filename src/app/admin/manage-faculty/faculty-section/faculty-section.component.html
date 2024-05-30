@@ -142,6 +142,9 @@
         </button>
         <mat-menu #menu="matMenu">
           <ng-template matMenuContent>
+            <button mat-menu-item (click)="triggerCV(faculty.faculty_ID)">
+              View curriculum Vitae
+            </button>
             <button mat-menu-item (click)="triggerAnalytics(faculty)">
               View Analytics
             </button>

@@ -1,0 +1,39 @@
+<div class="p-5 grid gap-3">
+  <div
+    (click)="goBack()"
+    class="w-[50px] h-[50px] bg-white rounded-full shadow-main flex justify-center items-center"
+  >
+    <svg
+      width="35"
+      height="35"
+      viewBox="0 0 67 67"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M14.6562 31.4062H56.5312C57.0865 31.4062 57.6191 31.6268 58.0118 32.0195C58.4044 32.4121 58.625 32.9447 58.625 33.5C58.625 34.0553 58.4044 34.5879 58.0118 34.9805C57.6191 35.3732 57.0865 35.5938 56.5312 35.5938H14.6562C14.101 35.5938 13.5684 35.3732 13.1757 34.9805C12.7831 34.5879 12.5625 34.0553 12.5625 33.5C12.5625 32.9447 12.7831 32.4121 13.1757 32.0195C13.5684 31.6268 14.101 31.4062 14.6562 31.4062Z"
+        fill="#074287"
+      />
+      <path
+        d="M15.5229 33.4997L32.8885 50.8611C33.2816 51.2542 33.5025 51.7875 33.5025 52.3435C33.5025 52.8995 33.2816 53.4327 32.8885 53.8258C32.4953 54.219 31.9621 54.4399 31.4061 54.4399C30.8501 54.4399 30.3169 54.219 29.9237 53.8258L11.08 34.9821C10.885 34.7876 10.7303 34.5565 10.6247 34.3022C10.5192 34.0478 10.4648 33.7751 10.4648 33.4997C10.4648 33.2243 10.5192 32.9516 10.6247 32.6972C10.7303 32.4429 10.885 32.2118 11.08 32.0173L29.9237 13.1736C30.3169 12.7804 30.8501 12.5596 31.4061 12.5596C31.9621 12.5596 32.4953 12.7804 32.8885 13.1736C33.2816 13.5667 33.5025 14.1 33.5025 14.656C33.5025 15.212 33.2816 15.7452 32.8885 16.1383L15.5229 33.4997Z"
+        fill="#074287"
+      />
+    </svg>
+  </div>
+  <div
+    class="bg-white shadow-main w-full rounded-[15px] flex flex-col tablet:flex-row tablet:justify-between items-center px-5"
+  >
+    <h1
+      class="text-blue font-Poppins font-semibold text-[2.5rem] py-2"
+      *ngIf="$facultyProfile | async as profile"
+    >
+      {{ profile.first_name }} {{ profile.middle_name }}
+      {{ profile.last_name }} {{ profile.ext_name }}
+    </h1>
+  </div>
+  <ngx-doc-viewer
+    [url]="port + '/GC-FaMS-API/CV_Assets/' + pdfID + '.pdf'"
+    viewer="pdf"
+    style="width: 100%; height: 100vh"
+  ></ngx-doc-viewer>
+</div>

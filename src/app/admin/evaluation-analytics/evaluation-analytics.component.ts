@@ -22,6 +22,7 @@ export class EvaluationAnalyticsComponent {
   dropToggle = false;
   dropEvalToggle = false;
   selected = false;
+  labels = []
 
   //Selected facultymembers
   selectedArray: any[] = [];
@@ -76,6 +77,10 @@ export class EvaluationAnalyticsComponent {
       this.selectedFacultyArray = this.selectedFacultyArray.filter(x => x[0] !== data[0][0]);
     }
     //Converting the current selectedList to array each select and deselection.
+
+    this.labels = data
+
+    console.log(this.selectedFacultyArray)
     this.length = this.selectedArray.length;
   }
 }

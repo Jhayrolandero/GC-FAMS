@@ -148,6 +148,9 @@
       </div>
 
       <app-radar-chart
+        [label1]="selectedFacultyArray[0]"
+        [label2]="selectedFacultyArray[1]"
+        [label3]="selectedFacultyArray[2]"
         [data]="
           selectedFacultyArray[0] !== undefined
             ? selectedFacultyArray[0][1]

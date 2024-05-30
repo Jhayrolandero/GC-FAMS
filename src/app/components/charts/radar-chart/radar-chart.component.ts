@@ -19,6 +19,9 @@ export class RadarChartComponent {
   @Input() labels: string[] = [];
   @Input() showLegend?: boolean;
 
+  @Input() label1: any[] = [];
+  @Input() label2: any[] = [];
+  @Input() label3: any[] = [];
   ngAfterViewInit() {
     this.chart.destroy();
     this.createChart();
@@ -28,6 +31,7 @@ export class RadarChartComponent {
     if(this.chart){
       this.chart.destroy();
     }
+
     this.createChart();
   }
 
@@ -35,6 +39,7 @@ export class RadarChartComponent {
     const data = {
       labels: this.labels,
       datasets: [{
+        label: this.label1 ? this.label1[0] : 'None',
         data: this.data,
         fill: true,
         backgroundColor: 'rgba(7, 66, 135, 0.2)',
@@ -45,6 +50,7 @@ export class RadarChartComponent {
         pointHoverBorderColor: '#fff'
       },
       {
+        label: this.label2 ? this.label2[0] : 'None',
         data: this.data2,
         fill: true,
         backgroundColor: 'rgba(255, 122, 0, 0.2)',
@@ -55,6 +61,7 @@ export class RadarChartComponent {
         pointHoverBorderColor: '#FF7A00'
       },
       {
+        label: this.label3 ? this.label3[0] : 'None',
         data: this.data3,
         fill: true,
         backgroundColor: 'rgba(30, 114, 66, 0.2)',

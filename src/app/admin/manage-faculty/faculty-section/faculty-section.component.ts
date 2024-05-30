@@ -43,6 +43,8 @@ export class FacultySectionComponent {
   //I know there's ngrx already so no passing of data is needed, but this is  the only situation that merits the passing of a faculty edit data lol
   @Output() editDataEvent = new EventEmitter<Faculty>();
   @Output() showAnalyticsEvent = new EventEmitter<Faculty>();
+  @Output() showCVEvent = new EventEmitter<number>();
+
   facultyMembers$ = this.store.select(selectCollegeFaculty);
   profileCollege$ = this.store.select(selectCollegeAbbrev)
 privilege$ = this.store.select(selectPrivilege);
@@ -73,6 +75,11 @@ privilege$ = this.store.select(selectPrivilege);
 
   triggerAnalytics(faculty?: Faculty): void {
     this.showAnalyticsEvent.emit(faculty);
+  }
+
+  triggerCV(faculty_ID : number): void {
+    // const pdfURL = `${this.port}` +"/GC-FaMS-API/CV_Assets/" + faculty_ID +".pdf"
+    this.showCVEvent.emit(faculty_ID);
   }
 
 

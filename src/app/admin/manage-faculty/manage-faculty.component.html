@@ -1,5 +1,5 @@
 <div
-  *ngIf="!showAdd && !showAnalytics"
+  *ngIf="!showAdd && !showAnalytics && !cvToggle"
   class="shadow-main w-full flex flex-col p-5 gap-3"
 >
   <div
@@ -21,6 +21,7 @@
   <app-faculty-section
     (editDataEvent)="editFaculty($event)"
     (showAnalyticsEvent)="triggerAnalytics($event)"
+    (showCVEvent)="triggerCV($event)"
   ></app-faculty-section>
 </div>
 
@@ -36,3 +37,6 @@
   (showAnalyticsEvent)="triggerAnalytics($event)"
 >
 </app-manageindividualanalytics>
+
+<app-cv [pdfID]="pdfID" *ngIf="cvToggle" (showCVEvent)="triggerCV($event)">
+</app-cv>
