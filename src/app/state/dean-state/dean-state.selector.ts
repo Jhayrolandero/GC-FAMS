@@ -589,6 +589,7 @@ export const selectEvaluationDifference = createSelector(
             }
         })
         let tempArr = [...differenceMap.entries()];
+
         return [tempArr.map(x => x[0]), tempArr.map(x => x[1][0]), tempArr.map(x => x[1][1])];
 
     }
@@ -598,8 +599,9 @@ export const selectCurrentEvaluation = createSelector(
     selectDeanState,
     (state: DeanState) => {
         let sem: number;
-        let radioEvaluation: Map<string, number[]> = new Map();
+        let radioEvaluation: Map<string, (number | string)[]> = new Map();
         date.getMonth() <= 5 ? sem = 1 : sem = 2;
+
 
         state.evals.forEach(evaluation => {
             if(evaluation.evaluation_year == currentYear && evaluation.semester == sem){
@@ -610,15 +612,29 @@ export const selectCurrentEvaluation = createSelector(
                     evaluation.param3_score,
                     evaluation.param4_score,
                     evaluation.param5_score,
-                    evaluation.param6_score]
+                    evaluation.param6_score,
+                    getPosition(state.profile, evaluation.faculty_ID),
+                    getCollege(state.profile, evaluation.faculty_ID),
+                    evalAverage(+evaluation.param1_score,
+                      +evaluation.param2_score,
+                      +evaluation.param3_score,
+                      +evaluation.param4_score,
+                      +evaluation.param5_score,
+                      +evaluation.param6_score).toFixed(2)
+                  ]
                 )
             }
         })
+
+        console.log(radioEvaluation)
         return [...radioEvaluation.entries()];
     }
 )
 
-
+export const selectEvalLoading = createSelector(
+  selectDeanState,
+  (state) => state.evalsLoading
+)
 
 export const selectCollegeCommex = createSelector(
     selectDeanState,
@@ -626,6 +642,23 @@ export const selectCollegeCommex = createSelector(
 );
 
 
+function getPosition(faculties: Faculty[], faculty_ID: number) {
+  const copyFaculties = [...faculties]
+
+  return copyFaculties.find(faculty => faculty.faculty_ID == faculty_ID)!.teaching_level
+
+}
+
+function getCollege(faculties: Faculty[], faculty_ID: number) {
+  const copyFaculties = [...faculties]
+
+  return copyFaculties.find(faculty => faculty.faculty_ID == faculty_ID)!.college_abbrev
+
+}
+
+function evalAverage(num1: number, num2: number,num3: number,num4: number,num5: number, num6: number,) {
+  return (+num1 + num2 +num3 +num4 +num5 + num6)/6
+}
 
 
 

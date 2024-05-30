@@ -72,16 +72,6 @@ export class AdminComponent {
     store.dispatch(loadCollegeCourse());
     store.dispatch(loadCollege());
 
-    store.dispatch(loadProfile());
-    store.dispatch(loadCert());
-    store.dispatch(loadCourse());
-    store.dispatch(loadEduc());
-    store.dispatch(loadExp());
-    store.dispatch(loadProj());
-    store.dispatch(loadExpertise());
-    store.dispatch(loadEval());
-    store.dispatch(getCommex({refresh: false}))
-
     breakpointObserver
       .observe([
         Breakpoints.XSmall,

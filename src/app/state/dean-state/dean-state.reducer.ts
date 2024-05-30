@@ -26,10 +26,12 @@ export interface DeanState {
   evals: Evaluation[];
   courses: [CoursesFaculty[], Courses[]];
   commex: CommunityExtension[];
+  evalsLoading: boolean
 }
 
 export const initialDeanState: DeanState = {
   colleges: [],
+  evalsLoading: false,
   profile: [],
   certs: [],
   educs: [],
@@ -97,14 +99,16 @@ export const profileDeanReducer = createReducer(
   })),
   on(CertActions.loadCollegeExpertiseFailure, (state) => ({ ...state, })),
 
-  on(CertActions.loadCollegeEval, (state) => ({ ...state })),
+  on(CertActions.loadCollegeEval, (state) => ({ ...state, evalsLoading: true })),
   on(CertActions.loadCollegeEvalSuccess, (state, { evals }) => ({
     ...state,
-    evals: evals
+    evals: evals,
+    evalsLoading: false
   })),
-  on(CertActions.loadCollegeEvalFailure, (state) => ({ ...state, })),
-
-
+  on(CertActions.loadCollegeEvalFailure, (state) => ({
+     ...state,
+    evalsLoading: false
+  })),
   on(CertActions.loadCollegeCourse, (state) => ({ ...state })),
   on(CertActions.loadCollegeCourseSuccess, (state, { courses }) => ({
     ...state,

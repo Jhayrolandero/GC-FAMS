@@ -1,3 +1,7 @@
+@if(evalLoading$ | async) {
+<app-loading-screen></app-loading-screen>
+}@else {
+
 <div class="p-5 flex flex-col gap-y-3 text-blue">
   <div
     class="bg-white shadow-main w-full rounded-[15px] flex justify-between items-center px-5"
@@ -86,10 +90,14 @@
       <div
         class="flex flex-col flex-1 bg-white rounded-[15px] shadow-main p-5 pt-1"
       >
-        <p class="text-blue font-bold text-[1.7rem] my-2">
-          Semestral Evaluation Difference
-        </p>
+        <div class="flex justify-between">
+          <p class="text-blue font-bold text-[1.7rem] my-2">
+            Semestral Evaluation Difference
+          </p>
+          <button (click)="generateSemDiffReport()">Generate Report</button>
+        </div>
         <app-bar-chart
+          (emitSemDiff)="setSemDiff($event)"
           [data]="diffArr[2]"
           [axis]="'x'"
           [bgColor]="'rgb(7, 66, 135)'"
@@ -146,8 +154,10 @@
           </div>
         </div>
       </div>
+      <button (click)="generateRadarReport()">Generate Report</button>
 
       <app-radar-chart
+        (emitRadar)="setRadar($event)"
         [label1]="selectedFacultyArray[0]"
         [label2]="selectedFacultyArray[1]"
         [label3]="selectedFacultyArray[2]"
@@ -179,4 +189,17 @@
       </app-radar-chart>
     </div>
   </div>
+
+  <div
+    class="bg-white shadow-main w-full rounded-[15px] flex justify-between items-center px-5 tablet:flex-row flex-col py-2"
+  >
+    <h1
+      class="font-Poppins font-semibold text-[1.75rem] tablet:text-[2.5rem] py-2 text-blue"
+    >
+      Generate Report
+    </h1>
+  </div>
+
+  <button>Excel</button>
 </div>
+}
