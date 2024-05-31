@@ -509,7 +509,10 @@ export const yearEvaluationAverage = createSelector(
 export const selectAllAverageTimeline = createSelector(
     selectDeanState,
     (state: DeanState) => {
-        let averageTimeline: Map<number, [string, number[]]> = new Map();
+      // Key => ID, Value: Name, eval History []
+        let averageTimeline: Map<number, [string, number[], string, string]> = new Map();
+
+        // Range from years 14 previous + now
         let floorYear = currentYear - 14;
 
         state.evals.forEach(faculty => {
@@ -528,19 +531,22 @@ export const selectAllAverageTimeline = createSelector(
                 //Check if it has an assigned average already
                 if(averageTimeline.get(id)![1][faculty.evaluation_year - floorYear] != 0){
                     averageTimeline.get(id)![1][faculty.evaluation_year - floorYear] = (averageTimeline.get(id)![1][faculty.evaluation_year - floorYear] + paramAverage) / 2;
-                    averageTimeline.set(id, [averageTimeline.get(id)![0], averageTimeline.get(id)![1]])
+                    averageTimeline.set(id, [averageTimeline.get(id)![0], averageTimeline.get(id)![1], averageTimeline.get(id)![2], averageTimeline.get(id)![3]])
                 }
                 else{
                     averageTimeline.get(id)![1][faculty.evaluation_year - floorYear] = paramAverage;
-                    averageTimeline.set(id, [averageTimeline.get(id)![0], averageTimeline.get(id)![1]])
+                    averageTimeline.set(id, [averageTimeline.get(id)![0], averageTimeline.get(id)![1], averageTimeline.get(id)![2], averageTimeline.get(id)![3]])
                 }
             }
             else{
-                averageTimeline.set(id, [faculty.first_name + " " + faculty.last_name,  Array.from({ length: 15 }, () => 0)]);
+              // Init map name with eval history to 0
+                averageTimeline.set(id, [faculty.first_name + " " + faculty.last_name,  Array.from({ length: 15 }, () => 0), getPosition(state.profile, faculty.faculty_ID), getCollege(state.profile, faculty.faculty_ID)]);
+                // console.log(faculty.evaluation_year - floorYear + "= " + paramAverage)
                 averageTimeline.get(id)![1][faculty.evaluation_year - floorYear] = paramAverage;
-                averageTimeline.set(id, [averageTimeline.get(id)![0], averageTimeline.get(id)![1]]);
+                averageTimeline.set(id, [averageTimeline.get(id)![0], averageTimeline.get(id)![1], averageTimeline.get(id)![2], averageTimeline.get(id)![3]]);
             }
         })
+
         return [...averageTimeline.entries()];
     }
 );
@@ -602,7 +608,6 @@ export const selectCurrentEvaluation = createSelector(
         let radioEvaluation: Map<string, (number | string)[]> = new Map();
         date.getMonth() <= 5 ? sem = 1 : sem = 2;
 
-
         state.evals.forEach(evaluation => {
             if(evaluation.evaluation_year == currentYear && evaluation.semester == sem){
                 radioEvaluation.set(
@@ -626,7 +631,6 @@ export const selectCurrentEvaluation = createSelector(
             }
         })
 
-        console.log(radioEvaluation)
         return [...radioEvaluation.entries()];
     }
 )
