@@ -26,12 +26,30 @@ export interface DeanState {
   evals: Evaluation[];
   courses: [CoursesFaculty[], Courses[]];
   commex: CommunityExtension[];
-  evalsLoading: boolean
+  evalsLoading: boolean,
+  collegeLoading: boolean,
+  profileLoading: boolean,
+  certsLoading: boolean,
+  educsLoading: boolean,
+  expsLoading: boolean,
+  projLoading: boolean,
+  exptLoading: boolean,
+  coursesLoading: boolean,
+  commexLoading: boolean
 }
 
 export const initialDeanState: DeanState = {
   colleges: [],
   evalsLoading: false,
+  collegeLoading: false,
+  profileLoading: false,
+  certsLoading: false,
+  educsLoading: false,
+  expsLoading: false,
+  projLoading: false,
+  exptLoading: false,
+  coursesLoading: false,
+  commexLoading: false,
   profile: [],
   certs: [],
   educs: [],
@@ -47,58 +65,94 @@ export const profileDeanReducer = createReducer(
   initialDeanState,
 
 
-  on(CertActions.loadCollege, (state) => ({ ...state })),
+  on(CertActions.loadCollege, (state) => ({ ...state, collegeLoading: true })),
   on(CertActions.loadCollegeSuccess, (state, { colleges }) => ({
     ...state,
-    colleges: colleges
+    colleges: colleges,
+    collegeLoading: false
   })),
-  on(CertActions.loadCollegeFailure, (state) => ({ ...state, })),
-
-
-
-
-  on(CertActions.loadCollegeProfile, (state) => ({ ...state })),
+  on(CertActions.loadCollegeFailure, (state) => ({
+    ...state,
+    collegeLoading: false
+  })),
+  on(CertActions.loadCollegeProfile, (state) => ({
+    ...state,
+    profileLoading: true
+  })),
   on(CertActions.loadCollegeProfileSuccess, (state, { profile }) => ({
     ...state,
-    profile: profile
+    profile: profile,
+    profileLoading: false
   })),
-  on(CertActions.loadCollegeProfileFailure, (state) => ({ ...state, })),
-
-  on(CertActions.loadCollegeEduc, (state) => ({ ...state })),
+  on(CertActions.loadCollegeProfileFailure, (state) => ({
+    ...state,
+    profileLoading: false
+  })),
+  on(CertActions.loadCollegeEduc, (state) => ({
+    ...state,
+    educsLoading: true
+   })),
   on(CertActions.loadCollegeEducSuccess, (state, { educs }) => ({
     ...state,
-    educs: educs
+    educs: educs,
+    educsLoading: false
   })),
-  on(CertActions.loadCollegeEducFailure, (state) => ({ ...state, })),
-
-  on(CertActions.loadCollegeCert, (state) => ({ ...state })),
+  on(CertActions.loadCollegeEducFailure, (state) => ({
+    ...state,
+    educsLoading: false
+  })),
+  on(CertActions.loadCollegeCert, (state) => ({
+    ...state,
+    certsLoading: true
+  })),
   on(CertActions.loadCollegeCertSuccess, (state, { certs }) => ({
     ...state,
-    certs: certs
+    certs: certs,
+    certsLoading: false
   })),
-  on(CertActions.loadCollegeCertsFailure, (state) => ({ ...state, })),
-
-  on(CertActions.loadCollegeExp, (state) => ({ ...state })),
+  on(CertActions.loadCollegeCertsFailure, (state) => ({
+    ...state,
+    certsLoading: false
+  })),
+  on(CertActions.loadCollegeExp, (state) => ({
+    ...state,
+    expsLoading: true
+  })),
   on(CertActions.loadCollegeExpSuccess, (state, { exps }) => ({
     ...state,
-    exps: exps
+    exps: exps,
+    expsLoading: false
   })),
-  on(CertActions.loadCollegeExpFailure, (state) => ({ ...state, })),
-
-  on(CertActions.loadCollegeProj, (state) => ({ ...state })),
+  on(CertActions.loadCollegeExpFailure, (state) => ({
+    ...state,
+    expsLoading: false
+  })),
+  on(CertActions.loadCollegeProj, (state) => ({
+    ...state,
+    profileLoading: true
+  })),
   on(CertActions.loadCollegeProjSuccess, (state, { proj }) => ({
     ...state,
-    proj: proj
+    proj: proj,
+    profileLoading: false
   })),
-  on(CertActions.loadCollegeProjFailure, (state) => ({ ...state, })),
-
-  on(CertActions.loadCollegeExpertise, (state) => ({ ...state })),
+  on(CertActions.loadCollegeProjFailure, (state) => ({
+    ...state,
+    profileLoading: false
+  })),
+  on(CertActions.loadCollegeExpertise, (state) => ({
+    ...state,
+    expsLoading: true
+  })),
   on(CertActions.loadCollegeExpertiseSuccess, (state, { expertises }) => ({
     ...state,
-    expertises: expertises
+    expertises: expertises,
+    expsLoading: false
   })),
-  on(CertActions.loadCollegeExpertiseFailure, (state) => ({ ...state, })),
-
+  on(CertActions.loadCollegeExpertiseFailure, (state) => ({
+    ...state,
+    expsLoading: false
+   })),
   on(CertActions.loadCollegeEval, (state) => ({ ...state, evalsLoading: true })),
   on(CertActions.loadCollegeEvalSuccess, (state, { evals }) => ({
     ...state,
@@ -109,17 +163,31 @@ export const profileDeanReducer = createReducer(
      ...state,
     evalsLoading: false
   })),
-  on(CertActions.loadCollegeCourse, (state) => ({ ...state })),
+  on(CertActions.loadCollegeCourse, (state) => ({
+    ...state,
+    coursesLoading: true
+  })),
   on(CertActions.loadCollegeCourseSuccess, (state, { courses }) => ({
     ...state,
-    courses: courses
+    courses: courses,
+    coursesLoading: false
   })),
-  on(CertActions.loadCollegeCourseFailure, (state) => ({ ...state, })),
+  on(CertActions.loadCollegeCourseFailure, (state) => ({
+    ...state,
+    coursesLoading: false
+  })),
 
-  on(CertActions.loadCollegeCommex, (state) => ({ ...state })),
+  on(CertActions.loadCollegeCommex, (state) => ({
+    ...state,
+    commexLoading: true,
+  })),
   on(CertActions.loadCollegeCommexSuccess, (state, { commex }) => ({
     ...state,
-    commex: commex
+    commex: commex,
+    commexLoading: false
   })),
-  on(CertActions.loadCollegeCommexFailure, (state) => ({ ...state, }))
+  on(CertActions.loadCollegeCommexFailure, (state) => ({
+    ...state,
+    commexLoading: false
+  }))
 )

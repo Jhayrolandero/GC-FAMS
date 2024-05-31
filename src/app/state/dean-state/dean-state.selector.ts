@@ -3,6 +3,7 @@ import { DeanState } from "./dean-state.reducer";
 import { Evaluation } from "../../services/Interfaces/evaluation";
 import { CommunityExtension } from "../../services/Interfaces/community-extension";
 import { Faculty } from "../../services/Interfaces/faculty";
+import { state } from "@angular/animations";
 
 const date = new Date();
 const currentYear: number  = date.getFullYear();
@@ -61,19 +62,22 @@ export const selectAttainmentTimeline = createSelector(
             Array.from({ length: 15 }, () => 0)
         ];
 
+        if(state.certs.length <= 0) return []
+
         state.certs.forEach(cert => {
             const currYear = +(cert.accomplished_date+'').slice(0,4);
             if(currYear >= floorYear){
                 attainmentTimeline[0][currYear - floorYear] += 1
             }
-        })
+          })
 
-        state.commex.forEach(commex => {
-            const currYear = +commex.commex_date.slice(0,4);
-            if(currYear >= floorYear){
-                attainmentTimeline[1][currYear - floorYear] += 1
-            }
-        })
+      if(state.commex.length <= 0) return []
+      state.commex.forEach(commex => {
+        const currYear = +commex.commex_date.slice(0,4);
+        if(currYear >= floorYear){
+          attainmentTimeline[1][currYear - floorYear] += 1
+        }
+      })
 
         state.certs.forEach(cert => {
             const currYear = +(cert.accomplished_date+'').slice(0,4);
@@ -89,7 +93,6 @@ export const selectAttainmentTimeline = createSelector(
                 }
             })
         })
-
 
         return attainmentTimeline;
     }
@@ -169,6 +172,8 @@ export const selectCollegeEducTimeline = createSelector(
             Array.from({ length: 15 }, () => 0)
         ];
 
+        if(state.educs.length <= 0) return []
+
         state.educs.forEach(educ => {
             const currYear = +educ.year_end.slice(0,4);
             if(currYear >= floorYear){
@@ -191,6 +196,8 @@ export const selectCollegeEducTimeline = createSelector(
                 }
             }
         })
+
+        // console.log(state.educs)
 
         return educTimeline;
     }
@@ -859,6 +866,50 @@ export const selectAttainmentTimelineFaculty = (commex: CommunityExtension[], id
     (state: DeanState) => getProfile(faculty_ID, state.profile))
 
 
+    export const selectCollegeLoading = createSelector(
+      selectDeanState,
+      (state: DeanState) => state.collegeLoading
+    )
+
+    export const selectProfileLoading = createSelector(
+      selectDeanState,
+      (state: DeanState) => state.profileLoading
+    )
+
+    export const selectCertsLoading = createSelector(
+      selectDeanState,
+      (state: DeanState) => state.certsLoading
+    )
+
+    export const selectEducsLoading = createSelector(
+      selectDeanState,
+      (state: DeanState) => state.educsLoading
+    )
+
+    export const selectExpsLoading = createSelector(
+      selectDeanState,
+      (state: DeanState) => state.expsLoading
+    )
+
+    export const selectProjLoading = createSelector(
+      selectDeanState,
+      (state: DeanState) => state.projLoading
+    )
+
+    export const selectExptLoading = createSelector(
+      selectDeanState,
+      (state: DeanState) => state.exptLoading
+    )
+
+    export const selectCoursesLoading = createSelector(
+      selectDeanState,
+      (state: DeanState) => state.coursesLoading
+    )
+
+    export const selectCommexLoading = createSelector(
+      selectDeanState,
+      (state: DeanState) => state.commexLoading
+    )
 
   function getProfile(faculty_ID: number, faculties: Faculty[]) {
 

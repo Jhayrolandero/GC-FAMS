@@ -1,4 +1,10 @@
-<!-- <app-loading-screen *ngIf="isLoading"></app-loading-screen> -->
+@if((profileLoading$ | async) && (certsLoading$ | async) && (educsLoading$ |
+async) && (expsLoading$ | async) && (projLoading$ | async) && (exptLoading$ |
+async) && (coursesLoading$ | async) && (coursesLoading$ | async) &&
+(commexLoading$ | async)) {
+<app-loading-screen></app-loading-screen>
+
+} @else {
 
 <div class="p-5 flex flex-col gap-y-3 text-blue">
   <div
@@ -101,11 +107,14 @@
     *ngIf="educationalAttainmentTimeline$ | async as educTimeline"
     class="w-full bg-white rounded-[15px] shadow-main p-5 pt-1"
   >
-    <p
-      class="text-blue font-bold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] my-2 tablet:text-start text-center my-2"
-    >
-      Educational Attainment Timeline
-    </p>
+    <div class="flex justify-between">
+      <p
+        class="text-blue font-bold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] my-2 tablet:text-start text-center my-2"
+      >
+        Educational Attainment Timeline
+      </p>
+      <button (click)="generateEducReport()">Generate Report</button>
+    </div>
     <app-line-graph
       [data]="educTimeline[0]"
       [data2]="educTimeline[1]"
@@ -142,11 +151,14 @@
     class="w-full bg-white rounded-[15px] shadow-main p-5 pt-1"
   >
     <div class="flex flex-col tablet:flex-row items-center gap-3">
-      <p
-        class="text-blue font-bold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] my-2 tablet:text-start text-center my-2"
-      >
-        Attainment Timeline
-      </p>
+      <div class="flex justify-between">
+        <p
+          class="text-blue font-bold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] my-2 tablet:text-start text-center my-2"
+        >
+          Attainment Timeline
+        </p>
+        <button (click)="generateAttainmentReport()">Generate Report</button>
+      </div>
       <div class="flex flex-row gap-1">
         <div
           class="w-[23px] h-[23px] rounded-[5px] shadow-main duration-300 hover:duration-300 hover:bg-opacity-50"
@@ -195,6 +207,7 @@
         Educational Attainment
       </p>
       <app-pie-chart
+        *ngIf="educTimeline.length > 0"
         [data]="[educTimeline[0][14], educTimeline[1][14], educTimeline[2][14]]"
         [labels]="['Bachelor Degree', 'Master Degree', 'Doctorate Degree']"
       >
@@ -233,7 +246,7 @@
 
   <div class="flex gap-2 flex-col tablet:flex-row">
     <div class="w-full tablet:w-[50%] flex flex-col gap-2">
-      <div
+      <!-- <div
         *ngIf="topSeminar$ | async as seminar"
         class="bg-white shadow-main rounded-[15px] p-5 pt-1"
       >
@@ -243,6 +256,7 @@
           Top Seminars Completed
         </p>
         <app-bar-chart
+          *ngIf="seminar[1]"
           [data]="[
             seminar[0][1],
             seminar[1][1],
@@ -261,7 +275,7 @@
           [bgColor]="'rgb(30, 114, 66)'"
           [showLegend]="false"
         ></app-bar-chart>
-      </div>
+      </div> -->
 
       <div
         *ngIf="teachingLength$ | async as teaching"
@@ -315,6 +329,7 @@
         Top Seminars Completed
       </p>
       <app-bar-chart
+        *ngIf="seminar[1]"
         [data]="[
           seminar[0][1],
           seminar[1][1],
@@ -371,3 +386,5 @@
     </div>
   </div>
 </div>
+
+}
