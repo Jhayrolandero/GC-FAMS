@@ -824,7 +824,10 @@ export const selectFacultyReport = createSelector(selectDeanState, (state)=> {
     let data = {
       "Name" : (prof.teaching_position.toLocaleUpperCase() !== 'INSTRUCTOR' ? prof.teaching_position.toLocaleUpperCase() + " " : "")  + prof.last_name + prof.ext_name+ ', '+ prof.first_name + ' ' + prof.middle_name,
       "Employment Status (FT/PT)": prof.employment_status == 0 ? "Part-time" : "Full-time",
-      "Teaching year experience": calculateTeachingYear(state.educs, state.exps, prof.faculty_ID) + " year/s"
+      "Teaching year experience": calculateTeachingYear(state.educs, state.exps, prof.faculty_ID) + " year/s",
+      "Expertise": getExpertise(state.expertises[0], prof.faculty_ID),
+      "Related Professional Experience": getExperience(state.exps, prof.faculty_ID),
+      "Related Certificates": getCerts(state.certs, prof.faculty_ID)
     }
 
     data = {...data, ...degree}
@@ -834,7 +837,7 @@ export const selectFacultyReport = createSelector(selectDeanState, (state)=> {
 })
 
 function getCerts(certs: CertificationsFaculty[], faculty_ID: number) {
-
+    return certs.filter((item) => faculty_ID == item.faculty_ID).map(item => item.cert_name).join(", ")
 
 }
 
@@ -881,10 +884,11 @@ function getDegree(educs: EducationalAttainment[], faculty_ID: number) {
   }
 }
 function getExperience(experience: IndustryExperience[], faculty_ID: number) {
-
+    return experience.filter((item) => faculty_ID == item.faculty_ID).map(item => item.experience_title).join(", ")
 }
 
 function getExpertise(expertise: ExpertiseFaculty[], faculty_ID: number) {
+    return expertise.filter((item) => faculty_ID == item.faculty_ID).map(item => item.expertise_name).join(", ")
 }
 
 export const selectAttainmentTimelineFaculty = (commex: CommunityExtension[], id: number) => createSelector(
