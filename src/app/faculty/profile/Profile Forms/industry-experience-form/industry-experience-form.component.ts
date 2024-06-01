@@ -17,27 +17,31 @@ import { loadEduc, loadExp } from '../../../../state/faculty-state/faculty-state
     templateUrl: 'industry-experience-form.component.html',
     styleUrl: 'industry-experience-form.component.css'
   })
-  
-  export class IndustryExperienceFormComponent { 
+
+  export class IndustryExperienceFormComponent {
     expForm = new FormGroup({
         experience_place: new FormControl(''),
         experience_title: new FormControl(''),
         experience_details: new FormControl(''),
         experience_from: new FormControl(''),
         experience_to: new FormControl(''),
+        teaching_related: new FormControl()
     })
 
+
+    teachingRelated: boolean = false
+
     constructor(
-      public dialogRef: MatDialogRef<IndustryExperienceFormComponent>, 
+      public dialogRef: MatDialogRef<IndustryExperienceFormComponent>,
       private facultyRequest: FacultyRequestService,
       private store: Store,
       @Inject(MAT_DIALOG_DATA) public data: any){}
 
-  
+
     onNoClick(): void {
       this.dialogRef.close();
     }
-  
+
     submitForm(){
         if(this.data.length == 0){
           this.facultyRequest.postData(this.expForm, 'addExp').subscribe({
@@ -60,5 +64,15 @@ import { loadEduc, loadExp } from '../../../../state/faculty-state/faculty-state
             }
           });
         }
+    }
+
+    toggleTeaching() {
+
+      this.teachingRelated = !this.teachingRelated
+      this.expForm.patchValue({
+        teaching_related: this.teachingRelated
+      })
+
+      console.log(this.expForm.value)
     }
   }

@@ -823,10 +823,12 @@ export const selectFacultyReport = createSelector(selectDeanState, (state)=> {
     let degree = getDegree(state.educs, prof.faculty_ID)
     let data = {
       "Name" : (prof.teaching_position.toLocaleUpperCase() !== 'INSTRUCTOR' ? prof.teaching_position.toLocaleUpperCase() + " " : "")  + prof.last_name + prof.ext_name+ ', '+ prof.first_name + ' ' + prof.middle_name,
-      "Employment Status (FT/PT)": prof.employment_status == 0 ? "Part-time" : "Full-time"
+      "Employment Status (FT/PT)": prof.employment_status == 0 ? "Part-time" : "Full-time",
+      "Teaching year experience": calculateTeachingYear(state.educs, state.exps, prof.faculty_ID) + " year/s"
     }
 
     data = {...data, ...degree}
+
     console.log(data)
   })
 })
@@ -834,6 +836,31 @@ export const selectFacultyReport = createSelector(selectDeanState, (state)=> {
 function getCerts(certs: CertificationsFaculty[], faculty_ID: number) {
 
 
+}
+
+function calculateTeachingYear(educs: EducationalAttainment[], experience: IndustryExperience[], faculty_ID: number) {
+
+  const experienceYears =      experience.filter(item => item.faculty_ID == faculty_ID).filter(item => item.teaching_related == 1).map(item => item.experience_from)
+
+  const educYears =     educs.filter(item => item.faculty_ID == faculty_ID).map(item => item.year_start)
+
+
+
+  const years = [...experienceYears, ...educYears]
+
+  if(years.length <= 0) return 0
+
+  const formattedYear = years.map(year => new Date(year).getFullYear())
+
+  const minYear = Math.min(...formattedYear);
+
+  if(Number.isNaN(minYear)) return 0
+
+  const currentYear = new Date().getFullYear();
+
+  const yearLength = currentYear - minYear;
+
+  return yearLength
 }
 
 function getDegree(educs: EducationalAttainment[], faculty_ID: number) {
@@ -858,7 +885,6 @@ function getExperience(experience: IndustryExperience[], faculty_ID: number) {
 }
 
 function getExpertise(expertise: ExpertiseFaculty[], faculty_ID: number) {
-  expertise
 }
 
 export const selectAttainmentTimelineFaculty = (commex: CommunityExtension[], id: number) => createSelector(
