@@ -10,6 +10,9 @@ import { EventEmitter } from '@angular/core';
 import { AddFacultyComponent } from './add-faculty/add-faculty.component';
 import { ManageindividualanalyticsComponent } from "./manageindividualanalytics/manageindividualanalytics.component";
 import { CvComponent } from './cv/cv.component';
+import { Store, select } from '@ngrx/store';
+import { Subscription } from 'rxjs';
+import { selectFacultyReport } from '../../state/dean-state/dean-state.selector';
 
 @Component({
     selector: 'app-manage-faculty',
@@ -29,7 +32,6 @@ import { CvComponent } from './cv/cv.component';
     ]
 })
 
-
 export class ManageFacultyComponent {
   showAdd: boolean = false;
   showAnalytics: boolean = false;
@@ -42,12 +44,25 @@ export class ManageFacultyComponent {
   cvToggle = false;
   pdfID!: number
 
+  facultyReportSubscription!: Subscription
+
   constructor(
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private store: Store
   ) {
     this.editData = undefined;
   }
+
+  ngOnInit() {
+    this.facultyReportSubscription = this.store.pipe(
+      select(selectFacultyReport)
+    ).subscribe({
+      next: res => console.log(res),
+      error: err => console.log(err)
+    })
+  }
+
 
   switchShow(){
     if(this.showAdd) this.editData = undefined;
@@ -69,5 +84,9 @@ export class ManageFacultyComponent {
   triggerCV(faculty_ID: number){
     this.cvToggle = !this.cvToggle;
     this.pdfID = faculty_ID
+  }
+
+  ngOnDestroy() {
+    this.facultyReportSubscription.unsubscribe()
   }
 }

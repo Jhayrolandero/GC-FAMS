@@ -4,6 +4,10 @@ import { Evaluation } from "../../services/Interfaces/evaluation";
 import { CommunityExtension } from "../../services/Interfaces/community-extension";
 import { Faculty } from "../../services/Interfaces/faculty";
 import { state } from "@angular/animations";
+import { CertificationsFaculty } from "../../services/Interfaces/certifications-faculty";
+import { EducationalAttainment } from "../../services/Interfaces/educational-attainment";
+import { IndustryExperience } from "../../services/Interfaces/industry-experience";
+import { ExpertiseFaculty } from "../../services/Interfaces/expertise-faculty";
 
 const date = new Date();
 const currentYear: number  = date.getFullYear();
@@ -810,6 +814,52 @@ export const selectMilestoneCount = (commex: CommunityExtension[], id: number) =
     }
 );
 
+export const selectFacultyReport = createSelector(selectDeanState, (state)=> {
+
+  if(state.profile.length < 0) return
+
+  state.profile.map(prof => {
+
+    let degree = getDegree(state.educs, prof.faculty_ID)
+    let data = {
+      "Name" : (prof.teaching_position.toLocaleUpperCase() !== 'INSTRUCTOR' ? prof.teaching_position.toLocaleUpperCase() + " " : "")  + prof.last_name + prof.ext_name+ ', '+ prof.first_name + ' ' + prof.middle_name,
+      "Employment Status (FT/PT)": prof.employment_status == 0 ? "Part-time" : "Full-time"
+    }
+
+    data = {...data, ...degree}
+    console.log(data)
+  })
+})
+
+function getCerts(certs: CertificationsFaculty[], faculty_ID: number) {
+
+
+}
+
+function getDegree(educs: EducationalAttainment[], faculty_ID: number) {
+
+  return {
+    "Baccaleurate": educs.filter((item) => faculty_ID == item.faculty_ID).
+                    filter(item => item.educ_level.toLocaleLowerCase() === "bachelor\'s degree").
+                    map(item => item.educ_title).join(", "),
+    "Masterals": educs.filter((item) => faculty_ID == item.faculty_ID).
+                    filter(item => item.educ_level.toLocaleLowerCase() === "master\'s degree").
+                    map(item => item.educ_title).join(", "),
+    "Doctorate": educs.filter((item) => faculty_ID == item.faculty_ID).
+                    filter(item => item.educ_level.toLocaleLowerCase() === "doctorate degree").
+                    map(item => item.educ_title).join(", "),
+    "Associate": educs.filter((item) => faculty_ID == item.faculty_ID).
+                    filter(item => item.educ_level.toLocaleLowerCase() === "associate's degree").
+                    map(item => item.educ_title).join(", ")
+  }
+}
+function getExperience(experience: IndustryExperience[], faculty_ID: number) {
+
+}
+
+function getExpertise(expertise: ExpertiseFaculty[], faculty_ID: number) {
+  expertise
+}
 
 export const selectAttainmentTimelineFaculty = (commex: CommunityExtension[], id: number) => createSelector(
     selectDeanState,
