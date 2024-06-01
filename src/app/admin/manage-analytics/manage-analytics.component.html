@@ -204,11 +204,16 @@ async) && (coursesLoading$ | async) && (coursesLoading$ | async) &&
       *ngIf="educationalAttainmentTimeline$ | async as educTimeline"
       class="bg-white flex flex-col items-center rounded-[15px] shadow-main flex-1"
     >
-      <p
-        class="text-blue font-bold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] my-2 tablet:text-start text-center my-2"
-      >
-        Educational Attainment
-      </p>
+      <div class="flex gap-2">
+        <p
+          class="text-blue font-bold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] my-2 tablet:text-start text-center my-2"
+        >
+          Educational Attainment
+        </p>
+        <button (click)="generateEducAttainmentReport()">
+          Generate Report
+        </button>
+      </div>
       <app-pie-chart
         *ngIf="educTimeline.length > 0"
         [data]="[educTimeline[0][14], educTimeline[1][14], educTimeline[2][14]]"

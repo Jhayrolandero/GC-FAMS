@@ -19,6 +19,7 @@ import {
      selectCommonSeminars,
       selectCoursesLoading,
       selectCurrYearAverageSeminarCount,
+      selectCurrentEducAttainment,
       selectEducsLoading,
       selectExpsLoading,
       selectExptLoading,
@@ -33,11 +34,12 @@ import { BarChartComponent } from '../../components/charts/bar-chart/bar-chart.c
 import { ScatterPlotComponent } from '../../components/charts/scatter-plot/scatter-plot.component';
 import { selectAllProfile, selectProfileLoading } from '../../state/faculty-state/faculty-state.selector';
 import { ExcelServiceService } from '../../service/excel-service.service';
-import { Subscription, filter, take } from 'rxjs';
+import { Subscription, filter, take, takeLast } from 'rxjs';
 import { EducAttainmentData } from '../../services/Interfaces/educAttainmentData';
 import { AttainmentData } from '../../services/Interfaces/attainmentData';
 import { MilestoneReport } from '../../services/Interfaces/milestoneReport';
 import { error } from 'console';
+import { CurrEducAttainment } from '../../services/Interfaces/currEducAttainment';
 
 @Component({
     selector: 'app-manage-analytics',
@@ -102,7 +104,15 @@ export class ManageAnalyticsComponent{
   mileStoneSubscription!: Subscription
   milestoneData: MilestoneReport[] = []
 
+  currEducSubscription!: Subscription
+  currEducData: CurrEducAttainment[] = []
+
   topSeminarSubscription!: Subscription
+
+  totalEducAttainment!: Subscription
+  totalBachelor: number = 0
+  totalMasterals: number = 0
+  totalDoctorate: number = 0
   constructor(
     public store: Store,
     private excelService: ExcelServiceService
@@ -150,11 +160,37 @@ export class ManageAnalyticsComponent{
         this.milestoneData = res!},
       error: error => {console.log(error)}
     })
+
+    this.currEducSubscription = this.store.pipe(
+      select(selectCurrentEducAttainment(1))
+    ).subscribe({
+      next: res => {this.currEducData = res!},
+      error: err => {console.log(err)}
+    })
+
+    // this.totalEducAttainment = this.store.pipe(
+    //   select(selectCollegeEducTimeline),
+    //   filter(data => !!data && (data.length > 0 )),
+    //   take(1)
+    // ).subscribe({
+    //   next: res => {
+
+    //     console.log(res)
+    //     this.totalBachelor = res[0].reduce((partialSum, a) => partialSum + a, 0)
+    //     this.totalMasterals = res[1].reduce((partialSum, a) => partialSum + a, 0)
+    //     this.totalDoctorate = res[2].reduce((partialSum, a) => partialSum + a, 0)
+
+    //   }
+    // })
+
   }
 
   ngOnDestroy() {
     this.educSubscription.unsubscribe()
     this.attainmentSubscription.unsubscribe()
+    this.mileStoneSubscription.unsubscribe()
+    this.currEducSubscription.unsubscribe()
+    this.totalEducAttainment.unsubscribe()
   }
 
   renderEducReport(res : number[][]) {
@@ -232,5 +268,11 @@ export class ManageAnalyticsComponent{
     if(this.milestoneData.length < 0) return
 
     this.excelService.exportExcel<MilestoneReport>(this.milestoneData, `Milestone Achieved (${ this.date.getFullYear() - 14} - ${this.date.getFullYear()})`, "ccs", `nth Sem., AY ${ this.date.getFullYear()} - ${this.date.getFullYear() + 1}`)
+  }
+
+  generateEducAttainmentReport() {
+    if(this.currEducData.length < 0) return
+
+    this.excelService.exportExcel<CurrEducAttainment>(this.currEducData, `Educational Attainment CCS`, "ccs", `nth Sem., AY ${ this.date.getFullYear()} - ${this.date.getFullYear() + 1}`)
   }
 }

@@ -12,6 +12,7 @@ import { CoursesFaculty } from "../../services/Interfaces/courses-faculty";
 import { FacultyReport } from "../../services/Interfaces/facultyReport";
 import { AttainmentData } from "../../services/Interfaces/attainmentData";
 import { MilestoneReport } from "../../services/Interfaces/milestoneReport";
+import { CurrEducAttainment } from "../../services/Interfaces/currEducAttainment";
 
 const date = new Date();
 const currentYear: number  = date.getFullYear();
@@ -108,6 +109,31 @@ export const selectCollegeMilestoneCount = createSelector(
 
   )
 
+  export const selectCurrentEducAttainment = (college : number) => createSelector(
+    selectDeanState,
+    (state) => {
+      if(state.educs.length <= 0) return
+
+      let currEducReport: CurrEducAttainment[] = []
+      state.educs.filter(item => getProfile(item.faculty_ID, state.profile)!.college_ID == college).map(item => {
+
+        console.log()
+        let data = {
+          "Name": getProfile(item.faculty_ID, state.profile)!.last_name + getProfile(item.faculty_ID, state.profile)!.ext_name + ', ' + getProfile(item.faculty_ID, state.profile)!.first_name + ' ' + getProfile(item.faculty_ID, state.profile)!.middle_name,
+          "Degree": item.educ_level,
+          "Degree Title": item.educ_title,
+          "Year Started": item.year_start,
+          "Year Ended": item.year_end,
+          "Alma Mater": item.educ_school
+        }
+
+
+        currEducReport.push(data)
+      })
+
+      return currEducReport
+    }
+  )
 export const selectAttainmentTimeline = createSelector(
     selectDeanState,
     (state: DeanState) => {
@@ -986,8 +1012,6 @@ export const selectAttainmentTimelineFaculty = (commex: CommunityExtension[], id
 
   function getProfile(faculty_ID: number, faculties: Faculty[]) {
     const facultyCopy = [...faculties]
-    console.log(facultyCopy.filter((item) => item.faculty_ID == faculty_ID))
-    console.log(faculty_ID)
     return facultyCopy.find((item) => item.faculty_ID == faculty_ID)
   }
 
