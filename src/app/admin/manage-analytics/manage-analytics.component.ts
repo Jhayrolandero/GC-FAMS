@@ -23,6 +23,7 @@ import {
       selectExpsLoading,
       selectExptLoading,
       selectFacultyExpertise,
+       selectMilestoneReport,
        selectProjLoading,
        selectTeachingLength,
        selectTopExpertise,
@@ -34,8 +35,9 @@ import { selectAllProfile, selectProfileLoading } from '../../state/faculty-stat
 import { ExcelServiceService } from '../../service/excel-service.service';
 import { Subscription, filter, take } from 'rxjs';
 import { EducAttainmentData } from '../../services/Interfaces/educAttainmentData';
-import { error } from 'console';
 import { AttainmentData } from '../../services/Interfaces/attainmentData';
+import { MilestoneReport } from '../../services/Interfaces/milestoneReport';
+import { error } from 'console';
 
 @Component({
     selector: 'app-manage-analytics',
@@ -97,6 +99,8 @@ export class ManageAnalyticsComponent{
   attainmentSubscription!: Subscription
   attainmentData: AttainmentData[] = []
 
+  mileStoneSubscription!: Subscription
+  milestoneData: MilestoneReport[] = []
 
   topSeminarSubscription!: Subscription
   constructor(
@@ -136,10 +140,15 @@ export class ManageAnalyticsComponent{
       error: error => {console.log(error)}
     })
 
-    this.topSeminarSubscription = this.store.pipe(
-      select(selectCommonSeminars)
+    this.mileStoneSubscription = this.store.pipe(
+      select(selectMilestoneReport),
+      filter(data => !!data && (data.length > 0 )),
+      take(1)
     ).subscribe({
-      next: res => {console.log(res)}
+      next: res => {
+        console.log(res)
+        this.milestoneData = res!},
+      error: error => {console.log(error)}
     })
   }
 
@@ -217,6 +226,11 @@ export class ManageAnalyticsComponent{
     if(this.attainmentData.length < 0) return
 
     this.excelService.exportExcel<AttainmentData>(this.attainmentData, `Attainment Timeline (${ this.date.getFullYear() - 14} - ${this.date.getFullYear()})`, "ccs", "!st Sem 2024 - 2025")
+  }
 
+  generateMilestoneReport() {
+    if(this.milestoneData.length < 0) return
+
+    this.excelService.exportExcel<MilestoneReport>(this.milestoneData, `Milestone Achieved (${ this.date.getFullYear() - 14} - ${this.date.getFullYear()})`, "ccs", `nth Sem., AY ${ this.date.getFullYear()} - ${this.date.getFullYear() + 1}`)
   }
 }

@@ -11,8 +11,10 @@ import { AddFacultyComponent } from './add-faculty/add-faculty.component';
 import { ManageindividualanalyticsComponent } from "./manageindividualanalytics/manageindividualanalytics.component";
 import { CvComponent } from './cv/cv.component';
 import { Store, select } from '@ngrx/store';
-import { Subscription } from 'rxjs';
+import { Subscription, filter, take } from 'rxjs';
 import { selectFacultyReport } from '../../state/dean-state/dean-state.selector';
+import { FacultyReport } from '../../services/Interfaces/facultyReport';
+import { ExcelServiceService } from '../../service/excel-service.service';
 
 @Component({
     selector: 'app-manage-faculty',
@@ -45,20 +47,28 @@ export class ManageFacultyComponent {
   pdfID!: number
 
   facultyReportSubscription!: Subscription
+  facultyReportData: FacultyReport[] = []
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private store: Store
+    private store: Store,
+    private excelService: ExcelServiceService
+
   ) {
     this.editData = undefined;
   }
 
   ngOnInit() {
     this.facultyReportSubscription = this.store.pipe(
-      select(selectFacultyReport)
+      select(selectFacultyReport),
+      filter(data => !!data && data.length > 0),
+      take(1)
     ).subscribe({
-      next: res => console.log(res),
+      next: res => {
+        console.log(res)
+        res?.map(item => this.facultyReportData.push(item))
+      },
       error: err => console.log(err)
     })
   }
@@ -89,4 +99,16 @@ export class ManageFacultyComponent {
   ngOnDestroy() {
     this.facultyReportSubscription.unsubscribe()
   }
+
+  generateFacultyReport() {
+    if(this.facultyReportData.length < 0) return
+
+    this.excelService.exportExcel<FacultyReport>(
+      this.facultyReportData,
+      `Faculty Report nth Sem., A.Y (${ new Date().getFullYear()} - ${new Date().getFullYear() + 1})`,
+      "ccs",
+      "nth Sem., A.Y ")
+
+  }
+
 }

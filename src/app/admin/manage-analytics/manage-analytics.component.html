@@ -130,11 +130,14 @@ async) && (coursesLoading$ | async) && (coursesLoading$ | async) &&
     *ngIf="milestoneCount$ | async as milestone"
     class="w-full bg-white rounded-[15px] shadow-main p-5 pt-1"
   >
-    <p
-      class="text-blue font-bold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] my-2 tablet:text-start text-center my-2"
-    >
-      Milestones Achieved Each Year
-    </p>
+    <div class="flex justify-between">
+      <p
+        class="text-blue font-bold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] my-2 tablet:text-start text-center my-2"
+      >
+        Milestones Achieved Each Year
+      </p>
+      <button (click)="generateMilestoneReport()">Generate Report</button>
+    </div>
     <app-bar-chart
       [data]="milestone"
       [axis]="'x'"

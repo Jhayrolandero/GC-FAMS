@@ -8,12 +8,15 @@ import { CertificationsFaculty } from "../../services/Interfaces/certifications-
 import { EducationalAttainment } from "../../services/Interfaces/educational-attainment";
 import { IndustryExperience } from "../../services/Interfaces/industry-experience";
 import { ExpertiseFaculty } from "../../services/Interfaces/expertise-faculty";
+import { CoursesFaculty } from "../../services/Interfaces/courses-faculty";
+import { FacultyReport } from "../../services/Interfaces/facultyReport";
+import { AttainmentData } from "../../services/Interfaces/attainmentData";
+import { MilestoneReport } from "../../services/Interfaces/milestoneReport";
 
 const date = new Date();
 const currentYear: number  = date.getFullYear();
 
 export const selectDeanState = createFeatureSelector<DeanState>('dean');
-
 
 export const selectCollegeMilestoneCount = createSelector(
     selectDeanState,
@@ -55,6 +58,55 @@ export const selectCollegeMilestoneCount = createSelector(
         return ret.slice(ret.length - 15, ret.length);
     }
   );
+
+  export const selectMilestoneReport = createSelector(
+    selectDeanState,
+    (state) => {
+
+      if(state.certs.length <= 0 || state.educs.length <= 0 || state.commex.length <= 0) return
+      const yearsArray: string[] = Array.from({ length: 15 }, (_, i) => (new Date().getFullYear() - 14) + i).map(String);
+
+
+      const milestoneReport: MilestoneReport[] = []
+      let prevCommex = 0
+      let prevEduc = 0
+      let prevCert = 0
+      let prevYear = 0
+      yearsArray.map(year => {
+        let currCommex = state.commex.filter(item => year === new Date(item.commex_date.split("-")[0]).getFullYear()+"").length
+        let currEduc = state.educs.filter(item => year === new Date(item.year_end.split("-")[0]).getFullYear()+"").length
+        let currCert = state.certs.filter(item => year === new Date((item.accomplished_date + '').split("-")[0]).getFullYear()+"").length
+        let currYear = currCommex + currEduc + currCert
+
+        let changeEduc = prevEduc ? (((currEduc - prevEduc) / prevEduc) * 100).toFixed(2) + '%' : '-'
+        let changeCert = prevCert ? (((currCert - prevCert) / prevCert) * 100).toFixed(2) + '%' : '-'
+        let changeCommex = prevCommex ? (((currCommex - prevCommex) / prevCommex) * 100).toFixed(2) + '%' : '-'
+        let changeYear = prevYear ? (((currYear - prevYear) / prevYear) * 100).toFixed(2) + '%' : '-'
+
+        let data: MilestoneReport = {
+          "Year": year,
+          "Community Extensions Attended": currCommex,
+          "Community Extensions Attended Change from Previous Year (%)" : changeCommex,
+          "Educ Attainment": currEduc,
+          "Educational Attanment Change from Previous Year (%)" : changeEduc,
+          "Certificates Received": currCert,
+          "Certificates Received Change from Previous Year (%)" : changeCert,
+          "Total Milestone": currYear,
+          "Milestone Change from Previous Year (%)": changeYear
+        }
+
+        prevCommex = currCommex
+        prevEduc = currEduc
+        prevCert = currCert
+        prevYear = currYear
+
+        milestoneReport.push(data)
+      })
+
+      return milestoneReport
+    }
+
+  )
 
 export const selectAttainmentTimeline = createSelector(
     selectDeanState,
@@ -101,9 +153,6 @@ export const selectAttainmentTimeline = createSelector(
         return attainmentTimeline;
     }
 );
-
-
-
 
 export const selectAllCollege = createSelector(
     selectDeanState,
@@ -158,9 +207,6 @@ selectDeanState,
 }
 );
 
-
-
-
 export const selectAllCollegeEduc = createSelector(
     selectDeanState,
     (state: DeanState) => state.educs
@@ -206,10 +252,6 @@ export const selectCollegeEducTimeline = createSelector(
         return educTimeline;
     }
 );
-
-
-
-
 
 export const selectAllExistCerts = createSelector(
     selectDeanState,
@@ -281,8 +323,6 @@ export const selectCurrYearAverageSeminarCount = createSelector(
 );
 
 
-
-
 //Averages out total certificate count each faculty
 export const facultyCertsCountAverage = createSelector(
     selectDeanState,
@@ -301,12 +341,6 @@ export const facultyCertsCountAverage = createSelector(
         return Object.values(certCountByFaculty).reduce((acc, cur) => acc + cur, 0) / Object.keys(certCountByFaculty).length;
     }
 );
-
-
-
-
-
-
 
 export const selectCourseSched = createSelector(
     selectDeanState,
@@ -336,13 +370,6 @@ export const selectCourses = createSelector(
     selectDeanState,
     (state: DeanState) => state.courses[1]
 );
-
-
-
-
-
-
-
 
 export const selectAllExp = createSelector(
     selectDeanState,
@@ -816,80 +843,46 @@ export const selectMilestoneCount = (commex: CommunityExtension[], id: number) =
 
 export const selectFacultyReport = createSelector(selectDeanState, (state)=> {
 
-  if(state.profile.length < 0) return
+  if(state.profile.length <= 0) return
+  if(state.educs.length <= 0) return
+  if(state.certs.length <= 0) return
+  if(state.exps.length <= 0) return
+  if(state.courses[0].length <= 0) return
+  if(state.evals.length <= 0) return
+  if(state.expertises[0].length <= 0) return
 
-  state.profile.map(prof => {
+  let facultyReport: FacultyReport[] = [];
 
-    let degree = getDegree(state.educs, prof.faculty_ID)
+  state.profile.forEach(prof => {
+
+    let degree = getDegree(state.educs, prof.faculty_ID);
     let data = {
-      "Name" : (prof.teaching_position.toLocaleUpperCase() !== 'INSTRUCTOR' ? prof.teaching_position.toLocaleUpperCase() + " " : "")  + prof.last_name + prof.ext_name+ ', '+ prof.first_name + ' ' + prof.middle_name,
+      "Name": (prof.teaching_position.toLocaleUpperCase() !== 'INSTRUCTOR' ? prof.teaching_position.toLocaleUpperCase() + " " : "")  + prof.last_name + (prof.ext_name ? " " + prof.ext_name : "") + ', ' + prof.first_name + ' ' + prof.middle_name,
+      "Email": prof.email,
+      "Phonenumber": prof.phone_number,
       "Employment Status (FT/PT)": prof.employment_status == 0 ? "Part-time" : "Full-time",
-      "Teaching year experience": calculateTeachingYear(state.educs, state.exps, prof.faculty_ID) + " year/s",
-      "Expertise": getExpertise(state.expertises[0], prof.faculty_ID),
+      "Related Certificates": getCerts(state.certs, prof.faculty_ID),
       "Related Professional Experience": getExperience(state.exps, prof.faculty_ID),
-      "Related Certificates": getCerts(state.certs, prof.faculty_ID)
-    }
+      "Teaching year/s experience": calculateTeachingYear(state.educs, state.exps, prof.faculty_ID) + " year/s",
+      "Units Load": calculateUnits(state.courses[0], prof.faculty_ID) + ' unit/s',
+      "Courses Taught": getCourseTaught(state.courses[0], prof.faculty_ID),
+      [`Student Evaluation Result\n nth Sem., A.Y ${new Date().getFullYear()} - ${new Date().getFullYear() + 1}`]: getEval(state.evals, new Date().getFullYear(), prof.faculty_ID),
+      "Expertise": getExpertise(state.expertises[0], prof.faculty_ID),
+      "Baccaleurate": degree["Baccaleurate"],
+      "Masterals": degree["Masterals"],
+      "Doctorate": degree["Doctorate"],
+      "Associate": degree["Associate"],
+    };
 
-    data = {...data, ...degree}
+    // Merging the degree information into the data object
+    data = { ...data, ...degree };
 
-    console.log(data)
-  })
+    // Pushing the merged data into the facultyReport array
+    facultyReport.push(data);
+  });
+
+  return facultyReport as FacultyReport[]
 })
-
-function getCerts(certs: CertificationsFaculty[], faculty_ID: number) {
-    return certs.filter((item) => faculty_ID == item.faculty_ID).map(item => item.cert_name).join(", ")
-
-}
-
-function calculateTeachingYear(educs: EducationalAttainment[], experience: IndustryExperience[], faculty_ID: number) {
-
-  const experienceYears =      experience.filter(item => item.faculty_ID == faculty_ID).filter(item => item.teaching_related == 1).map(item => item.experience_from)
-
-  const educYears =     educs.filter(item => item.faculty_ID == faculty_ID).map(item => item.year_start)
-
-
-
-  const years = [...experienceYears, ...educYears]
-
-  if(years.length <= 0) return 0
-
-  const formattedYear = years.map(year => new Date(year).getFullYear())
-
-  const minYear = Math.min(...formattedYear);
-
-  if(Number.isNaN(minYear)) return 0
-
-  const currentYear = new Date().getFullYear();
-
-  const yearLength = currentYear - minYear;
-
-  return yearLength
-}
-
-function getDegree(educs: EducationalAttainment[], faculty_ID: number) {
-
-  return {
-    "Baccaleurate": educs.filter((item) => faculty_ID == item.faculty_ID).
-                    filter(item => item.educ_level.toLocaleLowerCase() === "bachelor\'s degree").
-                    map(item => item.educ_title).join(", "),
-    "Masterals": educs.filter((item) => faculty_ID == item.faculty_ID).
-                    filter(item => item.educ_level.toLocaleLowerCase() === "master\'s degree").
-                    map(item => item.educ_title).join(", "),
-    "Doctorate": educs.filter((item) => faculty_ID == item.faculty_ID).
-                    filter(item => item.educ_level.toLocaleLowerCase() === "doctorate degree").
-                    map(item => item.educ_title).join(", "),
-    "Associate": educs.filter((item) => faculty_ID == item.faculty_ID).
-                    filter(item => item.educ_level.toLocaleLowerCase() === "associate's degree").
-                    map(item => item.educ_title).join(", ")
-  }
-}
-function getExperience(experience: IndustryExperience[], faculty_ID: number) {
-    return experience.filter((item) => faculty_ID == item.faculty_ID).map(item => item.experience_title).join(", ")
-}
-
-function getExpertise(expertise: ExpertiseFaculty[], faculty_ID: number) {
-    return expertise.filter((item) => faculty_ID == item.faculty_ID).map(item => item.expertise_name).join(", ")
-}
 
 export const selectAttainmentTimelineFaculty = (commex: CommunityExtension[], id: number) => createSelector(
     selectDeanState,
@@ -992,10 +985,85 @@ export const selectAttainmentTimelineFaculty = (commex: CommunityExtension[], id
     )
 
   function getProfile(faculty_ID: number, faculties: Faculty[]) {
-
-
     const facultyCopy = [...faculties]
     console.log(facultyCopy.filter((item) => item.faculty_ID == faculty_ID))
     console.log(faculty_ID)
-return facultyCopy.find((item) => item.faculty_ID == faculty_ID)
+    return facultyCopy.find((item) => item.faculty_ID == faculty_ID)
+  }
+
+  function calculateTeachingYear(educs: EducationalAttainment[], experience: IndustryExperience[], faculty_ID: number) {
+
+    const experienceYears = experience.filter(item => item.faculty_ID == faculty_ID).
+                            filter(item => item.teaching_related == 1).
+                            map(item => item.experience_from)
+
+    const educYears = educs.filter(item => item.faculty_ID == faculty_ID).
+                      map(item => item.year_start)
+
+    const years = [...experienceYears, ...educYears]
+
+    if(years.length <= 0) return 0
+
+    const formattedYear = years.map(year => new Date(year).getFullYear())
+
+    const minYear = Math.min(...formattedYear);
+
+    if(Number.isNaN(minYear)) return 0
+
+    const currentYear = new Date().getFullYear();
+
+    const yearLength = currentYear - minYear;
+
+    return yearLength
+  }
+
+  function getDegree(educs: EducationalAttainment[], faculty_ID: number) {
+
+    return {
+      "Baccaleurate": educs.filter((item) => faculty_ID == item.faculty_ID).
+                      filter(item => item.educ_level.toLocaleLowerCase() === "bachelor\'s degree").
+                      map(item => item.educ_title).join(", "),
+      "Masterals": educs.filter((item) => faculty_ID == item.faculty_ID).
+                      filter(item => item.educ_level.toLocaleLowerCase() === "master\'s degree").
+                      map(item => item.educ_title).join(", "),
+      "Doctorate": educs.filter((item) => faculty_ID == item.faculty_ID).
+                      filter(item => item.educ_level.toLocaleLowerCase() === "doctorate degree").
+                      map(item => item.educ_title).join(", "),
+      "Associate": educs.filter((item) => faculty_ID == item.faculty_ID).
+                      filter(item => item.educ_level.toLocaleLowerCase() === "associate's degree").
+                      map(item => item.educ_title).join(", ")
+    }
+  }
+
+  function getExperience(experience: IndustryExperience[], faculty_ID: number) {
+      return experience.filter((item) => faculty_ID == item.faculty_ID).
+              map(item => item.experience_title).join(", ")
+  }
+
+  function getExpertise(expertise: ExpertiseFaculty[], faculty_ID: number) {
+      return expertise.filter((item) => faculty_ID == item.faculty_ID).
+              map(item => item.expertise_name).join(", ")
+  }
+
+  function calculateUnits(course: CoursesFaculty[], faculty_ID: number) {
+    return course.filter((item) => item.faculty_ID == faculty_ID).
+            map(item => item.unit).
+            reduce((partialSum, a) => partialSum + a, 0)
+  }
+
+  function getCerts(certs: CertificationsFaculty[], faculty_ID: number) {
+    return certs.filter((item) => faculty_ID == item.faculty_ID).
+            map(item => item.cert_name).join(", ")
+  }
+
+  function getEval(evals : Evaluation[], year: number, faculty_ID: number) {
+    return evals.filter((item) => faculty_ID == item.faculty_ID).
+            filter(item => item.evaluation_year == year).
+            map(item => item.evalAverage)[0]
+  }
+
+  function getCourseTaught(course: CoursesFaculty[], faculty_ID: number){
+    return course.filter((item) => faculty_ID == item.faculty_ID).
+            map(item => item.course_name).join(", ")
+
   }
