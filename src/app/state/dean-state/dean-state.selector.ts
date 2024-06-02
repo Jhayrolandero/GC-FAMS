@@ -21,6 +21,8 @@ import { ExpertiseReport } from "../../services/Interfaces/expertiseReport";
 
 const date = new Date();
 const currentYear: number  = date.getFullYear();
+const yearsArray: string[] = Array.from({ length: 15 }, (_, i) => (new Date().getFullYear() - 14) + i).map(String);
+
 
 export const selectDeanState = createFeatureSelector<DeanState>('dean');
 
@@ -364,6 +366,62 @@ export const selectCertTypes = createSelector(
     }
 );
 
+export const selectCertTypeReport = createSelector (
+  selectDeanState,
+  (state) => {
+
+    if(state.certs.length <= 0 ) return
+
+    const tallyArray: Object[] = []
+    const tally: any = {};
+
+    yearsArray.forEach(year => {
+        tally[year] = { Completion: 0, Achievement: 0 };
+    });
+
+    state.certs.forEach(item => {
+        const year = new Date(item.accomplished_date).getFullYear() + '';
+        if (yearsArray.includes(year)) {
+            tally[year][item.cert_type] += 1
+          }
+    });
+
+    let prevCompletion = 0
+    let prevAchievement = 0
+    let prevTotal = 0
+
+    Object.keys(tally).map(key => {
+
+
+      let currCompletion = tally[key]['Completion']
+      let currAchievement = tally[key]['Achievement']
+      let currTotal = currAchievement + currCompletion
+
+
+      let changeCompletion = prevCompletion ? (((currCompletion - prevCompletion)/prevCompletion) * 100).toFixed(2) + '%' : '-'
+      let changeAchievement = prevAchievement ? (((currAchievement - prevAchievement)/prevAchievement) * 100).toFixed(2) + '%' : '-'
+      let changeTotal = prevTotal ? (((currTotal - prevTotal)/prevCompletion) * 100).toFixed(2) + '%' : '-'
+
+      let data = {
+        "Year": key,
+        "Completion Count": currCompletion,
+        "Completion Change from Previous Year": changeCompletion,
+        "Achievement Count": currAchievement,
+        "Achievement Change from Previous Year": changeAchievement,
+        "Total": currTotal,
+        "Change from Previous Year": changeTotal
+      }
+
+      prevCompletion = currCompletion
+      prevAchievement = prevAchievement
+      prevTotal = currTotal
+
+      tallyArray.push(data)
+    })
+
+    return tallyArray
+  }
+)
 export const selectCommonSeminars = createSelector(
     selectDeanState,
     (state: DeanState) => {
@@ -642,6 +700,7 @@ export const selectOverallAverageTimeline = createSelector(
         let overallTimeline = Array.from({ length: 15 }, () => 0)
         let floorYear = currentYear - 14;
 
+        if (state.evals.length <= 0) return
         state.evals.forEach(ev =>{
             if(ev.evaluation_year >= floorYear){
                 const paramAverage = (

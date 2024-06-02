@@ -107,13 +107,15 @@ async) && (coursesLoading$ | async) && (coursesLoading$ | async) &&
     *ngIf="educationalAttainmentTimeline$ | async as educTimeline"
     class="w-full bg-white rounded-[15px] shadow-main p-5 pt-1"
   >
-    <div class="flex justify-between">
+    <div class="flex gap-2">
       <p
         class="text-blue font-bold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] my-2 tablet:text-start text-center my-2"
       >
         Educational Attainment Timeline
       </p>
-      <button (click)="generateEducReport()">Generate Report</button>
+      <button (click)="generateEducReport()">
+        <i class="fa-solid fa-file-excel"></i>
+      </button>
     </div>
     <app-line-graph
       [data]="educTimeline[0]"
@@ -130,13 +132,15 @@ async) && (coursesLoading$ | async) && (coursesLoading$ | async) &&
     *ngIf="milestoneCount$ | async as milestone"
     class="w-full bg-white rounded-[15px] shadow-main p-5 pt-1"
   >
-    <div class="flex justify-between">
+    <div class="flex gap-2">
       <p
         class="text-blue font-bold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] my-2 tablet:text-start text-center my-2"
       >
         Milestones Achieved Each Year
       </p>
-      <button (click)="generateMilestoneReport()">Generate Report</button>
+      <button (click)="generateMilestoneReport()">
+        <i class="fa-solid fa-file-excel"></i>
+      </button>
     </div>
     <app-bar-chart
       [data]="milestone"
@@ -153,40 +157,16 @@ async) && (coursesLoading$ | async) && (coursesLoading$ | async) &&
     *ngIf="attainmentTimeline$ | async as attainment"
     class="w-full bg-white rounded-[15px] shadow-main p-5 pt-1"
   >
-    <div class="flex flex-col tablet:flex-row items-center gap-3">
-      <div class="flex justify-between">
+    <div class="flex flex-col tablet:flex-row items-center justify-between">
+      <div class="flex gap-2">
         <p
           class="text-blue font-bold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] my-2 tablet:text-start text-center my-2"
         >
           Attainment Timeline
         </p>
-        <button (click)="generateAttainmentReport()">Generate Report</button>
-      </div>
-      <div class="flex flex-row gap-1">
-        <div
-          class="w-[23px] h-[23px] rounded-[5px] shadow-main duration-300 hover:duration-300 hover:bg-opacity-50"
-          [ngClass]="certToggle ? ' bg-blue' : 'bg-slate-200'"
-          (click)="certToggle = !certToggle"
-        ></div>
-        <p class="font-Roboto font-medium text-blue">Certifications</p>
-      </div>
-
-      <div class="flex flex-row gap-1">
-        <div
-          class="w-[23px] h-[23px] rounded-[5px] shadow-main duration-300 hover:duration-300 hover:bg-opacity-50"
-          [ngClass]="commexToggle ? 'bg-greenBar' : 'bg-slate-200'"
-          (click)="commexToggle = !commexToggle"
-        ></div>
-        <p class="font-Roboto font-medium text-blue">Community Extensions</p>
-      </div>
-
-      <div class="flex flex-row gap-1">
-        <div
-          class="w-[23px] h-[23px] rounded-[5px] shadow-main duration-300 hover:duration-300 hover:bg-opacity-50"
-          [ngClass]="seminarToggle ? 'bg-orange-400' : 'bg-slate-200'"
-          (click)="seminarToggle = !seminarToggle"
-        ></div>
-        <p class="font-Roboto font-medium text-blue">Seminars</p>
+        <button (click)="generateAttainmentReport()">
+          <i class="fa-solid fa-file-excel"></i>
+        </button>
       </div>
     </div>
     <app-line-graph
@@ -197,6 +177,32 @@ async) && (coursesLoading$ | async) && (coursesLoading$ | async) &&
       [showLegend]="false"
     >
     </app-line-graph>
+    <div class="flex gap-4 justify-center items-center">
+      <div class="flex flex-row gap-1">
+        <div
+          class="w-[23px] h-[23px] rounded-[5px] shadow-main duration-300 hover:duration-300 hover:bg-opacity-50"
+          [ngClass]="certToggle ? ' bg-blue' : 'bg-slate-200'"
+          (click)="certToggle = !certToggle"
+        ></div>
+        <p class="font-Roboto font-medium text-blue">Certifications</p>
+      </div>
+      <div class="flex flex-row gap-1">
+        <div
+          class="w-[23px] h-[23px] rounded-[5px] shadow-main duration-300 hover:duration-300 hover:bg-opacity-50"
+          [ngClass]="commexToggle ? 'bg-greenBar' : 'bg-slate-200'"
+          (click)="commexToggle = !commexToggle"
+        ></div>
+        <p class="font-Roboto font-medium text-blue">Community Extensions</p>
+      </div>
+      <div class="flex flex-row gap-1">
+        <div
+          class="w-[23px] h-[23px] rounded-[5px] shadow-main duration-300 hover:duration-300 hover:bg-opacity-50"
+          [ngClass]="seminarToggle ? 'bg-orange-400' : 'bg-slate-200'"
+          (click)="seminarToggle = !seminarToggle"
+        ></div>
+        <p class="font-Roboto font-medium text-blue">Seminars</p>
+      </div>
+    </div>
   </div>
 
   <div class="w-full flex flex-col laptop:flex-row gap-3">
@@ -211,7 +217,7 @@ async) && (coursesLoading$ | async) && (coursesLoading$ | async) &&
           Educational Attainment
         </p>
         <button (click)="generateEducAttainmentReport()">
-          Generate Report
+          <i class="fa-solid fa-file-excel"></i>
         </button>
       </div>
       <app-pie-chart
@@ -226,11 +232,16 @@ async) && (coursesLoading$ | async) && (coursesLoading$ | async) &&
       *ngIf="certTypes$ | async as certType"
       class="bg-white flex flex-col items-center rounded-[15px] shadow-main flex-1"
     >
-      <p
-        class="text-blue font-bold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] my-2 tablet:text-start text-center my-2"
-      >
-        Certificate Type
-      </p>
+      <div class="flex gap-2">
+        <p
+          class="text-blue font-bold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] my-2 tablet:text-start text-center my-2"
+        >
+          Certificate Type
+        </p>
+        <button (click)="generateCertTypeReport()">
+          <i class="fa-solid fa-file-excel"></i>
+        </button>
+      </div>
       <app-pie-chart
         [data]="[certType['Completion'], certType['Achievement']]"
         [labels]="['Completion', 'Achievement']"
@@ -249,7 +260,7 @@ async) && (coursesLoading$ | async) && (coursesLoading$ | async) &&
           Employment Status
         </p>
         <button (click)="generateEmploymentTypeReport()">
-          Generate Report
+          <i class="fa-solid fa-file-excel"></i>
         </button>
       </div>
       <app-pie-chart [data]="type" [labels]="['Part-Time', 'Full-Time']">
@@ -294,13 +305,17 @@ async) && (coursesLoading$ | async) && (coursesLoading$ | async) &&
         *ngIf="teachingLength$ | async as teaching"
         class="w-full bg-white rounded-[15px] shadow-main p-5 pt-1"
       >
-        <div class="flex gap-2">
-          <p
-            class="text-blue font-bold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] tablet:text-start text-center my-2"
-          >
-            Teaching Length & Certification Count per Faculty Member
-          </p>
-          <button (click)="generateCertsTeachReport()">Generate Report</button>
+        <div class="flex justify-between">
+          <div class="flex gap-2">
+            <p
+              class="text-blue font-bold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] tablet:text-start text-center my-2"
+            >
+              Teaching Length & Certification Count per Faculty Member
+            </p>
+            <button (click)="generateCertsTeachReport()">
+              <i class="fa-solid fa-file-excel"></i>
+            </button>
+          </div>
         </div>
         <app-bar-chart
           [data]="teaching[1][0]"
@@ -313,6 +328,20 @@ async) && (coursesLoading$ | async) && (coursesLoading$ | async) &&
         >
           >
         </app-bar-chart>
+        <div class="flex justify-center items-center gap-4">
+          <div class="flex gap-2">
+            <div
+              class="w-[23px] h-[23px] rounded-[5px] shadow-main duration-300 hover:duration-300 hover:bg-opacity-50 bg-blue"
+            ></div>
+            <p>Certificate Count</p>
+          </div>
+          <div class="flex gap-2">
+            <div
+              class="w-[23px] h-[23px] rounded-[5px] shadow-main duration-300 hover:duration-300 hover:bg-opacity-50 bg-greenBar"
+            ></div>
+            <p>Average Teaching Length (hrs)</p>
+          </div>
+        </div>
       </div>
     </div>
     <div class="w-full tablet:w-[50%]">
@@ -327,11 +356,19 @@ async) && (coursesLoading$ | async) && (coursesLoading$ | async) &&
             Teaching Length and Evaluation Average Correlation
           </p>
           <button (click)="generateTeachCorrelationReport()">
-            Generate Report
+            <i class="fa-solid fa-file-excel"></i>
           </button>
         </div>
         <app-scatter-plot [data]="teaching[0]" [showLegend]="false">
         </app-scatter-plot>
+        <div class="flex justify-center items-center gap-4">
+          <div class="flex gap-2">
+            <p>X: Evaluation</p>
+          </div>
+          <div class="flex gap-2">
+            <p>Y: Average Teaching Length (hrs)</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -350,7 +387,9 @@ async) && (coursesLoading$ | async) && (coursesLoading$ | async) &&
         >
           Top Seminars Completed
         </p>
-        <button (click)="generateSeminarReport()">Generate Report</button>
+        <button (click)="generateSeminarReport()">
+          <i class="fa-solid fa-file-excel"></i>
+        </button>
       </div>
       <app-bar-chart
         *ngIf="seminar[1]"
@@ -383,7 +422,9 @@ async) && (coursesLoading$ | async) && (coursesLoading$ | async) &&
         >
           Top Teaching Level
         </p>
-        <button (click)="generateTeachingLevelReport()">Generate Report</button>
+        <button (click)="generateTeachingLevelReport()">
+          <i class="fa-solid fa-file-excel"></i>
+        </button>
       </div>
       <app-bar-chart
         [data]="level[1]"
@@ -404,7 +445,9 @@ async) && (coursesLoading$ | async) && (coursesLoading$ | async) &&
         >
           Top Expertise
         </p>
-        <button (click)="generateExpertiseReport()">Generate Report</button>
+        <button (click)="generateExpertiseReport()">
+          <i class="fa-solid fa-file-excel"></i>
+        </button>
       </div>
       <app-bar-chart
         [data]="expertise[1]"

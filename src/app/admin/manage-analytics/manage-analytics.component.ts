@@ -8,6 +8,7 @@ import {
   facultyCertsCountAverage,
   facultyCourseUnitAverage,
   selectAttainmentTimeline,
+  selectCertTypeReport,
   selectCertTypes,
   selectCertsLoading,
   selectCollegeEducTimeline,
@@ -134,6 +135,9 @@ export class ManageAnalyticsComponent{
   teachingEvalCorrelationReport: Object[] =  []
   teachingCertsReport: Object[] =  []
 
+
+  certTypeReportSubscription!: Subscription
+  certTypeReport: Object[] = []
 
   totalEducAttainment!: Subscription
   totalBachelor: number = 0
@@ -269,11 +273,15 @@ export class ManageAnalyticsComponent{
           }
           this.teachingCertsReport.push(data)
         })
-
-
-        console.log(this.teachingEvalCorrelationReport)
-        console.log(this.teachingCertsReport)
       }
+    })
+
+    this.certTypeReportSubscription = this.store.pipe(
+      select(selectCertTypeReport),
+      filter(data => !!data && data.length > 0),
+      take(1)
+    ).subscribe({
+      next: res => {this.certTypeReport = res!}
     })
 
     // this.totalEducAttainment = this.store.pipe(
@@ -304,6 +312,7 @@ export class ManageAnalyticsComponent{
     this.teachingLevelReportSubscription.unsubscribe()
     this.expertiseReportSubscription.unsubscribe()
     this.teachingLevelReportSubscription.unsubscribe()
+    this.certTypeReportSubscription.unsubscribe()
   }
 
   renderEducReport(res : number[][]) {
@@ -423,5 +432,10 @@ export class ManageAnalyticsComponent{
     if(this.teachingCertsReport.length <= 0) return
 
     this.excelService.exportExcel<Object>(this.teachingCertsReport, `Teaching Length and Certificates Count  CCS`, "ccs", `nth Sem., AY ${ this.date.getFullYear()} - ${this.date.getFullYear() + 1}`)
+  }
+
+  generateCertTypeReport() {
+    if(this.certTypeReport.length <= 0 ) return
+    this.excelService.exportExcel<Object>(this.certTypeReport, `Certification Count CCS`, "ccs", `nth Sem., AY ${ this.date.getFullYear()} - ${this.date.getFullYear() + 1}`)
   }
 }

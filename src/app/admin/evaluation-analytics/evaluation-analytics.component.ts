@@ -75,8 +75,12 @@ export class EvaluationAnalyticsComponent {
 
   evalLoading$ = this.store.pipe(select(DeanSelector.selectEvalLoading))
 
+  educationTimelineSubscription!: Subscription
+  educationTimelineReport: object[] = []
+
+
   ngOnInit() {
-    this.store.dispatch(loadCollegeEval());
+    // this.store.dispatch(loadCollegeEval());
 
     this.evaluationDifference$.subscribe((next: any) => {
       this.diffArr = [next[0], next[1], next[2]];
@@ -123,8 +127,6 @@ console.log(new Date().getFullYear())
 
           this.semDiffData.push(data)
         }
-
-        console.log(this.semDiffData)
       },
       error: error => { console.log(error)},
     })
@@ -172,9 +174,39 @@ console.log(new Date().getFullYear())
         }
 
         this.indvSemAveTimelineHeader.push(yearHeader)
-        console.log(this.indvSemAveTimelineData)
     },
       error: err => console.log(err)
+    })
+
+
+    this.educationTimelineSubscription = this.store.pipe(
+      select(DeanSelector.selectOverallAverageTimeline),
+      filter(data => !!data && data.length > 0),
+      take(1)
+    ).subscribe({
+      next: res => {
+
+        let i = 0
+
+        let prev = 0
+        res!.map(item => {
+
+          let currEduc = item
+          let changeEduc = prev ? (((currEduc - prev)/prev) *100).toFixed(2) + "%" : '-'
+
+          let data = {
+            "Year": this.yearsArray[i++],
+            'Educational Attainment': currEduc.toFixed(2),
+            'Educational Attainment Change from Previous Year (%)': changeEduc,
+          }
+
+          prev = currEduc
+
+          this.educationTimelineReport.push(data)
+        })
+
+console.log(this.educationTimelineReport)
+      }
     })
   }
 
@@ -256,5 +288,11 @@ console.log(new Date().getFullYear())
       "!st Sem 2024 - 2025",
       {start: 4, title: "Year"}
     )
+  }
+
+  generateEducAttainmentReport() {
+    if(this.educationTimelineReport.length <= 0) return
+
+    this.excelService.exportExcel<Object>(this.educationTimelineReport, `Educational Attainment Timeline (${ this.date.getFullYear() - 14} - ${this.date.getFullYear()})`, "ccs", `nth Sem., AY ${this.date.getFullYear()} - ${this.date.getFullYear() + 1}`)
   }
 }
