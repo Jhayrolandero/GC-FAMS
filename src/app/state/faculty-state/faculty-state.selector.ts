@@ -1,6 +1,7 @@
 import { createSelector, createFeatureSelector } from "@ngrx/store";
 import { ProfileState } from "./faculty-state.reducer";
 import { Evaluation } from "../../services/Interfaces/evaluation";
+import { MilestoneReport } from "../../services/Interfaces/milestoneReport";
 
 const date = new Date();
 const currentYear: number  = date.getFullYear();
@@ -47,6 +48,54 @@ export const selectMilestoneCount = createSelector(
       return ret.slice(ret.length - 15, ret.length);
   }
 );
+
+export const milestoneReport = createSelector(
+  selectProfileState,
+  (state) => {
+
+    const yearsArray: string[] = Array.from({ length: 15 }, (_, i) => (new Date().getFullYear() - 14) + i).map(String);
+
+    const milestoneReport: MilestoneReport[] = []
+
+      let prevCommex = 0
+      let prevEduc = 0
+      let prevCert = 0
+      let prevYear = 0
+      yearsArray.map(year => {
+        let currCommex = state.commex.filter(item => year === new Date(item.commex_date.split("-")[0]).getFullYear()+"").length
+        let currEduc = state.educs.filter(item => year === new Date(item.year_end.split("-")[0]).getFullYear()+"").length
+        let currCert = state.certs[0].filter(item => year === new Date((item.accomplished_date + '').split("-")[0]).getFullYear()+"").length
+        let currYear = currCommex + currEduc + currCert
+
+        let changeEduc = prevEduc ? (((currEduc - prevEduc) / prevEduc) * 100).toFixed(2) + '%' : '-'
+        let changeCert = prevCert ? (((currCert - prevCert) / prevCert) * 100).toFixed(2) + '%' : '-'
+        let changeCommex = prevCommex ? (((currCommex - prevCommex) / prevCommex) * 100).toFixed(2) + '%' : '-'
+        let changeYear = prevYear ? (((currYear - prevYear) / prevYear) * 100).toFixed(2) + '%' : '-'
+
+        let data: MilestoneReport = {
+          "Year": year,
+          "Community Extensions Attended": currCommex,
+          "Community Extensions Attended Change from Previous Year (%)" : changeCommex,
+          "Educ Attainment": currEduc,
+          "Educational Attanment Change from Previous Year (%)" : changeEduc,
+          "Certificates Received": currCert,
+          "Certificates Received Change from Previous Year (%)" : changeCert,
+          "Total Milestone": currYear,
+          "Milestone Change from Previous Year (%)": changeYear
+        }
+
+        prevCommex = currCommex
+        prevEduc = currEduc
+        prevCert = currCert
+        prevYear = currYear
+
+        milestoneReport.push(data)
+      })
+
+
+      return milestoneReport
+  }
+)
 
 export const selectAttainmentTimeline = createSelector(
   selectProfileState,
@@ -208,7 +257,13 @@ export const selectAllExpertise = createSelector(
 
 export const selectAllEvaluation = createSelector(
   selectProfileState,
-  (state: ProfileState) => state.evals
+
+  (state: ProfileState) => {
+
+    if(state.evals.length <= 0 ) return
+    return state.evals
+
+  }
 );
 
 export const selectSortedEvals = createSelector(

@@ -97,7 +97,6 @@ function latestCommex(commexs: CommunityExtension[], mainPort: string) {
     commex_header_img: mainPort + commexsCopy[0].commex_header_img
   }
 
-  console.log(latestCommex)
   return latestCommex
 }
 

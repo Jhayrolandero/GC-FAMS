@@ -48,6 +48,7 @@ export class LoginComponent {
     private route: ActivatedRoute
   ) {
     this.authService.flushToken();
+
   }
 
 

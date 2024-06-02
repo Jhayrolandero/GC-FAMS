@@ -16,13 +16,15 @@ export function loggingInterceptor(req: HttpRequest<unknown>, next: HttpHandlerF
       'Authorization': `Bearer ${authToken}`,
     },
   });
+
+  const path = router.url.split('/')[1]
   return next(req).pipe(
     catchError((err) => {
       if(err.status == 403){
 
         msgSrvc.sendMessage("Session Expired!", -1)
         console.error(err);
-        router.navigate(['/faculty']);
+        router.navigate([`/${path}`]);
       }
       return throwError(err);
     })
