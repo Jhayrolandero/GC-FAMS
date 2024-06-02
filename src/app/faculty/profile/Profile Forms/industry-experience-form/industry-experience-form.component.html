@@ -44,7 +44,7 @@
       </p>
       <input
         type="text"
-        placeholder="Add Educational Title"
+        placeholder="Add Industry Title"
         id="experience_title"
         formControlName="experience_title"
         [ngModel]="data?.experience_title"
@@ -93,6 +93,20 @@
         formControlName="experience_to"
         class="w-full border-2 px-2 font-Roboto font-regular text-[1.1rem] rounded-[5px] text-black py-1"
       />
+
+      <div class="flex gap-2 items-center">
+        <p class="font-Roboto font-medium text-[1.1rem]">Teaching Related</p>
+        <input
+          [ngModel]="data?.teaching_related"
+          (change)="toggleTeaching()"
+          type="checkbox"
+          placeholder=""
+          id="experience_to"
+          formControlName="teaching_related"
+          class="border-2 px-2 font-Roboto font-regular text-[1.1rem] rounded-[5px] text-black py-1"
+        />
+      </div>
+
       <div class="flex justify-end">
         <input
           type="submit"

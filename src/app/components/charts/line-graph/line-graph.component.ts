@@ -10,7 +10,7 @@ Chart.register(...registerables);
   styleUrl: './line-graph.component.css'
 })
 export class LineGraphComponent {
-  public chart: any;
+  public chart!: Chart;
   public chartId: string = `doughnut-${Math.random().toString(36).substr(2, 9)}`;
   @ViewChild('lineGraphCanvas', {static: true}) private lineGraphCanvas!: ElementRef<HTMLCanvasElement>;
 
