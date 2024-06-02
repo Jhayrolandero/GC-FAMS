@@ -1,0 +1,47 @@
+<header
+  class="fixed top-0 left-0 right-0 z-50 bg-[#f0f0f0] text-blue flex justify-between px-6 py-2 font-Poppins items-center"
+>
+  <div class="flex gap-2">
+    <img class="w-[40px] aspect-square" src="../../assets/logo.png" alt="" />
+    <div>
+      <h4 class="text-[1.5rem]">GC-FMS</h4>
+    </div>
+  </div>
+
+  <div class="flex gap-2">
+    <button (click)="navigateFaculty()">Faculty</button> |
+    <button (click)="navigateAdmin()">Admin</button>
+  </div>
+</header>
+<section class="h-[100vh] font-Poppins flex flex-col justify-between">
+  <div class="relative w-full h-[620px] flex items-center" id="cover">
+    <div class="diagonal"></div>
+    <div class="flex gap-2 text-white items-center">
+      <img class="w-[320px] aspect-square" src="../../assets/logo.png" alt="" />
+      <div>
+        <h4 class="text-[4rem]">GC-FMS</h4>
+        <span>Faculty Profiling and Development Monitoring System</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="w-full justify-center items-center gap-6 flex h-[160px]">
+    <button
+      (click)="navigateFaculty()"
+      class="text-white bg-blue px-2 py-1 text-[1.5rem] font-bold rounded-md"
+    >
+      GC-FMS for Faculty
+    </button>
+    <button
+      (click)="navigateAdmin()"
+      class="text-white bg-blue px-2 py-1 text-[1.5rem] font-bold rounded-md"
+    >
+      GC-FMS for Admin
+    </button>
+  </div>
+  <footer
+    class="w-full bg-blue text-white flex-1 max-h-[80px] justify-center items-center"
+  >
+    <h4 class="text-center">Copyright 2024 GC-FMS Team</h4>
+  </footer>
+</section>
