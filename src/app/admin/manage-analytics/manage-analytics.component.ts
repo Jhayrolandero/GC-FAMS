@@ -22,12 +22,15 @@ import {
       selectCurrentEducAttainment,
       selectEducsLoading,
       selectEmploymentTypeReport,
+      selectExpertiseReport,
       selectExpsLoading,
       selectExptLoading,
       selectFacultyExpertise,
        selectMilestoneReport,
        selectProjLoading,
+       selectSeminarReport,
        selectTeachingLength,
+       selectTeachingLevelReport,
        selectTopExpertise,
        yearEvaluationAverage } from '../../state/dean-state/dean-state.selector';
 import { CommonModule, NgFor } from '@angular/common';
@@ -42,6 +45,9 @@ import { MilestoneReport } from '../../services/Interfaces/milestoneReport';
 import { error } from 'console';
 import { CurrEducAttainment } from '../../services/Interfaces/currEducAttainment';
 import { EmploymentTypeReport } from '../../services/Interfaces/employmentTypeReport';
+import { SeminarReport } from '../../services/Interfaces/seminarReport';
+import { TeachingLevelReport } from '../../services/Interfaces/teachingLevelReport';
+import { ExpertiseReport } from '../../services/Interfaces/expertiseReport';
 
 @Component({
     selector: 'app-manage-analytics',
@@ -115,6 +121,16 @@ export class ManageAnalyticsComponent{
   employmentTypeData: EmploymentTypeReport[] = []
 
 
+  seminarReportSubscription!: Subscription
+  seminarReport: SeminarReport[] = []
+
+  teachingLevelReportSubscription!: Subscription
+  teachingLevelReport: TeachingLevelReport[] = []
+
+  expertiseReportSubscription!: Subscription
+  expertiseReport: ExpertiseReport[] = []
+
+
   totalEducAttainment!: Subscription
   totalBachelor: number = 0
   totalMasterals: number = 0
@@ -185,6 +201,42 @@ export class ManageAnalyticsComponent{
       next: res => {this.employmentTypeData = res!},
       error: err => (console.log(err))
     })
+
+    this.seminarReportSubscription = this.store.pipe(
+      select(selectSeminarReport(1)),
+      filter(data => !!data && data.length > 0),
+      take(1)
+    ).subscribe({
+      next: res => {
+        this.seminarReport = res!
+        console.log(this.seminarReport)
+      },
+      error: err => {console.log(err)}
+    })
+
+
+    this.teachingLevelReportSubscription = this.store.pipe(
+      select(selectTeachingLevelReport(1)),
+      filter(data => !!data && data.length > 0),
+      take(1)
+    ).subscribe({
+      next: res => {
+        this.teachingLevelReport = res!
+        console.log(this.teachingLevelReport)
+      },
+      error: err => {console.log(err)}
+    })
+
+    this.expertiseReportSubscription = this.store.pipe(
+      select(selectExpertiseReport),
+      filter(data => !!data && data.length > 0),
+      take(1)
+    ).subscribe({
+      next: res => {
+        this.expertiseReport = res!
+      },
+      error: err => {console.log(err)}
+    })
     // this.totalEducAttainment = this.store.pipe(
     //   select(selectCollegeEducTimeline),
     //   filter(data => !!data && (data.length > 0 )),
@@ -209,6 +261,9 @@ export class ManageAnalyticsComponent{
     this.currEducSubscription.unsubscribe()
     // this.totalEducAttainment.unsubscribe()
     this.employmentTypeSubscription.unsubscribe()
+    this.seminarReportSubscription.unsubscribe()
+    this.teachingLevelReportSubscription.unsubscribe()
+    this.expertiseReportSubscription.unsubscribe()
   }
 
   renderEducReport(res : number[][]) {
@@ -298,5 +353,23 @@ export class ManageAnalyticsComponent{
     if(this.employmentTypeData.length <= 0 ) return
 
     this.excelService.exportExcel<EmploymentTypeReport>(this.employmentTypeData, `Employment Type CCS`, "ccs", `nth Sem., AY ${ this.date.getFullYear()} - ${this.date.getFullYear() + 1}`)
+  }
+
+  generateSeminarReport() {
+    if(this.seminarReport.length <= 0) return
+
+    this.excelService.exportExcel<SeminarReport>(this.seminarReport, `Seminars Attended CCS`, "ccs", `nth Sem., AY ${ this.date.getFullYear()} - ${this.date.getFullYear() + 1}`)
+  }
+
+  generateTeachingLevelReport() {
+    if(this.teachingLevelReport.length <= 0) return
+
+    this.excelService.exportExcel<TeachingLevelReport>(this.teachingLevelReport, `Teaching Level CCS`, "ccs", `nth Sem., AY ${ this.date.getFullYear()} - ${this.date.getFullYear() + 1}`)
+  }
+
+  generateExpertiseReport() {
+    if(this.expertiseReport.length <= 0 ) return
+
+    this.excelService.exportExcel<ExpertiseReport>(this.expertiseReport, `Instructor's Expertise CCS`, "ccs", `nth Sem., AY ${ this.date.getFullYear()} - ${this.date.getFullYear() + 1}`)
   }
 }

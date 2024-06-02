@@ -15,6 +15,9 @@ import { MilestoneReport } from "../../services/Interfaces/milestoneReport";
 import { CurrEducAttainment } from "../../services/Interfaces/currEducAttainment";
 import { profile } from "node:console";
 import { EmploymentTypeReport } from "../../services/Interfaces/employmentTypeReport";
+import { SeminarReport } from "../../services/Interfaces/seminarReport";
+import { TeachingLevelReport } from "../../services/Interfaces/teachingLevelReport";
+import { ExpertiseReport } from "../../services/Interfaces/expertiseReport";
 
 const date = new Date();
 const currentYear: number  = date.getFullYear();
@@ -263,6 +266,31 @@ selectDeanState,
 }
 );
 
+export const selectTeachingLevelReport = (college : number) => createSelector (
+  selectDeanState,
+  (state) => {
+
+    if(state.profile.length <= 0 || state.educs.length <= 0 || state.exps.length <= 0) return
+
+
+    const teachingLevelReport: TeachingLevelReport[] = []
+
+    state.profile.filter(item => item.college_ID == college).map(item => {
+
+      let data = {
+        "Name": item.last_name + (item.ext_name ?+ ' ' + item.ext_name : '')  + ', ' + item.first_name + ' ' + (item.middle_name ? item.middle_name : ''),
+        "Teaching Level": item.teaching_level ? item.teaching_level : "Instructor 1",
+        "Year/s of Teaching": calculateTeachingYear(state.educs, state.exps, item.faculty_ID) + ' year/s'
+      }
+
+
+      teachingLevelReport.push(data)
+    })
+
+    return teachingLevelReport
+  }
+)
+
 export const selectAllCollegeEduc = createSelector(
     selectDeanState,
     (state: DeanState) => state.educs
@@ -355,6 +383,36 @@ export const selectCommonSeminars = createSelector(
         return sortedCerts;
     }
 );
+
+
+export const selectSeminarReport = (college : number) => createSelector (
+  selectDeanState,
+  (state) => {
+      if (state.certs.length <= 0 || state.profile.length < 0) return
+
+      const seminarReport: SeminarReport[] = []
+
+      let no = 0
+      state.certs.filter(item => getProfile(item.faculty_ID, state.profile)?.college_ID == college).map(item => {
+
+        let data = {
+          "No.": ++no,
+          "Instructor": getProfile(item.faculty_ID, state.profile)!.last_name +
+          (getProfile(item.faculty_ID, state.profile)!.ext_name ? " " +
+          getProfile(item.faculty_ID, state.profile)!.ext_name : '') +
+          ", " + getProfile(item.faculty_ID, state.profile)!.first_name +
+          ' ' + (getProfile(item.faculty_ID, state.profile)!.middle_name ? getProfile(item.faculty_ID, state.profile)!.middle_name : '' ),
+          "Certification Name": item.cert_name,
+          "Date Accomplished": item.accomplished_date
+        }
+
+        seminarReport.push(data)
+      })
+
+
+      return seminarReport
+  }
+)
 
 export const selectCurrYearAverageSeminarCount = createSelector(
     selectDeanState,
@@ -491,13 +549,19 @@ export const selectTeachingLength = createSelector(
 
         const sortedTeaching = [...experienceName.entries()];
         // return sortedTeaching;
+
         return [sortedTeaching.map(x => [x[1][0], x[1][1]]), [sortedTeaching.map(x => x[1][0]), sortedTeaching.map(x => x[1][1])]];
         // return [sortedTeaching.map(x => x[0]), sortedTeaching.map(x => x[1][0]), sortedTeaching.map(x => x[1][1]), sortedTeaching.map(x => x[1][2])]
     }
 );
 
 
-
+export const selectTeachingLengthReport = ( college: number) => createSelector(
+  selectDeanState,
+  (state) => {
+    // if(state.)
+  }
+)
 
 export const selectAllProj = createSelector(
     selectDeanState,
@@ -535,6 +599,32 @@ export const selectTopExpertise = createSelector(
     }
 );
 
+export const selectExpertiseReport = createSelector (
+  selectDeanState,
+  (state) => {
+
+    if(state.expertises[0].length <= 0 || state.profile.length <= 0) return
+
+    const expertiseReport: ExpertiseReport[] = []
+
+    state.expertises[0].map(item => {
+
+      let data = {
+        "Instructor": getProfile(item.faculty_ID, state.profile)!.last_name +
+        (getProfile(item.faculty_ID, state.profile)!.ext_name ? " " +
+        getProfile(item.faculty_ID, state.profile)!.ext_name : '') +
+        ", " + getProfile(item.faculty_ID, state.profile)!.first_name +
+        ' ' + (getProfile(item.faculty_ID, state.profile)!.middle_name ? getProfile(item.faculty_ID, state.profile)!.middle_name : '' ),
+        "Expertise": item.expertise_name
+      }
+
+      expertiseReport.push(data)
+    })
+
+    return expertiseReport
+
+  }
+)
 
 
 export const selectAllEvaluation = createSelector(

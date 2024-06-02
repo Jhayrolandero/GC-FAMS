@@ -336,11 +336,14 @@ async) && (coursesLoading$ | async) && (coursesLoading$ | async) &&
       *ngIf="topSeminar$ | async as seminar"
       class="bg-white shadow-main rounded-[15px] p-5 pt-1 laptop:flex-1"
     >
-      <p
-        class="text-blue font-bold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] my-2 tablet:text-start text-center my-2"
-      >
-        Top Seminars Completed
-      </p>
+      <div class="flex gap-2">
+        <p
+          class="text-blue font-bold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] my-2 tablet:text-start text-center my-2"
+        >
+          Top Seminars Completed
+        </p>
+        <button (click)="generateSeminarReport()">Generate Report</button>
+      </div>
       <app-bar-chart
         *ngIf="seminar[1]"
         [data]="[
@@ -366,11 +369,14 @@ async) && (coursesLoading$ | async) && (coursesLoading$ | async) &&
       *ngIf="topLevel$ | async as level"
       class="bg-white shadow-main rounded-[15px] p-5 pt-1 laptop:flex-1"
     >
-      <p
-        class="text-blue font-bold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] my-2 tablet:text-start text-center my-2"
-      >
-        Top Teaching Level
-      </p>
+      <div class="flex gap-2">
+        <p
+          class="text-blue font-bold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] my-2 tablet:text-start text-center my-2"
+        >
+          Top Teaching Level
+        </p>
+        <button (click)="generateTeachingLevelReport()">Generate Report</button>
+      </div>
       <app-bar-chart
         [data]="level[1]"
         [labels]="level[0]"
@@ -384,11 +390,14 @@ async) && (coursesLoading$ | async) && (coursesLoading$ | async) &&
       *ngIf="topExpertise$ | async as expertise"
       class="bg-white shadow-main rounded-[15px] p-5 pt-1 laptop:flex-1 tablet:col-span-2 laptop:col-span-1"
     >
-      <p
-        class="text-blue font-bold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] my-2 tablet:text-start text-center my-2"
-      >
-        Top Expertise
-      </p>
+      <div class="flex gap-2">
+        <p
+          class="text-blue font-bold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] my-2 tablet:text-start text-center my-2"
+        >
+          Top Expertise
+        </p>
+        <button (click)="generateExpertiseReport()">Generate Report</button>
+      </div>
       <app-bar-chart
         [data]="expertise[1]"
         [labels]="expertise[0]"

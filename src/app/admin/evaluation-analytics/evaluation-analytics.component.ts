@@ -181,6 +181,7 @@ console.log(new Date().getFullYear())
   ngOnDestroy() {
     this.radarDataSubscription.unsubscribe()
     this.semDiffSubcription.unsubscribe()
+    this.indvSemAveTimelineSubscription.unsubscribe()
   }
   //Triggers when a faculty is selected
   selectFaculty(data: any){
