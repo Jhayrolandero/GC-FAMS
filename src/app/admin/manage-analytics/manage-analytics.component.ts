@@ -21,6 +21,7 @@ import {
       selectCurrYearAverageSeminarCount,
       selectCurrentEducAttainment,
       selectEducsLoading,
+      selectEmploymentTypeReport,
       selectExpsLoading,
       selectExptLoading,
       selectFacultyExpertise,
@@ -40,6 +41,7 @@ import { AttainmentData } from '../../services/Interfaces/attainmentData';
 import { MilestoneReport } from '../../services/Interfaces/milestoneReport';
 import { error } from 'console';
 import { CurrEducAttainment } from '../../services/Interfaces/currEducAttainment';
+import { EmploymentTypeReport } from '../../services/Interfaces/employmentTypeReport';
 
 @Component({
     selector: 'app-manage-analytics',
@@ -109,10 +111,16 @@ export class ManageAnalyticsComponent{
 
   topSeminarSubscription!: Subscription
 
+  employmentTypeSubscription!: Subscription
+  employmentTypeData: EmploymentTypeReport[] = []
+
+
   totalEducAttainment!: Subscription
   totalBachelor: number = 0
   totalMasterals: number = 0
   totalDoctorate: number = 0
+
+
   constructor(
     public store: Store,
     private excelService: ExcelServiceService
@@ -168,6 +176,15 @@ export class ManageAnalyticsComponent{
       error: err => {console.log(err)}
     })
 
+
+    this.employmentTypeSubscription = this.store.pipe(
+      select(selectEmploymentTypeReport(1)),
+      filter(data => !!data && data.length > 0),
+      take(1)
+    ).subscribe({
+      next: res => {this.employmentTypeData = res!},
+      error: err => (console.log(err))
+    })
     // this.totalEducAttainment = this.store.pipe(
     //   select(selectCollegeEducTimeline),
     //   filter(data => !!data && (data.length > 0 )),
@@ -190,7 +207,8 @@ export class ManageAnalyticsComponent{
     this.attainmentSubscription.unsubscribe()
     this.mileStoneSubscription.unsubscribe()
     this.currEducSubscription.unsubscribe()
-    this.totalEducAttainment.unsubscribe()
+    // this.totalEducAttainment.unsubscribe()
+    this.employmentTypeSubscription.unsubscribe()
   }
 
   renderEducReport(res : number[][]) {
@@ -252,27 +270,33 @@ export class ManageAnalyticsComponent{
   }
 
   generateEducReport() {
-    if(this.educData.length < 0) return
+    if(this.educData.length <= 0) return
 
     this.excelService.exportExcel<EducAttainmentData>(this.educData, `Education Attainment Timeline (${ this.date.getFullYear() - 14} - ${this.date.getFullYear()})`, "ccs", "!st Sem 2024 - 2025")
 
   }
 
   generateAttainmentReport() {
-    if(this.attainmentData.length < 0) return
+    if(this.attainmentData.length <= 0) return
 
     this.excelService.exportExcel<AttainmentData>(this.attainmentData, `Attainment Timeline (${ this.date.getFullYear() - 14} - ${this.date.getFullYear()})`, "ccs", "!st Sem 2024 - 2025")
   }
 
   generateMilestoneReport() {
-    if(this.milestoneData.length < 0) return
+    if(this.milestoneData.length <= 0) return
 
     this.excelService.exportExcel<MilestoneReport>(this.milestoneData, `Milestone Achieved (${ this.date.getFullYear() - 14} - ${this.date.getFullYear()})`, "ccs", `nth Sem., AY ${ this.date.getFullYear()} - ${this.date.getFullYear() + 1}`)
   }
 
   generateEducAttainmentReport() {
-    if(this.currEducData.length < 0) return
+    if(this.currEducData.length <= 0) return
 
     this.excelService.exportExcel<CurrEducAttainment>(this.currEducData, `Educational Attainment CCS`, "ccs", `nth Sem., AY ${ this.date.getFullYear()} - ${this.date.getFullYear() + 1}`)
+  }
+
+  generateEmploymentTypeReport() {
+    if(this.employmentTypeData.length <= 0 ) return
+
+    this.excelService.exportExcel<EmploymentTypeReport>(this.employmentTypeData, `Employment Type CCS`, "ccs", `nth Sem., AY ${ this.date.getFullYear()} - ${this.date.getFullYear() + 1}`)
   }
 }

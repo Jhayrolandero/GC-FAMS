@@ -13,6 +13,8 @@ import { FacultyReport } from "../../services/Interfaces/facultyReport";
 import { AttainmentData } from "../../services/Interfaces/attainmentData";
 import { MilestoneReport } from "../../services/Interfaces/milestoneReport";
 import { CurrEducAttainment } from "../../services/Interfaces/currEducAttainment";
+import { profile } from "node:console";
+import { EmploymentTypeReport } from "../../services/Interfaces/employmentTypeReport";
 
 const date = new Date();
 const currentYear: number  = date.getFullYear();
@@ -203,6 +205,34 @@ export const selectCollegeEmploymentType = createSelector(
     }
   );
 
+  export const selectEmploymentTypeReport = (college : number )=> createSelector(
+    selectDeanState,
+    (state) => {
+
+      if(state.profile.length <=  0) return
+
+      const employmentType: EmploymentTypeReport[] = []
+      let no = 0;
+      state.profile.filter(item => item.college_ID == college).map(item => {
+
+
+        let data = {
+          "No.": ++no,
+          "Name": item.last_name + (item.ext_name ?+ ' ' + item.ext_name : '')  + ', ' + item.first_name + ' ' + (item.middle_name ? item.middle_name : ''),
+          "Employment Status (PT/FT)": item.employment_status == 1 ? 'Full-Time' : 'Part-Time',
+          'Teaching Positon': item.teaching_position,
+          'Teaching Level': item.teaching_level ? item.teaching_level : 'Instructor 1'
+        }
+
+        employmentType.push(data);
+      })
+
+      return employmentType
+
+    }
+  )
+
+
 export const selectCollegeFacultyCount = createSelector(
     selectDeanState,
     (state: DeanState) => state.profile.length
@@ -278,6 +308,7 @@ export const selectCollegeEducTimeline = createSelector(
         return educTimeline;
     }
 );
+
 
 export const selectAllExistCerts = createSelector(
     selectDeanState,

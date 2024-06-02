@@ -242,11 +242,16 @@ async) && (coursesLoading$ | async) && (coursesLoading$ | async) &&
       *ngIf="employmentTypes$ | async as type"
       class="bg-white flex flex-col items-center rounded-[15px] shadow-main flex-1"
     >
-      <p
-        class="text-blue font-bold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] my-2 tablet:text-start text-center my-2"
-      >
-        Employment Status
-      </p>
+      <div class="flex gap-2">
+        <p
+          class="text-blue font-bold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] my-2 tablet:text-start text-center my-2"
+        >
+          Employment Status
+        </p>
+        <button (click)="generateEmploymentTypeReport()">
+          Generate Report
+        </button>
+      </div>
       <app-pie-chart [data]="type" [labels]="['Part-Time', 'Full-Time']">
       </app-pie-chart>
     </div>
