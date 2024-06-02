@@ -1,3 +1,7 @@
+@if(evalLoading$ | async) {
+<app-loading-screen></app-loading-screen>
+}@else {
+
 <div class="p-5 flex flex-col gap-y-3 text-blue">
   <div
     class="bg-white shadow-main w-full rounded-[15px] flex justify-between items-center px-5"
@@ -13,9 +17,15 @@
   >
     <div class="flex flex-row items-center gap-3">
       <div class="flex flex-row justify-between items-center w-full">
-        <p class="text-blue font-bold text-[1.7rem] my-2">
-          Individual Average Timeline
-        </p>
+        <div class="flex gap-2">
+          <p class="text-blue font-bold text-[1.7rem] my-2">
+            Individual Average Timeline
+          </p>
+
+          <button (click)="generateIndTimelineReport()">
+            <i class="fa-solid fa-file-excel"></i>
+          </button>
+        </div>
         <div
           class="border-slate-400 border-solid border-2 w-[240px] h-[35px] rounded-[5px] relative flex items-center px-3 duration-300 hover:shadow-main hover:duration-300 cursor-pointer"
         >
@@ -72,9 +82,14 @@
         *ngIf="overallAverageTimeline$ | async as timeline"
         class="w-full bg-white rounded-[15px] shadow-main p-5 pt-1"
       >
-        <p class="text-blue font-bold text-[1.7rem] my-2">
-          Educational Attainment Timeline
-        </p>
+        <div class="flex gap-2">
+          <p class="text-blue font-bold text-[1.7rem] my-2">
+            Educational Attainment Timeline
+          </p>
+          <button (click)="generateEducAttainmentReport()">
+            <i class="fa-solid fa-file-excel"></i>
+          </button>
+        </div>
         <app-line-graph
           [data]="timeline"
           [labels]="yearsArray"
@@ -86,10 +101,16 @@
       <div
         class="flex flex-col flex-1 bg-white rounded-[15px] shadow-main p-5 pt-1"
       >
-        <p class="text-blue font-bold text-[1.7rem] my-2">
-          Semestral Evaluation Difference
-        </p>
+        <div class="flex gap-2">
+          <p class="text-blue font-bold text-[1.7rem] my-2">
+            Semestral Evaluation Difference
+          </p>
+          <button (click)="generateSemDiffReport()">
+            <i class="fa-solid fa-file-excel"></i>
+          </button>
+        </div>
         <app-bar-chart
+          (emitSemDiff)="setSemDiff($event)"
           [data]="diffArr[2]"
           [axis]="'x'"
           [bgColor]="'rgb(7, 66, 135)'"
@@ -105,9 +126,14 @@
       *ngIf="evaluationRadar$ | async as radar"
       class="flex flex-col flex-1 bg-white w-full laptop:w-[100px] rounded-[15px] p-5 pt-1 shadow-main mt-2 laptop:mt-0"
     >
-      <p class="text-blue font-bold text-[1.7rem] my-2">
-        Evaluation Radar Chart
-      </p>
+      <div class="flex gap-2">
+        <p class="text-blue font-bold text-[1.7rem] my-2">
+          Evaluation Radar Chart
+        </p>
+        <button (click)="generateRadarReport()">
+          <i class="fa-solid fa-file-excel"></i>
+        </button>
+      </div>
       <div
         class="border-slate-400 border-solid border-2 w-[240px] h-[35px] rounded-[5px] relative flex items-center justify-center px-3 duration-300 hover:shadow-main hover:duration-300 cursor-pointer"
       >
@@ -146,8 +172,8 @@
           </div>
         </div>
       </div>
-
       <app-radar-chart
+        (emitRadar)="setRadar($event)"
         [label1]="selectedFacultyArray[0]"
         [label2]="selectedFacultyArray[1]"
         [label3]="selectedFacultyArray[2]"
@@ -180,3 +206,4 @@
     </div>
   </div>
 </div>
+}

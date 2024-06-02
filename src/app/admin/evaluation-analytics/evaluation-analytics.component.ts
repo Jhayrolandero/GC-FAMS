@@ -1,17 +1,36 @@
 import { CommonModule, NgFor, NgIf } from '@angular/common';
 import { Component } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import * as DeanSelector from '../../state/dean-state/dean-state.selector';
 import { FacultySelectorComponent } from './faculty-selector/faculty-selector.component';
 import { LineGraphComponent } from '../../components/charts/line-graph/line-graph.component';
 import { BarChartComponent } from '../../components/charts/bar-chart/bar-chart.component';
 import { RadarChartComponent } from '../../components/charts/radar-chart/radar-chart.component';
 import { EvaluationSelectorComponent } from './evaluation-selector/evaluation-selector.component';
+import { ExcelServiceService } from '../../service/excel-service.service';
+import { EvaluationRadar } from '../../services/Interfaces/radarEvaluation';
+import {  Subscription, filter, map, take, tap } from 'rxjs';
+import { SemDiff } from '../../services/Interfaces/semDiff';
+import { LoadingScreenComponent } from '../../components/loading-screen/loading-screen.component';
+import { loadCollegeEval } from '../../state/dean-state/dean-state.actions';
+import { EvaluationTimeline } from '../../services/Interfaces/indAverageTimeline';
+import { selectPRofileCollege } from '../../state/faculty-state/faculty-state.selector';
+
 
 @Component({
   selector: 'app-evaluation-analytics',
   standalone: true,
-  imports: [CommonModule, NgIf, NgFor, FacultySelectorComponent, LineGraphComponent, BarChartComponent, RadarChartComponent, EvaluationSelectorComponent],
+  imports: [
+    CommonModule,
+    NgIf,
+    NgFor,
+    FacultySelectorComponent,
+    LineGraphComponent,
+    BarChartComponent,
+    RadarChartComponent,
+    EvaluationSelectorComponent,
+    LoadingScreenComponent
+    ],
   templateUrl: './evaluation-analytics.component.html',
   styleUrl: './evaluation-analytics.component.css'
 })
@@ -23,34 +42,191 @@ export class EvaluationAnalyticsComponent {
   dropEvalToggle = false;
   selected = false;
   labels = []
-
   //Selected facultymembers
   selectedArray: any[] = [];
   selectedFacultyArray: any[] = [];
   length = 0;
 
+  collegeSubscription!: Subscription
+  college!: string
+
+
   //Holder for that one specific graph so my sanity gets preserved
   diffArr = [[], []];
 
+  radarBase64URL!: string
+  radarData: EvaluationRadar[] = []
+  radarDataSubscription!: Subscription
+
+  semDiffBase64URL!: string
+  semDiffSubcription!: Subscription
+  semDiffData: SemDiff[] = []
+
+  indvSemAveTimelineSubscription!: Subscription
+  indvSemAveTimelineData: EvaluationTimeline[] = []
+  indvSemAveTimelineHeader: string[][] = []
+
+  currSem = this.excelService.getSemester(new Date().getMonth()+'', new Date().getFullYear()).semester + " Semester, A.Y. "+ this.excelService.getSemester(new Date().getMonth()+'', new Date().getFullYear()).academicYear
+  dummaryData: any = []
   constructor(
     private store: Store,
-  ){}
+    private excelService: ExcelServiceService
+  ){
+
+  }
   individualAverageTimeline$ = this.store.select(DeanSelector.selectAllAverageTimeline);
   overallAverageTimeline$ = this.store.select(DeanSelector.selectOverallAverageTimeline);
   evaluationDifference$: any = this.store.select(DeanSelector.selectEvaluationDifference);
   evaluationRadar$ = this.store.select(DeanSelector.selectCurrentEvaluation);
 
-  ngOnInit(): void {
-    this.evaluationDifference$.subscribe((next: any) => {
-      this.diffArr = [next[0], next[1], next[2]];
+  evalLoading$ = this.store.pipe(select(DeanSelector.selectEvalLoading))
 
+  educationTimelineSubscription!: Subscription
+  educationTimelineReport: object[] = []
+
+
+  ngOnInit() {
+    // this.store.dispatch(loadCollegeEval());
+
+    this.collegeSubscription = this.store.pipe(
+      select(selectPRofileCollege),
+      filter(data => !!data),
+      take(1)
+    ).subscribe({
+      next: res => this.college = res!
     })
 
-    this.evaluationRadar$.subscribe((next: any) => {
 
+    this.evaluationDifference$.subscribe((next: any) => {
+      this.diffArr = [next[0], next[1], next[2]];
+    })
+
+    this.radarDataSubscription = this.store.pipe(
+      select(DeanSelector.selectCurrentEvaluation),
+      filter(data => !!data && data.length > 0),
+      take(1)  // This ensures only non-null/non-undefined values are processed
+    ).subscribe({
+      next: (items) => {
+        let no = 1
+        this.radarData = items.map(res => ({
+          "No.": no++,
+          "Name": res[0],
+          "College": res[1][7] as string,
+          "Position": res[1][6] as string,
+          "Knowledge Of Content": res[1][0] as number,
+          "Flexible Learning Modality": res[1][5] as number,
+          "Instructional Skills": res[1][1] as number,
+          "Management of Learning": res[1][4] as number,
+          "Communication Skills": res[1][2] as number,
+          "Teaching for Independent Learning": res[1][3] as number,
+          "Evaluation Average": res[1][8] as number,
+        }));
+      },
+      error: err => console.error(err)
+    });
+
+    this.semDiffSubcription = this.store.pipe(
+      select(DeanSelector.selectEvaluationDifference),
+      filter(data => !!data && (data[0].length > 0 && data[1].length > 0 && data[2].length > 0)),
+      take(1)  // This ensures only non-null/non-undefined values are processed
+      ).subscribe({
+      next: (item : any) => {
+
+        for(let i =0; i< item[1].length; i++) {
+          const data = {
+            "Name": item[1][i],
+            "Semestral Difference": item[2][i]
+          }
+
+          this.semDiffData.push(data)
+        }
+      },
+      error: error => { console.log(error)},
+    })
+
+    this.indvSemAveTimelineSubscription = this.store.pipe(
+      select(DeanSelector.selectAllAverageTimeline),
+      filter(data => !!data && data.length > 0),
+      take(1)
+    ).subscribe({
+      next: res => {
+        // console.log(res)
+        res.map(item => {
+          let no = 1
+
+          let data: EvaluationTimeline = {
+            "No.": no++,
+            "Name": item[1][0],
+            "Position": item[1][2],
+            "College": item[1][3],
+          }
+
+          for (let i = 0; i < this.yearsArray.length; i++) {
+            // You need to add " " so that the key wouldn't turn into int, int overwrites the format
+            const year = this.yearsArray[i] + " ";
+            data[year] = item[1][1][i].toFixed(2);
+          }
+
+          this.indvSemAveTimelineData.push(data)
+        })
+
+
+        let header = Array.from({ length: 19 }, () => "")
+        header[0] = "No."
+        header[1] = "Name"
+        header[2] = "Position"
+        header[3] = "College"
+        header[4] = "Year"
+
+        this.indvSemAveTimelineHeader.push(header)
+
+        let yearHeader = Array.from({ length: 19 }, () => "")
+
+        for(let i = 0; i < this.yearsArray.length; i++) {
+          yearHeader[i+4] = this.yearsArray[i]
+        }
+
+        this.indvSemAveTimelineHeader.push(yearHeader)
+    },
+      error: err => console.log(err)
+    })
+
+
+    this.educationTimelineSubscription = this.store.pipe(
+      select(DeanSelector.selectOverallAverageTimeline),
+      filter(data => !!data && data.length > 0),
+      take(1)
+    ).subscribe({
+      next: res => {
+
+        let i = 0
+
+        let prev = 0
+        res!.map(item => {
+
+          let currEduc = item
+          let changeEduc = prev ? (((currEduc - prev)/prev) *100).toFixed(2) + "%" : '-'
+
+          let data = {
+            "Year": this.yearsArray[i++],
+            'Educational Attainment': currEduc.toFixed(2),
+            'Educational Attainment Change from Previous Year (%)': changeEduc,
+          }
+
+          prev = currEduc
+
+          this.educationTimelineReport.push(data)
+        })
+      }
     })
   }
 
+  ngOnDestroy() {
+    this.radarDataSubscription.unsubscribe()
+    this.semDiffSubcription.unsubscribe()
+    this.indvSemAveTimelineSubscription.unsubscribe()
+    this.collegeSubscription.unsubscribe()
+  }
   //Triggers when a faculty is selected
   selectFaculty(data: any){
 
@@ -82,5 +258,54 @@ export class EvaluationAnalyticsComponent {
 
     console.log(this.selectedFacultyArray)
     this.length = this.selectedArray.length;
+  }
+
+
+  setRadar(base64: string) {
+    this.radarBase64URL = base64
+  }
+
+  setRadarData(data: EvaluationRadar[]) {
+    this.radarData = data
+  }
+
+  setSemDiff(base64: string) {
+    this.semDiffBase64URL = base64
+  }
+
+  downloadFile(base64URL: string, fileName: string) {
+    const link = document.createElement('a');
+    link.href = base64URL;
+    link.download = fileName;
+    link.click();
+  }
+
+  generateRadarReport() {
+    if(this.radarData.length <= 0) return
+    this.excelService.exportExcel<EvaluationRadar>(this.radarData, "Evaluation-Radar", this.college, this.currSem )
+    // this.excelService.exportExcel<EvaluationRadar>(this.radarData, "Evaluation-Radar", this.college, "!st Sem 2024 - 2025" )
+  }
+
+  generateSemDiffReport() {
+    if(this.semDiffData.length <= 0) return
+    this.excelService.exportExcel<SemDiff>(this.semDiffData, "Semestral Difference", this.college, this.currSem)
+  }
+
+  generateIndTimelineReport() {
+    if(this.semDiffData.length <= 0) return
+
+    this.excelService.exportExcel<EvaluationTimeline>(
+      this.indvSemAveTimelineData,
+      "Individual Timeline",
+      this.college,
+      this.currSem,
+      {start: 4, title: "Year"}
+    )
+  }
+
+  generateEducAttainmentReport() {
+    if(this.educationTimelineReport.length <= 0) return
+
+    this.excelService.exportExcel<Object>(this.educationTimelineReport, `Educational Attainment Timeline (${ this.date.getFullYear() - 14} - ${this.date.getFullYear()})`, this.college, this.currSem)
   }
 }

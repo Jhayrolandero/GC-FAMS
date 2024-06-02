@@ -1,4 +1,10 @@
-<!-- <app-loading-screen *ngIf="isLoading"></app-loading-screen> -->
+@if((profileLoading$ | async) && (certsLoading$ | async) && (educsLoading$ |
+async) && (expsLoading$ | async) && (projLoading$ | async) && (exptLoading$ |
+async) && (coursesLoading$ | async) && (coursesLoading$ | async) &&
+(commexLoading$ | async)) {
+<app-loading-screen></app-loading-screen>
+
+} @else {
 
 <div class="p-5 flex flex-col gap-y-3 text-blue">
   <div
@@ -101,11 +107,16 @@
     *ngIf="educationalAttainmentTimeline$ | async as educTimeline"
     class="w-full bg-white rounded-[15px] shadow-main p-5 pt-1"
   >
-    <p
-      class="text-blue font-bold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] my-2 tablet:text-start text-center my-2"
-    >
-      Educational Attainment Timeline
-    </p>
+    <div class="flex gap-2">
+      <p
+        class="text-blue font-bold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] my-2 tablet:text-start text-center my-2"
+      >
+        Educational Attainment Timeline
+      </p>
+      <button (click)="generateEducReport()">
+        <i class="fa-solid fa-file-excel"></i>
+      </button>
+    </div>
     <app-line-graph
       [data]="educTimeline[0]"
       [data2]="educTimeline[1]"
@@ -121,11 +132,16 @@
     *ngIf="milestoneCount$ | async as milestone"
     class="w-full bg-white rounded-[15px] shadow-main p-5 pt-1"
   >
-    <p
-      class="text-blue font-bold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] my-2 tablet:text-start text-center my-2"
-    >
-      Milestones Achieved Each Year
-    </p>
+    <div class="flex gap-2">
+      <p
+        class="text-blue font-bold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] my-2 tablet:text-start text-center my-2"
+      >
+        Milestones Achieved Each Year
+      </p>
+      <button (click)="generateMilestoneReport()">
+        <i class="fa-solid fa-file-excel"></i>
+      </button>
+    </div>
     <app-bar-chart
       [data]="milestone"
       [axis]="'x'"
@@ -141,37 +157,16 @@
     *ngIf="attainmentTimeline$ | async as attainment"
     class="w-full bg-white rounded-[15px] shadow-main p-5 pt-1"
   >
-    <div class="flex flex-col tablet:flex-row items-center gap-3">
-      <p
-        class="text-blue font-bold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] my-2 tablet:text-start text-center my-2"
-      >
-        Attainment Timeline
-      </p>
-      <div class="flex flex-row gap-1">
-        <div
-          class="w-[23px] h-[23px] rounded-[5px] shadow-main duration-300 hover:duration-300 hover:bg-opacity-50"
-          [ngClass]="certToggle ? ' bg-blue' : 'bg-slate-200'"
-          (click)="certToggle = !certToggle"
-        ></div>
-        <p class="font-Roboto font-medium text-blue">Certifications</p>
-      </div>
-
-      <div class="flex flex-row gap-1">
-        <div
-          class="w-[23px] h-[23px] rounded-[5px] shadow-main duration-300 hover:duration-300 hover:bg-opacity-50"
-          [ngClass]="commexToggle ? 'bg-greenBar' : 'bg-slate-200'"
-          (click)="commexToggle = !commexToggle"
-        ></div>
-        <p class="font-Roboto font-medium text-blue">Community Extensions</p>
-      </div>
-
-      <div class="flex flex-row gap-1">
-        <div
-          class="w-[23px] h-[23px] rounded-[5px] shadow-main duration-300 hover:duration-300 hover:bg-opacity-50"
-          [ngClass]="seminarToggle ? 'bg-orange-400' : 'bg-slate-200'"
-          (click)="seminarToggle = !seminarToggle"
-        ></div>
-        <p class="font-Roboto font-medium text-blue">Seminars</p>
+    <div class="flex flex-col tablet:flex-row items-center justify-between">
+      <div class="flex gap-2">
+        <p
+          class="text-blue font-bold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] my-2 tablet:text-start text-center my-2"
+        >
+          Attainment Timeline
+        </p>
+        <button (click)="generateAttainmentReport()">
+          <i class="fa-solid fa-file-excel"></i>
+        </button>
       </div>
     </div>
     <app-line-graph
@@ -182,6 +177,32 @@
       [showLegend]="false"
     >
     </app-line-graph>
+    <div class="flex gap-4 justify-center items-center">
+      <div class="flex flex-row gap-1">
+        <div
+          class="w-[23px] h-[23px] rounded-[5px] shadow-main duration-300 hover:duration-300 hover:bg-opacity-50"
+          [ngClass]="certToggle ? ' bg-blue' : 'bg-slate-200'"
+          (click)="certToggle = !certToggle"
+        ></div>
+        <p class="font-Roboto font-medium text-blue">Certifications</p>
+      </div>
+      <div class="flex flex-row gap-1">
+        <div
+          class="w-[23px] h-[23px] rounded-[5px] shadow-main duration-300 hover:duration-300 hover:bg-opacity-50"
+          [ngClass]="commexToggle ? 'bg-greenBar' : 'bg-slate-200'"
+          (click)="commexToggle = !commexToggle"
+        ></div>
+        <p class="font-Roboto font-medium text-blue">Community Extensions</p>
+      </div>
+      <div class="flex flex-row gap-1">
+        <div
+          class="w-[23px] h-[23px] rounded-[5px] shadow-main duration-300 hover:duration-300 hover:bg-opacity-50"
+          [ngClass]="seminarToggle ? 'bg-orange-400' : 'bg-slate-200'"
+          (click)="seminarToggle = !seminarToggle"
+        ></div>
+        <p class="font-Roboto font-medium text-blue">Seminars</p>
+      </div>
+    </div>
   </div>
 
   <div class="w-full flex flex-col laptop:flex-row gap-3">
@@ -189,12 +210,18 @@
       *ngIf="educationalAttainmentTimeline$ | async as educTimeline"
       class="bg-white flex flex-col items-center rounded-[15px] shadow-main flex-1"
     >
-      <p
-        class="text-blue font-bold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] my-2 tablet:text-start text-center my-2"
-      >
-        Educational Attainment
-      </p>
+      <div class="flex gap-2">
+        <p
+          class="text-blue font-bold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] my-2 tablet:text-start text-center my-2"
+        >
+          Educational Attainment
+        </p>
+        <button (click)="generateEducAttainmentReport()">
+          <i class="fa-solid fa-file-excel"></i>
+        </button>
+      </div>
       <app-pie-chart
+        *ngIf="educTimeline.length > 0"
         [data]="[educTimeline[0][14], educTimeline[1][14], educTimeline[2][14]]"
         [labels]="['Bachelor Degree', 'Master Degree', 'Doctorate Degree']"
       >
@@ -205,11 +232,16 @@
       *ngIf="certTypes$ | async as certType"
       class="bg-white flex flex-col items-center rounded-[15px] shadow-main flex-1"
     >
-      <p
-        class="text-blue font-bold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] my-2 tablet:text-start text-center my-2"
-      >
-        Certificate Type
-      </p>
+      <div class="flex gap-2">
+        <p
+          class="text-blue font-bold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] my-2 tablet:text-start text-center my-2"
+        >
+          Certificate Type
+        </p>
+        <button (click)="generateCertTypeReport()">
+          <i class="fa-solid fa-file-excel"></i>
+        </button>
+      </div>
       <app-pie-chart
         [data]="[certType['Completion'], certType['Achievement']]"
         [labels]="['Completion', 'Achievement']"
@@ -221,11 +253,16 @@
       *ngIf="employmentTypes$ | async as type"
       class="bg-white flex flex-col items-center rounded-[15px] shadow-main flex-1"
     >
-      <p
-        class="text-blue font-bold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] my-2 tablet:text-start text-center my-2"
-      >
-        Employment Status
-      </p>
+      <div class="flex gap-2">
+        <p
+          class="text-blue font-bold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] my-2 tablet:text-start text-center my-2"
+        >
+          Employment Status
+        </p>
+        <button (click)="generateEmploymentTypeReport()">
+          <i class="fa-solid fa-file-excel"></i>
+        </button>
+      </div>
       <app-pie-chart [data]="type" [labels]="['Part-Time', 'Full-Time']">
       </app-pie-chart>
     </div>
@@ -233,7 +270,7 @@
 
   <div class="flex gap-2 flex-col tablet:flex-row">
     <div class="w-full tablet:w-[50%] flex flex-col gap-2">
-      <div
+      <!-- <div
         *ngIf="topSeminar$ | async as seminar"
         class="bg-white shadow-main rounded-[15px] p-5 pt-1"
       >
@@ -243,6 +280,7 @@
           Top Seminars Completed
         </p>
         <app-bar-chart
+          *ngIf="seminar[1]"
           [data]="[
             seminar[0][1],
             seminar[1][1],
@@ -261,17 +299,24 @@
           [bgColor]="'rgb(30, 114, 66)'"
           [showLegend]="false"
         ></app-bar-chart>
-      </div>
+      </div> -->
 
       <div
         *ngIf="teachingLength$ | async as teaching"
         class="w-full bg-white rounded-[15px] shadow-main p-5 pt-1"
       >
-        <p
-          class="text-blue font-bold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] tablet:text-start text-center my-2"
-        >
-          Teaching Length & Certification Count per Faculty Member
-        </p>
+        <div class="flex justify-between">
+          <div class="flex gap-2">
+            <p
+              class="text-blue font-bold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] tablet:text-start text-center my-2"
+            >
+              Teaching Length & Certification Count per Faculty Member
+            </p>
+            <button (click)="generateCertsTeachReport()">
+              <i class="fa-solid fa-file-excel"></i>
+            </button>
+          </div>
+        </div>
         <app-bar-chart
           [data]="teaching[1][0]"
           [data2]="teaching[1][1]"
@@ -283,6 +328,20 @@
         >
           >
         </app-bar-chart>
+        <div class="flex justify-center items-center gap-4">
+          <div class="flex gap-2">
+            <div
+              class="w-[23px] h-[23px] rounded-[5px] shadow-main duration-300 hover:duration-300 hover:bg-opacity-50 bg-blue"
+            ></div>
+            <p>Certificate Count</p>
+          </div>
+          <div class="flex gap-2">
+            <div
+              class="w-[23px] h-[23px] rounded-[5px] shadow-main duration-300 hover:duration-300 hover:bg-opacity-50 bg-greenBar"
+            ></div>
+            <p>Average Teaching Length (hrs)</p>
+          </div>
+        </div>
       </div>
     </div>
     <div class="w-full tablet:w-[50%]">
@@ -290,13 +349,26 @@
         *ngIf="teachingLength$ | async as teaching"
         class="bg-white rounded-[15px] shadow-main p-5 pt-1 h-full"
       >
-        <p
-          class="text-blue font-bold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] tablet:text-start text-center my-2"
-        >
-          Teaching Length and Evaluation Average Correlation
-        </p>
+        <div class="flex gap-2">
+          <p
+            class="text-blue font-bold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] tablet:text-start text-center my-2"
+          >
+            Teaching Length and Evaluation Average Correlation
+          </p>
+          <button (click)="generateTeachCorrelationReport()">
+            <i class="fa-solid fa-file-excel"></i>
+          </button>
+        </div>
         <app-scatter-plot [data]="teaching[0]" [showLegend]="false">
         </app-scatter-plot>
+        <div class="flex justify-center items-center gap-4">
+          <div class="flex gap-2">
+            <p>X: Evaluation</p>
+          </div>
+          <div class="flex gap-2">
+            <p>Y: Average Teaching Length (hrs)</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -309,12 +381,18 @@
       *ngIf="topSeminar$ | async as seminar"
       class="bg-white shadow-main rounded-[15px] p-5 pt-1 laptop:flex-1"
     >
-      <p
-        class="text-blue font-bold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] my-2 tablet:text-start text-center my-2"
-      >
-        Top Seminars Completed
-      </p>
+      <div class="flex gap-2">
+        <p
+          class="text-blue font-bold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] my-2 tablet:text-start text-center my-2"
+        >
+          Top Seminars Completed
+        </p>
+        <button (click)="generateSeminarReport()">
+          <i class="fa-solid fa-file-excel"></i>
+        </button>
+      </div>
       <app-bar-chart
+        *ngIf="seminar[1]"
         [data]="[
           seminar[0][1],
           seminar[1][1],
@@ -338,11 +416,16 @@
       *ngIf="topLevel$ | async as level"
       class="bg-white shadow-main rounded-[15px] p-5 pt-1 laptop:flex-1"
     >
-      <p
-        class="text-blue font-bold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] my-2 tablet:text-start text-center my-2"
-      >
-        Top Teaching Level
-      </p>
+      <div class="flex gap-2">
+        <p
+          class="text-blue font-bold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] my-2 tablet:text-start text-center my-2"
+        >
+          Top Teaching Level
+        </p>
+        <button (click)="generateTeachingLevelReport()">
+          <i class="fa-solid fa-file-excel"></i>
+        </button>
+      </div>
       <app-bar-chart
         [data]="level[1]"
         [labels]="level[0]"
@@ -356,11 +439,16 @@
       *ngIf="topExpertise$ | async as expertise"
       class="bg-white shadow-main rounded-[15px] p-5 pt-1 laptop:flex-1 tablet:col-span-2 laptop:col-span-1"
     >
-      <p
-        class="text-blue font-bold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] my-2 tablet:text-start text-center my-2"
-      >
-        Top Expertise
-      </p>
+      <div class="flex gap-2">
+        <p
+          class="text-blue font-bold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] my-2 tablet:text-start text-center my-2"
+        >
+          Top Expertise
+        </p>
+        <button (click)="generateExpertiseReport()">
+          <i class="fa-solid fa-file-excel"></i>
+        </button>
+      </div>
       <app-bar-chart
         [data]="expertise[1]"
         [labels]="expertise[0]"
@@ -371,3 +459,5 @@
     </div>
   </div>
 </div>
+
+}
