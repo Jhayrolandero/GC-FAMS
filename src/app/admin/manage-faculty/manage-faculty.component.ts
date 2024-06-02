@@ -12,9 +12,10 @@ import { ManageindividualanalyticsComponent } from "./manageindividualanalytics/
 import { CvComponent } from './cv/cv.component';
 import { Store, select } from '@ngrx/store';
 import { Subscription, filter, take } from 'rxjs';
-import { selectFacultyReport } from '../../state/dean-state/dean-state.selector';
+import { selectFacultyReport, selectProfile } from '../../state/dean-state/dean-state.selector';
 import { FacultyReport } from '../../services/Interfaces/facultyReport';
 import { ExcelServiceService } from '../../service/excel-service.service';
+import { selectPRofileCollege } from '../../state/faculty-state/faculty-state.selector';
 
 @Component({
     selector: 'app-manage-faculty',
@@ -45,13 +46,14 @@ export class ManageFacultyComponent {
   seminarToggle = false;
   cvToggle = false;
   pdfID!: number
+  collegeSubscription!: Subscription
+  college!: string
 
   facultyReportSubscription!: Subscription
   facultyReportData: FacultyReport[] = []
+  currSem = this.excelService.getSemester(new Date().getMonth()+'', new Date().getFullYear()).semester + " Semester, A.Y. "+ this.excelService.getSemester(new Date().getMonth()+'', new Date().getFullYear()).academicYear
 
   constructor(
-    private route: ActivatedRoute,
-    private router: Router,
     private store: Store,
     private excelService: ExcelServiceService
 
@@ -66,10 +68,17 @@ export class ManageFacultyComponent {
       take(1)
     ).subscribe({
       next: res => {
-        console.log(res)
         res?.map(item => this.facultyReportData.push(item))
       },
       error: err => console.log(err)
+    })
+
+    this.collegeSubscription = this.store.pipe(
+      select(selectPRofileCollege),
+      filter(data => !!data),
+      take(1)
+    ).subscribe({
+      next: res => this.college = res!
     })
   }
 
@@ -98,6 +107,7 @@ export class ManageFacultyComponent {
 
   ngOnDestroy() {
     this.facultyReportSubscription.unsubscribe()
+    this.collegeSubscription.unsubscribe()
   }
 
   generateFacultyReport() {
@@ -105,9 +115,9 @@ export class ManageFacultyComponent {
 
     this.excelService.exportExcel<FacultyReport>(
       this.facultyReportData,
-      `Faculty Report nth Sem., A.Y (${ new Date().getFullYear()} - ${new Date().getFullYear() + 1})`,
-      "ccs",
-      "nth Sem., A.Y ")
+      `Faculty Report ${this.college} ${this.currSem}`,
+      this.college,
+      this.currSem)
 
   }
 

@@ -253,6 +253,16 @@ export const selectCommex = createSelector(
   (state: ProfileState) => state.commex
 );
 
+export const selectPRofileCollege = createSelector(
+  selectProfileState,
+  (state) => {
+
+  if(state.profile === undefined) return
+
+  return state.profile?.college_abbrev
+  }
+)
+
 function sortByEvaluationYear(evals : Evaluation[]) {
 
   const evalsCopy = [...evals]

@@ -28,8 +28,6 @@ export class PieChartComponent {
       this.chart.destroy();
     }
     this.createChart();
-
-    console.log(this.data[0])
   }
 
   createChart() {

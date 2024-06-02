@@ -26,7 +26,6 @@ import {
       selectExpertiseReport,
       selectExpsLoading,
       selectExptLoading,
-      selectFacultyExpertise,
        selectMilestoneReport,
        selectProjLoading,
        selectSeminarReport,
@@ -37,13 +36,12 @@ import {
 import { CommonModule, NgFor } from '@angular/common';
 import { BarChartComponent } from '../../components/charts/bar-chart/bar-chart.component';
 import { ScatterPlotComponent } from '../../components/charts/scatter-plot/scatter-plot.component';
-import { selectAllProfile, selectProfileLoading } from '../../state/faculty-state/faculty-state.selector';
+import { selectAllProfile, selectPRofileCollege, selectProfileLoading } from '../../state/faculty-state/faculty-state.selector';
 import { ExcelServiceService } from '../../service/excel-service.service';
-import { Subscription, filter, take, takeLast } from 'rxjs';
+import { Subscription, filter, take } from 'rxjs';
 import { EducAttainmentData } from '../../services/Interfaces/educAttainmentData';
 import { AttainmentData } from '../../services/Interfaces/attainmentData';
 import { MilestoneReport } from '../../services/Interfaces/milestoneReport';
-import { error } from 'console';
 import { CurrEducAttainment } from '../../services/Interfaces/currEducAttainment';
 import { EmploymentTypeReport } from '../../services/Interfaces/employmentTypeReport';
 import { SeminarReport } from '../../services/Interfaces/seminarReport';
@@ -75,6 +73,8 @@ export class ManageAnalyticsComponent{
   certToggle = true;
   commexToggle = true;
   seminarToggle = true;
+  currSem = this.excelService.getSemester(new Date().getMonth()+'', new Date().getFullYear()).semester + " Semester, A.Y. "+ this.excelService.getSemester(new Date().getMonth()+'', new Date().getFullYear()).academicYear
+
 
 
   profile$ = this.store.select(selectAllProfile)
@@ -102,6 +102,9 @@ export class ManageAnalyticsComponent{
   exptLoading$ = this.store.pipe(select(selectExptLoading))
   coursesLoading$ = this.store.pipe(select(selectCoursesLoading))
   commexLoading$ = this.store.pipe(select(selectCommexLoading))
+
+  collegeSubscription!: Subscription
+  college!: string
 
 
   educSubscription!: Subscription
@@ -284,6 +287,14 @@ export class ManageAnalyticsComponent{
       next: res => {this.certTypeReport = res!}
     })
 
+    this.collegeSubscription = this.store.pipe(
+      select(selectPRofileCollege),
+      filter(data => !!data),
+      take(1)
+    ).subscribe({
+      next: res => this.college = res!
+    })
+
     // this.totalEducAttainment = this.store.pipe(
     //   select(selectCollegeEducTimeline),
     //   filter(data => !!data && (data.length > 0 )),
@@ -313,6 +324,8 @@ export class ManageAnalyticsComponent{
     this.expertiseReportSubscription.unsubscribe()
     this.teachingLevelReportSubscription.unsubscribe()
     this.certTypeReportSubscription.unsubscribe()
+    this.collegeSubscription.unsubscribe()
+
   }
 
   renderEducReport(res : number[][]) {
@@ -376,66 +389,66 @@ export class ManageAnalyticsComponent{
   generateEducReport() {
     if(this.educData.length <= 0) return
 
-    this.excelService.exportExcel<EducAttainmentData>(this.educData, `Education Attainment Timeline (${ this.date.getFullYear() - 14} - ${this.date.getFullYear()})`, "ccs", "!st Sem 2024 - 2025")
+    this.excelService.exportExcel<EducAttainmentData>(this.educData, `Education Attainment Timeline ${this.college} (${ this.date.getFullYear() - 14} - ${this.date.getFullYear()})`, this.college, this.currSem)
 
   }
 
   generateAttainmentReport() {
     if(this.attainmentData.length <= 0) return
 
-    this.excelService.exportExcel<AttainmentData>(this.attainmentData, `Attainment Timeline (${ this.date.getFullYear() - 14} - ${this.date.getFullYear()})`, "ccs", "!st Sem 2024 - 2025")
+    this.excelService.exportExcel<AttainmentData>(this.attainmentData, `Attainment Timeline ${this.college} (${ this.date.getFullYear() - 14} - ${this.date.getFullYear()})`, this.college, this.currSem)
   }
 
   generateMilestoneReport() {
     if(this.milestoneData.length <= 0) return
 
-    this.excelService.exportExcel<MilestoneReport>(this.milestoneData, `Milestone Achieved (${ this.date.getFullYear() - 14} - ${this.date.getFullYear()})`, "ccs", `nth Sem., AY ${ this.date.getFullYear()} - ${this.date.getFullYear() + 1}`)
+    this.excelService.exportExcel<MilestoneReport>(this.milestoneData, `Milestone Achieved ${this.college} (${ this.date.getFullYear() - 14} - ${this.date.getFullYear()})`, this.college, this.currSem)
   }
 
   generateEducAttainmentReport() {
     if(this.currEducData.length <= 0) return
 
-    this.excelService.exportExcel<CurrEducAttainment>(this.currEducData, `Educational Attainment CCS`, "ccs", `nth Sem., AY ${ this.date.getFullYear()} - ${this.date.getFullYear() + 1}`)
+    this.excelService.exportExcel<CurrEducAttainment>(this.currEducData, `Educational Attainment ${this.college}`, this.college, this.currSem)
   }
 
   generateEmploymentTypeReport() {
     if(this.employmentTypeData.length <= 0 ) return
 
-    this.excelService.exportExcel<EmploymentTypeReport>(this.employmentTypeData, `Employment Type CCS`, "ccs", `nth Sem., AY ${ this.date.getFullYear()} - ${this.date.getFullYear() + 1}`)
+    this.excelService.exportExcel<EmploymentTypeReport>(this.employmentTypeData, `Employment Type ${this.college}`, this.college, this.currSem)
   }
 
   generateSeminarReport() {
     if(this.seminarReport.length <= 0) return
 
-    this.excelService.exportExcel<SeminarReport>(this.seminarReport, `Seminars Attended CCS`, "ccs", `nth Sem., AY ${ this.date.getFullYear()} - ${this.date.getFullYear() + 1}`)
+    this.excelService.exportExcel<SeminarReport>(this.seminarReport, `Seminars Attended ${this.college}`, this.college, this.currSem)
   }
 
   generateTeachingLevelReport() {
     if(this.teachingLevelReport.length <= 0) return
 
-    this.excelService.exportExcel<TeachingLevelReport>(this.teachingLevelReport, `Teaching Level CCS`, "ccs", `nth Sem., AY ${ this.date.getFullYear()} - ${this.date.getFullYear() + 1}`)
+    this.excelService.exportExcel<TeachingLevelReport>(this.teachingLevelReport, `Teaching Level ${this.college}`, this.college, this.currSem)
   }
 
   generateExpertiseReport() {
     if(this.expertiseReport.length <= 0 ) return
 
-    this.excelService.exportExcel<ExpertiseReport>(this.expertiseReport, `Instructor's Expertise CCS`, "ccs", `nth Sem., AY ${ this.date.getFullYear()} - ${this.date.getFullYear() + 1}`)
+    this.excelService.exportExcel<ExpertiseReport>(this.expertiseReport, `Instructor's Expertise ${this.college}`, this.college, this.currSem)
   }
 
   generateTeachCorrelationReport() {
     if(this.teachingEvalCorrelationReport.length <= 0 ) return
 
-    this.excelService.exportExcel<Object>(this.teachingEvalCorrelationReport, `Teaching Evaluation Correlation CCS`, "ccs", `nth Sem., AY ${ this.date.getFullYear()} - ${this.date.getFullYear() + 1}`)
+    this.excelService.exportExcel<Object>(this.teachingEvalCorrelationReport, `Teaching Evaluation Correlation ${this.college}`, this.college, this.currSem)
   }
 
   generateCertsTeachReport() {
     if(this.teachingCertsReport.length <= 0) return
 
-    this.excelService.exportExcel<Object>(this.teachingCertsReport, `Teaching Length and Certificates Count  CCS`, "ccs", `nth Sem., AY ${ this.date.getFullYear()} - ${this.date.getFullYear() + 1}`)
+    this.excelService.exportExcel<Object>(this.teachingCertsReport, `Teaching Length and Certificates Count  ${this.college}`, this.college, this.currSem)
   }
 
   generateCertTypeReport() {
     if(this.certTypeReport.length <= 0 ) return
-    this.excelService.exportExcel<Object>(this.certTypeReport, `Certification Count CCS`, "ccs", `nth Sem., AY ${ this.date.getFullYear()} - ${this.date.getFullYear() + 1}`)
+    this.excelService.exportExcel<Object>(this.certTypeReport, `Certification Count ${this.college}`, this.college, this.currSem)
   }
 }

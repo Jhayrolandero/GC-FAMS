@@ -14,6 +14,7 @@ import { SemDiff } from '../../services/Interfaces/semDiff';
 import { LoadingScreenComponent } from '../../components/loading-screen/loading-screen.component';
 import { loadCollegeEval } from '../../state/dean-state/dean-state.actions';
 import { EvaluationTimeline } from '../../services/Interfaces/indAverageTimeline';
+import { selectPRofileCollege } from '../../state/faculty-state/faculty-state.selector';
 
 
 @Component({
@@ -46,6 +47,10 @@ export class EvaluationAnalyticsComponent {
   selectedFacultyArray: any[] = [];
   length = 0;
 
+  collegeSubscription!: Subscription
+  college!: string
+
+
   //Holder for that one specific graph so my sanity gets preserved
   diffArr = [[], []];
 
@@ -61,6 +66,7 @@ export class EvaluationAnalyticsComponent {
   indvSemAveTimelineData: EvaluationTimeline[] = []
   indvSemAveTimelineHeader: string[][] = []
 
+  currSem = this.excelService.getSemester(new Date().getMonth()+'', new Date().getFullYear()).semester + " Semester, A.Y. "+ this.excelService.getSemester(new Date().getMonth()+'', new Date().getFullYear()).academicYear
   dummaryData: any = []
   constructor(
     private store: Store,
@@ -82,11 +88,19 @@ export class EvaluationAnalyticsComponent {
   ngOnInit() {
     // this.store.dispatch(loadCollegeEval());
 
+    this.collegeSubscription = this.store.pipe(
+      select(selectPRofileCollege),
+      filter(data => !!data),
+      take(1)
+    ).subscribe({
+      next: res => this.college = res!
+    })
+
+
     this.evaluationDifference$.subscribe((next: any) => {
       this.diffArr = [next[0], next[1], next[2]];
     })
 
-console.log(new Date().getFullYear())
     this.radarDataSubscription = this.store.pipe(
       select(DeanSelector.selectCurrentEvaluation),
       filter(data => !!data && data.length > 0),
@@ -107,7 +121,6 @@ console.log(new Date().getFullYear())
           "Teaching for Independent Learning": res[1][3] as number,
           "Evaluation Average": res[1][8] as number,
         }));
-        console.log(this.radarData);
       },
       error: err => console.error(err)
     });
@@ -204,8 +217,6 @@ console.log(new Date().getFullYear())
 
           this.educationTimelineReport.push(data)
         })
-
-console.log(this.educationTimelineReport)
       }
     })
   }
@@ -214,6 +225,7 @@ console.log(this.educationTimelineReport)
     this.radarDataSubscription.unsubscribe()
     this.semDiffSubcription.unsubscribe()
     this.indvSemAveTimelineSubscription.unsubscribe()
+    this.collegeSubscription.unsubscribe()
   }
   //Triggers when a faculty is selected
   selectFaculty(data: any){
@@ -270,12 +282,13 @@ console.log(this.educationTimelineReport)
 
   generateRadarReport() {
     if(this.radarData.length <= 0) return
-    this.excelService.exportExcel<EvaluationRadar>(this.radarData, "Evaluation-Radar", "ccs", "!st Sem 2024 - 2025" )
+    this.excelService.exportExcel<EvaluationRadar>(this.radarData, "Evaluation-Radar", this.college, this.currSem )
+    // this.excelService.exportExcel<EvaluationRadar>(this.radarData, "Evaluation-Radar", this.college, "!st Sem 2024 - 2025" )
   }
 
   generateSemDiffReport() {
     if(this.semDiffData.length <= 0) return
-    this.excelService.exportExcel<SemDiff>(this.semDiffData, "Semestral Difference", "ccs", "!st Sem 2024 - 2025")
+    this.excelService.exportExcel<SemDiff>(this.semDiffData, "Semestral Difference", this.college, this.currSem)
   }
 
   generateIndTimelineReport() {
@@ -284,8 +297,8 @@ console.log(this.educationTimelineReport)
     this.excelService.exportExcel<EvaluationTimeline>(
       this.indvSemAveTimelineData,
       "Individual Timeline",
-      "ccs",
-      "!st Sem 2024 - 2025",
+      this.college,
+      this.currSem,
       {start: 4, title: "Year"}
     )
   }
@@ -293,6 +306,6 @@ console.log(this.educationTimelineReport)
   generateEducAttainmentReport() {
     if(this.educationTimelineReport.length <= 0) return
 
-    this.excelService.exportExcel<Object>(this.educationTimelineReport, `Educational Attainment Timeline (${ this.date.getFullYear() - 14} - ${this.date.getFullYear()})`, "ccs", `nth Sem., AY ${this.date.getFullYear()} - ${this.date.getFullYear() + 1}`)
+    this.excelService.exportExcel<Object>(this.educationTimelineReport, `Educational Attainment Timeline (${ this.date.getFullYear() - 14} - ${this.date.getFullYear()})`, this.college, this.currSem)
   }
 }

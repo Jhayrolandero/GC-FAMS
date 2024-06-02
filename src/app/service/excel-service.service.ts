@@ -18,7 +18,52 @@ interface SubHeadingsDictionary {
 export class ExcelServiceService {
 
   constructor() { }
-  title = 'angular-app';
+
+  getSemester(month : string, year : number) {
+    // Normalize the input
+    month = month.toLowerCase();
+
+    // Define month names and their corresponding semester periods
+    const months: any = {
+      0: { semester: 2, yearOffset: 0 },
+      1: { semester: 2, yearOffset: 0 },
+      2: { semester: 2, yearOffset: 0 },
+      3: { semester: 2, yearOffset: 0 },
+      4: { semester: 2, yearOffset: 0 },
+      5: { semester: 2, yearOffset: 0 },
+      6: { semester: 2, yearOffset: 0 },  // Default to midyear for semester 2
+      7: { semester: 1, yearOffset: 0 },
+      8: { semester: 1, yearOffset: 0 },
+      9: { semester: 1, yearOffset: 0 },
+      10: { semester: 1, yearOffset: 0 },
+      11: { semester: 1, yearOffset: 0 },
+    };
+
+    // Check if the provided month is valid
+    if (!months.hasOwnProperty(month)) {
+      throw new Error("Invalid month");
+    }
+
+    const { semester, yearOffset } = months[month];
+
+    // Determine academic year
+    let academicYearStart, academicYearEnd;
+    if (semester === 1) {
+      academicYearStart = year;
+      academicYearEnd = year + 1;
+    } else if (semester === 2) {
+      academicYearStart = year - 1;
+      academicYearEnd = year;
+    } else {
+      throw new Error("Month provided does not belong to any semester.");
+    }
+
+    return {
+      semester: semester == 1 ? '1st' : '2nd',
+      academicYear: `${academicYearStart}-${academicYearEnd}`
+    };
+  }
+
 
   exportexcel<T>(data: T[], title: string ): void
   {
@@ -145,8 +190,6 @@ export class ExcelServiceService {
 
 
     headers = this.generateHeader<T>('ccs', Object.keys(data[0] as object).length, data[0] as T, title, EvalSem, subHeading)
-
-    console.log(headers)
 
     const headerRowLength = headers.length
     const headerColLength = headers[0].length
