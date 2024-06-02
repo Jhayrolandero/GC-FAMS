@@ -496,6 +496,9 @@ export const selectTeachingLength = createSelector(
     (state: DeanState) => {
         let experienceName: Map<number, [number, number, number]> = new Map();
 
+
+        if(state.exps.length <= 0 || state.certs.length <= 0 ) return
+
         //Gets teaching year
         state.exps.forEach(exp => {
             let fromDate = new Date(exp.experience_from).getTime();
@@ -550,6 +553,7 @@ export const selectTeachingLength = createSelector(
         const sortedTeaching = [...experienceName.entries()];
         // return sortedTeaching;
 
+        // console.log(sortedTeaching)
         return [sortedTeaching.map(x => [x[1][0], x[1][1]]), [sortedTeaching.map(x => x[1][0]), sortedTeaching.map(x => x[1][1])]];
         // return [sortedTeaching.map(x => x[0]), sortedTeaching.map(x => x[1][0]), sortedTeaching.map(x => x[1][1]), sortedTeaching.map(x => x[1][2])]
     }

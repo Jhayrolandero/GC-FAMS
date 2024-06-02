@@ -130,6 +130,10 @@ export class ManageAnalyticsComponent{
   expertiseReportSubscription!: Subscription
   expertiseReport: ExpertiseReport[] = []
 
+  teachingLengthSubscription!: Subscription
+  teachingEvalCorrelationReport: Object[] =  []
+  teachingCertsReport: Object[] =  []
+
 
   totalEducAttainment!: Subscription
   totalBachelor: number = 0
@@ -166,8 +170,6 @@ export class ManageAnalyticsComponent{
       // Seminars 2
       // Certifications 0
       // Commex 1
-
-      console.log(res)
         this.formatAttainmentReport(res)
         // console.log(this.attainmentData)
       },
@@ -180,7 +182,6 @@ export class ManageAnalyticsComponent{
       take(1)
     ).subscribe({
       next: res => {
-        console.log(res)
         this.milestoneData = res!},
       error: error => {console.log(error)}
     })
@@ -209,7 +210,6 @@ export class ManageAnalyticsComponent{
     ).subscribe({
       next: res => {
         this.seminarReport = res!
-        console.log(this.seminarReport)
       },
       error: err => {console.log(err)}
     })
@@ -222,7 +222,6 @@ export class ManageAnalyticsComponent{
     ).subscribe({
       next: res => {
         this.teachingLevelReport = res!
-        console.log(this.teachingLevelReport)
       },
       error: err => {console.log(err)}
     })
@@ -237,6 +236,46 @@ export class ManageAnalyticsComponent{
       },
       error: err => {console.log(err)}
     })
+
+    this.teachingLengthSubscription = this.store.pipe(
+      select(selectTeachingLength),
+      filter(data => !!data && data.length > 0),
+      take(1)
+    ).subscribe({
+
+      next: res => {
+
+// console.log(res)
+        // 0 - COrrelation [0] = eval [1] = teaching
+        // 1 - cert [0] = certs [1] = length
+
+        this.yearsArray
+        res![0].map(item => {
+          let data = {
+            "Evalutation Average": item[0],
+            "Teaching Length": item[1]
+          }
+
+          this.teachingEvalCorrelationReport.push(data)
+        })
+
+        let i = 0
+        let j = 0
+        res![1][0].map(item => {
+          let data = {
+            "Year": this.yearsArray[i++],
+            "Certifications Awarded": item,
+            "Teaching Length": res![1][0][j++]
+          }
+          this.teachingCertsReport.push(data)
+        })
+
+
+        console.log(this.teachingEvalCorrelationReport)
+        console.log(this.teachingCertsReport)
+      }
+    })
+
     // this.totalEducAttainment = this.store.pipe(
     //   select(selectCollegeEducTimeline),
     //   filter(data => !!data && (data.length > 0 )),
@@ -264,6 +303,7 @@ export class ManageAnalyticsComponent{
     this.seminarReportSubscription.unsubscribe()
     this.teachingLevelReportSubscription.unsubscribe()
     this.expertiseReportSubscription.unsubscribe()
+    this.teachingLevelReportSubscription.unsubscribe()
   }
 
   renderEducReport(res : number[][]) {
@@ -371,5 +411,17 @@ export class ManageAnalyticsComponent{
     if(this.expertiseReport.length <= 0 ) return
 
     this.excelService.exportExcel<ExpertiseReport>(this.expertiseReport, `Instructor's Expertise CCS`, "ccs", `nth Sem., AY ${ this.date.getFullYear()} - ${this.date.getFullYear() + 1}`)
+  }
+
+  generateTeachCorrelationReport() {
+    if(this.teachingEvalCorrelationReport.length <= 0 ) return
+
+    this.excelService.exportExcel<Object>(this.teachingEvalCorrelationReport, `Teaching Evaluation Correlation CCS`, "ccs", `nth Sem., AY ${ this.date.getFullYear()} - ${this.date.getFullYear() + 1}`)
+  }
+
+  generateCertsTeachReport() {
+    if(this.teachingCertsReport.length <= 0) return
+
+    this.excelService.exportExcel<Object>(this.teachingCertsReport, `Teaching Length and Certificates Count  CCS`, "ccs", `nth Sem., AY ${ this.date.getFullYear()} - ${this.date.getFullYear() + 1}`)
   }
 }

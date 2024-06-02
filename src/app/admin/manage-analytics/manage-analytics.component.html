@@ -294,11 +294,14 @@ async) && (coursesLoading$ | async) && (coursesLoading$ | async) &&
         *ngIf="teachingLength$ | async as teaching"
         class="w-full bg-white rounded-[15px] shadow-main p-5 pt-1"
       >
-        <p
-          class="text-blue font-bold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] tablet:text-start text-center my-2"
-        >
-          Teaching Length & Certification Count per Faculty Member
-        </p>
+        <div class="flex gap-2">
+          <p
+            class="text-blue font-bold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] tablet:text-start text-center my-2"
+          >
+            Teaching Length & Certification Count per Faculty Member
+          </p>
+          <button (click)="generateCertsTeachReport()">Generate Report</button>
+        </div>
         <app-bar-chart
           [data]="teaching[1][0]"
           [data2]="teaching[1][1]"
@@ -317,11 +320,16 @@ async) && (coursesLoading$ | async) && (coursesLoading$ | async) &&
         *ngIf="teachingLength$ | async as teaching"
         class="bg-white rounded-[15px] shadow-main p-5 pt-1 h-full"
       >
-        <p
-          class="text-blue font-bold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] tablet:text-start text-center my-2"
-        >
-          Teaching Length and Evaluation Average Correlation
-        </p>
+        <div class="flex gap-2">
+          <p
+            class="text-blue font-bold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] tablet:text-start text-center my-2"
+          >
+            Teaching Length and Evaluation Average Correlation
+          </p>
+          <button (click)="generateTeachCorrelationReport()">
+            Generate Report
+          </button>
+        </div>
         <app-scatter-plot [data]="teaching[0]" [showLegend]="false">
         </app-scatter-plot>
       </div>
