@@ -18,10 +18,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { selectAllEvaluation, selectSortedEvals } from '../../state/faculty-state/faculty-state.selector';
+import { selectAllEvaluation, selectPRofileCollege, selectSortedEvals } from '../../state/faculty-state/faculty-state.selector';
 import { Store, select } from '@ngrx/store';
 import { loadEval } from '../../state/faculty-state/faculty-state.actions';
 import { EmptyTitleComponent } from '../../components/empty-title/empty-title.component';
+import { Subscription, filter, take } from 'rxjs';
+import { ExcelServiceService } from '../../service/excel-service.service';
 
 type Series = {
   'name': string,
@@ -114,12 +116,17 @@ export class EvaluationComponent{
   selectedEvalSem!: Evaluation
   evalHistory: evalScoreHistory[] = []
   evalBar!: HTMLElement
+  evalReport: object[] = []
+  currSem = this.excelService.getSemester(new Date().getMonth()+'', new Date().getFullYear()).semester + " Semester, A.Y. "+ this.excelService.getSemester(new Date().getMonth()+'', new Date().getFullYear()).academicYear
 
+  collegeSubscription!: Subscription
+  college!: string
+
+  evalReportSubscription!: Subscription
   constructor(
     private evaluationService: EvaluationService,
     public dialog: MatDialog,
-    private renderer: Renderer2,
-    private elementRef: ElementRef,
+    private excelService: ExcelServiceService,
     private store: Store) {
       this.sortedEvaluation$.subscribe({
         next: value => {
@@ -127,8 +134,10 @@ export class EvaluationComponent{
           this.selectedEvalSem = value[value.length - 1]
           this.selectEvalSem(undefined)
           this.isLoading = false
-
         },
+
+
+
       })
       // this.evaluation$.subscribe({
       //   next: value => {
@@ -142,10 +151,56 @@ export class EvaluationComponent{
       // })
     }
 
+    ngOnInit() {
+      this.evalReportSubscription = this.store.pipe(
+        select(selectAllEvaluation),
+        filter(data => !!data),
+        take(1)
+      ).subscribe({
+        next: res => {
+          let prevAve = 0
+          this.sortByEvaluationYear(res!).map(item => {
+
+            let currAve = item.evalAverage
+            let changeAve = prevAve ? ((currAve - prevAve)/ prevAve * 100).toFixed(2) + '%' : '-'
+            let data= {
+              "Year": item.evaluation_year,
+              "Knowledge of Content": item.param1_score,
+              "Instructional Skills": item.param2_score,
+              "Communication Skills": item.param3_score,
+              "Teaching for Independent Learning": item.param4_score,
+              "Management of Learning": item.param5_score,
+              "Flexible Learning Modality": item.param5_score,
+              "Evaluation Average": currAve,
+              "Change from Previous Year (%)": changeAve
+            }
+
+            prevAve = currAve
+            this.evalReport.push(data)
+          })
+
+          console.log(this.evalReport)
+        }
+      })
+
+      this.collegeSubscription = this.store.pipe(
+        select(selectPRofileCollege),
+        filter(data => !!data),
+        take(1)
+      ).subscribe({
+        next: res => this.college = res!
+      })
+
+    }
+
   ngOnChanges(changes: SimpleChanges): void {
     console.log("This is running!");
   }
 
+  ngOnDestory() {
+    this.evalReportSubscription.unsubscribe()
+    this.collegeSubscription.unsubscribe()
+  }
   formToggle: boolean = false;
   // this.store.select(selectAllEvaluation);
 
@@ -154,8 +209,8 @@ export class EvaluationComponent{
     let semVal: any;
     this.evaluation$.subscribe({
       next: value => {
-        yearVal = value[value.length-1].evaluation_year
-        semVal = value[value.length-1].semester
+        yearVal = value![value!.length-1].evaluation_year
+        semVal = value![value!.length-1].semester
       }
     })
 
@@ -176,7 +231,7 @@ export class EvaluationComponent{
       let evalItem!: Evaluation[]
 
       this.evaluation$.subscribe({
-        next: value => evalItem = value.filter((evalItem: Evaluation) => evalItem.evaluation_ID == event.target.value)
+        next: value => evalItem = value!.filter((evalItem: Evaluation) => evalItem.evaluation_ID == event.target.value)
       })
 
       this.selectedEvalSem = evalItem[0]
@@ -185,6 +240,7 @@ export class EvaluationComponent{
     } else {
       this.evalScoreCategory = this.evaluationService.setEvalScoreCategory(this.selectedEvalSem)
     }
+
   }
 
   sortByEvaluationYear(evals : Evaluation[]) {
@@ -226,5 +282,12 @@ export class EvaluationComponent{
 
   onDeactivate(data: any): void {
     console.log('Deactivate', JSON.parse(JSON.stringify(data)));
+  }
+
+  generateEvalReport() {
+    if(this.evalReport.length <= 0) return
+
+    this.excelService.exportExcel<object>(this.evalReport, `Evalution Report ${this.college}`, this.college, this.currSem)
+
   }
 }

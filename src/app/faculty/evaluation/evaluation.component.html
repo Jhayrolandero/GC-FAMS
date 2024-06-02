@@ -9,11 +9,14 @@
   <div
     class="bg-white shadow-main w-full rounded-[15px] py-2 flex flex-col tablet:flex-row justify-between items-center px-5"
   >
-    <h1
-      class="font-Poppins font-semibold text-[2rem] tablet:text-[2.5rem] py-2"
-    >
-      Evaluation
-    </h1>
+    <div class="flex gap-2">
+      <h1
+        class="font-Poppins font-semibold text-[2rem] tablet:text-[2.5rem] py-2"
+      >
+        Evaluation
+      </h1>
+      <button (click)="generateEvalReport()">Generate Report</button>
+    </div>
     <div class="flex flex-row space-x-4">
       <select
         type="text"

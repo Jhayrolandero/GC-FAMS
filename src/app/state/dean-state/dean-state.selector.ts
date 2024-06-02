@@ -116,13 +116,13 @@ export const selectCollegeMilestoneCount = createSelector(
 
   )
 
-  export const selectCurrentEducAttainment = (college : number) => createSelector(
+  export const selectCurrentEducAttainment =  createSelector(
     selectDeanState,
     (state) => {
       if(state.educs.length <= 0) return
 
       let currEducReport: CurrEducAttainment[] = []
-      state.educs.filter(item => getProfile(item.faculty_ID, state.profile)!.college_ID == college).map(item => {
+      state.educs.map(item => {
 
         console.log()
         let data = {
@@ -210,7 +210,7 @@ export const selectCollegeEmploymentType = createSelector(
     }
   );
 
-  export const selectEmploymentTypeReport = (college : number )=> createSelector(
+  export const selectEmploymentTypeReport =  createSelector(
     selectDeanState,
     (state) => {
 
@@ -218,7 +218,7 @@ export const selectCollegeEmploymentType = createSelector(
 
       const employmentType: EmploymentTypeReport[] = []
       let no = 0;
-      state.profile.filter(item => item.college_ID == college).map(item => {
+      state.profile.map(item => {
 
 
         let data = {
@@ -268,7 +268,7 @@ selectDeanState,
 }
 );
 
-export const selectTeachingLevelReport = (college : number) => createSelector (
+export const selectTeachingLevelReport =  createSelector (
   selectDeanState,
   (state) => {
 
@@ -277,7 +277,7 @@ export const selectTeachingLevelReport = (college : number) => createSelector (
 
     const teachingLevelReport: TeachingLevelReport[] = []
 
-    state.profile.filter(item => item.college_ID == college).map(item => {
+    state.profile.map(item => {
 
       let data = {
         "Name": item.last_name + (item.ext_name ?+ ' ' + item.ext_name : '')  + ', ' + item.first_name + ' ' + (item.middle_name ? item.middle_name : ''),
@@ -443,7 +443,7 @@ export const selectCommonSeminars = createSelector(
 );
 
 
-export const selectSeminarReport = (college : number) => createSelector (
+export const selectSeminarReport = createSelector (
   selectDeanState,
   (state) => {
       if (state.certs.length <= 0 || state.profile.length < 0) return
@@ -451,7 +451,7 @@ export const selectSeminarReport = (college : number) => createSelector (
       const seminarReport: SeminarReport[] = []
 
       let no = 0
-      state.certs.filter(item => getProfile(item.faculty_ID, state.profile)?.college_ID == college).map(item => {
+      state.certs.map(item => {
 
         let data = {
           "No.": ++no,
