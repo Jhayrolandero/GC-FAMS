@@ -1,39 +1,35 @@
 <div class="min-w-[240px] max-h-[460px] bg-white rounded-[15px] shadow-lg opacity-100">
     <div class="w-full bg-blue h-[38px] flex items-center justify-between">
-        <p class="font-Poppins font-semibold text-white ml-5">Add Courses</p>
+        <p class="font-Poppins font-semibold text-white ml-5"></p>
     </div>
 
     <div class="flex flex-row p-5 gap-3 max-h-[422px]"> <!-- Subtracting header height -->
-        <div class="flex-none">
-            <p class="text-blue font-semibold text-[1.5rem]">GC-FaMS</p>
-            <p class="font-semibold">Author</p>
-            <p class="ml-3">Chris Kirk Patrick Viacrusis</p>
-            <p class="font-semibold">Co-Author</p>
-            <p class="ml-3">Christian Jay Landero</p>
-            <div class="bg-red-200 w-[400px] h-[250px] overflow-hidden rounded-[15px]">
-                <img>
-            </div>
+        <div class="flex-none w-[500px] max-h-[422px] overflow-y-scroll">
+            <p class="text-blue font-semibold text-[1.5rem]">{{ project.project_name }}</p>
+            <p class="font-semibold text-[1.2rem]">Author</p>
+            <p *ngFor="let proje of authors$ | async; let i = index">
+                @if (proje.author_type === 1) {
+                    {{proje.first_name}} {{proje.last_name}}
+                }
+            </p>
+            <p class="font-semibold text-[1.2rem]">Co-Author</p>
+            <p><span *ngFor="let proje of authors$ | async; let i = index" class="mr-3">
+                @if (proje.author_type === 0) {
+                    {{proje.first_name}} {{proje.last_name}}
+                }
+            </span></p>
+
+            <p class="font-semibold text-[1.2rem]">Project Description</p>
+            <p class="">{{project.project_detail}}</p>
+        
+
         </div>
 
         <div class="flex flex-col gap-3 max-h-[422px] overflow-y-scroll"> <!-- Adjusted height -->
-            <div class="bg-red-200 w-[250px] min-h-[140px]">
-                <img>
-            </div>
-            <div class="bg-red-200 w-[250px] min-h-[140px]">
-                <img>
+            <div  *ngFor="let proje of images$ | async; let i = index" class="bg-red-200 w-[250px] min-h-[140px] m-3">
+                <img [src]="port+proje.project_image" class="h-full">
             </div>
 
-            <div class="bg-red-200 w-[250px] min-h-[140px]">
-                <img>
-            </div>
-
-            <div class="bg-red-200 w-[250px] min-h-[140px]">
-                <img>
-            </div>
-
-            <div class="bg-red-200 w-[250px] min-h-[140px]">
-                <img>
-            </div>
 
         </div>
     </div>

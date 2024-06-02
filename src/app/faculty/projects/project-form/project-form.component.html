@@ -1,5 +1,5 @@
 <div
-    class="min-w-[240px] mobileM:w-[320px] tablet:w-[460px] laptop:w-[540px] desktop:w-[800px] bg-white rounded-[15px] shadow-lg opacity-100">
+    class="min-w-[240px] mobileM:w-[320px] tablet:w-[490px] laptop:w-[640px] desktop:w-[1000px] bg-white rounded-[15px] shadow-lg opacity-100">
     <div class="w-full bg-blue h-[38px] flex items-center justify-between">
         <p class="font-Poppins font-semibold text-white ml-5">Add Certifications</p>
         <svg (click)="onNoClick()" class="mr-3" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -24,12 +24,12 @@
                     <ng-template matStepLabel>Projects Form</ng-template>
                     <div class="border-2 p-3 w-full">
                         <div class="flex flex-col max-h-[400px] laptop:flex-row gap-3">
-                            <div class="flex-1 max-h-[400px] tablet:w-full laptop:max-w-[390px]">
+                            <div class="flex-1 max-h-[400px] tablet:w-full laptop:w-[490px]">
         
                                 <p class="font-Roboto font-medium text-[1.1rem]">
                                     Project Type:
                                 </p>
-                                <select type="text" placeholder="Existing certifications" id="cert_exist"
+                                <select type="text" placeholder="Existing certifications" id="project_type" formControlName="project_type"
                                     class="w-full border-2 px-2 font-Roboto font-regular text-[1.1rem] rounded-[5px] text-black py-1">
                                     <option>Research Paper</option>
                                     <option>Others</option>
@@ -38,6 +38,11 @@
                                 <p class="font-Roboto font-medium text-[1.1rem] mt-4">Project Name</p>
                                 <input type="text" placeholder="" id="project_name" formControlName="project_name"
                                     class="w-full border-2 px-2 font-Roboto font-regular text-[1.1rem] rounded-[5px] text-black py-1" />
+
+                                <p class="font-Roboto font-medium text-[1.1rem] mt-4">Project Link</p>
+                                <input type="text" placeholder="" id="project_link" formControlName="project_link"
+                                    class="w-full border-2 px-2 font-Roboto font-regular text-[1.1rem] rounded-[5px] text-black py-1" />
+
                                 <p class="font-Roboto font-medium text-[1.1rem]">Project Details</p>
                                 <textarea type="textarea" placeholder="" id="project_detail" formControlName="project_detail"
                                     class="w-full border-2 px-2 font-Roboto font-regular text-[1.1rem] rounded-[5px] text-black py-1"></textarea>
@@ -56,7 +61,6 @@
                                         <input type="date" placeholder="" id="project_date" formControlName="project_date"
                                             class="w-full border-2 px-2 font-Roboto font-regular text-[1.1rem] rounded-[5px] text-black py-1" />
                                     </div>
-        
                                 </div>
         
         
@@ -98,13 +102,14 @@
             <form
               action=""
               [formGroup]="projectForm"
+              (ngSubmit)="submitForm()"
               class="max-h-[640px]"
               *ngIf="facultyList$ | async as profiles"
             >
                 <p class="font-Roboto font-medium text-[1.1rem]">
                     Project Author:
                 </p>
-                <select type="text" placeholder="Existing certifications" id="cert_exist"
+                <select type="text" placeholder="Existing certifications" id="cert_exist" formControlName="project_author"
                     class="w-full border-2 px-2 font-Roboto font-regular text-[1.1rem] rounded-[5px] text-black py-1">
                     <option *ngFor="let profile of profiles">
                         <p class="font-Roboto font-medium text-[1.1rem] ml-5">{{ profile.first_name }} {{ profile.last_name}}</p>
@@ -116,7 +121,7 @@
                 <p>Co-Author</p>
                 <div class="border-2 max-h-[300px] overflow-y-scroll">
                     <div *ngFor="let profile of profiles" class="w-full flex flex-row items-center p-2">
-                        <input type="checkbox" placeholder="" id="isFinished" formControlName="isFinished"
+                        <input type="checkbox" placeholder="" id="isFinished" formControlName="isFinished" (change)="selectCoAuthor($event, profile.faculty_ID)"
                             class="w-[20px] h-[20px]" />
                         <p class="font-Roboto font-medium text-[1.1rem] ml-5">{{ profile.first_name }} {{ profile.last_name}}</p>
                     </div>
@@ -127,7 +132,7 @@
                       class="h-[40px] bg-blue rounded-full px-4 transition-all text-white font-Poppins font-semibold shadow-main hover:scale-[101%] hover:duration-300 duration-300"
                       mat-button
                       matStepperNext
-                      type="button"
+                      type="submit"
                     >
                       Submit
                     </button>

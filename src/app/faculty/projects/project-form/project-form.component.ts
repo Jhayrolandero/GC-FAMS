@@ -23,6 +23,7 @@ import { CryptoJSService } from '../../../services/crypto-js.service';
 })
 export class ProjectFormComponent {
   imageURLs: string[] = [];
+  coAuthorId: number[] = [];
 
   facultyList$: Observable<Faculty[]> = this.facultyRequest.fetchData<Encryption>("faculty").pipe(
     map(data => this.decryptData<Faculty[]>(data))
@@ -51,36 +52,48 @@ export class ProjectFormComponent {
   projectForm = new FormGroup({
     project_name: new FormControl('', [Validators.required,]),
     project_date: new FormControl('', [Validators.required,]),
-    project_detail: new FormControl(''),
+    project_detail: new FormControl('', [Validators.required,]),
+    project_type: new FormControl('', [Validators.required,]),
     project_link: new FormControl(''),
-    isFinished: new FormControl(''),
-    project_images: new FormControl([]),
-    accomplished_date: new FormControl('',[Validators.required,]),
-    project_author: new FormControl('',[Validators.required,]),
-    project_co_author: new FormArray([new FormControl('', [Validators.required,]),]),
+    isFinished: new FormControl(false),
+    project_images: new FormControl<string[]>([]),
+    project_co_author: new FormControl<number[]>([]),
   })
 
   submitForm(){
-    // this.messageService.sendMessage("Adding Project...", 0)
+    this.messageService.sendMessage("Adding Project...", 0)
 
-    // const formData = this.facultyRequest.formDatanalize(this.projectForm);
-    // this.facultyRequest.postData(formData, submitType).subscribe({
-    //   next(value) {console.log(value);},
-    //   error: (error) => {
-    //     console.log(error);
-    //     this.messageService.sendMessage("Failed to add Certification.", -1)
-    //   },
-    //   complete: () => {
-    //     this.store.dispatch(loadCert());
-    //     this.messageService.sendMessage("Course Successfully Added!", 1)
-    //     this.onNoClick();
-    //   }
-    // });
+    console.log(this.projectForm)
+    this.facultyRequest.postData(this.projectForm, 'addProj').subscribe({
+      next(value) {console.log(value);},
+      error: (error) => {
+        console.log(error);
+        this.messageService.sendMessage("Failed to add Project.", -1)
+      },
+      complete: () => {
+        this.messageService.sendMessage("Project Successfully Added!", 1)
+        this.onNoClick();
+      }
+    });
   }
 
   onNoClick(): void {
     this.dialogRef.close();
   }
+
+  selectCoAuthor(event: any, id: number){
+    if(event.target.checked){
+      this.coAuthorId.push(id)
+    }
+    else{
+      this.coAuthorId = this.coAuthorId.filter(x => x !== id)
+    }
+    this.projectForm.patchValue({
+      project_co_author: this.coAuthorId
+    })
+    console.log(this.coAuthorId);
+  }
+
 
   PreviewImage(event: Event) {
     const allowedFileTypes = ["image/png", "image/jpeg"]
@@ -99,14 +112,16 @@ export class ProjectFormComponent {
           const reader = new FileReader();
           reader.onload = () => {
             this.imageURLs.push(reader.result as string);
-            let img_value = this.projectForm.get('cert_image')?.value;
-            console.log(img_value);
+            console.log(this.imageURLs);
           };
           reader.readAsDataURL(file);
         } else {
           this.messageService.sendMessage("File type should be .png or .jpeg/.jpg", -1);
         }
       }
+      this.projectForm.patchValue({
+        project_images: this.imageURLs
+      })
     }
   }
 }
