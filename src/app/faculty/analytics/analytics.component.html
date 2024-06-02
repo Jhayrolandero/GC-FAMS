@@ -112,7 +112,9 @@
       >
         Milestones Achieved Each Year
       </p>
-      <button (click)="generateMilestoneReport()">Generate Report</button>
+      <button (click)="generateMilestoneReport()" class="text-blue">
+        <i class="fa-solid fa-file-excel"></i>
+      </button>
     </div>
     <app-bar-chart
       [data]="milestone"
@@ -136,13 +138,15 @@
         >
           Attainment Timeline
         </p>
-        <button (click)="generateAttainmentReport()">Generate Report</button>
+        <button (click)="generateAttainmentReport()" class="text-blue">
+          <i class="fa-solid fa-file-excel"></i>
+        </button>
       </div>
       <div class="flex flex-col tablet:flex-row gap-2 mb-2">
         <div class="flex flex-row gap-1">
           <div
             class="w-[23px] h-[23px] rounded-[5px] shadow-main duration-300 hover:duration-300 hover:bg-opacity-50"
-            [ngClass]="certToggle ? 'bg-greenBar' : 'bg-slate-200'"
+            [ngClass]="certToggle ? ' bg-blue' : 'bg-slate-200'"
             (click)="certToggle = !certToggle"
           ></div>
           <p class="font-Roboto font-medium text-blue">Certifications</p>
@@ -158,7 +162,7 @@
         <div class="flex flex-row gap-1">
           <div
             class="w-[23px] h-[23px] rounded-[5px] shadow-main duration-300 hover:duration-300 hover:bg-opacity-50"
-            [ngClass]="seminarToggle ? 'bg-greenBar' : 'bg-slate-200'"
+            [ngClass]="seminarToggle ? 'bg-orange-400' : 'bg-slate-200'"
             (click)="seminarToggle = !seminarToggle"
           ></div>
           <p class="font-Roboto font-medium text-blue">Seminars</p>

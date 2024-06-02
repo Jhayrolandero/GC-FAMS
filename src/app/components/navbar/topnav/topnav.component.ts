@@ -72,6 +72,7 @@ export class TopnavLogout {
     public dialogRef: MatDialogRef<TopnavLogout>,
     private store: Store
   ) { }
+
   logout() {
     this.authService.flushToken();
     this.router.navigate(['/faculty']);

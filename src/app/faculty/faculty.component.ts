@@ -4,7 +4,7 @@ import { FormBuilder, FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { RouterOutlet } from '@angular/router';
+import { ActivatedRoute, RouterOutlet } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { LoadingScreenComponent } from '../components/loading-screen/loading-screen.component';
 import { MessageComponent } from '../components/message/message.component';
@@ -58,11 +58,14 @@ export class FacultyComponent {
     [Breakpoints.XLarge, 'XLarge'],
   ]);
 
+
   constructor(
     private store: Store,
     breakpointObserver: BreakpointObserver,
     private _formBuilder: FormBuilder
   ) {
+
+
     store.dispatch(loadProfile());
     store.dispatch(loadCert());
     store.dispatch(loadCourse());

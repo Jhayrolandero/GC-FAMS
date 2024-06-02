@@ -14,18 +14,24 @@
   </div>
 </header>
 <section class="h-[100vh] font-Poppins flex flex-col justify-between">
-  <div class="relative w-full h-[620px] flex items-center" id="cover">
+  <div class="relative w-full h-[620px] flex items-center z-30" id="cover">
     <div class="diagonal"></div>
     <div class="flex gap-2 text-white items-center">
-      <img class="w-[320px] aspect-square" src="../../assets/logo.png" alt="" />
+      <img
+        class="w-[120px] laptop:w-[320px] aspect-square"
+        src="../../assets/logo.png"
+        alt=""
+      />
       <div>
-        <h4 class="text-[4rem]">GC-FMS</h4>
+        <h4 class="text-[2rem] laptop:text-[4rem]">GC-FMS</h4>
         <span>Faculty Profiling and Development Monitoring System</span>
       </div>
     </div>
   </div>
 
-  <div class="w-full justify-center items-center gap-6 flex h-[160px]">
+  <div
+    class="w-full justify-center items-center gap-6 flex h-[160px] px-2 relative"
+  >
     <button
       (click)="navigateFaculty()"
       class="text-white bg-blue px-2 py-1 text-[1.5rem] font-bold rounded-md"
@@ -39,8 +45,9 @@
       GC-FMS for Admin
     </button>
   </div>
+
   <footer
-    class="w-full bg-blue text-white flex-1 max-h-[80px] justify-center items-center"
+    class="w-full bg-blue text-white flex-1 max-h-[80px] justify-center items-center z-20"
   >
     <h4 class="text-center">Copyright 2024 GC-FMS Team</h4>
   </footer>
