@@ -23,6 +23,7 @@ export const routes: Routes = [
       { path: 'community', loadComponent: () => import('./faculty/community-extensions/community-extensions.component').then(m => m.CommunityExtensionsComponent) },
       { path: 'evaluation', loadComponent: () => import('./faculty/evaluation/evaluation.component').then(m => m.EvaluationComponent) },
       { path: 'manage-profile', loadComponent: () => import('./components/manage-profile/manage-profile.component').then(m => m.ManageProfileComponent) },
+      { path: 'projects', loadComponent: () => import('./faculty/projects/projects.component').then(m => m.ProjectsComponent) },
     ], canActivateChild: [authGuard],
   },
   {

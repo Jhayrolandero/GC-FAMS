@@ -829,5 +829,5 @@ export const selectAttainmentTimelineFaculty = (commex: CommunityExtension[], id
     const facultyCopy = [...faculties]
     console.log(facultyCopy.filter((item) => item.faculty_ID == faculty_ID))
     console.log(faculty_ID)
-return facultyCopy.find((item) => item.faculty_ID == faculty_ID)
+    return facultyCopy.find((item) => item.faculty_ID == faculty_ID)
   }

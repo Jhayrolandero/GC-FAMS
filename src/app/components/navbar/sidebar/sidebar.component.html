@@ -65,6 +65,12 @@
         [source]="'Signal.png'"
       ></app-nav>
       <app-nav
+        (click)="onSelect('projects')"
+        [selectedBar]="selectedBar"
+        [title]="'Projects'"
+        [source]="'Projects.svg'"
+      ></app-nav>
+      <app-nav
         (click)="onSelect('community')"
         [selectedBar]="selectedBar"
         [title]="'Community'"
