@@ -194,7 +194,7 @@ export class ManageAnalyticsComponent{
     })
 
     this.currEducSubscription = this.store.pipe(
-      select(selectCurrentEducAttainment(1))
+      select(selectCurrentEducAttainment)
     ).subscribe({
       next: res => {this.currEducData = res!},
       error: err => {console.log(err)}
@@ -202,7 +202,7 @@ export class ManageAnalyticsComponent{
 
 
     this.employmentTypeSubscription = this.store.pipe(
-      select(selectEmploymentTypeReport(1)),
+      select(selectEmploymentTypeReport),
       filter(data => !!data && data.length > 0),
       take(1)
     ).subscribe({
@@ -211,7 +211,7 @@ export class ManageAnalyticsComponent{
     })
 
     this.seminarReportSubscription = this.store.pipe(
-      select(selectSeminarReport(1)),
+      select(selectSeminarReport),
       filter(data => !!data && data.length > 0),
       take(1)
     ).subscribe({
@@ -223,7 +223,7 @@ export class ManageAnalyticsComponent{
 
 
     this.teachingLevelReportSubscription = this.store.pipe(
-      select(selectTeachingLevelReport(1)),
+      select(selectTeachingLevelReport),
       filter(data => !!data && data.length > 0),
       take(1)
     ).subscribe({

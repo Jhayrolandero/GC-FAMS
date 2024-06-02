@@ -2,7 +2,9 @@ import { Routes } from '@angular/router';
 import { authGuard } from './services/auth.guard';
 import { AdminComponent } from './admin/admin.component';
 import { FacultyComponent } from './faculty/faculty.component';
+
 export const routes: Routes = [
+  { path: '', loadComponent: () => import('./landing-page/landing-page.component').then(m => m.LandingPageComponent)},
   { path: 'faculty', redirectTo: '/faculty/login', pathMatch: 'full' },
   { path: 'admin', redirectTo: '/admin/login', pathMatch: 'full' },
   {

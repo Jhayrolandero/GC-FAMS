@@ -123,9 +123,14 @@
     *ngIf="milestonesAchieved$ | async as milestone"
     class="w-full bg-white rounded-[15px] shadow-main p-5 pt-1"
   >
-    <p class="text-blue font-bold text-[2rem] my-2">
-      Milestones Achieved Each Year
-    </p>
+    <div class="flex gap-2">
+      <p class="text-blue font-bold text-[2rem] my-2">
+        Milestones Achieved Each Year
+      </p>
+      <button (click)="generateMilestoneReport()" class="text-blue">
+        <i class="fa-solid fa-file-excel"></i>
+      </button>
+    </div>
     <app-bar-chart
       [data]="milestone"
       [axis]="'x'"
@@ -142,12 +147,17 @@
     class="w-full bg-white rounded-[15px] shadow-main p-5 pt-1"
   >
     <div class="flex flex-col justify-center">
-      <p class="text-blue font-bold text-[2rem] my-2">Attainment Timeline</p>
+      <div class="flex gap-2">
+        <p class="text-blue font-bold text-[2rem] my-2">Attainment Timeline</p>
+        <button (click)="generateAttainmentReport()" class="text-blue">
+          <i class="fa-solid fa-file-excel"></i>
+        </button>
+      </div>
       <div class="flex flex-col tablet:flex-row gap-2 mb-2">
         <div class="flex flex-row gap-1">
           <div
             class="w-[23px] h-[23px] rounded-[5px] shadow-main duration-300 hover:duration-300 hover:bg-opacity-50"
-            [ngClass]="certToggle ? 'bg-greenBar' : 'bg-slate-200'"
+            [ngClass]="certToggle ? ' bg-blue' : 'bg-slate-200'"
             (click)="certToggle = !certToggle"
           ></div>
           <p class="font-Roboto font-medium text-blue">Certifications</p>
@@ -163,7 +173,7 @@
         <div class="flex flex-row gap-1">
           <div
             class="w-[23px] h-[23px] rounded-[5px] shadow-main duration-300 hover:duration-300 hover:bg-opacity-50"
-            [ngClass]="seminarToggle ? 'bg-greenBar' : 'bg-slate-200'"
+            [ngClass]="seminarToggle ? 'bg-orange-400' : 'bg-slate-200'"
             (click)="seminarToggle = !seminarToggle"
           ></div>
           <p class="font-Roboto font-medium text-blue">Seminars</p>

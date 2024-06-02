@@ -116,13 +116,13 @@ export const selectCollegeMilestoneCount = createSelector(
 
   )
 
-  export const selectCurrentEducAttainment = (college : number) => createSelector(
+  export const selectCurrentEducAttainment =  createSelector(
     selectDeanState,
     (state) => {
       if(state.educs.length <= 0) return
 
       let currEducReport: CurrEducAttainment[] = []
-      state.educs.filter(item => getProfile(item.faculty_ID, state.profile)!.college_ID == college).map(item => {
+      state.educs.map(item => {
 
         console.log()
         let data = {
@@ -210,7 +210,7 @@ export const selectCollegeEmploymentType = createSelector(
     }
   );
 
-  export const selectEmploymentTypeReport = (college : number )=> createSelector(
+  export const selectEmploymentTypeReport =  createSelector(
     selectDeanState,
     (state) => {
 
@@ -218,7 +218,7 @@ export const selectCollegeEmploymentType = createSelector(
 
       const employmentType: EmploymentTypeReport[] = []
       let no = 0;
-      state.profile.filter(item => item.college_ID == college).map(item => {
+      state.profile.map(item => {
 
 
         let data = {
@@ -268,7 +268,7 @@ selectDeanState,
 }
 );
 
-export const selectTeachingLevelReport = (college : number) => createSelector (
+export const selectTeachingLevelReport =  createSelector (
   selectDeanState,
   (state) => {
 
@@ -277,7 +277,7 @@ export const selectTeachingLevelReport = (college : number) => createSelector (
 
     const teachingLevelReport: TeachingLevelReport[] = []
 
-    state.profile.filter(item => item.college_ID == college).map(item => {
+    state.profile.map(item => {
 
       let data = {
         "Name": item.last_name + (item.ext_name ?+ ' ' + item.ext_name : '')  + ', ' + item.first_name + ' ' + (item.middle_name ? item.middle_name : ''),
@@ -443,7 +443,7 @@ export const selectCommonSeminars = createSelector(
 );
 
 
-export const selectSeminarReport = (college : number) => createSelector (
+export const selectSeminarReport = createSelector (
   selectDeanState,
   (state) => {
       if (state.certs.length <= 0 || state.profile.length < 0) return
@@ -451,7 +451,7 @@ export const selectSeminarReport = (college : number) => createSelector (
       const seminarReport: SeminarReport[] = []
 
       let no = 0
-      state.certs.filter(item => getProfile(item.faculty_ID, state.profile)?.college_ID == college).map(item => {
+      state.certs.map(item => {
 
         let data = {
           "No.": ++no,
@@ -1050,6 +1050,55 @@ export const selectMilestoneCount = (commex: CommunityExtension[], id: number) =
         return ret.slice(ret.length - 15, ret.length);
     }
 );
+
+export const milestoneReport = (commex: CommunityExtension[] ,faculty_ID : number) => createSelector(
+  selectDeanState,
+  (state) => {
+
+    const yearsArray: string[] = Array.from({ length: 15 }, (_, i) => (new Date().getFullYear() - 14) + i).map(String);
+
+    const milestoneReport: MilestoneReport[] = []
+
+      let prevCommex = 0
+      let prevEduc = 0
+      let prevCert = 0
+      let prevYear = 0
+      yearsArray.map(year => {
+        let currCommex = commex.filter(item => item.faculty_ID == faculty_ID).filter(item => year === new Date(item.commex_date.split("-")[0]).getFullYear()+"").length
+        let currEduc = state.educs.filter(item => item.faculty_ID == faculty_ID).filter(item => year === new Date(item.year_end.split("-")[0]).getFullYear()+"").length
+        let currCert = state.certs.filter(item => item.faculty_ID == faculty_ID).filter(item => year === new Date((item.accomplished_date + '').split("-")[0]).getFullYear()+"").length
+        let currYear = currCommex + currEduc + currCert
+
+        let changeEduc = prevEduc ? (((currEduc - prevEduc) / prevEduc) * 100).toFixed(2) + '%' : '-'
+        let changeCert = prevCert ? (((currCert - prevCert) / prevCert) * 100).toFixed(2) + '%' : '-'
+        let changeCommex = prevCommex ? (((currCommex - prevCommex) / prevCommex) * 100).toFixed(2) + '%' : '-'
+        let changeYear = prevYear ? (((currYear - prevYear) / prevYear) * 100).toFixed(2) + '%' : '-'
+
+        let data: MilestoneReport = {
+          "Year": year,
+          "Community Extensions Attended": currCommex,
+          "Community Extensions Attended Change from Previous Year (%)" : changeCommex,
+          "Educ Attainment": currEduc,
+          "Educational Attanment Change from Previous Year (%)" : changeEduc,
+          "Certificates Received": currCert,
+          "Certificates Received Change from Previous Year (%)" : changeCert,
+          "Total Milestone": currYear,
+          "Milestone Change from Previous Year (%)": changeYear
+        }
+
+        prevCommex = currCommex
+        prevEduc = currEduc
+        prevCert = currCert
+        prevYear = currYear
+
+        milestoneReport.push(data)
+      })
+
+
+      return milestoneReport
+  }
+)
+
 
 export const selectFacultyReport = createSelector(selectDeanState, (state)=> {
 
