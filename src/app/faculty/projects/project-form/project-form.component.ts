@@ -13,6 +13,7 @@ import { Observable, map } from 'rxjs';
 import { Encryption } from '../../../services/Interfaces/encryption';
 import { Faculty } from '../../../services/Interfaces/faculty';
 import { CryptoJSService } from '../../../services/crypto-js.service';
+import { loadProj } from '../../../state/faculty-state/faculty-state.actions';
 
 @Component({
   selector: 'app-project-form',
