@@ -10,12 +10,13 @@
     >
       <i class="fa-solid fa-arrow-left"></i>
     </button>
-    <h4 class="text-[2rem]">{{ data.educ_title }}</h4>
+    <h4 class="text-[2rem]">{{ docTitle }}</h4>
   </div>
   <div class="flex flex-row gap-2">
     <div class="w-[50%] flex flex-col gap-4">
       <div class="flex items-center justify-center w-full">
         <label
+          (change)="addDoc($event)"
           for="dropzone-file"
           class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800"
         >
@@ -48,7 +49,24 @@
       </div>
       <div class="flex flex-col gap-2">
         <h4>Uploading Document/s</h4>
-        <div class="h-[40px] bg-blue w-full"></div>
+
+        @if(documents.controls.length > 0) { @for(doc of documents.controls;
+        track $index) {
+        <div
+          class="h-[40px] border-2 border-blue rounded-lg w-full text-blue flex gap-2 justify-between px-2"
+        >
+          <h4>
+            {{ doc.value.name }}
+          </h4>
+          <button (click)="deleteDoc($index)">Delete</button>
+        </div>
+
+        }
+        <button (click)="submitDocuments()">Upload Document</button>
+
+        } @else {
+        <h4>Upload Something</h4>
+        }
       </div>
     </div>
     <div class="w-[50%]">

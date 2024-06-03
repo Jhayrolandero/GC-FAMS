@@ -249,6 +249,16 @@ export const selectAllExp = createSelector(
   (state: ProfileState) => state.exps
 );
 
+export const selectAnExp = (exp_ID: number) => createSelector(
+  selectProfileState,
+  (state) => {
+
+    if(state.exps.length <= 0) return
+
+    return state.exps.filter(item => item.experience_ID == exp_ID)[0]
+  }
+)
+
 export const selectAllProj = createSelector(
   selectProfileState,
   (state: ProfileState) => state.proj
@@ -259,6 +269,14 @@ export const selectFacultyExpertise = createSelector(
   (state: ProfileState) => state.expertises[0]
 );
 
+export const selectAnExpertise = (expert_ID: number) => createSelector(
+  selectProfileState,
+  (state) => {
+    if(state.expertises[0].length <= 0) return
+
+    return state.expertises[0].filter(item => item.expertise_ID == expert_ID)[0]
+  }
+)
 
 export const selectAllExpertise = createSelector(
   selectProfileState,
