@@ -353,3 +353,33 @@ function sortByEvaluationYear(evals : Evaluation[]) {
       return a.evaluation_year - b.evaluation_year;
   });
 }
+
+export const selectEducDocs = (educ_ID : number) => createSelector(
+  selectProfileState,
+  (state) => {
+
+    return state.educSupportDocs.filter(item => item.educattainment_ID == educ_ID)
+  }
+)
+
+export const selectCertDocs = (cert_ID : number) => createSelector(
+  selectProfileState,
+  (state) => {
+
+    return state.certsSupportDocs.filter(item => item.cert_attainment_ID == cert_ID)
+  }
+)
+export const selectExpDocs = (exp_ID : number) => createSelector(
+  selectProfileState,
+  (state) => {
+
+    return state.expertiseSupportDocs.filter(item => item.expertise_ID == exp_ID)
+  }
+)
+export const selectIndustryDocs = (experience_ID : number) => createSelector(
+  selectProfileState,
+  (state) => {
+
+    return state.industrySupportDocs.filter(item => item.experience_ID == experience_ID)
+  }
+)

@@ -21,6 +21,11 @@ import { AuthService } from "../../services/auth.service";
 import { error } from "console";
 import { key } from "../../app.component";
 import { MessageService } from "../../services/message.service";
+import { SupportingDocs } from "../../services/Interfaces/supportingDocs";
+import { Store } from "@ngrx/store";
+import { ExpSupportingDocs } from "../../services/Interfaces/expSupportDocs";
+import { CertSupportingDocs } from "../../services/Interfaces/certSupportDocs";
+import { IndustrySupportingDocs } from "../../services/Interfaces/industrySupportDocs";
 @Injectable()
 export class CvEffects {
 
@@ -29,7 +34,9 @@ export class CvEffects {
     private facultyService: FacultyRequestService,
     private cryptoJS: CryptoJSService,
     private auth: AuthService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private store: Store,
+
   ) { }
 
   key: string = key
@@ -52,6 +59,20 @@ export class CvEffects {
       }
       return this.facultyService.patchData(this.encryptData(action.password), 'password')
   }
+
+  postSupportDocs$ = createEffect(() => this.actions$.pipe(
+    ofType(CvActions.postSupportDocs),
+    tap(() => this.messageService.sendMessage("Uploading Document/s", 0)),
+    switchMap((action) => this.facultyService.postData(action.data, action.docType).pipe(
+      map(() => {
+
+        this.messageService.sendMessage("Document/s Uploaded!", 1),
+        this.store.dispatch(CvActions.loadSupportingDocs())
+        return CvActions.postSupportDocsSuccess()
+      }),
+      catchError(error => of(CvActions.postSupportDocsFailure({error})))
+    ))
+  ))
 
   updatePassword$ = createEffect(() => this.actions$.pipe(
     ofType(CvActions.updatePassword),
@@ -81,6 +102,42 @@ export class CvEffects {
         this.messageService.sendMessage("Error in updating profile", -1)
         return of(CvActions.updateInfoFailure({error}))
       })
+    ))
+  ))
+
+  loadEducDocs$ = createEffect(() => this.actions$.pipe(
+    ofType(CvActions.loadSupportingDocs),
+    switchMap(() => this.facultyService.fetchData<Encryption>('educdocs').pipe(
+      map((data) => CvActions.loadEducSupportingDocsSuccess({ educDocs: this.decryptData<SupportingDocs[]>(data)})),
+      catchError((error) => of(CvActions.loadEducSupportingDocsFailure({ error})))
+    ))
+  ))
+
+  loadCertDocs$ = createEffect(() => this.actions$.pipe(
+    ofType(CvActions.loadSupportingDocs),
+    switchMap(() => this.facultyService.fetchData<Encryption>('certdocs').pipe(
+      map((data) => CvActions.loadCertSupportingDocsSuccess({ certDocs: this.decryptData<CertSupportingDocs[]>(data)})),
+      catchError((error) => of(CvActions.loadEducSupportingDocsFailure({ error})))
+    ))
+  ))
+
+  loadExpDocs$ = createEffect(() => this.actions$.pipe(
+    ofType(CvActions.loadSupportingDocs),
+    switchMap(() => this.facultyService.fetchData<Encryption>('expdocs').pipe(
+      map((data) => {
+
+        console.log(this.decryptData<ExpSupportingDocs[]>(data))
+        return CvActions.loadExpSupportingDocsSuccess({ expDocs: this.decryptData<ExpSupportingDocs[]>(data)})
+      }),
+      catchError((error) => of(CvActions.loadEducSupportingDocsFailure({ error})))
+    ))
+  ))
+
+  loadIndustryDocs$ = createEffect(() => this.actions$.pipe(
+    ofType(CvActions.loadSupportingDocs),
+    switchMap(() => this.facultyService.fetchData<Encryption>('industrydocs').pipe(
+      map((data) => CvActions.loadIndustrySupportingDocsSuccess({ industryDocs: this.decryptData<IndustrySupportingDocs[]>(data)})),
+      catchError((error) => of(CvActions.loadEducSupportingDocsFailure({ error})))
     ))
   ))
 

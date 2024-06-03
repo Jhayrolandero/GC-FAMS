@@ -1,16 +1,22 @@
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription, filter } from 'rxjs';
+import { Observable, Subscription, filter, take } from 'rxjs';
 import { EducationalAttainment } from '../../services/Interfaces/educational-attainment';
 import { Store, select } from '@ngrx/store';
-import { selectAnEduc, selectAnExp, selectAnExpertise } from '../../state/faculty-state/faculty-state.selector';
+import { selectAnEduc, selectAnExp, selectAnExpertise, selectEducDocs, selectExpDocs, selectIndustryDocs } from '../../state/faculty-state/faculty-state.selector';
 import { CommonModule } from '@angular/common';
 import { IndustryExperience } from '../../services/Interfaces/industry-experience';
 import { ExpertiseFaculty } from '../../services/Interfaces/expertise-faculty';
 import { FormArray, FormBuilder, FormControl } from '@angular/forms';
 import { FacultyRequestService } from '../../services/faculty/faculty-request.service';
 import { CryptoJSService } from '../../services/crypto-js.service';
-
+import { loadSupportingDocs, postSupportDocs } from '../../state/faculty-state/faculty-state.actions';
+import { SupportingDocs } from '../../services/Interfaces/supportingDocs';
+import { FileDownloadService } from '../../services/downloadfile.service';
+import { mainPort } from '../../app.component';
+import { ExpSupportingDocs } from '../../services/Interfaces/expSupportDocs';
+import { CertSupportingDocs } from '../../services/Interfaces/certSupportDocs';
+import { IndustrySupportingDocs } from '../../services/Interfaces/industrySupportDocs';
 @Component({
   selector: 'app-supporting-docs',
   standalone: true,
@@ -29,8 +35,7 @@ export class SupportingDocsComponent {
     private store: Store,
     private route: ActivatedRoute,
     private fb : FormBuilder,
-    private facultyService: FacultyRequestService,
-    private cryptoService: CryptoJSService
+    private fileDownloadService: FileDownloadService
   ) {}
 
   form = this.fb.group({
@@ -45,10 +50,15 @@ router = inject(Router);
   view!: string
   data!: (EducationalAttainment | IndustryExperience | ExpertiseFaculty)
 
+  // supportDocsSub!: Subscription
+  supportDocsObv$!: Observable<SupportingDocs[] | ExpSupportingDocs[] | CertSupportingDocs [] | IndustrySupportingDocs[]>
+  // supportDocs: SupportingDocs[] = []
   subData!: Subscription
-
   docTitle!: string
 
+
+  mainPort = mainPort
+  docType: string = ''
   ngOnInit() {
 
     console.log(this.router.url.split('/')[2])
@@ -57,19 +67,23 @@ router = inject(Router);
       switch(this.router.url.split('/')[2].toLowerCase()) {
         case 'cert':
           this.title = 'cert';
+          this.docType = 'certdocs'
           break;
         case 'educ':
           this.subEduc(this.id)
           this.view = 'educ'
+          this.docType = 'educdocs'
           break;
         case 'industry':
           this.subIndustry(this.id)
           this.view = 'industry'
+          this.docType = 'industrydocs'
           break;
         case 'expertise':
           this.subExpert(this.id)
           this.title = 'expertise';
-          break;
+          this.docType = 'expdocs'
+        break;
       }
     });
   }
@@ -91,6 +105,11 @@ router = inject(Router);
         console.log(res)
       }
     })
+
+    this.supportDocsObv$ = this.store.pipe(select(selectEducDocs(id)))
+
+    // this.store.pipe(select(selectEducDocs(id))).subscribe(res => console.log(res))
+
   }
 
   subIndustry(id: number) {
@@ -104,6 +123,9 @@ router = inject(Router);
         console.log(res)
       }
     })
+
+    this.supportDocsObv$ = this.store.pipe(select(selectIndustryDocs(id)))
+
   }
 
   subExpert(id: number) {
@@ -117,20 +139,27 @@ router = inject(Router);
         console.log(res)
       }
     })
+    this.supportDocsObv$ = this.store.pipe(select(selectExpDocs(id)))
   }
 
 
   addDoc(event: Event) {
     const allowedFileType = [
-      "image/png",
-      "image/jpeg",
-      "application/pdf",
       "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
       "application/x-zip-compressed",
-      "text/plain",
       "",
       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     ];
+    // const allowedFileType = [
+    //   "image/png",
+    //   "image/jpeg",
+    //   "application/pdf",
+    //   "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    //   "application/x-zip-compressed",
+    //   "text/plain",
+    //   "",
+    //   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    // ];
     const inputElement = event.target as HTMLInputElement;
     const file = inputElement.files?.[0]; // Using optional chaining to handle null or undefined
 
@@ -139,8 +168,6 @@ router = inject(Router);
       const fileControl = new FormControl(file);
       this.documents.push(fileControl);
 
-      console.log(file);
-      console.log(this.documents);
     } else {
       // Handle invalid file type
       console.error('Invalid file type');
@@ -159,33 +186,21 @@ router = inject(Router);
       formData.append(`documents[${index}]`, file);
     });
 
-
     // Append the ID to the FormData
     formData.append('id', this.id+'');
 
 
-    this.facultyService.postData(formData, 'educdocs').subscribe({
-      next: res => {
-        this.facultyService.fetchData('educdocs').subscribe({
-          next: (res:any) => {
+    this.store.dispatch(postSupportDocs({ docType: this.docType, data: formData}))
+  }
 
-            console.log(this.cryptoService.CryptoJSAesDecrypt<any>("ucj7XoyBfAMt/ZMF20SQ7sEzad+bKf4bha7bFBdl2HY=", res))
+  download(fileUrl: string, title: string): void {
 
-          },
-          error: err => console.log(err)
-        })
-      },
-      error: err => console.log(err)
-    })
-    // Send the FormData to the PHP backend
-    // this.http.post('your-backend-url/upload.php', formData).subscribe(
-    //   response => {
-    //     console.log('Upload successful', response);
-    //   },
-    //   error => {
-    //     console.error('Upload error', error);
-    //   }
-    // );
+      this.fileDownloadService.saveFile(mainPort+fileUrl, title);
+      // this.fileDownloadService.downloadFile(mainPort);
+
+    // this.fileDownloadService.downloadFile(mainPort + fileUrl).subscribe(blob => {
+    //   this.fileDownloadService.saveFile(blob, title);
+    // });
   }
 
 

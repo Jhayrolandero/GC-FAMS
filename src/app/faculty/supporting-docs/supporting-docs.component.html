@@ -41,7 +41,7 @@
               drop
             </p>
             <p class="text-xs text-gray-500 dark:text-gray-400">
-              SVG, PNG, JPG or GIF (MAX. 800x400px)
+              docx, xlxs, rar or zip
             </p>
           </div>
           <input id="dropzone-file" type="file" class="hidden" />
@@ -58,7 +58,9 @@
           <h4>
             {{ doc.value.name }}
           </h4>
-          <button (click)="deleteDoc($index)">Delete</button>
+          <button (click)="deleteDoc($index)">
+            <i class="fa-solid fa-trash"></i>
+          </button>
         </div>
 
         }
@@ -69,10 +71,20 @@
         }
       </div>
     </div>
-    <div class="w-[50%]">
+    <div class="w-[50%] text-black flex flex-col gap-2">
       <h4 class="text-[1.5rem]">Supporting Documents</h4>
-
-      <div class="h-[40px] bg-blue w-full"></div>
+      @for(doc of supportDocsObv$ | async; track $index) {
+      <div
+        class="min-h-[56px] px-2 py-1 shadow-lg rounded-lg w-full flex justify-between items-center"
+      >
+        <h4>{{ doc.doc_name }}</h4>
+        <div class="flex gap-2">
+          <button (click)="download(doc.doc_path, doc.doc_name)">
+            <i class="fa-solid fa-download"></i></button
+          ><button><i class="fa-solid fa-trash"></i></button>
+        </div>
+      </div>
+      }
     </div>
   </div>
 </section>
