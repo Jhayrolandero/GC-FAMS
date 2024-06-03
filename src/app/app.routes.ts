@@ -29,6 +29,7 @@ export const routes: Routes = [
       { path: 'cert/:id', loadComponent: () => import('./faculty/supporting-docs/supporting-docs.component').then(m => m.SupportingDocsComponent) },
       { path: 'expertise/:id', loadComponent: () => import('./faculty/supporting-docs/supporting-docs.component').then(m => m.SupportingDocsComponent) },
       { path: 'industry/:id', loadComponent: () => import('./faculty/supporting-docs/supporting-docs.component').then(m => m.SupportingDocsComponent) },
+      { path: 'projects', loadComponent: () => import('./faculty/projects/projects.component').then(m => m.ProjectsComponent) },
     ], canActivateChild: [authGuard],
   },
   {

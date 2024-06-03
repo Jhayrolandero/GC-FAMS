@@ -1,0 +1,36 @@
+<div class="min-w-[240px] max-h-[460px] bg-white rounded-[15px] shadow-lg opacity-100">
+    <div class="w-full bg-blue h-[38px] flex items-center justify-between">
+        <p class="font-Poppins font-semibold text-white ml-5"></p>
+    </div>
+
+    <div class="flex flex-row p-5 gap-3 max-h-[422px]"> <!-- Subtracting header height -->
+        <div class="flex-none w-[500px] max-h-[422px] overflow-y-scroll">
+            <p class="text-blue font-semibold text-[1.5rem]">{{ project.project_name }}</p>
+            <p class="font-semibold text-[1.2rem]">Author</p>
+            <p *ngFor="let proje of authors$ | async; let i = index">
+                @if (proje.author_type === 1) {
+                    {{proje.first_name}} {{proje.last_name}}
+                }
+            </p>
+            <p class="font-semibold text-[1.2rem]">Co-Author</p>
+            <p><span *ngFor="let proje of authors$ | async; let i = index" class="mr-3">
+                @if (proje.author_type === 0) {
+                    {{proje.first_name}} {{proje.last_name}}
+                }
+            </span></p>
+
+            <p class="font-semibold text-[1.2rem] mt-3">Project Description</p>
+            <p class="">{{project.project_detail}}</p>
+        
+
+        </div>
+
+        <div class="flex flex-col gap-3 max-h-[422px] overflow-y-scroll"> <!-- Adjusted height -->
+            <div  *ngFor="let proje of images$ | async; let i = index" class="bg-red-200 w-[250px] min-h-[140px] m-3">
+                <img [src]="port+proje.project_image" class="h-full">
+            </div>
+
+
+        </div>
+    </div>
+</div>

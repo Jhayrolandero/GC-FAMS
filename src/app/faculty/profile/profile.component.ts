@@ -19,8 +19,8 @@ import { CvDeleteForm } from './Profile Forms/delete-form/cv-delete-form.compone
 import { loadCourse } from '../../state/faculty-state/faculty-state.actions';
 import { combineLatest } from 'rxjs';
 import { FacultyRequestService } from '../../services/faculty/faculty-request.service';
-import {MatTabsModule} from '@angular/material/tabs';
-import {    NgxDocViewerModule } from 'ngx-doc-viewer';
+import { MatTabsModule } from '@angular/material/tabs';
+import { NgxDocViewerModule } from 'ngx-doc-viewer';
 import { MessageService } from '../../services/message.service';
 @Component({
   selector: 'app-profile',
@@ -59,7 +59,7 @@ export class ProfileComponent {
   schedules: Schedule[] = [];
 
   rotated = false;
-  components: string[] = ["Educational Attainment", "Certifications", "Industry Experience", "Projects", "Expertise"]
+  components: string[] = ["Educational Attainment", "Certifications", "Industry Experience", "Expertise"]
   mainCv: any;
 
 
@@ -78,7 +78,7 @@ export class ProfileComponent {
           courses: courseFaculty,
           certificates: certs.filter((x) => x.isSelected),
           experience: exps.filter((x) => x.isSelected),
-          projects: proj.filter((x) => x.isSelected),
+          // projects: proj.filter((x) => x.isSelected),
           expertise: specs.filter((x) => x.isSelected),
           education: educs.filter((x) => x.isSelected)
         }
