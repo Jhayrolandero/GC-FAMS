@@ -179,6 +179,16 @@ export const selectAllEduc = createSelector(
   (state: ProfileState) => state.educs
 );
 
+export const selectAnEduc = (educ_ID: number) => createSelector(
+  selectProfileState,
+  (state) => {
+
+    if(state.educs.length <= 0 ) return
+
+    return state.educs.filter(item => item.educattainment_ID == educ_ID)[0]
+  }
+)
+
 export const selectFacultyCerts = createSelector(
   selectProfileState,
   (state: ProfileState) => state.certs[0]
