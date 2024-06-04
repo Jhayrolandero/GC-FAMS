@@ -1,0 +1,131 @@
+@if(data) {
+
+<section
+  class="m-5 p-5 rounded-lg shadow-lg bg-white flex flex-col gap-2 font-poppins"
+>
+  <div class="flex gap-4 items-center border-b-2 border-blue pb-4">
+    <button
+      class="bg-white w-[50px] rounded-full aspect-square shadow-lg"
+      (click)="goBack()"
+    >
+      <i class="fa-solid fa-arrow-left"></i>
+    </button>
+    <h4 class="text-[2rem] font-bold text-blue">{{ docTitle }}</h4>
+  </div>
+  <div class="flex flex-col laptop:flex-row gap-2">
+    <div class="w-full laptop:w-[50%] flex flex-col gap-4">
+      <div class="flex items-center justify-center w-full">
+        <label
+          (change)="addDoc($event)"
+          for="dropzone-file"
+          class="flex flex-col items-center justify-center w-full h-64 border-4 border-blue border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800"
+        >
+          <div class="flex flex-col items-center justify-center pt-5 pb-6">
+            <svg
+              class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 20 16"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+              />
+            </svg>
+            <p class="mb-2 text-sm text-gray-500 dark:text-gray-400">
+              <span class="font-semibold">Click to upload</span> or drag and
+              drop
+            </p>
+            <p class="text-xs text-gray-500 dark:text-gray-400">
+              docx, xlxs, rar or zip
+            </p>
+          </div>
+          <input id="dropzone-file" type="file" class="hidden" />
+        </label>
+      </div>
+      <div class="flex flex-col gap-2">
+        <h4>Submit Document/s</h4>
+
+        @if(documents.controls.length > 0) { @for(doc of documents.controls;
+        track $index) {
+        <div
+          class="h-[40px] border-2 border-blue rounded-lg w-full text-blue flex gap-2 justify-between px-2 items-center"
+        >
+          <div class="max-w-[60%]">
+            <h4>
+              @if(doc.value.type ===
+              "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+              ) {
+              <span><i class="fa-solid fa-file-doc"></i></span>
+              } @else if (doc.value.type ===
+              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+              ) {
+              <span><i class="fa-solid fa-file-excel"></i></span>
+              } @else if (doc.value.type === "application/x-zip-compressed") {
+              <span><i class="fa-solid fa-file-zip"></i></span>
+              } @else {
+              <span><i class="fa-solid fa-file"></i></span>
+              }
+              {{ doc.value.name }}
+            </h4>
+          </div>
+          <button (click)="deleteDoc($index)">
+            <i class="fa-solid fa-trash text-red-600"></i>
+          </button>
+        </div>
+
+        }
+        <button
+          (click)="submitDocuments()"
+          class="w-full bg-blue text-white font-bold text-[1rem] rounded-md py-2"
+        >
+          Upload Document
+        </button>
+
+        }
+      </div>
+    </div>
+    <div class="w-full laptop:w-[50%] text-black flex flex-col gap-2">
+      <h4 class="text-[1.5rem] font-semibold text-blue">
+        Supporting Documents
+      </h4>
+      @for(doc of supportDocsObv$ | async; track $index) {
+      <div
+        class="min-h-[56px] px-2 py-1 shadow-lg rounded-lg w-full flex justify-between items-center gap-4 text-blue"
+      >
+        <div>
+          <h4 class="text-ellipsis max-w-[60%]">
+            @if(doc.doc_type ===
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+            ) {
+            <span><i class="fa-solid fa-file-doc"></i></span>
+            } @else if (doc.doc_type ===
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            ) {
+            <span><i class="fa-solid fa-file-excel"></i></span>
+            } @else if (doc.doc_type === "application/x-zip-compressed") {
+            <span><i class="fa-solid fa-file-zip"></i></span>
+            } @else {
+            <span><i class="fa-solid fa-file"></i></span>
+            }
+            {{ doc.doc_name }}
+          </h4>
+        </div>
+        <div class="flex gap-2">
+          <button (click)="download(doc.doc_path, doc.doc_name)">
+            <i class="fa-solid fa-download text-greenBar"></i></button
+          ><button><i class="fa-solid fa-trash text-red-400"></i></button>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+</section>
+
+} @else {
+<app-loading-screen></app-loading-screen>
+}

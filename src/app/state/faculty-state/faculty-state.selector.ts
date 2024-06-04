@@ -179,6 +179,16 @@ export const selectAllEduc = createSelector(
   (state: ProfileState) => state.educs
 );
 
+export const selectAnEduc = (educ_ID: number) => createSelector(
+  selectProfileState,
+  (state) => {
+
+    if(state.educs.length <= 0 ) return
+
+    return state.educs.filter(item => item.educattainment_ID == educ_ID)[0]
+  }
+)
+
 export const selectFacultyCerts = createSelector(
   selectProfileState,
   (state: ProfileState) => state.certs[0]
@@ -212,6 +222,15 @@ export const selectAllCerts = createSelector(
   (state: ProfileState) => state.certs[1]
 );
 
+export const selectAnCert = (cert_ID: number) => createSelector(
+  selectProfileState,
+  (state) => {
+    if(state.certs[1].length <= 0 ) return
+
+    return state.certs[1].filter(item => item.cert_ID == cert_ID)[0]
+  }
+)
+
 export const selectCourseSched = createSelector(
   selectProfileState,
   (state: ProfileState) => state.courses[0]
@@ -239,6 +258,16 @@ export const selectAllExp = createSelector(
   (state: ProfileState) => state.exps
 );
 
+export const selectAnExp = (exp_ID: number) => createSelector(
+  selectProfileState,
+  (state) => {
+
+    if(state.exps.length <= 0) return
+
+    return state.exps.filter(item => item.experience_ID == exp_ID)[0]
+  }
+)
+
 export const selectAllProj = createSelector(
   selectProfileState,
   (state: ProfileState) => state.proj
@@ -249,6 +278,14 @@ export const selectFacultyExpertise = createSelector(
   (state: ProfileState) => state.expertises[0]
 );
 
+export const selectAnExpertise = (expert_ID: number) => createSelector(
+  selectProfileState,
+  (state) => {
+    if(state.expertises[0].length <= 0) return
+
+    return state.expertises[0].filter(item => item.expertise_ID == expert_ID)[0]
+  }
+)
 
 export const selectAllExpertise = createSelector(
   selectProfileState,
@@ -325,3 +362,33 @@ function sortByEvaluationYear(evals : Evaluation[]) {
       return a.evaluation_year - b.evaluation_year;
   });
 }
+
+export const selectEducDocs = (educ_ID : number) => createSelector(
+  selectProfileState,
+  (state) => {
+
+    return state.educSupportDocs.filter(item => item.educattainment_ID == educ_ID)
+  }
+)
+
+export const selectCertDocs = (cert_ID : number) => createSelector(
+  selectProfileState,
+  (state) => {
+
+    return state.certsSupportDocs.filter(item => item.cert_attainment_ID == cert_ID)
+  }
+)
+export const selectExpDocs = (exp_ID : number) => createSelector(
+  selectProfileState,
+  (state) => {
+
+    return state.expertiseSupportDocs.filter(item => item.expertise_faculty_ID == exp_ID)
+  }
+)
+export const selectIndustryDocs = (experience_ID : number) => createSelector(
+  selectProfileState,
+  (state) => {
+
+    return state.industrySupportDocs.filter(item => item.experience_ID == experience_ID)
+  }
+)

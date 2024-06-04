@@ -14,6 +14,10 @@ import { ExpertiseFaculty } from "../../services/Interfaces/expertise-faculty";
 import { CommunityExtension } from "../../services/Interfaces/community-extension";
 import { state } from "@angular/animations";
 import { UpdateFaculty } from "../../services/Interfaces/updateFaculty";
+import { SupportingDocs } from "../../services/Interfaces/supportingDocs";
+import { ExpSupportingDocs } from "../../services/Interfaces/expSupportDocs";
+import { IndustrySupportingDocs } from "../../services/Interfaces/industrySupportDocs";
+import { CertSupportingDocs } from "../../services/Interfaces/certSupportDocs";
 
 export interface ProfileState {
   profile: Profile | undefined;
@@ -29,7 +33,11 @@ export interface ProfileState {
   passwordLoading: boolean;
   editLoading:boolean;
   profileError: Error | undefined;
-  passwordError: Error |undefined
+  passwordError: Error |undefined;
+  educSupportDocs: SupportingDocs[];
+  expertiseSupportDocs: ExpSupportingDocs[];
+  industrySupportDocs: IndustrySupportingDocs[];
+  certsSupportDocs: CertSupportingDocs[];
 }
 
 export const initialProfileState: ProfileState = {
@@ -46,7 +54,11 @@ export const initialProfileState: ProfileState = {
   passwordLoading: false,
   editLoading: false,
   profileError: undefined,
-  passwordError: undefined
+  passwordError: undefined,
+  educSupportDocs:   [],
+  expertiseSupportDocs:   [],
+  industrySupportDocs:   [],
+  certsSupportDocs:   []
 }
 
 export const profileReducer = createReducer(
@@ -161,7 +173,22 @@ export const profileReducer = createReducer(
     passwordLoading: false,
     passwordError: action.error
   })),
-
+  on(CertActions.loadEducSupportingDocsSuccess, (state, action) => ({
+    ...state,
+    educSupportDocs: [...action.educDocs]
+  })),
+  on(CertActions.loadCertSupportingDocsSuccess, (state, action) => ({
+    ...state,
+    certsSupportDocs: [...action.certDocs]
+  })),
+  on(CertActions.loadExpSupportingDocsSuccess, (state, action) => ({
+    ...state,
+    expertiseSupportDocs: [...action.expDocs]
+  })),
+  on(CertActions.loadIndustrySupportingDocsSuccess, (state, action) => ({
+    ...state,
+    industrySupportDocs: [...action.industryDocs]
+  }))
 )
 
 function updateProfile(profile: Profile, newProfile: UpdateFaculty) {

@@ -12,6 +12,10 @@ import { CoursesFaculty } from "../../services/Interfaces/courses-faculty";
 import { ExpertiseFaculty } from "../../services/Interfaces/expertise-faculty";
 import { CommunityExtension } from "../../services/Interfaces/community-extension";
 import { UpdateFaculty } from "../../services/Interfaces/updateFaculty";
+import { SupportingDocs } from "../../services/Interfaces/supportingDocs";
+import { IndustrySupportingDocs } from "../../services/Interfaces/industrySupportDocs";
+import { ExpSupportingDocs } from "../../services/Interfaces/expSupportDocs";
+import { CertSupportingDocs } from "../../services/Interfaces/certSupportDocs";
 
 
 export const loadProfile = createAction('[Profile Global] Load Profile');
@@ -144,5 +148,60 @@ export const updatePasswordFailure = createAction(
   '[Profile Global] Update Password Fail',
   props<{error : Error}>()
 )
+
+export const loadSupportingDocs = createAction(
+  '[Profile Global] Load Supporting Docs'
+)
+
+export const loadEducSupportingDocsSuccess = createAction(
+  '[Profile Global] Load Educ Supporting Docs Success',
+  props<{ educDocs: SupportingDocs[]}>()
+)
+export const loadCertSupportingDocsSuccess = createAction(
+  '[Profile Global] Load Cert Supporting Docs Success',
+  props<{ certDocs: CertSupportingDocs[]}>()
+)
+export const loadExpSupportingDocsSuccess = createAction(
+  '[Profile Global] Load Exp Supporting Docs Success',
+  props<{ expDocs: ExpSupportingDocs[]}>()
+)
+export const loadIndustrySupportingDocsSuccess = createAction(
+  '[Profile Global] Load Industry Supporting Docs Success',
+  props<{ industryDocs: IndustrySupportingDocs[]}>()
+)
+export const loadEducSupportingDocsFailure = createAction(
+  '[Profile Global] Load Educ Supporting Docs Failure',
+  props<{ error: string}>()
+)
+export const loadCertSupportingDocsFailure = createAction(
+  '[Profile Global] Load Cert Supporting Docs Failure',
+  props<{ error: string}>()
+)
+export const loadExpSupportingDocsFailure = createAction(
+  '[Profile Global] Load Exp Supporting Docs Failure',
+  props<{ error: string}>()
+)
+export const loadIndustrySupportingDocsFailure = createAction(
+  '[Profile Global] Load Industry Supporting Docs Failure',
+  props<{ error: string}>()
+)
+export const postSupportDocs = createAction(
+  '[Profile Global] Post Supporting Docs',
+  props<{ docType: string, data: FormData }>()
+)
+
+export const postSupportDocsSuccess = createAction(
+  '[Profile Global] Post Supporting Docs Success',
+)
+
+export const postSupportDocsFailure = createAction(
+  '[Profile Global] Post Supporting Docs Fail',
+  props<{ error : string}>()
+)
+
+// export const postSupportDocs = createAction (
+//   '[Profile Global] Post Supporting Docs',
+//     props<{ type: string}>()
+// )
 
 export const flushProfileState = createAction('[Profile Global] Flush Profile');
