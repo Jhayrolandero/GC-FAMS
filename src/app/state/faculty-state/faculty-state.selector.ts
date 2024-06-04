@@ -392,3 +392,11 @@ export const selectIndustryDocs = (experience_ID : number) => createSelector(
     return state.industrySupportDocs.filter(item => item.experience_ID == experience_ID)
   }
 )
+
+export const selectClearArray = createSelector(
+  selectProfileState,
+  (state) => {
+
+    return state.clearArray
+  }
+)

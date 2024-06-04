@@ -190,6 +190,18 @@ export const postSupportDocs = createAction(
   props<{ docType: string, data: FormData }>()
 )
 
+export const deleteSupportDocs = createAction(
+  '[Profile Global] Delete Supporting Docs',
+  props<{ docType: string }>()
+)
+export const deleteSupportDocsSuccess = createAction(
+  '[Profile Global] Delete Supporting Docs Success')
+
+export const deleteSupportDocsFailure = createAction(
+  '[Profile Global] Delete Supporting Docs Failure',
+  props<{ error: string }>()
+)
+
 export const postSupportDocsSuccess = createAction(
   '[Profile Global] Post Supporting Docs Success',
 )
