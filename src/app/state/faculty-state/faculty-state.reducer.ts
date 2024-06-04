@@ -38,6 +38,7 @@ export interface ProfileState {
   expertiseSupportDocs: ExpSupportingDocs[];
   industrySupportDocs: IndustrySupportingDocs[];
   certsSupportDocs: CertSupportingDocs[];
+  clearArray: boolean;
 }
 
 export const initialProfileState: ProfileState = {
@@ -58,7 +59,8 @@ export const initialProfileState: ProfileState = {
   educSupportDocs:   [],
   expertiseSupportDocs:   [],
   industrySupportDocs:   [],
-  certsSupportDocs:   []
+  certsSupportDocs:   [],
+  clearArray: false,
 }
 
 export const profileReducer = createReducer(
@@ -188,6 +190,14 @@ export const profileReducer = createReducer(
   on(CertActions.loadIndustrySupportingDocsSuccess, (state, action) => ({
     ...state,
     industrySupportDocs: [...action.industryDocs]
+  })),
+  on(CertActions.postSupportDocs, (state) => ({
+    ...state,
+    clearArray: false
+  })),
+  on(CertActions.postSupportDocsSuccess, (state) => ({
+    ...state,
+    clearArray: true
   }))
 )
 

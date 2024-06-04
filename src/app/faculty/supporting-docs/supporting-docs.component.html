@@ -118,7 +118,9 @@
         <div class="flex gap-2">
           <button (click)="download(doc.doc_path, doc.doc_name)">
             <i class="fa-solid fa-download text-greenBar"></i></button
-          ><button><i class="fa-solid fa-trash text-red-400"></i></button>
+          ><button (click)="deleteDocument(doc.support_ID)">
+            <i class="fa-solid fa-trash text-red-400"></i>
+          </button>
         </div>
       </div>
       }

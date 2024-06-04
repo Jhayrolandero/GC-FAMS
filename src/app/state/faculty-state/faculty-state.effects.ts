@@ -74,6 +74,20 @@ export class CvEffects {
     ))
   ))
 
+  deleteSupportDocs$ = createEffect(() => this.actions$.pipe(
+    ofType(CvActions.deleteSupportDocs),
+    tap(() => this.messageService.sendMessage("Deleting Document", 0)),
+    switchMap((action) => this.facultyService.deleteData(action.docType).pipe(
+      map(() => {
+
+        this.messageService.sendMessage("Document Deleted!", 1),
+        this.store.dispatch(CvActions.loadSupportingDocs())
+        return CvActions.deleteSupportDocsSuccess()
+      }),
+      catchError(error => of(CvActions.deleteSupportDocsFailure({error})))
+    ))
+  ))
+
   updatePassword$ = createEffect(() => this.actions$.pipe(
     ofType(CvActions.updatePassword),
     tap(() => this.messageService.sendMessage("Updating password", 0)),

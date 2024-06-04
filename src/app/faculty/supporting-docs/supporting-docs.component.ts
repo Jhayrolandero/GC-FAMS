@@ -3,14 +3,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription, filter, take } from 'rxjs';
 import { EducationalAttainment } from '../../services/Interfaces/educational-attainment';
 import { Store, select } from '@ngrx/store';
-import { selectAnCert, selectAnEduc, selectAnExp, selectAnExpertise, selectCertDocs, selectEducDocs, selectExpDocs, selectIndustryDocs } from '../../state/faculty-state/faculty-state.selector';
+import { selectAnCert, selectAnEduc, selectAnExp, selectAnExpertise, selectCertDocs, selectClearArray, selectEducDocs, selectExpDocs, selectIndustryDocs } from '../../state/faculty-state/faculty-state.selector';
 import { CommonModule } from '@angular/common';
 import { IndustryExperience } from '../../services/Interfaces/industry-experience';
 import { ExpertiseFaculty } from '../../services/Interfaces/expertise-faculty';
 import { FormArray, FormBuilder, FormControl } from '@angular/forms';
 import { FacultyRequestService } from '../../services/faculty/faculty-request.service';
 import { CryptoJSService } from '../../services/crypto-js.service';
-import { loadSupportingDocs, postSupportDocs } from '../../state/faculty-state/faculty-state.actions';
+import { deleteSupportDocs, loadSupportingDocs, postSupportDocs } from '../../state/faculty-state/faculty-state.actions';
 import { SupportingDocs } from '../../services/Interfaces/supportingDocs';
 import { FileDownloadService } from '../../services/downloadfile.service';
 import { mainPort } from '../../app.component';
@@ -57,7 +57,7 @@ router = inject(Router);
   // supportDocs: SupportingDocs[] = []
   subData!: Subscription
   docTitle!: string
-
+  clearArraySub!: Subscription
 
   mainPort = mainPort
   docType: string = ''
@@ -128,6 +128,7 @@ router = inject(Router);
     })
 
     this.supportDocsObv$ = this.store.pipe(select(selectIndustryDocs(id)))
+
 
   }
 
@@ -205,11 +206,22 @@ router = inject(Router);
 
     // Append the ID to the FormData
     formData.append('id', this.id+'');
-
-
     this.store.dispatch(postSupportDocs({ docType: this.docType, data: formData}))
+
+    this.clearArraySub = this.store.pipe(
+      select(selectClearArray)
+    ).subscribe(
+      res => {
+        if(res) {
+          this.documents.clear()
+        }
+      }
+    )
   }
 
+  deleteDocument(id: number) {
+    this.store.dispatch(deleteSupportDocs({ docType: this.docType+'/'+id }))
+  }
   download(fileUrl: string, title: string): void {
 
       this.fileDownloadService.saveFile(mainPort+fileUrl, title);
