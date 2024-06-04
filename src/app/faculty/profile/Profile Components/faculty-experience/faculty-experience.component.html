@@ -7,12 +7,13 @@
   *ngFor="let exp of experiences$ | async"
   class="mainParent bg-white items-center pt-4"
 >
-  <div class="flex flex-row" (click)="navigateUrl(exp.experience_ID)">
+  <div class="flex flex-row">
     <div
       class="select-none w-full mx-10 hover:pl-4 hover:duration-300 duration-300"
     >
       <div class="flex flex-row gap-2 tablet:justify-between">
         <p
+          (click)="navigateUrl(exp.experience_ID)"
           class="flex-1 font-Roboto font-medium text-blue text-[1rem] tablet:text-[1.5rem]"
         >
           {{ exp.experience_title }}

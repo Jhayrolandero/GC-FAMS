@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription, filter, take } from 'rxjs';
 import { EducationalAttainment } from '../../services/Interfaces/educational-attainment';
 import { Store, select } from '@ngrx/store';
-import { selectAnEduc, selectAnExp, selectAnExpertise, selectEducDocs, selectExpDocs, selectIndustryDocs } from '../../state/faculty-state/faculty-state.selector';
+import { selectAnCert, selectAnEduc, selectAnExp, selectAnExpertise, selectCertDocs, selectEducDocs, selectExpDocs, selectIndustryDocs } from '../../state/faculty-state/faculty-state.selector';
 import { CommonModule } from '@angular/common';
 import { IndustryExperience } from '../../services/Interfaces/industry-experience';
 import { ExpertiseFaculty } from '../../services/Interfaces/expertise-faculty';
@@ -17,10 +17,12 @@ import { mainPort } from '../../app.component';
 import { ExpSupportingDocs } from '../../services/Interfaces/expSupportDocs';
 import { CertSupportingDocs } from '../../services/Interfaces/certSupportDocs';
 import { IndustrySupportingDocs } from '../../services/Interfaces/industrySupportDocs';
+import { Certifications } from '../../services/Interfaces/certifications';
+import { LoadingScreenComponent } from '../../components/loading-screen/loading-screen.component';
 @Component({
   selector: 'app-supporting-docs',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, LoadingScreenComponent],
   templateUrl: './supporting-docs.component.html',
   styleUrl: './supporting-docs.component.css'
 })
@@ -48,7 +50,7 @@ export class SupportingDocsComponent {
 
 router = inject(Router);
   view!: string
-  data!: (EducationalAttainment | IndustryExperience | ExpertiseFaculty)
+  data!: (EducationalAttainment | IndustryExperience | ExpertiseFaculty | Certifications)
 
   // supportDocsSub!: Subscription
   supportDocsObv$!: Observable<SupportingDocs[] | ExpSupportingDocs[] | CertSupportingDocs [] | IndustrySupportingDocs[]>
@@ -66,6 +68,7 @@ router = inject(Router);
       this.id = params['id'];
       switch(this.router.url.split('/')[2].toLowerCase()) {
         case 'cert':
+          this.subCert(this.id)
           this.title = 'cert';
           this.docType = 'certdocs'
           break;
@@ -126,6 +129,20 @@ router = inject(Router);
 
     this.supportDocsObv$ = this.store.pipe(select(selectIndustryDocs(id)))
 
+  }
+
+  subCert(id: number) {
+    this.subData = this.store.pipe(
+      select(selectAnCert(id)),
+      filter(data => !!data)
+    ).subscribe({
+      next : res =>  {
+        this.data = res!
+        this.docTitle = res!.cert_name
+      }
+    })
+
+    this.supportDocsObv$ = this.store.pipe(select(selectCertDocs(id)))
   }
 
   subExpert(id: number) {
@@ -196,11 +213,6 @@ router = inject(Router);
   download(fileUrl: string, title: string): void {
 
       this.fileDownloadService.saveFile(mainPort+fileUrl, title);
-      // this.fileDownloadService.downloadFile(mainPort);
-
-    // this.fileDownloadService.downloadFile(mainPort + fileUrl).subscribe(blob => {
-    //   this.fileDownloadService.saveFile(blob, title);
-    // });
   }
 
 

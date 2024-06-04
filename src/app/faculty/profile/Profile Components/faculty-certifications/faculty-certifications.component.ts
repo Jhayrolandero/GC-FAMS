@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, inject } from '@angular/core';
 import { mainPort } from '../../../../app.component';
 import { Store } from '@ngrx/store';
 import { selectAllCerts, selectFacultyCerts } from '../../../../state/faculty-state/faculty-state.selector';
@@ -7,6 +7,7 @@ import { FacultyRequestService } from '../../../../services/faculty/faculty-requ
 import { MessageService } from '../../../../services/message.service';
 import { MatDialog } from '@angular/material/dialog';
 import { loadCert } from '../../../../state/faculty-state/faculty-state.actions';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-faculty-certifications',
   standalone: true,
@@ -14,18 +15,20 @@ import { loadCert } from '../../../../state/faculty-state/faculty-state.actions'
   templateUrl: './faculty-certifications.component.html',
   styleUrl: './faculty-certifications.component.css'
 })
-export class FacultyCertificationsComponent { 
+export class FacultyCertificationsComponent {
   public certifications$ = this.store.select(selectAllCerts);
   public existCertifications$ = this.store.select(selectFacultyCerts);
   public port = mainPort;
   @Output() deleteEvent = new EventEmitter<any>();
 
+  router = inject(Router);
   constructor(
-    private facultyRequest: FacultyRequestService, 
-    public dialog: MatDialog, 
+    private facultyRequest: FacultyRequestService,
+    public dialog: MatDialog,
     private messageService: MessageService,
     private store: Store
   ){}
+
 
   selectCv(cert: any){
     this.facultyRequest.patchData([2, cert], 'selectCv').subscribe({
@@ -41,6 +44,11 @@ export class FacultyCertificationsComponent {
   deleteCertificate(id: number){
     this.deleteEvent.emit(['deleteCert/' + id, 1]);
   }
+
+  navigateUrl(id: number) {
+    this.router.navigate(['faculty/cert', id])
+  }
+
 }
 
 

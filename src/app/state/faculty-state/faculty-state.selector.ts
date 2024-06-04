@@ -222,6 +222,15 @@ export const selectAllCerts = createSelector(
   (state: ProfileState) => state.certs[1]
 );
 
+export const selectAnCert = (cert_ID: number) => createSelector(
+  selectProfileState,
+  (state) => {
+    if(state.certs[1].length <= 0 ) return
+
+    return state.certs[1].filter(item => item.cert_ID == cert_ID)[0]
+  }
+)
+
 export const selectCourseSched = createSelector(
   selectProfileState,
   (state: ProfileState) => state.courses[0]
@@ -373,7 +382,7 @@ export const selectExpDocs = (exp_ID : number) => createSelector(
   selectProfileState,
   (state) => {
 
-    return state.expertiseSupportDocs.filter(item => item.expertise_ID == exp_ID)
+    return state.expertiseSupportDocs.filter(item => item.expertise_faculty_ID == exp_ID)
   }
 )
 export const selectIndustryDocs = (experience_ID : number) => createSelector(

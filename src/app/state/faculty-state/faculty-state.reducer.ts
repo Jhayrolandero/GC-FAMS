@@ -179,7 +179,7 @@ export const profileReducer = createReducer(
   })),
   on(CertActions.loadCertSupportingDocsSuccess, (state, action) => ({
     ...state,
-    certSupportDocs: [...action.certDocs]
+    certsSupportDocs: [...action.certDocs]
   })),
   on(CertActions.loadExpSupportingDocsSuccess, (state, action) => ({
     ...state,
