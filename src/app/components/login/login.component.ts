@@ -56,6 +56,10 @@ export class LoginComponent {
     this.role = this.route.snapshot.data['role'];
   }
 
+  goHome(){
+    this.router.navigate(['/'])
+  }
+
   onLogin(): void {
     this.isLoggin = true
     this.store.dispatch(logOut());

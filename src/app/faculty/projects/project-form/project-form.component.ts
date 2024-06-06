@@ -73,6 +73,7 @@ export class ProjectFormComponent {
       },
       complete: () => {
         this.messageService.sendMessage("Project Successfully Added!", 1)
+        this.store.dispatch(loadProj())
         this.onNoClick();
       }
     });

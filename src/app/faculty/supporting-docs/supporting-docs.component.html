@@ -1,11 +1,11 @@
 @if(data) {
 
 <section
-  class="m-5 p-5 rounded-lg shadow-lg bg-white flex flex-col gap-2 font-poppins"
+  class="m-5 p-5 rounded-[15px] shadow-main bg-white flex flex-col gap-2 font-poppins"
 >
   <div class="flex gap-4 items-center border-b-2 border-blue pb-4">
     <button
-      class="bg-white w-[50px] rounded-full aspect-square shadow-lg"
+      class="bg-white w-[50px] rounded-full aspect-square shadow-main"
       (click)="goBack()"
     >
       <i class="fa-solid fa-arrow-left"></i>
@@ -18,7 +18,7 @@
         <label
           (change)="addDoc($event)"
           for="dropzone-file"
-          class="flex flex-col items-center justify-center w-full h-64 border-4 border-blue border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800"
+          class="flex flex-col items-center justify-center w-full h-64 border-4 border-blue border-dashed rounded-[15px] cursor-pointer bg-gray-50 dark:hover:bg-bray-800"
         >
           <div class="flex flex-col items-center justify-center pt-5 pb-6">
             <svg
@@ -53,7 +53,7 @@
         @if(documents.controls.length > 0) { @for(doc of documents.controls;
         track $index) {
         <div
-          class="h-[40px] border-2 border-blue rounded-lg w-full text-blue flex gap-2 justify-between px-2 items-center"
+          class="h-[40px] border-2 border-blue rounded-[15px] w-full text-blue flex gap-2 justify-between px-2 items-center"
         >
           <div class="max-w-[60%]">
             <h4>
@@ -95,10 +95,10 @@
       </h4>
       @for(doc of supportDocsObv$ | async; track $index) {
       <div
-        class="min-h-[56px] px-2 py-1 shadow-lg rounded-lg w-full flex justify-between items-center gap-4 text-blue"
+        class="min-h-[56px] px-2 py-1 shadow-main rounded-[15px] w-full flex justify-between items-center gap-4 text-blue"
       >
-        <div>
-          <h4 class="text-ellipsis max-w-[60%]">
+        <div class="flex flex-row flex-1">
+          <h4 class="text-ellipsis max-w-[60%] flex flex-row duration-300 hover:scale-[101%] hover:duration-300 select-none">
             @if(doc.doc_type ===
             "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
             ) {
@@ -112,7 +112,9 @@
             } @else {
             <span><i class="fa-solid fa-file"></i></span>
             }
-            {{ doc.doc_name }}
+            <span (click)="openFile(doc.doc_path, doc.doc_name)" class="ml-3 cursor-pointer">
+              {{ doc.doc_name }}
+            </span>
           </h4>
         </div>
         <div class="flex gap-2">

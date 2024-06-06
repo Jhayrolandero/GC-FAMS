@@ -19,6 +19,8 @@ import { CertSupportingDocs } from '../../services/Interfaces/certSupportDocs';
 import { IndustrySupportingDocs } from '../../services/Interfaces/industrySupportDocs';
 import { Certifications } from '../../services/Interfaces/certifications';
 import { LoadingScreenComponent } from '../../components/loading-screen/loading-screen.component';
+import { MatDialog } from '@angular/material/dialog';
+import { SupportingDocsDialogueComponent } from '../supporting-docs-dialogue/supporting-docs-dialogue.component';
 @Component({
   selector: 'app-supporting-docs',
   standalone: true,
@@ -37,6 +39,7 @@ export class SupportingDocsComponent {
     private store: Store,
     private route: ActivatedRoute,
     private fb : FormBuilder,
+    public dialog: MatDialog,
     private fileDownloadService: FileDownloadService
   ) {}
 
@@ -230,6 +233,15 @@ router = inject(Router);
 
   goBack() {
     this.router.navigate(['faculty/curriculum-vitae'])
+  }
+
+  openFile(path: any, name: any) {
+    this.dialog.open(SupportingDocsDialogueComponent, {
+      data: {
+        path: path,
+        name: name
+      }
+    })
   }
 
 }
