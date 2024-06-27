@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Component } from '@angular/core';
 import * as XLSX from 'xlsx';
 import { EvaluationTimeline } from '../services/Interfaces/indAverageTimeline';
+import { EvaluationRadar } from '../services/Interfaces/radarEvaluation';
+import { SemDiff } from '../services/Interfaces/semDiff';
+import { InfoService } from '../services/info.service';
 
 interface SubHeading {
   start: number;
@@ -17,7 +19,17 @@ interface SubHeadingsDictionary {
 })
 export class ExcelServiceService {
 
-  constructor() { }
+  constructor(private info: InfoService) {
+
+  }
+
+  college: string = ''
+
+  async getCollege() {
+    this.college = await this.info.getCollege()
+  }
+
+  currSem = this.getSemester(new Date().getMonth()+'', new Date().getFullYear()).semester + " Semester, A.Y. "+ this.getSemester(new Date().getMonth()+'', new Date().getFullYear()).academicYear
 
   getSemester(month : string, year : number) {
     // Normalize the input
@@ -177,6 +189,24 @@ export class ExcelServiceService {
       { s: { r: 1, c: 0 }, e: { r: 1, c: headerColLength } },
       { s: { r: 2, c: 0 }, e: { r: 2, c: headerColLength } },
     ]
+
+  }
+
+  async generateRadarReport(radarData: EvaluationRadar[], college: string) {
+    if(radarData.length <= 0) return
+    await this.getCollege()
+    this.exportExcel<EvaluationRadar>(radarData, "Evaluation-Radar", this.college, this.currSem )
+  }
+
+  generateSemDiffReport(semDiff: SemDiff[]) {
+
+  }
+
+  generateIndTimelineReport(indvSemAveTimelineData: EvaluationTimeline[]) {
+
+  }
+
+  generateEducAttainmentReport(educationTimelineReport: Object[]) {
 
   }
 

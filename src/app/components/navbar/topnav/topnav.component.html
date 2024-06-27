@@ -17,7 +17,9 @@
         fill="#074287"
       />
     </svg>
-    <p class="ml-5 font-Poppins font-semibold italic text-blue opacity-[80%]">S.Y. {{ schoolYear }}-{{ schoolYear+1 }} {{ semester }}</p>
+    <p class="ml-5 font-Poppins font-semibold italic text-blue opacity-[80%]">
+      S.Y. {{ schoolYear }}-{{ schoolYear + 1 }} {{ semester }}
+    </p>
   </div>
 
   <div
@@ -35,7 +37,8 @@
         onerror="this.onerror=null; this.src='/assets/profiles/user.png'"
       />
       <p class="font-Roboto font-semibold text-blue">
-        {{ facultyProfile.first_name }} {{ facultyProfile.last_name }}
+        {{ facultyProfile.first_name }} {{ facultyProfile.last_name }} -
+        {{ college }}
       </p>
     </div>
     <i class="fa-solid fa-chevron-down"></i>

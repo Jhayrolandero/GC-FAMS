@@ -281,8 +281,9 @@ export class EvaluationAnalyticsComponent {
   }
 
   generateRadarReport() {
-    if(this.radarData.length <= 0) return
-    this.excelService.exportExcel<EvaluationRadar>(this.radarData, "Evaluation-Radar", this.college, this.currSem )
+    this.excelService.generateRadarReport(this.radarData, this.college)
+    // if(this.radarData.length <= 0) return
+    // this.excelService.exportExcel<EvaluationRadar>(this.radarData, "Evaluation-Radar", this.college, this.currSem )
     // this.excelService.exportExcel<EvaluationRadar>(this.radarData, "Evaluation-Radar", this.college, "!st Sem 2024 - 2025" )
   }
 
@@ -292,7 +293,7 @@ export class EvaluationAnalyticsComponent {
   }
 
   generateIndTimelineReport() {
-    if(this.semDiffData.length <= 0) return
+    if(this.indvSemAveTimelineData.length <= 0) return
 
     this.excelService.exportExcel<EvaluationTimeline>(
       this.indvSemAveTimelineData,

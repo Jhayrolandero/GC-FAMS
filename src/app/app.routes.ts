@@ -2,7 +2,6 @@ import { Routes } from '@angular/router';
 import { authGuard } from './services/auth.guard';
 import { AdminComponent } from './admin/admin.component';
 import { FacultyComponent } from './faculty/faculty.component';
-
 export const routes: Routes = [
   { path: '', loadComponent: () => import('./landing-page/landing-page.component').then(m => m.LandingPageComponent)},
   { path: 'faculty', redirectTo: '/faculty/login', pathMatch: 'full' },
@@ -40,6 +39,7 @@ export const routes: Routes = [
       { path: 'evaluation-analytics', loadComponent: () => import('./admin/evaluation-analytics/evaluation-analytics.component').then(m => m.EvaluationAnalyticsComponent) },
       { path: 'program-analytics', loadComponent: () => import('./admin/manage-analytics/manage-analytics.component').then(m => m.ManageAnalyticsComponent) },
       { path: 'manage-profile', loadComponent: () => import('./components/manage-profile/manage-profile.component').then(m => m.ManageProfileComponent) },
+      { path: 'reports', loadComponent: () => import('./admin/reports/reports.component').then(m => m.ReportsComponent) },
     ], canActivateChild: [authGuard]
   },
   { path: '**', loadComponent: () => import('./components/pagenotfound/pagenotfound.component').then(m => m.PagenotfoundComponent) }

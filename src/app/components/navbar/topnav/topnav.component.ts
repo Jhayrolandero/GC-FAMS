@@ -10,6 +10,7 @@ import { selectAllProfile } from '../../../state/faculty-state/faculty-state.sel
 import { Store } from '@ngrx/store';
 import { AuthService } from '../../../services/auth.service';
 import { logOut } from '../../../state/logout.action';
+import { InfoService } from '../../../services/info.service';
 
 
 @Component({
@@ -35,12 +36,13 @@ export class TopnavComponent {
   currDate = new Date()
   schoolYear = -1;
   semester = '';
-
+  college: string = ""
   constructor(
     private route: ActivatedRoute,
     private store: Store,
     public dialog: MatDialog,
-    private router: Router) {
+    private router: Router,
+    private info: InfoService) {
       this.accountPath = this.route.snapshot.url[0].path;
       //This declares the daes for the topnav!
       this.schoolYear = this.currDate.getFullYear();
@@ -54,12 +56,17 @@ export class TopnavComponent {
       else{
         this.semester = '2nd Semester'
       }
+      this.getCollege()
     }
 
   triggerToggle() {
     this.setToggle.emit();
   }
 
+
+  async getCollege() {
+    this.college = await this.info.getCollege()
+  }
   openDialog(): void {
     this.store.dispatch(logOut());
     this.router.navigate([`/${this.accountPath}`]);
@@ -87,7 +94,7 @@ export class TopnavLogout {
     private router: Router,
     public dialogRef: MatDialogRef<TopnavLogout>,
     private store: Store
-  ) { 
+  ) {
   }
 
   logout() {
