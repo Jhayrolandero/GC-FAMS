@@ -30,6 +30,7 @@ export const routes: Routes = [
       { path: 'expertise/:id', loadComponent: () => import('./faculty/supporting-docs/supporting-docs.component').then(m => m.SupportingDocsComponent) },
       { path: 'industry/:id', loadComponent: () => import('./faculty/supporting-docs/supporting-docs.component').then(m => m.SupportingDocsComponent) },
       { path: 'projects', loadComponent: () => import('./faculty/projects/projects.component').then(m => m.ProjectsComponent) },
+      { path: 'research', loadComponent: () => import('./faculty/research/research.component').then(m => m.ResearchComponent) },
     ], canActivateChild: [authGuard],
   },
   {

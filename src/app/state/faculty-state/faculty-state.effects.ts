@@ -65,7 +65,6 @@ export class CvEffects {
     tap(() => this.messageService.sendMessage("Uploading Document/s", 0)),
     switchMap((action) => this.facultyService.postData(action.data, action.docType).pipe(
       map(() => {
-
         this.messageService.sendMessage("Document/s Uploaded!", 1),
         this.store.dispatch(CvActions.loadSupportingDocs())
         return CvActions.postSupportDocsSuccess()

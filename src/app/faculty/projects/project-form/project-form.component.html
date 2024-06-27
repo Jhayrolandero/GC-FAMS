@@ -1,7 +1,7 @@
 <div
     class="min-w-[240px] mobileM:w-[320px] tablet:w-[490px] laptop:w-[640px] desktop:w-[1000px] bg-white rounded-[15px] shadow-lg opacity-100">
     <div class="w-full bg-blue h-[38px] flex items-center justify-between">
-        <p class="font-Poppins font-semibold text-white ml-5">Add Certifications</p>
+        <p class="font-Poppins font-semibold text-white ml-5">Add Project</p>
         <svg (click)="onNoClick()" class="mr-3" width="24" height="24" viewBox="0 0 24 24" fill="none"
             xmlns="http://www.w3.org/2000/svg">
             <g clip-path="url(#clip0_1148_386)">
@@ -17,7 +17,7 @@
         </svg>
     </div>
 
-    <mat-stepper orientation="horizontal" #stepper>
+    <mat-stepper orientation="horizontal" linear #stepper>
         <mat-step [stepControl]="projectForm">
             <div class="mobileS:max-h-[440px] laptop:h-max mobileS:overflow-y-scroll laptop:overflow-y-hidden">
                 <form (ngSubmit)="submitForm()" [formGroup]="projectForm" class="p-4">
@@ -26,16 +26,7 @@
                         <div class="flex flex-col max-h-[400px] laptop:flex-row gap-3">
                             <div class="flex-1 max-h-[400px] tablet:w-full laptop:w-[490px]">
         
-                                <p class="font-Roboto font-medium text-[1.1rem]">
-                                    Project Type:
-                                </p>
-                                <select type="text" placeholder="Existing certifications" id="project_type" formControlName="project_type"
-                                    class="w-full border-2 px-2 font-Roboto font-regular text-[1.1rem] rounded-[5px] text-black py-1">
-                                    <option>Research Paper</option>
-                                    <option>Others</option>
-                                </select>
-        
-                                <p class="font-Roboto font-medium text-[1.1rem] mt-4">Project Name</p>
+                                <p class="font-Roboto font-medium text-[1.1rem]">Project Name</p>
                                 <input type="text" placeholder="" id="project_name" formControlName="project_name"
                                     class="w-full border-2 px-2 font-Roboto font-regular text-[1.1rem] rounded-[5px] text-black py-1" />
 
@@ -47,18 +38,27 @@
                                 <textarea type="textarea" placeholder="" id="project_detail" formControlName="project_detail"
                                     class="w-full border-2 px-2 font-Roboto font-regular text-[1.1rem] rounded-[5px] text-black py-1"></textarea>
         
+
+                                <p class="font-Roboto font-medium text-[1.1rem]">
+                                    Project Start Date
+                                </p>
+                                <input type="date" placeholder="" id="project_start_date" formControlName="project_start_date"
+                                    class="w-full border-2 px-2 font-Roboto font-regular text-[1.1rem] rounded-[5px] text-black py-1" />
+
                                 <div class="flex flex-row">
-                                    <div class="w-[100px] flex flex-col items-center">
-                                        <p class="font-Roboto font-medium text-[1.1rem]">Finished</p>
-                                        <input type="checkbox" placeholder="" id="isFinished" formControlName="isFinished"
-                                            class="w-[20px] h-[20px]" />
+                                    <div class="w-[100px] flex flex-col">
+                                        <p class="font-Roboto font-medium text-[1.1rem]">Ongoing</p>
+                                        <input type="checkbox" placeholder="" id="is_finished" formControlName="is_finished"
+                                            class="w-[20px] h-[20px]"
+                                            />
+                                            
                                     </div>
         
                                     <div class="flex-1">
                                         <p class="font-Roboto font-medium text-[1.1rem]">
-                                            Project Date of Accomplishment
+                                            Project Finished Date
                                         </p>
-                                        <input type="date" placeholder="" id="project_date" formControlName="project_date"
+                                        <input type="date" placeholder="" id="project_end_date" formControlName="project_end_date"
                                             class="w-full border-2 px-2 font-Roboto font-regular text-[1.1rem] rounded-[5px] text-black py-1" />
                                     </div>
                                 </div>
@@ -84,9 +84,13 @@
         
                         <div class="flex justify-end">
                             <button
-                              class="h-[40px] bg-blue rounded-full px-4 transition-all text-white font-Poppins font-semibold shadow-main hover:scale-[101%] hover:duration-300 duration-300"
+                              class="h-[40px] rounded-full px-4 transition-all text-white font-Poppins font-semibold shadow-main hover:scale-[101%] hover:duration-300 duration-300"
                               mat-button
                               matStepperNext
+                              [ngClass]="{
+                                'bg-red-700 cursor-not-allowed': !projectForm.valid,
+                                'bg-blue cursor-pointer': projectForm.valid
+                              }"
                               type="button"
                             >
                               Next
@@ -109,9 +113,9 @@
                 <p class="font-Roboto font-medium text-[1.1rem]">
                     Project Author:
                 </p>
-                <select type="text" placeholder="Existing certifications" id="cert_exist" formControlName="project_author"
+                <select type="text" placeholder="Project Author" id="" formControlName="" (change)="selectAuthor($event)"
                     class="w-full border-2 px-2 font-Roboto font-regular text-[1.1rem] rounded-[5px] text-black py-1">
-                    <option *ngFor="let profile of profiles">
+                    <option *ngFor="let profile of profiles" [value]="profile.faculty_ID">
                         <p class="font-Roboto font-medium text-[1.1rem] ml-5">{{ profile.first_name }} {{ profile.last_name}}</p>
                     </option>
                 </select>
@@ -121,7 +125,7 @@
                 <p>Co-Author</p>
                 <div class="border-2 max-h-[300px] overflow-y-scroll">
                     <div *ngFor="let profile of profiles" class="w-full flex flex-row items-center p-2">
-                        <input type="checkbox" placeholder="" id="isFinished" formControlName="isFinished" (change)="selectCoAuthor($event, profile.faculty_ID)"
+                        <input type="checkbox" placeholder="" id="" formControlName="" (change)="selectCoAuthor($event, profile.faculty_ID)"
                             class="w-[20px] h-[20px]" />
                         <p class="font-Roboto font-medium text-[1.1rem] ml-5">{{ profile.first_name }} {{ profile.last_name}}</p>
                     </div>

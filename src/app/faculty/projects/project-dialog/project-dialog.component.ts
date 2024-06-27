@@ -29,10 +29,20 @@ export class ProjectDialogComponent {
     private cryptoJS: CryptoJSService,
     private facultyRequest: FacultyRequestService
   ) {
+    
   }
 
   ngOnInit(){
     this.authors$.subscribe((next: any) => console.log(next))
+  }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+  goToLink(url: string){
+    console.log(url);
+    window.open("https://" + url, "_blank");
   }
 
   decryptData<T>(ciphertext: Encryption): T {

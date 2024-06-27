@@ -25,7 +25,6 @@ import { logOut } from '../../../state/logout.action';
   styleUrl: './topnav.component.css'
 })
 export class TopnavComponent {
-
   @Input("path") path:string = ""
   dropToggle = false;
   isLoading: boolean = false;
@@ -33,12 +32,28 @@ export class TopnavComponent {
   public facultyProfile$ = this.store.select(selectAllProfile);
   accountPath: string;
 
+  currDate = new Date()
+  schoolYear = -1;
+  semester = '';
+
   constructor(
     private route: ActivatedRoute,
     private store: Store,
     public dialog: MatDialog,
     private router: Router) {
       this.accountPath = this.route.snapshot.url[0].path;
+      //This declares the daes for the topnav!
+      this.schoolYear = this.currDate.getFullYear();
+      const currMonth = this.currDate.getMonth();
+      if(currMonth >= 1 && currMonth <= 3){
+        this.semester = '1st Semester';
+      }
+      else if(currMonth >= 4 && currMonth <= 6){
+        this.semester = 'Midyear';
+      }
+      else{
+        this.semester = '2nd Semester'
+      }
     }
 
   triggerToggle() {
@@ -65,15 +80,18 @@ export class TopnavComponent {
     MatFormFieldModule],
   templateUrl: './topnav.logout.html'
 })
+
 export class TopnavLogout {
   authService = inject(AuthService);
   constructor(
     private router: Router,
     public dialogRef: MatDialogRef<TopnavLogout>,
     private store: Store
-  ) { }
+  ) { 
+  }
 
   logout() {
+
     this.authService.flushToken();
     this.router.navigate(['/faculty']);
     this.dialogRef.close()
@@ -82,5 +100,3 @@ export class TopnavLogout {
     this.dialogRef.close();
   }
 }
-
-

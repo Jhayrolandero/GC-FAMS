@@ -7,8 +7,6 @@ import { MessageService } from '../../../services/message.service';
 import { Store } from '@ngrx/store';
 import { CommonModule } from '@angular/common';
 import { MatStepperModule } from '@angular/material/stepper';
-import { selectAllProfile } from '../../../state/faculty-state/faculty-state.selector';
-import { selectCollegeFaculty } from '../../../state/dean-state/dean-state.selector';
 import { Observable, map } from 'rxjs';
 import { Encryption } from '../../../services/Interfaces/encryption';
 import { Faculty } from '../../../services/Interfaces/faculty';
@@ -36,7 +34,15 @@ export class ProjectFormComponent {
     private store: Store,
     private cryptoJS: CryptoJSService,
     private messageService: MessageService){
-      console.log("What the hail");
+      this.projectForm.get('is_finished')?.valueChanges.subscribe(v => {
+        console.log(v)
+        if (v) {
+          this.projectForm.get('project_end_date')?.reset()
+          this.projectForm.get('project_end_date')?.disable()
+        } else {
+          this.projectForm.get('project_end_date')?.enable()
+        }
+      })
   }
 
   ngOnInit(): void {
@@ -51,20 +57,25 @@ export class ProjectFormComponent {
 
 
   projectForm = new FormGroup({
-    project_name: new FormControl('', [Validators.required,]),
-    project_date: new FormControl('', [Validators.required,]),
-    project_detail: new FormControl('', [Validators.required,]),
-    project_type: new FormControl('', [Validators.required,]),
+    project_name: new FormControl('', [Validators.required]),
     project_link: new FormControl(''),
-    isFinished: new FormControl(false),
+    project_detail: new FormControl('', [Validators.required]),
+    project_start_date: new FormControl('', [Validators.required]),
+    is_finished: new FormControl(),
+    project_end_date: new FormControl(''),
     project_images: new FormControl<string[]>([]),
+    project_author: new FormControl<number>(-1),
     project_co_author: new FormControl<number[]>([]),
   })
 
   submitForm(){
     this.messageService.sendMessage("Adding Project...", 0)
+    // console.log(this.projectForm);
 
-    console.log(this.projectForm)
+    this.projectForm.patchValue({
+      is_finished: !this.projectForm.controls['is_finished'].value
+    })
+
     this.facultyRequest.postData(this.projectForm, 'addProj').subscribe({
       next(value) {console.log(value);},
       error: (error) => {
@@ -94,6 +105,14 @@ export class ProjectFormComponent {
       project_co_author: this.coAuthorId
     })
     console.log(this.coAuthorId);
+  }
+
+  selectAuthor(event: Event){
+    const selectElement = event.target as HTMLSelectElement;
+    console.log(selectElement.value);
+    this.projectForm.patchValue({
+      project_author: +selectElement.value
+    })
   }
 
 
