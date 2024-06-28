@@ -4,6 +4,15 @@ import { EvaluationTimeline } from '../services/Interfaces/indAverageTimeline';
 import { EvaluationRadar } from '../services/Interfaces/radarEvaluation';
 import { SemDiff } from '../services/Interfaces/semDiff';
 import { InfoService } from '../services/info.service';
+import { EducAttainmentData } from '../services/Interfaces/educAttainmentData';
+import { AttainmentData } from '../services/Interfaces/attainmentData';
+import { MilestoneReport } from '../services/Interfaces/milestoneReport';
+import { CurrEducAttainment } from '../services/Interfaces/currEducAttainment';
+import { EmploymentTypeReport } from '../services/Interfaces/employmentTypeReport';
+import { SeminarReport } from '../services/Interfaces/seminarReport';
+import { TeachingLevelReport } from '../services/Interfaces/teachingLevelReport';
+import { ExpertiseReport } from '../services/Interfaces/expertiseReport';
+import { FacultyReport } from '../services/Interfaces/facultyReport';
 
 interface SubHeading {
   start: number;
@@ -219,6 +228,86 @@ export class ExcelServiceService {
     if(educationTimelineReport.length <= 0) return
 
     this.exportExcel<Object>(educationTimelineReport, `Educational Attainment Timeline (${ this.info.date.getFullYear() - 14} - ${this.info.date.getFullYear()})`, this.college, this.currSem)
+  }
+
+  generateEducReport(educData: EducAttainmentData[]) {
+    if(educData.length <= 0) return
+
+    this.exportExcel<EducAttainmentData>(educData, `Education Attainment Timeline ${this.college} (${ this.info.date.getFullYear() - 14} - ${this.info.date.getFullYear()})`, this.college, this.currSem)
+
+  }
+
+  // Bugged
+  generateAttainmentReport(attainmentData: AttainmentData[]) {
+    if(attainmentData.length <= 0) return
+
+    this.exportExcel<AttainmentData>(attainmentData, `Attainment Timeline ${this.college} (${ this.info.date.getFullYear() - 14} - ${this.info.date.getFullYear()})`, this.college, this.currSem)
+
+  }
+
+  // Bugged
+  generateMilestoneReport(milestoneData: MilestoneReport[]) {
+    if(milestoneData.length <= 0) return
+
+    this.exportExcel<MilestoneReport>(milestoneData, `Milestone Achieved ${this.college} (${ this.info.date.getFullYear() - 14} - ${this.info.date.getFullYear()})`, this.college, this.currSem)
+  }
+
+  generateEducAttainmentReport2(currEducData: CurrEducAttainment[]) {
+    if(currEducData.length <= 0) return
+
+    this.exportExcel<CurrEducAttainment>(currEducData, `Educational Attainment ${this.college}`, this.college, this.currSem)
+
+  }
+
+  generateEmploymentTypeReport(employmentTypeData: EmploymentTypeReport[]) {
+    if(employmentTypeData.length <= 0 ) return
+
+    this.exportExcel<EmploymentTypeReport>(employmentTypeData, `Employment Type ${this.college}`, this.college, this.currSem)
+  }
+
+  generateSeminarReport(seminarReport: SeminarReport[]) {
+    if(seminarReport.length <= 0) return
+
+    this.exportExcel<SeminarReport>(seminarReport, `Seminars Attended ${this.college}`, this.college, this.currSem)
+  }
+
+  generateTeachingLevelReport(teachingLevelReport: TeachingLevelReport[]) {
+    if(teachingLevelReport.length <= 0) return
+
+    this.exportExcel<TeachingLevelReport>(teachingLevelReport, `Teaching Level ${this.college}`, this.college, this.currSem)
+
+  }
+
+  generateExpertiseReport(expertiseReport: ExpertiseReport[]) {
+    if(expertiseReport.length <= 0 ) return
+
+    this.exportExcel<ExpertiseReport>(expertiseReport, `Instructor's Expertise ${this.college}`, this.college, this.currSem)
+
+  }
+
+  generateTeachCorrelationReport(teachingEvalCorrelationReport: Object[]) {
+    if(teachingEvalCorrelationReport.length <= 0 ) return
+
+    this.exportExcel<Object>(teachingEvalCorrelationReport, `Teaching Evaluation Correlation ${this.college}`, this.college, this.currSem)
+
+  }
+
+  generateCertsTeachReport(teachingCertsReport: Object[]) {
+    if(teachingCertsReport.length <= 0) return
+
+    this.exportExcel<Object>(teachingCertsReport, `Teaching Length and Certificates Count  ${this.college}`, this.college, this.currSem)
+  }
+
+  generateCertTypeReport(certTypeReport: Object[]) {
+    if(certTypeReport.length <= 0 ) return
+
+    this.exportExcel<Object>(certTypeReport, `Certification Count ${this.college}`, this.college, this.currSem)
+  }
+
+  generateFacultyReport(facultyReportData: FacultyReport[]) {
+    if(facultyReportData.length < 0) return
+
+    this.exportExcel<FacultyReport>(facultyReportData,`Faculty Report ${this.college} ${this.currSem}`,this.college,this.currSem)
   }
 
   exportExcel<T>(data: T[], title: string, college: string, EvalSem: string, subHeading? : SubHeadingsDictionary): void

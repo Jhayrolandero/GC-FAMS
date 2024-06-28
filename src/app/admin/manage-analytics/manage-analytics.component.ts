@@ -12,6 +12,7 @@ import {
   selectCertTypes,
   selectCertsLoading,
   selectCollegeEducTimeline,
+  selectCollegeEducTimelineReport,
   selectCollegeEmploymentType,
   selectCollegeFacultyCount,
   selectCollegeLevel,
@@ -155,7 +156,7 @@ export class ManageAnalyticsComponent{
 
   ngOnInit(): void {
     this.educSubscription = this.store.pipe(
-      select(selectCollegeEducTimeline),
+      select(selectCollegeEducTimelineReport),
       filter(data => !!data && (data.length > 0 )),
       take(1)
     ).subscribe({
@@ -163,7 +164,7 @@ export class ManageAnalyticsComponent{
     // Masters 1
     // Doctorate 2
     // Bachelor 0
-      this.renderEducReport(res)
+    this.educData = res!
     },
       error: err => { console.log(err)}
     })
@@ -177,6 +178,7 @@ export class ManageAnalyticsComponent{
       // Seminars 2
       // Certifications 0
       // Commex 1
+      console.log(res)
         this.formatAttainmentReport(res)
         // console.log(this.attainmentData)
       },
@@ -252,7 +254,7 @@ export class ManageAnalyticsComponent{
 
       next: res => {
 
-// console.log(res)
+        // console.log(res)
         // 0 - COrrelation [0] = eval [1] = teaching
         // 1 - cert [0] = certs [1] = length
 
@@ -294,22 +296,6 @@ export class ManageAnalyticsComponent{
     ).subscribe({
       next: res => this.college = res!
     })
-
-    // this.totalEducAttainment = this.store.pipe(
-    //   select(selectCollegeEducTimeline),
-    //   filter(data => !!data && (data.length > 0 )),
-    //   take(1)
-    // ).subscribe({
-    //   next: res => {
-
-    //     console.log(res)
-    //     this.totalBachelor = res[0].reduce((partialSum, a) => partialSum + a, 0)
-    //     this.totalMasterals = res[1].reduce((partialSum, a) => partialSum + a, 0)
-    //     this.totalDoctorate = res[2].reduce((partialSum, a) => partialSum + a, 0)
-
-    //   }
-    // })
-
   }
 
   ngOnDestroy() {
@@ -317,7 +303,6 @@ export class ManageAnalyticsComponent{
     this.attainmentSubscription.unsubscribe()
     this.mileStoneSubscription.unsubscribe()
     this.currEducSubscription.unsubscribe()
-    // this.totalEducAttainment.unsubscribe()
     this.employmentTypeSubscription.unsubscribe()
     this.seminarReportSubscription.unsubscribe()
     this.teachingLevelReportSubscription.unsubscribe()
@@ -387,68 +372,55 @@ export class ManageAnalyticsComponent{
   }
 
   generateEducReport() {
-    if(this.educData.length <= 0) return
-
-    this.excelService.exportExcel<EducAttainmentData>(this.educData, `Education Attainment Timeline ${this.college} (${ this.date.getFullYear() - 14} - ${this.date.getFullYear()})`, this.college, this.currSem)
-
+    this.excelService.generateEducReport(this.educData)
   }
 
+  // Bugged
   generateAttainmentReport() {
-    if(this.attainmentData.length <= 0) return
+    this.excelService.generateEducAttainmentReport(this.attainmentData)
+    // if(this.attainmentData.length <= 0) return
 
-    this.excelService.exportExcel<AttainmentData>(this.attainmentData, `Attainment Timeline ${this.college} (${ this.date.getFullYear() - 14} - ${this.date.getFullYear()})`, this.college, this.currSem)
+    // this.excelService.exportExcel<AttainmentData>(this.attainmentData, `Attainment Timeline ${this.college} (${ this.date.getFullYear() - 14} - ${this.date.getFullYear()})`, this.college, this.currSem)
   }
 
+  // Bugged
   generateMilestoneReport() {
-    if(this.milestoneData.length <= 0) return
 
-    this.excelService.exportExcel<MilestoneReport>(this.milestoneData, `Milestone Achieved ${this.college} (${ this.date.getFullYear() - 14} - ${this.date.getFullYear()})`, this.college, this.currSem)
+    // this.excelService.generateMilestoneReport(this.milestoneData)
+    // if(this.milestoneData.length <= 0) return
+
+    // this.excelService.exportExcel<MilestoneReport>(this.milestoneData, `Milestone Achieved ${this.college} (${ this.date.getFullYear() - 14} - ${this.date.getFullYear()})`, this.college, this.currSem)
   }
 
   generateEducAttainmentReport() {
-    if(this.currEducData.length <= 0) return
-
-    this.excelService.exportExcel<CurrEducAttainment>(this.currEducData, `Educational Attainment ${this.college}`, this.college, this.currSem)
+    this.excelService.generateEducAttainmentReport2(this.currEducData)
   }
 
   generateEmploymentTypeReport() {
-    if(this.employmentTypeData.length <= 0 ) return
-
-    this.excelService.exportExcel<EmploymentTypeReport>(this.employmentTypeData, `Employment Type ${this.college}`, this.college, this.currSem)
+    this.excelService.generateEmploymentTypeReport(this.employmentTypeData)
   }
 
   generateSeminarReport() {
-    if(this.seminarReport.length <= 0) return
-
-    this.excelService.exportExcel<SeminarReport>(this.seminarReport, `Seminars Attended ${this.college}`, this.college, this.currSem)
+    this.excelService.generateSeminarReport(this.seminarReport)
   }
 
   generateTeachingLevelReport() {
-    if(this.teachingLevelReport.length <= 0) return
-
-    this.excelService.exportExcel<TeachingLevelReport>(this.teachingLevelReport, `Teaching Level ${this.college}`, this.college, this.currSem)
+    this.excelService.generateTeachingLevelReport(this.teachingLevelReport)
   }
 
   generateExpertiseReport() {
-    if(this.expertiseReport.length <= 0 ) return
-
-    this.excelService.exportExcel<ExpertiseReport>(this.expertiseReport, `Instructor's Expertise ${this.college}`, this.college, this.currSem)
+    this.excelService.generateExpertiseReport(this.expertiseReport)
   }
 
   generateTeachCorrelationReport() {
-    if(this.teachingEvalCorrelationReport.length <= 0 ) return
-
-    this.excelService.exportExcel<Object>(this.teachingEvalCorrelationReport, `Teaching Evaluation Correlation ${this.college}`, this.college, this.currSem)
+    this.excelService.generateTeachCorrelationReport(this.teachingEvalCorrelationReport)
   }
 
   generateCertsTeachReport() {
-    if(this.teachingCertsReport.length <= 0) return
-
-    this.excelService.exportExcel<Object>(this.teachingCertsReport, `Teaching Length and Certificates Count  ${this.college}`, this.college, this.currSem)
+    this.excelService.generateCertsTeachReport(this.teachingCertsReport)
   }
 
   generateCertTypeReport() {
-    if(this.certTypeReport.length <= 0 ) return
-    this.excelService.exportExcel<Object>(this.certTypeReport, `Certification Count ${this.college}`, this.college, this.currSem)
+    this.excelService.generateCertTypeReport(this.certTypeReport)
   }
 }

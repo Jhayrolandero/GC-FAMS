@@ -21,6 +21,7 @@ import { ExpertiseReport } from "../../services/Interfaces/expertiseReport";
 import { EvaluationRadar } from "../../services/Interfaces/radarEvaluation";
 import { SemDiff } from "../../services/Interfaces/semDiff";
 import { EvaluationTimeline } from "../../services/Interfaces/indAverageTimeline";
+import { EducAttainmentData } from "../../services/Interfaces/educAttainmentData";
 
 const date = new Date();
 const currentYear: number  = date.getFullYear();
@@ -42,6 +43,7 @@ export const selectCollegeMilestoneCount = createSelector(
             else{
                 milestoneMap.set(commYear, 1);
             }
+
         })
         state.educs.forEach(educ => {
             const educYear = +educ.year_end.slice(0,4);
@@ -74,7 +76,7 @@ export const selectCollegeMilestoneCount = createSelector(
     selectDeanState,
     (state) => {
 
-      if(state.certs.length <= 0 || state.educs.length <= 0 || state.commex.length <= 0) return
+      // if(state.certs.length <= 0 || state.educs.length <= 0 || state.commex.length <= 0) return
       const yearsArray: string[] = Array.from({ length: 15 }, (_, i) => (new Date().getFullYear() - 14) + i).map(String);
 
 
@@ -114,6 +116,7 @@ export const selectCollegeMilestoneCount = createSelector(
         milestoneReport.push(data)
       })
 
+      // console.log(milestoneReport)
       return milestoneReport
     }
 
@@ -302,44 +305,20 @@ export const selectAllCollegeEduc = createSelector(
 export const selectCollegeEducTimeline = createSelector(
     selectDeanState,
     (state: DeanState) => {
-        const floorYear = currentYear - 14;
-        let educTimeline = [
-            Array.from({ length: 15 }, () => 0),
-            Array.from({ length: 15 }, () => 0),
-            Array.from({ length: 15 }, () => 0)
-        ];
-
-        if(state.educs.length <= 0) return []
-
-        state.educs.forEach(educ => {
-            const currYear = +educ.year_end.slice(0,4);
-            if(currYear >= floorYear){
-                if(educ.educ_level == "Bachelor's Degree"){
-                    for (let index = currYear - floorYear; index < 15; index++) {
-                        educTimeline[0][index] += 1;
-                    }
-                }
-                else if(educ.educ_level == "Master's Degree"){
-                    for (let index = currYear - floorYear; index < 15; index++) {
-                        educTimeline[1][index] += 1;
-                        educTimeline[0][index] -= 1;
-                    }
-                }
-                else{
-                    for (let index = currYear - floorYear; index < 15; index++) {
-                        educTimeline[2][index] += 1;
-                        educTimeline[1][index] -= 1;
-                    }
-                }
-            }
-        })
-
-        // console.log(state.educs)
-
-        return educTimeline;
+      if(state.educs.length <= 0) return
+      return getCollegeEducTimeline(state.educs)
     }
 );
 
+
+export const selectCollegeEducTimelineReport = createSelector(
+  selectDeanState,
+  (state) => {
+    if(state.educs.length <= 0) return
+    const educData = getCollegeEducTimeline(state.educs)
+    return formatCollegeEducTimeine(educData)
+  }
+)
 
 export const selectAllExistCerts = createSelector(
     selectDeanState,
@@ -1488,5 +1467,65 @@ export const selectAttainmentTimelineFaculty = (commex: CommunityExtension[], id
 
     return [...averageTimeline.entries()];
 
+  }
+
+  function formatCollegeEducTimeine(res: number[][]) {
+    let educData: EducAttainmentData[] = []
+    const yearsArray: string[] = Array.from({ length: 15 }, (_, i) => (new Date().getFullYear() - 14) + i).map(String);
+
+    let previousYear = 0
+    for(let i = 0; i < res[0].length ; i++) {
+      let totalGraduates = res[1][i] + res[0][i] + res[2][i]
+      let data = {
+        "Year" : yearsArray[i],
+        "Masters Degrees Awarded": res[1][i],
+        "Doctorate Degrees Awarded": res[2][i],
+        "Bachelors Degrees Awarded": res[0][i],
+        "Total Graduates": totalGraduates,
+        "% Change from Previous Year": previousYear ? (((totalGraduates - previousYear) / previousYear) * 100).toFixed(2) as string + "%" : '-'
+      }
+
+      previousYear = totalGraduates
+      // this.educData.push(data)
+
+      educData = [...educData, data]
+      }
+      return educData
+  }
+
+  function getCollegeEducTimeline(educs: EducationalAttainment[]) {
+    const floorYear = currentYear - 14;
+    let educTimeline = [
+        Array.from({ length: 15 }, () => 0),
+        Array.from({ length: 15 }, () => 0),
+        Array.from({ length: 15 }, () => 0)
+    ];
+
+    if(educs.length <= 0) return []
+
+    educs.forEach(educ => {
+        const currYear = +educ.year_end.slice(0,4);
+        if(currYear >= floorYear){
+            if(educ.educ_level == "Bachelor's Degree"){
+                for (let index = currYear - floorYear; index < 15; index++) {
+                    educTimeline[0][index] += 1;
+                }
+            }
+            else if(educ.educ_level == "Master's Degree"){
+                for (let index = currYear - floorYear; index < 15; index++) {
+                    educTimeline[1][index] += 1;
+                    educTimeline[0][index] -= 1;
+                }
+            }
+            else{
+                for (let index = currYear - floorYear; index < 15; index++) {
+                    educTimeline[2][index] += 1;
+                    educTimeline[1][index] -= 1;
+                }
+            }
+        }
+    })
+
+    return educTimeline;
   }
 

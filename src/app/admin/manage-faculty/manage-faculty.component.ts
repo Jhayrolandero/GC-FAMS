@@ -111,14 +111,8 @@ export class ManageFacultyComponent {
   }
 
   generateFacultyReport() {
-    if(this.facultyReportData.length < 0) return
 
-    this.excelService.exportExcel<FacultyReport>(
-      this.facultyReportData,
-      `Faculty Report ${this.college} ${this.currSem}`,
-      this.college,
-      this.currSem)
-
+    this.excelService.generateFacultyReport(this.facultyReportData)
   }
 
 }
