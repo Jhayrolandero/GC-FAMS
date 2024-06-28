@@ -20,7 +20,7 @@ interface SubHeadingsDictionary {
 export class ExcelServiceService {
 
   constructor(private info: InfoService) {
-
+    this.getCollege()
   }
 
   college: string = ''
@@ -192,22 +192,33 @@ export class ExcelServiceService {
 
   }
 
-  async generateRadarReport(radarData: EvaluationRadar[], college: string) {
+  generateRadarReport(radarData: EvaluationRadar[]) {
     if(radarData.length <= 0) return
-    await this.getCollege()
     this.exportExcel<EvaluationRadar>(radarData, "Evaluation-Radar", this.college, this.currSem )
   }
 
-  generateSemDiffReport(semDiff: SemDiff[]) {
-
+  generateSemDiffReport(semDiffData: SemDiff[]) {
+    if(semDiffData.length <= 0) return
+    this.exportExcel<SemDiff>(semDiffData, "Semestral Difference", this.college, this.currSem)
   }
 
   generateIndTimelineReport(indvSemAveTimelineData: EvaluationTimeline[]) {
+    if(indvSemAveTimelineData.length <= 0) return
+
+    this.exportExcel<EvaluationTimeline>(
+      indvSemAveTimelineData,
+      "Individual Timeline",
+      this.college,
+      this.currSem,
+      {start: 4, title: "Year"}
+    )
 
   }
 
   generateEducAttainmentReport(educationTimelineReport: Object[]) {
+    if(educationTimelineReport.length <= 0) return
 
+    this.exportExcel<Object>(educationTimelineReport, `Educational Attainment Timeline (${ this.info.date.getFullYear() - 14} - ${this.info.date.getFullYear()})`, this.college, this.currSem)
   }
 
   exportExcel<T>(data: T[], title: string, college: string, EvalSem: string, subHeading? : SubHeadingsDictionary): void

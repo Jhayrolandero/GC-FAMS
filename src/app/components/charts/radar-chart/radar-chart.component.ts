@@ -59,6 +59,8 @@ export class RadarChartComponent {
 
     this.emitRadarData.emit(this.radarData);
 
+    console.log(this.data)
+
   }
 
   createChart() {
@@ -67,7 +69,7 @@ export class RadarChartComponent {
       datasets: [
         {
           label: this.label1 ? this.label1[0] : 'None',
-          data: this.data,
+          data: this.data.slice(0, 6),
           fill: true,
           backgroundColor: 'rgba(7, 66, 135, 0.2)',
           borderColor: 'rgb(7, 66, 135)',
@@ -78,7 +80,7 @@ export class RadarChartComponent {
         },
         {
           label: this.label2 ? this.label2[0] : 'None',
-          data: this.data2,
+          data: this.data2.slice(0, 6),
           fill: true,
           backgroundColor: 'rgba(255, 122, 0, 0.2)',
           borderColor: '#FF7A00',
@@ -89,7 +91,7 @@ export class RadarChartComponent {
         },
         {
           label: this.label3 ? this.label3[0] : 'None',
-          data: this.data3,
+          data: this.data3.slice(0, 6),
           fill: true,
           backgroundColor: 'rgba(30, 114, 66, 0.2)',
           borderColor: '#1E7242',

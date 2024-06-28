@@ -11,6 +11,8 @@ export class InfoService {
     private store: Store
   ) { }
 
+  date = new Date();
+
   collegeSubscription!: Subscription
 
   async getCollege() {
