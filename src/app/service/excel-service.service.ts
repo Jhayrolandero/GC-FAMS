@@ -15,7 +15,7 @@ import { ExpertiseReport } from '../services/Interfaces/expertiseReport';
 import { FacultyReport } from '../services/Interfaces/facultyReport';
 import { Store, select } from '@ngrx/store';
 import * as DeanSelector from '../state/dean-state/dean-state.selector';
-import { filter, take } from 'rxjs';
+import { filter, firstValueFrom, take } from 'rxjs';
 
 interface SubHeading {
   start: number;
@@ -207,6 +207,18 @@ export class ExcelServiceService {
 
   }
 
+
+
+async renderRadarData() {
+  return await firstValueFrom(
+    this.store.pipe(
+      select(DeanSelector.selectRadarReport),
+      filter(data => !!data && data.length > 0),
+      take(1)
+    )
+  );
+
+}
   generateRadarReport() {
     this.store.pipe(
       select(DeanSelector.selectRadarReport),

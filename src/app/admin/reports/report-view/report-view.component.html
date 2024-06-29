@@ -1,1 +1,14 @@
-<p>{{ title }}</p>
+@if(tableValue) {
+<table>
+  <thead>
+    <tr>
+      <th *ngFor="let header of tableValue.header">{{ header }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let row of tableValue.value">
+      <td *ngFor="let cell of row">{{ cell }}</td>
+    </tr>
+  </tbody>
+</table>
+}
