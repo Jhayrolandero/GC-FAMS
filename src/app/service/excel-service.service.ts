@@ -13,6 +13,9 @@ import { SeminarReport } from '../services/Interfaces/seminarReport';
 import { TeachingLevelReport } from '../services/Interfaces/teachingLevelReport';
 import { ExpertiseReport } from '../services/Interfaces/expertiseReport';
 import { FacultyReport } from '../services/Interfaces/facultyReport';
+import { Store, select } from '@ngrx/store';
+import * as DeanSelector from '../state/dean-state/dean-state.selector';
+import { filter, take } from 'rxjs';
 
 interface SubHeading {
   start: number;
@@ -28,7 +31,10 @@ interface SubHeadingsDictionary {
 })
 export class ExcelServiceService {
 
-  constructor(private info: InfoService) {
+  constructor(
+    private store: Store,
+    private info: InfoService
+  ) {
     this.getCollege()
   }
 
@@ -201,9 +207,17 @@ export class ExcelServiceService {
 
   }
 
-  generateRadarReport(radarData: EvaluationRadar[]) {
-    if(radarData.length <= 0) return
-    this.exportExcel<EvaluationRadar>(radarData, "Evaluation-Radar", this.college, this.currSem )
+  generateRadarReport() {
+    this.store.pipe(
+      select(DeanSelector.selectRadarReport),
+      filter(data => !!data && data.length > 0),
+      take(1)  // This ensures only non-null/non-undefined values are processed
+    ).subscribe({
+      next: (data) => {
+        this.exportExcel<EvaluationRadar>(data!, "Evaluation-Radar", this.college, this.currSem )
+      },
+      error: err => console.error(err)
+    });
   }
 
   generateSemDiffReport(semDiffData: SemDiff[]) {

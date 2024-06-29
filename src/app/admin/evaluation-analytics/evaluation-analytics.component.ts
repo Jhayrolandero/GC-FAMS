@@ -204,7 +204,7 @@ export class EvaluationAnalyticsComponent {
   }
 
   generateRadarReport() {
-    this.excelService.generateRadarReport(this.radarData)
+    this.excelService.generateRadarReport()
   }
 
   generateSemDiffReport() {
