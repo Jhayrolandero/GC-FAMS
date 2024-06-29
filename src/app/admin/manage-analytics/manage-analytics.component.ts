@@ -12,27 +12,28 @@ import {
   selectCertTypes,
   selectCertsLoading,
   selectCollegeEducTimeline,
+  selectCollegeEducTimelineReport,
   selectCollegeEmploymentType,
   selectCollegeFacultyCount,
-   selectCollegeLevel,
-    selectCollegeMilestoneCount,
-     selectCommexLoading,
-     selectCommonSeminars,
-      selectCoursesLoading,
-      selectCurrYearAverageSeminarCount,
-      selectCurrentEducAttainment,
-      selectEducsLoading,
-      selectEmploymentTypeReport,
-      selectExpertiseReport,
-      selectExpsLoading,
-      selectExptLoading,
-       selectMilestoneReport,
-       selectProjLoading,
-       selectSeminarReport,
-       selectTeachingLength,
-       selectTeachingLevelReport,
-       selectTopExpertise,
-       yearEvaluationAverage } from '../../state/dean-state/dean-state.selector';
+  selectCollegeLevel,
+  selectCollegeMilestoneCount,
+  selectCommexLoading,
+  selectCommonSeminars,
+  selectCoursesLoading,
+  selectCurrYearAverageSeminarCount,
+  selectCurrentEducAttainment,
+  selectEducsLoading,
+  selectEmploymentTypeReport,
+  selectExpertiseReport,
+  selectExpsLoading,
+  selectExptLoading,
+  selectMilestoneReport,
+  selectProjLoading,
+  selectSeminarReport,
+  selectTeachingLength,
+  selectTeachingLevelReport,
+  selectTopExpertise,
+  yearEvaluationAverage } from '../../state/dean-state/dean-state.selector';
 import { CommonModule, NgFor } from '@angular/common';
 import { BarChartComponent } from '../../components/charts/bar-chart/bar-chart.component';
 import { ScatterPlotComponent } from '../../components/charts/scatter-plot/scatter-plot.component';
@@ -103,50 +104,11 @@ export class ManageAnalyticsComponent{
   coursesLoading$ = this.store.pipe(select(selectCoursesLoading))
   commexLoading$ = this.store.pipe(select(selectCommexLoading))
 
-  collegeSubscription!: Subscription
-  college!: string
-
-
-  educSubscription!: Subscription
-  educData: EducAttainmentData[] = []
-
   attainmentSubscription!: Subscription
   attainmentData: AttainmentData[] = []
 
   mileStoneSubscription!: Subscription
   milestoneData: MilestoneReport[] = []
-
-  currEducSubscription!: Subscription
-  currEducData: CurrEducAttainment[] = []
-
-  topSeminarSubscription!: Subscription
-
-  employmentTypeSubscription!: Subscription
-  employmentTypeData: EmploymentTypeReport[] = []
-
-
-  seminarReportSubscription!: Subscription
-  seminarReport: SeminarReport[] = []
-
-  teachingLevelReportSubscription!: Subscription
-  teachingLevelReport: TeachingLevelReport[] = []
-
-  expertiseReportSubscription!: Subscription
-  expertiseReport: ExpertiseReport[] = []
-
-  teachingLengthSubscription!: Subscription
-  teachingEvalCorrelationReport: Object[] =  []
-  teachingCertsReport: Object[] =  []
-
-
-  certTypeReportSubscription!: Subscription
-  certTypeReport: Object[] = []
-
-  totalEducAttainment!: Subscription
-  totalBachelor: number = 0
-  totalMasterals: number = 0
-  totalDoctorate: number = 0
-
 
   constructor(
     public store: Store,
@@ -154,20 +116,8 @@ export class ManageAnalyticsComponent{
   ){}
 
   ngOnInit(): void {
-    this.educSubscription = this.store.pipe(
-      select(selectCollegeEducTimeline),
-      filter(data => !!data && (data.length > 0 )),
-      take(1)
-    ).subscribe({
-      next: res => {
-    // Masters 1
-    // Doctorate 2
-    // Bachelor 0
-      this.renderEducReport(res)
-    },
-      error: err => { console.log(err)}
-    })
 
+    // Bugged
     this.attainmentSubscription = this.store.pipe(
       select(selectAttainmentTimeline),
       filter(data => !!data && (data.length > 0 )),
@@ -177,12 +127,14 @@ export class ManageAnalyticsComponent{
       // Seminars 2
       // Certifications 0
       // Commex 1
+      console.log(res)
         this.formatAttainmentReport(res)
         // console.log(this.attainmentData)
       },
       error: error => {console.log(error)}
     })
 
+    // Bugged
     this.mileStoneSubscription = this.store.pipe(
       select(selectMilestoneReport),
       filter(data => !!data && (data.length > 0 )),
@@ -193,158 +145,11 @@ export class ManageAnalyticsComponent{
       error: error => {console.log(error)}
     })
 
-    this.currEducSubscription = this.store.pipe(
-      select(selectCurrentEducAttainment)
-    ).subscribe({
-      next: res => {this.currEducData = res!},
-      error: err => {console.log(err)}
-    })
-
-
-    this.employmentTypeSubscription = this.store.pipe(
-      select(selectEmploymentTypeReport),
-      filter(data => !!data && data.length > 0),
-      take(1)
-    ).subscribe({
-      next: res => {this.employmentTypeData = res!},
-      error: err => (console.log(err))
-    })
-
-    this.seminarReportSubscription = this.store.pipe(
-      select(selectSeminarReport),
-      filter(data => !!data && data.length > 0),
-      take(1)
-    ).subscribe({
-      next: res => {
-        this.seminarReport = res!
-      },
-      error: err => {console.log(err)}
-    })
-
-
-    this.teachingLevelReportSubscription = this.store.pipe(
-      select(selectTeachingLevelReport),
-      filter(data => !!data && data.length > 0),
-      take(1)
-    ).subscribe({
-      next: res => {
-        this.teachingLevelReport = res!
-      },
-      error: err => {console.log(err)}
-    })
-
-    this.expertiseReportSubscription = this.store.pipe(
-      select(selectExpertiseReport),
-      filter(data => !!data && data.length > 0),
-      take(1)
-    ).subscribe({
-      next: res => {
-        this.expertiseReport = res!
-      },
-      error: err => {console.log(err)}
-    })
-
-    this.teachingLengthSubscription = this.store.pipe(
-      select(selectTeachingLength),
-      filter(data => !!data && data.length > 0),
-      take(1)
-    ).subscribe({
-
-      next: res => {
-
-// console.log(res)
-        // 0 - COrrelation [0] = eval [1] = teaching
-        // 1 - cert [0] = certs [1] = length
-
-        this.yearsArray
-        res![0].map(item => {
-          let data = {
-            "Evalutation Average": item[0],
-            "Teaching Length": item[1]
-          }
-
-          this.teachingEvalCorrelationReport.push(data)
-        })
-
-        let i = 0
-        let j = 0
-        res![1][0].map(item => {
-          let data = {
-            "Year": this.yearsArray[i++],
-            "Certifications Awarded": item,
-            "Teaching Length": res![1][0][j++]
-          }
-          this.teachingCertsReport.push(data)
-        })
-      }
-    })
-
-    this.certTypeReportSubscription = this.store.pipe(
-      select(selectCertTypeReport),
-      filter(data => !!data && data.length > 0),
-      take(1)
-    ).subscribe({
-      next: res => {this.certTypeReport = res!}
-    })
-
-    this.collegeSubscription = this.store.pipe(
-      select(selectPRofileCollege),
-      filter(data => !!data),
-      take(1)
-    ).subscribe({
-      next: res => this.college = res!
-    })
-
-    // this.totalEducAttainment = this.store.pipe(
-    //   select(selectCollegeEducTimeline),
-    //   filter(data => !!data && (data.length > 0 )),
-    //   take(1)
-    // ).subscribe({
-    //   next: res => {
-
-    //     console.log(res)
-    //     this.totalBachelor = res[0].reduce((partialSum, a) => partialSum + a, 0)
-    //     this.totalMasterals = res[1].reduce((partialSum, a) => partialSum + a, 0)
-    //     this.totalDoctorate = res[2].reduce((partialSum, a) => partialSum + a, 0)
-
-    //   }
-    // })
-
   }
 
   ngOnDestroy() {
-    this.educSubscription.unsubscribe()
     this.attainmentSubscription.unsubscribe()
     this.mileStoneSubscription.unsubscribe()
-    this.currEducSubscription.unsubscribe()
-    // this.totalEducAttainment.unsubscribe()
-    this.employmentTypeSubscription.unsubscribe()
-    this.seminarReportSubscription.unsubscribe()
-    this.teachingLevelReportSubscription.unsubscribe()
-    this.expertiseReportSubscription.unsubscribe()
-    this.teachingLevelReportSubscription.unsubscribe()
-    this.certTypeReportSubscription.unsubscribe()
-    this.collegeSubscription.unsubscribe()
-
-  }
-
-  renderEducReport(res : number[][]) {
-
-    let previousYear = 0
-    for(let i = 0; i < res[0].length ; i++) {
-      let totalGraduates = res[1][i] + res[0][i] + res[2][i]
-      let data = {
-        "Year" : this.yearsArray[i],
-        "Masters Degrees Awarded": res[1][i],
-        "Doctorate Degrees Awarded": res[2][i],
-        "Bachelors Degrees Awarded": res[0][i],
-        "Total Graduates": totalGraduates,
-        "% Change from Previous Year": previousYear ? (((totalGraduates - previousYear) / previousYear) * 100).toFixed(2) as string + "%" : '-'
-      }
-
-      previousYear = totalGraduates
-      this.educData.push(data)
-      }
   }
 
   formatAttainmentReport(res : number[][]) {
@@ -387,68 +192,55 @@ export class ManageAnalyticsComponent{
   }
 
   generateEducReport() {
-    if(this.educData.length <= 0) return
-
-    this.excelService.exportExcel<EducAttainmentData>(this.educData, `Education Attainment Timeline ${this.college} (${ this.date.getFullYear() - 14} - ${this.date.getFullYear()})`, this.college, this.currSem)
-
+    this.excelService.generateEducReport()
   }
 
+  // Bugged
   generateAttainmentReport() {
-    if(this.attainmentData.length <= 0) return
+    // this.excelService.generateEducAttainmentReport2(this.attainmentData)
+    // if(this.attainmentData.length <= 0) return
 
-    this.excelService.exportExcel<AttainmentData>(this.attainmentData, `Attainment Timeline ${this.college} (${ this.date.getFullYear() - 14} - ${this.date.getFullYear()})`, this.college, this.currSem)
+    // this.excelService.exportExcel<AttainmentData>(this.attainmentData, `Attainment Timeline ${this.college} (${ this.date.getFullYear() - 14} - ${this.date.getFullYear()})`, this.college, this.currSem)
   }
 
+  // Bugged
   generateMilestoneReport() {
-    if(this.milestoneData.length <= 0) return
 
-    this.excelService.exportExcel<MilestoneReport>(this.milestoneData, `Milestone Achieved ${this.college} (${ this.date.getFullYear() - 14} - ${this.date.getFullYear()})`, this.college, this.currSem)
+    // this.excelService.generateMilestoneReport(this.milestoneData)
+    // if(this.milestoneData.length <= 0) return
+
+    // this.excelService.exportExcel<MilestoneReport>(this.milestoneData, `Milestone Achieved ${this.college} (${ this.date.getFullYear() - 14} - ${this.date.getFullYear()})`, this.college, this.currSem)
   }
 
   generateEducAttainmentReport() {
-    if(this.currEducData.length <= 0) return
-
-    this.excelService.exportExcel<CurrEducAttainment>(this.currEducData, `Educational Attainment ${this.college}`, this.college, this.currSem)
+    this.excelService.generateEducAttainmentReport2()
   }
 
   generateEmploymentTypeReport() {
-    if(this.employmentTypeData.length <= 0 ) return
-
-    this.excelService.exportExcel<EmploymentTypeReport>(this.employmentTypeData, `Employment Type ${this.college}`, this.college, this.currSem)
+    this.excelService.generateEmploymentTypeReport()
   }
 
   generateSeminarReport() {
-    if(this.seminarReport.length <= 0) return
-
-    this.excelService.exportExcel<SeminarReport>(this.seminarReport, `Seminars Attended ${this.college}`, this.college, this.currSem)
+    this.excelService.generateSeminarReport()
   }
 
   generateTeachingLevelReport() {
-    if(this.teachingLevelReport.length <= 0) return
-
-    this.excelService.exportExcel<TeachingLevelReport>(this.teachingLevelReport, `Teaching Level ${this.college}`, this.college, this.currSem)
+    this.excelService.generateTeachingLevelReport()
   }
 
   generateExpertiseReport() {
-    if(this.expertiseReport.length <= 0 ) return
-
-    this.excelService.exportExcel<ExpertiseReport>(this.expertiseReport, `Instructor's Expertise ${this.college}`, this.college, this.currSem)
+    this.excelService.generateExpertiseReport()
   }
 
   generateTeachCorrelationReport() {
-    if(this.teachingEvalCorrelationReport.length <= 0 ) return
-
-    this.excelService.exportExcel<Object>(this.teachingEvalCorrelationReport, `Teaching Evaluation Correlation ${this.college}`, this.college, this.currSem)
+    this.excelService.generateTeachCorrelationReport()
   }
 
   generateCertsTeachReport() {
-    if(this.teachingCertsReport.length <= 0) return
-
-    this.excelService.exportExcel<Object>(this.teachingCertsReport, `Teaching Length and Certificates Count  ${this.college}`, this.college, this.currSem)
+    this.excelService.generateCertsTeachReport()
   }
 
   generateCertTypeReport() {
-    if(this.certTypeReport.length <= 0 ) return
-    this.excelService.exportExcel<Object>(this.certTypeReport, `Certification Count ${this.college}`, this.college, this.currSem)
+    this.excelService.generateCertTypeReport()
   }
 }

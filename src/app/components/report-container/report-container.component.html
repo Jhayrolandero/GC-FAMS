@@ -1,0 +1,15 @@
+<h4 class="text-[1.5rem] border-b-2 border-blue">{{ report.title }}</h4>
+<div class="flex flex-col gap-2 py-1">
+  @for (report of report.reports; track $index) {
+  <div
+    class="flex justify-between p-2 transition-all hover:shadow-lg hover:scale-[1.025] laptop:hover:scale-[1.01]"
+  >
+    <div class="cursor-pointer w-full">
+      <p>{{ report.reportTitle }}</p>
+    </div>
+    <button (click)="report.reportFunction()" title="Download">
+      <i class="fa-solid fa-download"></i>
+    </button>
+  </div>
+  }
+</div>

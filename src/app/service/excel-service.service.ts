@@ -1,7 +1,21 @@
 import { Injectable } from '@angular/core';
-import { Component } from '@angular/core';
 import * as XLSX from 'xlsx';
 import { EvaluationTimeline } from '../services/Interfaces/indAverageTimeline';
+import { EvaluationRadar } from '../services/Interfaces/radarEvaluation';
+import { SemDiff } from '../services/Interfaces/semDiff';
+import { InfoService } from '../services/info.service';
+import { EducAttainmentData } from '../services/Interfaces/educAttainmentData';
+import { AttainmentData } from '../services/Interfaces/attainmentData';
+import { MilestoneReport } from '../services/Interfaces/milestoneReport';
+import { CurrEducAttainment } from '../services/Interfaces/currEducAttainment';
+import { EmploymentTypeReport } from '../services/Interfaces/employmentTypeReport';
+import { SeminarReport } from '../services/Interfaces/seminarReport';
+import { TeachingLevelReport } from '../services/Interfaces/teachingLevelReport';
+import { ExpertiseReport } from '../services/Interfaces/expertiseReport';
+import { FacultyReport } from '../services/Interfaces/facultyReport';
+import { Store, select } from '@ngrx/store';
+import * as DeanSelector from '../state/dean-state/dean-state.selector';
+import { filter, take } from 'rxjs';
 
 interface SubHeading {
   start: number;
@@ -17,7 +31,20 @@ interface SubHeadingsDictionary {
 })
 export class ExcelServiceService {
 
-  constructor() { }
+  constructor(
+    private store: Store,
+    private info: InfoService
+  ) {
+    this.getCollege()
+  }
+
+  college: string = ''
+
+  async getCollege() {
+    this.college = await this.info.getCollege()
+  }
+
+  currSem = this.getSemester(new Date().getMonth()+'', new Date().getFullYear()).semester + " Semester, A.Y. "+ this.getSemester(new Date().getMonth()+'', new Date().getFullYear()).academicYear
 
   getSemester(month : string, year : number) {
     // Normalize the input
@@ -177,6 +204,222 @@ export class ExcelServiceService {
       { s: { r: 1, c: 0 }, e: { r: 1, c: headerColLength } },
       { s: { r: 2, c: 0 }, e: { r: 2, c: headerColLength } },
     ]
+
+  }
+
+  generateRadarReport() {
+    this.store.pipe(
+      select(DeanSelector.selectRadarReport),
+      filter(data => !!data && data.length > 0),
+      take(1)  // This ensures only non-null/non-undefined values are processed
+    ).subscribe({
+      next: (data) => {
+        console.log(data)
+        this.exportExcel<EvaluationRadar>(data!, "Evaluation-Radar", this.college, this.currSem )
+      },
+      error: err => console.error(err)
+    });
+  }
+
+  generateSemDiffReport() {
+    this.store.pipe(
+      select(DeanSelector.selectSemDiffReport),
+      filter(data => !!data && data.length > 0),
+      take(1)  // This ensures only non-null/non-undefined values are processed
+      ).subscribe({
+      next: (item) => {
+        this.exportExcel<SemDiff>(item!, "Semestral Difference", this.college, this.currSem)
+      },
+      error: error => { console.log(error)},
+    })
+  }
+
+  generateIndTimelineReport() {
+    this.store.pipe(
+      select(DeanSelector.selectAllAveReport),
+      filter(data => !!data && data.length > 0),
+      take(1)
+    ).subscribe({
+      next: res => {
+
+        console.log(res)
+
+        this.exportExcel<EvaluationTimeline>(
+          res!,
+          "Individual Timeline",
+          this.college,
+          this.currSem,
+          {start: 4, title: "Year"}
+        )
+    },
+      error: err => console.log(err)
+    })
+
+
+  }
+
+  generateEducAttainmentReport() {
+    this.store.pipe(
+      select(DeanSelector.selectOverallAveReport),
+      filter(data => !!data && data.length > 0),
+      take(1)
+    ).subscribe({
+      next: res => {
+        this.exportExcel<Object>(res!, `Educational Attainment Timeline (${ this.info.date.getFullYear() - 14} - ${this.info.date.getFullYear()})`, this.college, this.currSem)
+      }
+    })
+  }
+
+  /*
+    Manage Analytics
+  */
+  generateEducReport() {
+    this.store.pipe(
+      select(DeanSelector.selectCollegeEducTimelineReport),
+      filter(data => !!data && (data.length > 0 )),
+      take(1)
+    ).subscribe({
+      next: res => {
+      // Masters 1
+      // Doctorate 2
+      // Bachelor 0
+      this.exportExcel<EducAttainmentData>(res!, `Education Attainment Timeline ${this.college} (${ this.info.date.getFullYear() - 14} - ${this.info.date.getFullYear()})`, this.college, this.currSem)
+    },
+      error: err => { console.log(err)}
+    })
+  }
+
+  // Bugged
+  generateAttainmentReport(attainmentData: AttainmentData[]) {
+    if(attainmentData.length <= 0) return
+
+    this.exportExcel<AttainmentData>(attainmentData, `Attainment Timeline ${this.college} (${ this.info.date.getFullYear() - 14} - ${this.info.date.getFullYear()})`, this.college, this.currSem)
+
+  }
+
+  // Bugged
+  generateMilestoneReport(milestoneData: MilestoneReport[]) {
+    if(milestoneData.length <= 0) return
+
+    this.exportExcel<MilestoneReport>(milestoneData, `Milestone Achieved ${this.college} (${ this.info.date.getFullYear() - 14} - ${this.info.date.getFullYear()})`, this.college, this.currSem)
+  }
+
+  generateEducAttainmentReport2() {
+    this.store.pipe(
+      select(DeanSelector.selectCurrentEducAttainment)
+    ).subscribe({
+      next: res => {
+        this.exportExcel<CurrEducAttainment>(res!, `Educational Attainment ${this.college}`, this.college, this.currSem)
+      },
+      error: err => {console.log(err)}
+    })
+  }
+
+  generateEmploymentTypeReport() {
+    this.store.pipe(
+      select(DeanSelector.selectEmploymentTypeReport),
+      filter(data => !!data && data.length > 0),
+      take(1)
+    ).subscribe({
+      next: res => {
+        this.exportExcel<EmploymentTypeReport>(res!, `Employment Type ${this.college}`, this.college, this.currSem)
+      },
+      error: err => (console.log(err))
+    })
+  }
+
+  generateSeminarReport() {
+    this.store.pipe(
+      select(DeanSelector.selectSeminarReport),
+      filter(data => !!data && data.length > 0),
+      take(1)
+    ).subscribe({
+      next: res => {
+        this.exportExcel<SeminarReport>(res!, `Seminars Attended ${this.college}`, this.college, this.currSem)
+      },
+      error: err => {console.log(err)}
+    })
+  }
+
+  generateTeachingLevelReport() {
+    this.store.pipe(
+      select(DeanSelector.selectTeachingLevelReport),
+      filter(data => !!data && data.length > 0),
+      take(1)
+    ).subscribe({
+      next: res => {
+        this.exportExcel<TeachingLevelReport>(res!, `Teaching Level ${this.college}`, this.college, this.currSem)
+      },
+      error: err => {console.log(err)}
+    })
+  }
+
+  generateExpertiseReport() {
+    this.store.pipe(
+      select(DeanSelector.selectExpertiseReport),
+      filter(data => !!data && data.length > 0),
+      take(1)
+    ).subscribe({
+      next: res => {
+        this.exportExcel<ExpertiseReport>(res!, `Instructor's Expertise ${this.college}`, this.college, this.currSem)
+      },
+      error: err => {console.log(err)}
+    })
+
+  }
+
+  generateTeachCorrelationReport() {
+    this.store.pipe(
+      select(DeanSelector.selectTeachingCorrelationReport),
+      filter(data => !!data && data.length > 0),
+      take(1)
+    ).subscribe({
+      next: res => {
+        this.exportExcel<Object>(res!, `Teaching Evaluation Correlation ${this.college}`, this.college, this.currSem)
+      },
+      error: err => {console.log(err)}
+    })
+  }
+
+  generateCertsTeachReport() {
+    this.store.pipe(
+      select(DeanSelector.selectTeachingCertReport),
+      filter(data => !!data && data.length > 0),
+      take(1)
+    ).subscribe({
+      next: res => {
+        this.exportExcel<Object>(res!, `Teaching Length and Certificates Count  ${this.college}`, this.college, this.currSem)
+      },
+      error: err => {console.log(err)}
+    })
+  }
+
+  generateCertTypeReport() {
+    this.store.pipe(
+      select(DeanSelector.selectCertTypeReport),
+      filter(data => !!data && data.length > 0),
+      take(1)
+    ).subscribe({
+      next: res => {
+        this.exportExcel<Object>(res!, `Certification Count ${this.college}`, this.college, this.currSem)
+      }
+    })
+  }
+
+  generateFacultyReport() {
+
+    this.store.pipe(
+      select(DeanSelector.selectFacultyReport),
+      filter(data => !!data && data.length > 0),
+      take(1)
+    ).subscribe({
+      next: res => {
+        this.exportExcel<FacultyReport>(res!,`Faculty Report ${this.college} ${this.currSem}`,this.college,this.currSem)
+        // res?.map(item => this.facultyReportData.push(item))
+      },
+      error: err => console.log(err)
+    })
+    // if(facultyReportData.length < 0) return
 
   }
 

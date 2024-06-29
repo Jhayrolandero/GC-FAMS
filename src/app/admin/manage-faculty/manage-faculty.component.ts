@@ -54,41 +54,16 @@ export class ManageFacultyComponent {
   currSem = this.excelService.getSemester(new Date().getMonth()+'', new Date().getFullYear()).semester + " Semester, A.Y. "+ this.excelService.getSemester(new Date().getMonth()+'', new Date().getFullYear()).academicYear
 
   constructor(
-    private store: Store,
     private excelService: ExcelServiceService
 
   ) {
     this.editData = undefined;
   }
 
-  ngOnInit() {
-    this.facultyReportSubscription = this.store.pipe(
-      select(selectFacultyReport),
-      filter(data => !!data && data.length > 0),
-      take(1)
-    ).subscribe({
-      next: res => {
-        res?.map(item => this.facultyReportData.push(item))
-      },
-      error: err => console.log(err)
-    })
-
-    this.collegeSubscription = this.store.pipe(
-      select(selectPRofileCollege),
-      filter(data => !!data),
-      take(1)
-    ).subscribe({
-      next: res => this.college = res!
-    })
-  }
-
-
   switchShow(){
     if(this.showAdd) this.editData = undefined;
     this.showAdd = !this.showAdd;
   }
-
-
 
   editFaculty(faculty: Faculty){
     this.editData = faculty;
@@ -105,20 +80,9 @@ export class ManageFacultyComponent {
     this.pdfID = faculty_ID
   }
 
-  ngOnDestroy() {
-    this.facultyReportSubscription.unsubscribe()
-    this.collegeSubscription.unsubscribe()
-  }
-
   generateFacultyReport() {
-    if(this.facultyReportData.length < 0) return
 
-    this.excelService.exportExcel<FacultyReport>(
-      this.facultyReportData,
-      `Faculty Report ${this.college} ${this.currSem}`,
-      this.college,
-      this.currSem)
-
+    this.excelService.generateFacultyReport()
   }
 
 }

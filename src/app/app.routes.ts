@@ -40,6 +40,8 @@ export const routes: Routes = [
       { path: 'evaluation-analytics', loadComponent: () => import('./admin/evaluation-analytics/evaluation-analytics.component').then(m => m.EvaluationAnalyticsComponent) },
       { path: 'program-analytics', loadComponent: () => import('./admin/manage-analytics/manage-analytics.component').then(m => m.ManageAnalyticsComponent) },
       { path: 'manage-profile', loadComponent: () => import('./components/manage-profile/manage-profile.component').then(m => m.ManageProfileComponent) },
+      { path: 'reports', loadComponent: () => import('./admin/reports/reports.component').then(m => m.ReportsComponent) },
+      { path: 'reports/:id', loadComponent: () => import('./admin/reports/report-view/report-view.component').then(m => m.ReportViewComponent)}
     ], canActivateChild: [authGuard]
   },
   { path: '**', loadComponent: () => import('./components/pagenotfound/pagenotfound.component').then(m => m.PagenotfoundComponent) }

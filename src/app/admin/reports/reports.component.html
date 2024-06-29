@@ -1,0 +1,27 @@
+<div class="p-5 text-blue flex flex-col gap-2">
+  <div
+    class="bg-white shadow-main w-full rounded-[15px] py-2 flex flex-col tablet:flex-row justify-between items-center px-5"
+  >
+    <h1
+      class="font-Poppins font-semibold text-[2rem] tablet:text-[2.5rem] py-2"
+    >
+      Reports
+    </h1>
+  </div>
+  <div
+    class="bg-white shadow-main w-full rounded-[15px] py-2 px-5 flex flex-col gap-2"
+  >
+    <app-report-container [report]="facultyReport"></app-report-container>
+  </div>
+  <div
+    class="bg-white shadow-main w-full rounded-[15px] py-2 px-5 flex flex-col gap-2"
+  >
+    <app-report-container [report]="programReport"></app-report-container>
+  </div>
+
+  <div
+    class="bg-white shadow-main w-full rounded-[15px] py-2 px-5 flex flex-col gap-2"
+  >
+    <app-report-container [report]="evalReport"></app-report-container>
+  </div>
+</div>

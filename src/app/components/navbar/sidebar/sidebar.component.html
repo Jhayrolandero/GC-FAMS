@@ -24,31 +24,12 @@
         [title]="'Evaluation Analytics'"
         [source]="'ScatterPlot.png'"
       ></app-nav>
-
-      <!-- <app-nav
-          (click)="onSelect('curriculum-vitae')"
-          [selectedBar]="selectedBar"
-          [title]="'Curriculum Vitae'"
-          [source]="'Person.png'"
-        ></app-nav>
-        <app-nav
-          (click)="onSelect('analytics')"
-          [selectedBar]="selectedBar"
-          [title]="'Analytics'"
-          [source]="'Signal.png'"
-        ></app-nav>
-        <app-nav
-          (click)="onSelect('community')"
-          [selectedBar]="selectedBar"
-          [title]="'Community'"
-          [source]="'CommunityExtension.svg'"
-        ></app-nav>
-        <app-nav
-          (click)="onSelect('evaluation')"
-          [selectedBar]="selectedBar"
-          [title]="'Evaluation'"
-          [source]="'ScatterPlot.png'"
-        ></app-nav> -->
+      <app-nav
+        (click)="onSelect('reports')"
+        [selectedBar]="selectedBar"
+        [title]="'Reports'"
+        [source]="'ScatterPlot.png'"
+      ></app-nav>
     </ul>
 
     <ul *ngIf="isFaculty">
@@ -65,10 +46,10 @@
         [source]="'Signal.png'"
       ></app-nav>
       <app-nav
-      (click)="onSelect('research')"
-      [selectedBar]="selectedBar"
-      [title]="'Research'"
-      [source]="'Research.svg'"
+        (click)="onSelect('research')"
+        [selectedBar]="selectedBar"
+        [title]="'Research'"
+        [source]="'Research.svg'"
       ></app-nav>
       <app-nav
         (click)="onSelect('projects')"
