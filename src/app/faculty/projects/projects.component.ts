@@ -8,7 +8,7 @@ import { selectAllProj } from '../../state/faculty-state/faculty-state.selector'
 import { FacultyRequestService } from '../../services/faculty/faculty-request.service';
 import { CryptoJSService } from '../../services/crypto-js.service';
 import { MessageService } from '../../services/message.service';
-import { key } from '../../app.component';
+import { key, mainPort } from '../../app.component';
 import { Encryption } from '../../services/Interfaces/encryption';
 
 @Component({
@@ -20,6 +20,7 @@ import { Encryption } from '../../services/Interfaces/encryption';
 })
 export class ProjectsComponent {
   proj$ = this.store.select(selectAllProj);
+  port = mainPort;
 
 
   constructor(
