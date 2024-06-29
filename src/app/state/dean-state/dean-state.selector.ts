@@ -532,78 +532,123 @@ export const selectAllExp = createSelector(
 export const selectTeachingLength = createSelector(
     selectDeanState,
     (state: DeanState) => {
-        let experienceName: Map<number, [number, number, number]> = new Map();
-
-
-        if(state.exps.length <= 0 || state.certs.length <= 0 ) return
-
-        //Gets teaching year
-        state.exps.forEach(exp => {
-            let fromDate = new Date(exp.experience_from).getTime();
-            let toDate: number;
-
-            if(exp.experience_to == undefined){
-                toDate = new Date().getTime();
-            }
-            else{
-                toDate = new Date(exp.experience_to).getTime();
-            }
-
-            let dateDiff = +((toDate - fromDate) / 31536000000).toFixed(2);
-
-            if(experienceName.has(exp.faculty_ID)){
-                let currentValue = experienceName.get(exp.faculty_ID)!;
-                currentValue[0] += dateDiff;
-                experienceName.set(exp.faculty_ID, currentValue);
-            }
-            else{
-                experienceName.set(exp.faculty_ID, [dateDiff, 0, 0]);
-            }
-        })
-
-        state.certs.forEach(cert => {
-            if(experienceName.has(cert.faculty_ID)){
-                let currentValue = experienceName.get(cert.faculty_ID)!;
-                currentValue[1] += 1;
-                experienceName.set(cert.faculty_ID, currentValue);
-            }
-            else{
-                experienceName.set(cert.faculty_ID, [0, 0, 1])
-            }
-        })
-
-        const yearEvaluation = state.evals.filter((evaluation: Evaluation) => evaluation.evaluation_year == currentYear);
-        const params: number[] = Array.from({ length: 6 }, () => 0);
-
-        // Gets evaluation average for current year of each faculty member
-        yearEvaluation.forEach((evaluation: Evaluation) => {
-            let average = (+evaluation.param1_score + +evaluation.param2_score + +evaluation.param3_score + +evaluation.param4_score + +evaluation.param5_score + +evaluation.param6_score) / 6;
-            if(experienceName.has(evaluation.faculty_ID)){
-                let currentValue = experienceName.get(evaluation.faculty_ID)!;
-                currentValue[1] == 0 ? currentValue[1] += average : currentValue[1] = (currentValue[1] + average) / 2
-                experienceName.set(evaluation.faculty_ID, currentValue);
-            }
-            else{
-                experienceName.set(evaluation.faculty_ID, [0, average, 0])
-            }
-        });
-
-        const sortedTeaching = [...experienceName.entries()];
-        // return sortedTeaching;
-
-        // console.log(sortedTeaching)
-        return [sortedTeaching.map(x => [x[1][0], x[1][1]]), [sortedTeaching.map(x => x[1][0]), sortedTeaching.map(x => x[1][1])]];
-        // return [sortedTeaching.map(x => x[0]), sortedTeaching.map(x => x[1][0]), sortedTeaching.map(x => x[1][1]), sortedTeaching.map(x => x[1][2])]
+      if(state.exps.length <= 0 || state.certs.length <= 0 || state.evals.length <= 0) return
+        return getTeachingLength(state.exps, state.certs, state.evals)
     }
 );
 
-
-export const selectTeachingLengthReport = ( college: number) => createSelector(
+export const selectTeachingCorrelationReport = createSelector(
   selectDeanState,
   (state) => {
-    // if(state.)
+    if(state.exps.length <= 0 || state.certs.length <= 0 || state.evals.length <= 0) return
+    const data =  getTeachingLength(state.exps, state.certs, state.evals)
+    return formatTeachingCorrelationReport(data)
   }
 )
+
+export const selectTeachingCertReport = createSelector(
+  selectDeanState,
+  (state) => {
+    if(state.exps.length <= 0 || state.certs.length <= 0 || state.evals.length <= 0) return
+    const data =  getTeachingLength(state.exps, state.certs, state.evals)
+    return formatTeachingCertReport(data)
+  }
+)
+
+function formatTeachingCertReport(items: number[][][]) {
+  let teachingCertsReport: Object[] = []
+  const yearsArray: string[] = Array.from({ length: 15 }, (_, i) => (new Date().getFullYear() - 14) + i).map(String);
+
+  for(let i = 0; i < yearsArray.length; i++) {
+
+    let data = {
+      "Year": yearsArray[i],
+      "Certifications Awarded": items![1][0][i] ? items![1][0][i] : "-",
+      "Teaching Length": items![1][1][i] ? items![1][1][i] : "-"
+    }
+      teachingCertsReport = [...teachingCertsReport, data]
+
+  }
+
+  return teachingCertsReport
+}
+
+function formatTeachingCorrelationReport(items: number[][][]) {
+  let teachingEvalCorrelationReport: Object[] = []
+
+  items[0].map(item => {
+    let data = {
+      "Evalutation Average": item[0],
+      "Teaching Length": item[1]
+    }
+
+    teachingEvalCorrelationReport = [...teachingEvalCorrelationReport, data]
+  })
+
+  return teachingEvalCorrelationReport
+}
+
+function getTeachingLength(exps: IndustryExperience[], certs: CertificationsFaculty[], evals: Evaluation[]) {
+  let experienceName: Map<number, [number, number, number]> = new Map();
+  //Gets teaching year
+  exps.forEach(exp => {
+      let fromDate = new Date(exp.experience_from).getTime();
+      let toDate: number;
+
+      if(exp.experience_to == undefined){
+          toDate = new Date().getTime();
+      }
+      else{
+          toDate = new Date(exp.experience_to).getTime();
+      }
+
+      let dateDiff = +((toDate - fromDate) / 31536000000).toFixed(2);
+
+      if(experienceName.has(exp.faculty_ID)){
+          let currentValue = experienceName.get(exp.faculty_ID)!;
+          currentValue[0] += dateDiff;
+          experienceName.set(exp.faculty_ID, currentValue);
+      }
+      else{
+          experienceName.set(exp.faculty_ID, [dateDiff, 0, 0]);
+      }
+  })
+
+  certs.forEach(cert => {
+      if(experienceName.has(cert.faculty_ID)){
+          let currentValue = experienceName.get(cert.faculty_ID)!;
+          currentValue[1] += 1;
+          experienceName.set(cert.faculty_ID, currentValue);
+      }
+      else{
+          experienceName.set(cert.faculty_ID, [0, 0, 1])
+      }
+  })
+
+  const yearEvaluation = evals.filter((evaluation: Evaluation) => evaluation.evaluation_year == currentYear);
+  const params: number[] = Array.from({ length: 6 }, () => 0);
+
+  // Gets evaluation average for current year of each faculty member
+  yearEvaluation.forEach((evaluation: Evaluation) => {
+      let average = (+evaluation.param1_score + +evaluation.param2_score + +evaluation.param3_score + +evaluation.param4_score + +evaluation.param5_score + +evaluation.param6_score) / 6;
+      if(experienceName.has(evaluation.faculty_ID)){
+          let currentValue = experienceName.get(evaluation.faculty_ID)!;
+          currentValue[1] == 0 ? currentValue[1] += average : currentValue[1] = (currentValue[1] + average) / 2
+          experienceName.set(evaluation.faculty_ID, currentValue);
+      }
+      else{
+          experienceName.set(evaluation.faculty_ID, [0, average, 0])
+      }
+  });
+
+  const sortedTeaching = [...experienceName.entries()];
+  // return sortedTeaching;
+
+  // console.log(sortedTeaching)
+  return [sortedTeaching.map(x => [x[1][0], x[1][1]]), [sortedTeaching.map(x => x[1][0]), sortedTeaching.map(x => x[1][1])]];
+  // return [sortedTeaching.map(x => x[0]), sortedTeaching.map(x => x[1][0]), sortedTeaching.map(x => x[1][1]), sortedTeaching.map(x => x[1][2])]
+}
+
 
 export const selectAllProj = createSelector(
     selectDeanState,

@@ -240,7 +240,6 @@ export class ExcelServiceService {
       take(1)
     ).subscribe({
       next: res => {
-        // this.indvSemAveTimelineData = res!
         this.exportExcel<EvaluationTimeline>(
           res!,
           "Individual Timeline",
@@ -256,14 +255,12 @@ export class ExcelServiceService {
   }
 
   generateEducAttainmentReport() {
-
     this.store.pipe(
       select(DeanSelector.selectOverallAveReport),
       filter(data => !!data && data.length > 0),
       take(1)
     ).subscribe({
       next: res => {
-        // this.educationTimelineReport = res!
         this.exportExcel<Object>(res!, `Educational Attainment Timeline (${ this.info.date.getFullYear() - 14} - ${this.info.date.getFullYear()})`, this.college, this.currSem)
       }
     })
@@ -303,62 +300,123 @@ export class ExcelServiceService {
     this.exportExcel<MilestoneReport>(milestoneData, `Milestone Achieved ${this.college} (${ this.info.date.getFullYear() - 14} - ${this.info.date.getFullYear()})`, this.college, this.currSem)
   }
 
-  generateEducAttainmentReport2(currEducData: CurrEducAttainment[]) {
-    if(currEducData.length <= 0) return
+  generateEducAttainmentReport2() {
+    this.store.pipe(
+      select(DeanSelector.selectCurrentEducAttainment)
+    ).subscribe({
+      next: res => {
+        this.exportExcel<CurrEducAttainment>(res!, `Educational Attainment ${this.college}`, this.college, this.currSem)
+      },
+      error: err => {console.log(err)}
+    })
+  }
 
-    this.exportExcel<CurrEducAttainment>(currEducData, `Educational Attainment ${this.college}`, this.college, this.currSem)
+  generateEmploymentTypeReport() {
+    this.store.pipe(
+      select(DeanSelector.selectEmploymentTypeReport),
+      filter(data => !!data && data.length > 0),
+      take(1)
+    ).subscribe({
+      next: res => {
+        this.exportExcel<EmploymentTypeReport>(res!, `Employment Type ${this.college}`, this.college, this.currSem)
+      },
+      error: err => (console.log(err))
+    })
+  }
+
+  generateSeminarReport() {
+    this.store.pipe(
+      select(DeanSelector.selectSeminarReport),
+      filter(data => !!data && data.length > 0),
+      take(1)
+    ).subscribe({
+      next: res => {
+        this.exportExcel<SeminarReport>(res!, `Seminars Attended ${this.college}`, this.college, this.currSem)
+      },
+      error: err => {console.log(err)}
+    })
+  }
+
+  generateTeachingLevelReport() {
+    this.store.pipe(
+      select(DeanSelector.selectTeachingLevelReport),
+      filter(data => !!data && data.length > 0),
+      take(1)
+    ).subscribe({
+      next: res => {
+        this.exportExcel<TeachingLevelReport>(res!, `Teaching Level ${this.college}`, this.college, this.currSem)
+      },
+      error: err => {console.log(err)}
+    })
+  }
+
+  generateExpertiseReport() {
+    this.store.pipe(
+      select(DeanSelector.selectExpertiseReport),
+      filter(data => !!data && data.length > 0),
+      take(1)
+    ).subscribe({
+      next: res => {
+        this.exportExcel<ExpertiseReport>(res!, `Instructor's Expertise ${this.college}`, this.college, this.currSem)
+      },
+      error: err => {console.log(err)}
+    })
 
   }
 
-  generateEmploymentTypeReport(employmentTypeData: EmploymentTypeReport[]) {
-    if(employmentTypeData.length <= 0 ) return
-
-    this.exportExcel<EmploymentTypeReport>(employmentTypeData, `Employment Type ${this.college}`, this.college, this.currSem)
+  generateTeachCorrelationReport() {
+    this.store.pipe(
+      select(DeanSelector.selectTeachingCorrelationReport),
+      filter(data => !!data && data.length > 0),
+      take(1)
+    ).subscribe({
+      next: res => {
+        this.exportExcel<Object>(res!, `Teaching Evaluation Correlation ${this.college}`, this.college, this.currSem)
+      },
+      error: err => {console.log(err)}
+    })
   }
 
-  generateSeminarReport(seminarReport: SeminarReport[]) {
-    if(seminarReport.length <= 0) return
-
-    this.exportExcel<SeminarReport>(seminarReport, `Seminars Attended ${this.college}`, this.college, this.currSem)
+  generateCertsTeachReport() {
+    this.store.pipe(
+      select(DeanSelector.selectTeachingCertReport),
+      filter(data => !!data && data.length > 0),
+      take(1)
+    ).subscribe({
+      next: res => {
+        this.exportExcel<Object>(res!, `Teaching Length and Certificates Count  ${this.college}`, this.college, this.currSem)
+      },
+      error: err => {console.log(err)}
+    })
   }
 
-  generateTeachingLevelReport(teachingLevelReport: TeachingLevelReport[]) {
-    if(teachingLevelReport.length <= 0) return
-
-    this.exportExcel<TeachingLevelReport>(teachingLevelReport, `Teaching Level ${this.college}`, this.college, this.currSem)
-
+  generateCertTypeReport() {
+    this.store.pipe(
+      select(DeanSelector.selectCertTypeReport),
+      filter(data => !!data && data.length > 0),
+      take(1)
+    ).subscribe({
+      next: res => {
+        this.exportExcel<Object>(res!, `Certification Count ${this.college}`, this.college, this.currSem)
+      }
+    })
   }
 
-  generateExpertiseReport(expertiseReport: ExpertiseReport[]) {
-    if(expertiseReport.length <= 0 ) return
+  generateFacultyReport() {
 
-    this.exportExcel<ExpertiseReport>(expertiseReport, `Instructor's Expertise ${this.college}`, this.college, this.currSem)
+    this.store.pipe(
+      select(DeanSelector.selectFacultyReport),
+      filter(data => !!data && data.length > 0),
+      take(1)
+    ).subscribe({
+      next: res => {
+        this.exportExcel<FacultyReport>(res!,`Faculty Report ${this.college} ${this.currSem}`,this.college,this.currSem)
+        // res?.map(item => this.facultyReportData.push(item))
+      },
+      error: err => console.log(err)
+    })
+    // if(facultyReportData.length < 0) return
 
-  }
-
-  generateTeachCorrelationReport(teachingEvalCorrelationReport: Object[]) {
-    if(teachingEvalCorrelationReport.length <= 0 ) return
-
-    this.exportExcel<Object>(teachingEvalCorrelationReport, `Teaching Evaluation Correlation ${this.college}`, this.college, this.currSem)
-
-  }
-
-  generateCertsTeachReport(teachingCertsReport: Object[]) {
-    if(teachingCertsReport.length <= 0) return
-
-    this.exportExcel<Object>(teachingCertsReport, `Teaching Length and Certificates Count  ${this.college}`, this.college, this.currSem)
-  }
-
-  generateCertTypeReport(certTypeReport: Object[]) {
-    if(certTypeReport.length <= 0 ) return
-
-    this.exportExcel<Object>(certTypeReport, `Certification Count ${this.college}`, this.college, this.currSem)
-  }
-
-  generateFacultyReport(facultyReportData: FacultyReport[]) {
-    if(facultyReportData.length < 0) return
-
-    this.exportExcel<FacultyReport>(facultyReportData,`Faculty Report ${this.college} ${this.currSem}`,this.college,this.currSem)
   }
 
   exportExcel<T>(data: T[], title: string, college: string, EvalSem: string, subHeading? : SubHeadingsDictionary): void

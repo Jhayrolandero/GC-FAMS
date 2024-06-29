@@ -84,61 +84,12 @@ export class EvaluationAnalyticsComponent {
 
 
   ngOnInit() {
-    // this.store.dispatch(loadCollegeEval());
-
-    this.collegeSubscription = this.store.pipe(
-      select(selectPRofileCollege),
-      filter(data => !!data),
-      take(1)
-    ).subscribe({
-      next: res => this.college = res!
-    })
-
-
     this.evaluationDifference$.subscribe((next: any) => {
       this.diffArr = [next[0], next[1], next[2]];
     })
 
-    // this.semDiffSubcription = this.store.pipe(
-    //   select(DeanSelector.selectSemDiffReport),
-    //   filter(data => !!data && data.length > 0),
-    //   take(1)  // This ensures only non-null/non-undefined values are processed
-    //   ).subscribe({
-    //   next: (item : any) => {
-    //     this.semDiffData = item
-    //   },
-    //   error: error => { console.log(error)},
-    // })
-
-    this.indvSemAveTimelineSubscription = this.store.pipe(
-      select(DeanSelector.selectAllAveReport),
-      filter(data => !!data && data.length > 0),
-      take(1)
-    ).subscribe({
-      next: res => {
-        this.indvSemAveTimelineData = res!
-    },
-      error: err => console.log(err)
-    })
-
-
-    this.educationTimelineSubscription = this.store.pipe(
-      select(DeanSelector.selectOverallAveReport),
-      filter(data => !!data && data.length > 0),
-      take(1)
-    ).subscribe({
-      next: res => {
-        this.educationTimelineReport = res!
-      }
-    })
   }
 
-  ngOnDestroy() {
-    this.radarDataSubscription.unsubscribe()
-    this.semDiffSubcription.unsubscribe()
-    this.indvSemAveTimelineSubscription.unsubscribe()
-    this.collegeSubscription.unsubscribe()
-  }
   //Triggers when a faculty is selected
   selectFaculty(data: any){
 
