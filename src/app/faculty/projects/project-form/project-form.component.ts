@@ -63,6 +63,7 @@ export class ProjectFormComponent {
     project_start_date: new FormControl('', [Validators.required]),
     is_finished: new FormControl(),
     project_end_date: new FormControl(''),
+    project_main_image: new FormControl<string>(''),
     project_images: new FormControl<string[]>([]),
     project_author: new FormControl<number>(-1),
     project_co_author: new FormControl<number[]>([]),
@@ -70,7 +71,7 @@ export class ProjectFormComponent {
 
   submitForm(){
     this.messageService.sendMessage("Adding Project...", 0)
-    // console.log(this.projectForm);
+    console.log(this.projectForm);
 
     this.projectForm.patchValue({
       is_finished: !this.projectForm.controls['is_finished'].value
@@ -114,6 +115,33 @@ export class ProjectFormComponent {
       project_author: +selectElement.value
     })
   }
+
+  mainImageURL?: string = undefined;
+  PreviewMainImage(event: Event) {
+
+    const allowedFileType = ["image/png", "image/jpeg"]
+    const inputElement = event.target as HTMLInputElement;
+    const file = inputElement.files?.[0]; // Using optional chaining to handle null or undefined
+
+
+
+    if (file && allowedFileType.includes(file.type)) {
+      // File Preview
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.mainImageURL = reader.result as string;
+
+        this.projectForm.patchValue({
+          project_main_image: this.mainImageURL
+        })
+      };
+      reader.readAsDataURL(file);
+    }
+  else {
+    this.messageService.sendMessage("File type should be .png or .jpeg/.jpg", -1)
+
+  }
+}
 
 
   PreviewImage(event: Event) {

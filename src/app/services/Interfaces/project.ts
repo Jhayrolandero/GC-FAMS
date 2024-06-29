@@ -5,6 +5,7 @@ export interface Project {
     project_end_date: Date,
     project_detail: string,
     project_type: string,
+    project_main_image: string
     project_link?: string,
     is_finished: boolean
 }

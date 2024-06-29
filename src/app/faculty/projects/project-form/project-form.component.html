@@ -25,7 +25,6 @@
                     <div class="border-2 p-3 w-full">
                         <div class="flex flex-col max-h-[400px] laptop:flex-row gap-3">
                             <div class="flex-1 max-h-[400px] tablet:w-full laptop:w-[490px]">
-        
                                 <p class="font-Roboto font-medium text-[1.1rem]">Project Name</p>
                                 <input type="text" placeholder="" id="project_name" formControlName="project_name"
                                     class="w-full border-2 px-2 font-Roboto font-regular text-[1.1rem] rounded-[5px] text-black py-1" />
@@ -34,9 +33,69 @@
                                 <input type="text" placeholder="" id="project_link" formControlName="project_link"
                                     class="w-full border-2 px-2 font-Roboto font-regular text-[1.1rem] rounded-[5px] text-black py-1" />
 
-                                <p class="font-Roboto font-medium text-[1.1rem]">Project Details</p>
-                                <textarea type="textarea" placeholder="" id="project_detail" formControlName="project_detail"
-                                    class="w-full border-2 px-2 font-Roboto font-regular text-[1.1rem] rounded-[5px] text-black py-1"></textarea>
+                                <div class="flex flex-row w-full gap-3">
+                                    <div class="flex flex-col">
+                                        <p class="font-Roboto font-medium text-[1.1rem]">Project Image</p>
+                                        <label for="dropzone-main-file">
+                                            <div
+                                                class="border-2 rounded-[5px] w-[100px] h-[100px] flex flex-col justify-center items-center overflow-hidden"
+                                            >
+                                                <img [src]="mainImageURL"/>
+                                                <svg
+                                                *ngIf="mainImageURL === undefined"
+                                                width="40"
+                                                height="40"
+                                                viewBox="0 0 51 50"
+                                                fill="none"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                >
+                                                <rect
+                                                    x="0.5"
+                                                    width="50"
+                                                    height="50"
+                                                    fill="url(#pattern0_1441_3830)"
+                                                />
+                                                <defs>
+                                                    <pattern
+                                                    id="pattern0_1441_3830"
+                                                    patternContentUnits="objectBoundingBox"
+                                                    width="1"
+                                                    height="1"
+                                                    >
+                                                    <use
+                                                        xlink:href="#image0_1441_3830"
+                                                        transform="scale(0.0111111)"
+                                                    />
+                                                    </pattern>
+                                                    <image
+                                                    id="image0_1441_3830"
+                                                    width="90"
+                                                    height="90"
+                                                    xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFoAAABaCAYAAAA4qEECAAAACXBIWXMAAAsTAAALEwEAmpwYAAAFLElEQVR4nO2dy2vcVRTHLzRzzyQVXVofoFL9B6yCoOWXc2ai6ULURRR8YbW6aSFasa2rEZq555cRwRRc+C904XNR0T9AkUhtu3GjuPCBjyR1ZQaapJw7pYs0Q6bJff1m7gcOhDCZub9vztzfPeeee35KZTKZTCaTyWQymUxmQGbO7hlrmIeB2q8BmQ6Q+QzQXNTIPwPxMiB3rREv29+hudh7Dc/L34wV8w/Jewz6cSPFeFHercm8CchfAvJ/QLyxK0NzGdB8oYlnx2nuLjXSPPLBeB3NSxr5G0Be27W4/UW/otF8XSd+URWtuhoZitYt4mkaze/exO1jmvhvQH5PNcvb1NBy4OOaRn4H0CyFFngLL1/SxG/LmNQwUaf2QSC+FF3gG8z8BA1uqspTtOqa+CMgsx5f1L5ir2syZ9T0AqgqAgXfq4m/iy8kDzid8A9QmPtVlZCvo5NlGoUWW5aFTKoKaOJngPj/6KLRjj27W2uY51TKAPIbXtfEFEzsNcD26ypFNLWfluAgukjkTuwals+qlJB5DdCsRheHnIvdBTSPqxTQzfkHKnnjo5u5QXb2x1V5egHssii2GOTdFqOus3vBSDDPWtXEJyeKzj4x+TnkdGWDmnhhdaCID7mriZ/cPAaYLJ8It5Q06/XJdhFW5aI1BsgXYoocR2y+FDQRZbNwwaaL8tC246HyUKhpRCO/FS6fjPxvbE+O5dly7aKB8o29CSUmcnCxJZcdIO35R4oihxRbk/lTtuKUL+rIL6csckixa1g+r3xhN1ITFzmU2Br5nPKBbNt7SxqhW5GDiI285qWUwdZdRFzC7RS/Sz9zTLnGFrdUxJODeTaaT5T7SNBcrpInB/LsZaflZ71aOLfeoIlPqsBoLE+5vo4a8gFnAwTiI64HOFF09qnA7KX27R6mj8POBtir6qy+0OPN+TudC02GnQ0QiD93PnVgeUoFRqN5171H86fOBuglJYrcFbEnDs7doTwjn2FF7tVVO/ZoPu9soJr4Vw8D3LgZ6ze22OPSyL84EzqFClCVqtBk/nEotJev3MYwCC1r8yw0VU7oPHVAiKkj3ww51M0w0I43VXCOdrm88xGwwLAI7TKD5yMEh2ER2m0ILqdYs9CwtQavJJ0mhSHx6BrNPehMaEluA/FKFpo3C73i/Ny5nK3OQrPnrazeWno2C82bPfqon6R5xDMqqg/R/vlornjbvJAuAVlo9ltAI0jbhyw0+y8Js0WOEdo/QGJTh/cix6BF6JSw0A1zXHln6v29khocVaF1qEJ0QQqxR1Zo4lkVDCkRI/NjyAuc2GK33Fa4hhU67GGh4MffSDypfSJEidc2x98eDSry9QslcybYhaIURbZPSOAk1jvQGXDTGM2HKuoRZeLFcF7FcQz5ezXT0vGEtsmmzn7nJb2UlK3A1On7VApAgycr3XWG+npyF6icUimhJ/mpYWuMoolnVIpIe5zhaPVjxGGOqJSxLX+qPI2gWU2uxc82rX+qeINckfuNqhJ1PH2PJvNtAuJtDGiL8Vv67JTpBegFNSbplpk2GIm9TnZBvVk+lkJZ2Q2GfCFaWO2NojUmTUVipFg3m4zBZuGK1pgaWqYkny2Nuvm34AKj+cs26p5u3apGhqJVrzXMC5rMV14DHdt6ns/ZPb6Raj2/BZJrlgPscpTMPpli9wIvX3uvozHOM1aDmbN7pJ4NkF8F5FKqgaQG+dqjQJauPx5E2sf3Hhly3r6m99rDthYuPx4kk8lkMplMJpPJZNTAXAWEe8+zB6Wo2gAAAABJRU5ErkJggg=="
+                                                    />
+                                                </defs>
+                                                </svg>
+                                            </div>
+                                        </label>
+                                        <input
+                                        id="dropzone-main-file"
+                                        type="file"
+                                        class="hidden"
+                                        (change)="PreviewMainImage($event)"
+                                        accept="image/*"
+                                        />
+                                    </div>
+    
+                                    <div class="flex-1">
+                                        <p class="font-Roboto font-medium text-[1.1rem]">Project Details</p>
+                                        <textarea type="textarea" placeholder="" id="project_detail" formControlName="project_detail"
+                                            class="w-full h-[100px] border-2 px-2 font-Roboto font-regular text-[1.1rem] rounded-[5px] text-black py-1"></textarea>
+                                    </div>
+                                </div>
+
+
+
         
 
                                 <p class="font-Roboto font-medium text-[1.1rem]">
@@ -67,6 +126,7 @@
         
                             </div>
                             <div class="flex-1 max-h-[300px] overflow-y-scroll">
+
                                 <label for="dropzone-file">
                                     <div class="bg-blue rounded-[15px] shadow-main text-center font-semibold py-1">
                                         <p class="text-white font-Roboto">Choose  image file(s)</p>
