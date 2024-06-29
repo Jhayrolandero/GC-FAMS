@@ -372,12 +372,12 @@ export class ManageAnalyticsComponent{
   }
 
   generateEducReport() {
-    this.excelService.generateEducReport(this.educData)
+    this.excelService.generateEducReport()
   }
 
   // Bugged
   generateAttainmentReport() {
-    this.excelService.generateEducAttainmentReport(this.attainmentData)
+    // this.excelService.generateEducAttainmentReport2(this.attainmentData)
     // if(this.attainmentData.length <= 0) return
 
     // this.excelService.exportExcel<AttainmentData>(this.attainmentData, `Attainment Timeline ${this.college} (${ this.date.getFullYear() - 14} - ${this.date.getFullYear()})`, this.college, this.currSem)

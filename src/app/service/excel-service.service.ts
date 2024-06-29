@@ -220,35 +220,72 @@ export class ExcelServiceService {
     });
   }
 
-  generateSemDiffReport(semDiffData: SemDiff[]) {
-    if(semDiffData.length <= 0) return
-    this.exportExcel<SemDiff>(semDiffData, "Semestral Difference", this.college, this.currSem)
+  generateSemDiffReport() {
+    this.store.pipe(
+      select(DeanSelector.selectSemDiffReport),
+      filter(data => !!data && data.length > 0),
+      take(1)  // This ensures only non-null/non-undefined values are processed
+      ).subscribe({
+      next: (item) => {
+        this.exportExcel<SemDiff>(item!, "Semestral Difference", this.college, this.currSem)
+      },
+      error: error => { console.log(error)},
+    })
   }
 
-  generateIndTimelineReport(indvSemAveTimelineData: EvaluationTimeline[]) {
-    if(indvSemAveTimelineData.length <= 0) return
+  generateIndTimelineReport() {
+    this.store.pipe(
+      select(DeanSelector.selectAllAveReport),
+      filter(data => !!data && data.length > 0),
+      take(1)
+    ).subscribe({
+      next: res => {
+        // this.indvSemAveTimelineData = res!
+        this.exportExcel<EvaluationTimeline>(
+          res!,
+          "Individual Timeline",
+          this.college,
+          this.currSem,
+          {start: 4, title: "Year"}
+        )
+    },
+      error: err => console.log(err)
+    })
 
-    this.exportExcel<EvaluationTimeline>(
-      indvSemAveTimelineData,
-      "Individual Timeline",
-      this.college,
-      this.currSem,
-      {start: 4, title: "Year"}
-    )
 
   }
 
-  generateEducAttainmentReport(educationTimelineReport: Object[]) {
-    if(educationTimelineReport.length <= 0) return
+  generateEducAttainmentReport() {
 
-    this.exportExcel<Object>(educationTimelineReport, `Educational Attainment Timeline (${ this.info.date.getFullYear() - 14} - ${this.info.date.getFullYear()})`, this.college, this.currSem)
+    this.store.pipe(
+      select(DeanSelector.selectOverallAveReport),
+      filter(data => !!data && data.length > 0),
+      take(1)
+    ).subscribe({
+      next: res => {
+        // this.educationTimelineReport = res!
+        this.exportExcel<Object>(res!, `Educational Attainment Timeline (${ this.info.date.getFullYear() - 14} - ${this.info.date.getFullYear()})`, this.college, this.currSem)
+      }
+    })
   }
 
-  generateEducReport(educData: EducAttainmentData[]) {
-    if(educData.length <= 0) return
-
-    this.exportExcel<EducAttainmentData>(educData, `Education Attainment Timeline ${this.college} (${ this.info.date.getFullYear() - 14} - ${this.info.date.getFullYear()})`, this.college, this.currSem)
-
+  /*
+    Manage Analytics
+  */
+  generateEducReport() {
+    this.store.pipe(
+      select(DeanSelector.selectCollegeEducTimelineReport),
+      filter(data => !!data && (data.length > 0 )),
+      take(1)
+    ).subscribe({
+      next: res => {
+      // Masters 1
+      // Doctorate 2
+      // Bachelor 0
+      this.exportExcel<EducAttainmentData>(res!, `Education Attainment Timeline ${this.college} (${ this.info.date.getFullYear() - 14} - ${this.info.date.getFullYear()})`, this.college, this.currSem)
+    },
+      error: err => { console.log(err)}
+    })
   }
 
   // Bugged

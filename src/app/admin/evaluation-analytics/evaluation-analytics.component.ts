@@ -99,27 +99,16 @@ export class EvaluationAnalyticsComponent {
       this.diffArr = [next[0], next[1], next[2]];
     })
 
-    this.radarDataSubscription = this.store.pipe(
-      select(DeanSelector.selectRadarReport),
-      filter(data => !!data && data.length > 0),
-      take(1)  // This ensures only non-null/non-undefined values are processed
-    ).subscribe({
-      next: (data) => {
-        this.radarData = data!
-      },
-      error: err => console.error(err)
-    });
-
-    this.semDiffSubcription = this.store.pipe(
-      select(DeanSelector.selectSemDiffReport),
-      filter(data => !!data && data.length > 0),
-      take(1)  // This ensures only non-null/non-undefined values are processed
-      ).subscribe({
-      next: (item : any) => {
-        this.semDiffData = item
-      },
-      error: error => { console.log(error)},
-    })
+    // this.semDiffSubcription = this.store.pipe(
+    //   select(DeanSelector.selectSemDiffReport),
+    //   filter(data => !!data && data.length > 0),
+    //   take(1)  // This ensures only non-null/non-undefined values are processed
+    //   ).subscribe({
+    //   next: (item : any) => {
+    //     this.semDiffData = item
+    //   },
+    //   error: error => { console.log(error)},
+    // })
 
     this.indvSemAveTimelineSubscription = this.store.pipe(
       select(DeanSelector.selectAllAveReport),
@@ -208,14 +197,14 @@ export class EvaluationAnalyticsComponent {
   }
 
   generateSemDiffReport() {
-    this.excelService.generateSemDiffReport(this.semDiffData)
+    this.excelService.generateSemDiffReport()
   }
 
   generateIndTimelineReport() {
-    this.excelService.generateIndTimelineReport(this.indvSemAveTimelineData)
+    this.excelService.generateIndTimelineReport()
   }
 
   generateEducAttainmentReport() {
-    this.excelService.generateEducAttainmentReport(this.educationTimelineReport)
+    this.excelService.generateEducAttainmentReport()
   }
 }
