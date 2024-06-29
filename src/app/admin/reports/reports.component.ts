@@ -27,7 +27,20 @@ export class ReportsComponent {
   constructor(
     private info: InfoService,
     private excelService: ExcelServiceService
-  ) {}
+  ) {
+
+    this.getCollege()
+  }
+  college: string = ""
+  evalReport!: Report;
+  programReport!: Report;
+  facultyReport!: Report;
+
+  async getCollege() {
+    this.college = await this.info.getCollege()
+    this.setupReport()
+  }
+
 
   generateRadarReport() {
     this.excelService.generateRadarReport()
@@ -45,26 +58,78 @@ export class ReportsComponent {
     this.excelService.generateEducAttainmentReport()
   }
 
-  evalReport: Report = {
+  setupReport() {
+  this.evalReport = {
     title: "Evaluation Report",
     reports: [
       {
-        reportTitle:"Evaluation-Radar",
-        reportFunction:this.generateRadarReport.bind(this) as MyFunctionType
+        reportTitle:`${this.college} - Evaluation-Radar`,
+        reportFunction:() => this.excelService.generateRadarReport()
       },
       {
-        reportTitle:"Semestral Difference",
-        reportFunction:this.generateSemDiffReport.bind(this) as MyFunctionType
+        reportTitle:`${this.college} - Semestral Difference`,
+        reportFunction:() => this.excelService.generateSemDiffReport()
       },
       {
-        reportTitle:"Individual Evaluation Average Timeline",
-        reportFunction:this.generateIndTimelineReport.bind(this) as MyFunctionType
+        reportTitle:`${this.college} - Individual Evaluation Average Timeline`,
+        reportFunction:() => this.excelService.generateIndTimelineReport()
       },
       {
-        reportTitle:`Educational Attainment Timeline (${this.info.date.getFullYear() - 14} - ${this.info.date.getFullYear()})`,
-        reportFunction:this.generateEducAttainmentReport.bind(this) as MyFunctionType
+        reportTitle:`${this.college} - Educational Attainment Timeline (${this.info.date.getFullYear() - 14} - ${this.info.date.getFullYear()})`,
+        reportFunction:() => this.excelService.generateEducAttainmentReport()
       }
     ]
   };
 
+  this.programReport = {
+    title: "Program Report",
+    reports: [
+      {
+        reportTitle: `${this.college} - Education Attainment Timeline (${this.info.date.getFullYear() - 14} - ${this.info.date.getFullYear()})`,        reportFunction: () => this.excelService.generateEducReport()
+      },
+      {
+        reportTitle: `${this.college} - Educational Attainment`,
+        reportFunction: () => this.excelService.generateEducAttainmentReport2()
+      },
+      {
+        reportTitle: `${this.college} - Employment Type`,
+        reportFunction: () => this.excelService.generateEmploymentTypeReport()
+      },
+      {
+        reportTitle: `${this.college} - Seminars Attended`,
+        reportFunction: () => this.excelService.generateSeminarReport()
+      },
+      {
+        reportTitle: `${this.college} - Teaching Level`,
+        reportFunction: () => this.excelService.generateTeachingLevelReport()
+      },
+      {
+        reportTitle: `${this.college} - Instructor's Expertise`,
+        reportFunction: () => this.excelService.generateExpertiseReport()
+      },
+      {
+        reportTitle: `${this.college} - Teaching Evaluation Correlation`,
+        reportFunction: () => this.excelService.generateTeachCorrelationReport()
+      },
+      {
+        reportTitle: `${this.college} - Teaching Length and Certificates Count `,
+        reportFunction: () => this.excelService.generateCertsTeachReport()
+      },
+      {
+        reportTitle: `${this.college} - Certification Count`,
+        reportFunction: () => this.excelService.generateCertTypeReport()
+      }
+    ]
+  }
+
+  this.facultyReport = {
+    title: "Faculty Report",
+    reports: [
+      {
+        reportTitle: `${this.college} - Faculty Report ${this.excelService.currSem}`,
+        reportFunction: () =>  this.excelService.generateFacultyReport()
+      }
+    ]
+  }
+  }
 }

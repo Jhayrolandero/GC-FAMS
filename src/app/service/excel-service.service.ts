@@ -214,6 +214,7 @@ export class ExcelServiceService {
       take(1)  // This ensures only non-null/non-undefined values are processed
     ).subscribe({
       next: (data) => {
+        console.log(data)
         this.exportExcel<EvaluationRadar>(data!, "Evaluation-Radar", this.college, this.currSem )
       },
       error: err => console.error(err)
@@ -240,6 +241,9 @@ export class ExcelServiceService {
       take(1)
     ).subscribe({
       next: res => {
+
+        console.log(res)
+
         this.exportExcel<EvaluationTimeline>(
           res!,
           "Individual Timeline",
