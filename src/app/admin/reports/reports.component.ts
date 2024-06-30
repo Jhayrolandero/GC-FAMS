@@ -6,6 +6,7 @@ import { ExcelServiceService } from '../../service/excel-service.service';
 
 type MyFunctionType = () => void;
 interface ReportVal {
+  id: number;
   reportTitle: string;
   reportFunction: MyFunctionType;
 }
@@ -63,18 +64,22 @@ export class ReportsComponent {
     title: "Evaluation Report",
     reports: [
       {
+        id: 1,
         reportTitle:`${this.college} - Evaluation-Radar`,
         reportFunction:() => this.excelService.generateRadarReport()
       },
       {
+        id: 2,
         reportTitle:`${this.college} - Semestral Difference`,
         reportFunction:() => this.excelService.generateSemDiffReport()
       },
       {
+        id: 3,
         reportTitle:`${this.college} - Individual Evaluation Average Timeline`,
         reportFunction:() => this.excelService.generateIndTimelineReport()
       },
       {
+        id: 4,
         reportTitle:`${this.college} - Educational Attainment Timeline (${this.info.date.getFullYear() - 14} - ${this.info.date.getFullYear()})`,
         reportFunction:() => this.excelService.generateEducAttainmentReport()
       }
@@ -85,37 +90,46 @@ export class ReportsComponent {
     title: "Program Report",
     reports: [
       {
+        id: 5,
         reportTitle: `${this.college} - Education Attainment Timeline (${this.info.date.getFullYear() - 14} - ${this.info.date.getFullYear()})`,        reportFunction: () => this.excelService.generateEducReport()
       },
       {
+        id: 6,
         reportTitle: `${this.college} - Educational Attainment`,
         reportFunction: () => this.excelService.generateEducAttainmentReport2()
       },
       {
+        id: 7,
         reportTitle: `${this.college} - Employment Type`,
         reportFunction: () => this.excelService.generateEmploymentTypeReport()
       },
       {
+        id: 8,
         reportTitle: `${this.college} - Seminars Attended`,
         reportFunction: () => this.excelService.generateSeminarReport()
       },
       {
+        id: 9,
         reportTitle: `${this.college} - Teaching Level`,
         reportFunction: () => this.excelService.generateTeachingLevelReport()
       },
       {
+        id: 10,
         reportTitle: `${this.college} - Instructor's Expertise`,
         reportFunction: () => this.excelService.generateExpertiseReport()
       },
       {
+        id: 11,
         reportTitle: `${this.college} - Teaching Evaluation Correlation`,
         reportFunction: () => this.excelService.generateTeachCorrelationReport()
       },
       {
+        id: 12,
         reportTitle: `${this.college} - Teaching Length and Certificates Count `,
         reportFunction: () => this.excelService.generateCertsTeachReport()
       },
       {
+        id: 13,
         reportTitle: `${this.college} - Certification Count`,
         reportFunction: () => this.excelService.generateCertTypeReport()
       }
@@ -126,6 +140,7 @@ export class ReportsComponent {
     title: "Faculty Report",
     reports: [
       {
+        id: 14,
         reportTitle: `${this.college} - Faculty Report ${this.excelService.currSem}`,
         reportFunction: () =>  this.excelService.generateFacultyReport()
       }

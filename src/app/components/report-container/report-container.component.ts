@@ -1,8 +1,10 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
 // Define a type for a function signature
 type MyFunctionType = () => void;
 interface ReportVal {
+  id: number;
   reportTitle: string;
   reportFunction: MyFunctionType;
 }
@@ -21,5 +23,10 @@ interface report {
 })
 export class ReportContainerComponent {
 
+  router = inject(Router);
   @Input('report') report!: report
+
+  routeView(route: number) {
+    this.router.navigate([`admin/reports/${route}`])
+  }
 }

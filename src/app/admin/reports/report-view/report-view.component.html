@@ -1,9 +1,9 @@
 @if(tableValue) {
 <div class="p-5 text-blue flex flex-col gap-2">
-  <div
-    class="bg-white shadow-main w-full rounded-[15px] py-2 flex flex-col items-center px-5"
-  >
-    <div class="flex-1 w-full max-w-[400px]">
+  <button (click)="back()">Back</button>
+  <div class="bg-white shadow-main w-full rounded-[15px] py-2 px-5">
+    @if(view === 'radar') {
+    <div class="w-full max-w-[480px] m-auto">
       <app-radar-chart
         [label1]="selectedFacultyArray[0]"
         [label2]="selectedFacultyArray[1]"
@@ -20,9 +20,40 @@
       >
       </app-radar-chart>
     </div>
+    } @else if (view === 'semDiff') {
+    <div *ngIf="evaluationDifference$ | async as diffArr">
+      <app-bar-chart
+        [data]="diffArr[2]"
+        [axis]="'x'"
+        [bgColor]="'rgb(7, 66, 135)'"
+        [labels]="diffArr[1]"
+        [showLegend]="false"
+      >
+        >
+      </app-bar-chart>
+    </div>
+    } @else if (view === 'indTImeline') {
+    <app-line-graph
+      [data]="indTImelineData[0] != undefined ? indTImelineData[0].value : []"
+      [data2]="indTImelineData[1] != undefined ? indTImelineData[1].value : []"
+      [data3]="indTImelineData[2] != undefined ? indTImelineData[2].value : []"
+      [labels]="yearsArray"
+      [showLegend]="true"
+    >
+    </app-line-graph>
+    } @else if(view === 'educAttainment') {
+    <div *ngIf="overallAverageTimeline$ | async as timeline">
+      <app-line-graph
+        [data]="timeline"
+        [labels]="yearsArray"
+        [showLegend]="false"
+      >
+      </app-line-graph>
+    </div>
+    }
 
     <div class="overflow-x-auto">
-      <table class="flex-1">
+      <table class="w-full">
         <thead class="bg-blue text-white">
           <tr>
             <th *ngFor="let header of tableValue.header" class="px-2 py-1">
@@ -33,7 +64,17 @@
         <tbody class="[&>*:nth-child(even)]:bg-gray-100">
           <tr
             *ngFor="let row of tableValue.value"
-            (click)="view === 'radar' ? renderRadarChart(row) : null"
+            [ngClass]="{
+              'cursor-pointer': view === 'radar' || view === 'indTImeline',
+
+            }"
+            (click)="
+              view === 'radar'
+                ? renderRadarChart(row)
+                : view === 'indTImeline'
+                ? renderIndTimeline(row)
+                : null
+            "
           >
             <td class="text-center" *ngFor="let cell of row">{{ cell }}</td>
           </tr>

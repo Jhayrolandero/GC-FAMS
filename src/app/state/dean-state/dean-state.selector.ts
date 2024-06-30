@@ -1445,9 +1445,8 @@ export const selectAttainmentTimelineFaculty = (commex: CommunityExtension[], id
 
     let indvSemAveTimelineData : EvaluationTimeline[] = []
 
+    let no = 1
     items.map(item => {
-      let no = 1
-
       let data: EvaluationTimeline = {
         "No.": no++,
         "Name": item[1][0],

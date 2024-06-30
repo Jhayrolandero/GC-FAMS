@@ -32,6 +32,9 @@ export class LineGraphComponent {
       this.chart.destroy();
     }
     this.createChart();
+    console.log(this.data)
+    console.log(this.data2)
+    console.log(this.data3)
   }
 
   createChart(){

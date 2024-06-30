@@ -9,7 +9,7 @@ import { RadarChartComponent } from '../../components/charts/radar-chart/radar-c
 import { EvaluationSelectorComponent } from './evaluation-selector/evaluation-selector.component';
 import { ExcelServiceService } from '../../service/excel-service.service';
 import { EvaluationRadar } from '../../services/Interfaces/radarEvaluation';
-import {  Subscription, filter, map, take, tap } from 'rxjs';
+import {  Observable, Subscription, filter, map, take, tap } from 'rxjs';
 import { SemDiff } from '../../services/Interfaces/semDiff';
 import { LoadingScreenComponent } from '../../components/loading-screen/loading-screen.component';
 import { EvaluationTimeline } from '../../services/Interfaces/indAverageTimeline';
@@ -76,7 +76,7 @@ export class EvaluationAnalyticsComponent {
   }
   individualAverageTimeline$ = this.store.select(DeanSelector.selectAllAverageTimeline);
   overallAverageTimeline$ = this.store.select(DeanSelector.selectOverallAverageTimeline);
-  evaluationDifference$: any = this.store.select(DeanSelector.selectEvaluationDifference);
+  evaluationDifference$: Observable<any> = this.store.select(DeanSelector.selectEvaluationDifference);
   evaluationRadar$ = this.store.select(DeanSelector.selectCurrentEvaluation);
 
   evalLoading$ = this.store.pipe(select(DeanSelector.selectEvalLoading))

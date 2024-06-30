@@ -16,6 +16,7 @@ import { FacultyReport } from '../services/Interfaces/facultyReport';
 import { Store, select } from '@ngrx/store';
 import * as DeanSelector from '../state/dean-state/dean-state.selector';
 import { filter, firstValueFrom, take } from 'rxjs';
+import { error } from 'console';
 
 interface SubHeading {
   start: number;
@@ -209,76 +210,53 @@ export class ExcelServiceService {
 
 
 
-async renderRadarData() {
-  return await firstValueFrom(
-    this.store.pipe(
-      select(DeanSelector.selectRadarReport),
-      filter(data => !!data && data.length > 0),
-      take(1)
-    )
-  );
 
-}
+  async fetchData(selector: any): Promise<any> {
+    return await firstValueFrom(
+      this.store.pipe(
+        select(selector),
+        filter((data : any) => !!data && data.length > 0),
+        take(1)
+      )
+    );
+  }
+
   generateRadarReport() {
-    this.store.pipe(
-      select(DeanSelector.selectRadarReport),
-      filter(data => !!data && data.length > 0),
-      take(1)  // This ensures only non-null/non-undefined values are processed
-    ).subscribe({
-      next: (data) => {
-        console.log(data)
-        this.exportExcel<EvaluationRadar>(data!, "Evaluation-Radar", this.college, this.currSem )
-      },
-      error: err => console.error(err)
-    });
+    this.fetchData(DeanSelector.selectRadarReport).then(radarData => {
+      this.exportExcel<EvaluationRadar>(radarData!, "Evaluation-Radar", this.college, this.currSem )
+    }).catch(error => {
+      console.error("Error fetching data:", error);
+    })
   }
 
   generateSemDiffReport() {
-    this.store.pipe(
-      select(DeanSelector.selectSemDiffReport),
-      filter(data => !!data && data.length > 0),
-      take(1)  // This ensures only non-null/non-undefined values are processed
-      ).subscribe({
-      next: (item) => {
-        this.exportExcel<SemDiff>(item!, "Semestral Difference", this.college, this.currSem)
-      },
-      error: error => { console.log(error)},
+    this.fetchData(DeanSelector.selectSemDiffReport).then(res => {
+      this.exportExcel<SemDiff>(res!, "Semestral Difference", this.college, this.currSem)
+    }).catch(error => {
+      console.error("Error fetching data:", error);
     })
   }
 
   generateIndTimelineReport() {
-    this.store.pipe(
-      select(DeanSelector.selectAllAveReport),
-      filter(data => !!data && data.length > 0),
-      take(1)
-    ).subscribe({
-      next: res => {
-
-        console.log(res)
-
-        this.exportExcel<EvaluationTimeline>(
-          res!,
-          "Individual Timeline",
-          this.college,
-          this.currSem,
-          {start: 4, title: "Year"}
-        )
-    },
-      error: err => console.log(err)
+    this.fetchData(DeanSelector.selectAllAveReport).then(res => {
+      this.exportExcel<EvaluationTimeline>(
+        res!,
+        "Individual Timeline",
+        this.college,
+        this.currSem,
+        {start: 4, title: "Year"}
+      )
+    }).catch(error => {
+      console.error("Error fetching data:", error);
     })
-
 
   }
 
   generateEducAttainmentReport() {
-    this.store.pipe(
-      select(DeanSelector.selectOverallAveReport),
-      filter(data => !!data && data.length > 0),
-      take(1)
-    ).subscribe({
-      next: res => {
-        this.exportExcel<Object>(res!, `Educational Attainment Timeline (${ this.info.date.getFullYear() - 14} - ${this.info.date.getFullYear()})`, this.college, this.currSem)
-      }
+    this.fetchData(DeanSelector.selectOverallAveReport).then(res => {
+      this.exportExcel<Object>(res!, `Educational Attainment Timeline (${ this.info.date.getFullYear() - 14} - ${this.info.date.getFullYear()})`, this.college, this.currSem)
+    }).catch(error => {
+      console.error("Error fetching data:", error);
     })
   }
 

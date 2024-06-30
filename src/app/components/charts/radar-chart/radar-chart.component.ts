@@ -51,15 +51,8 @@ export class RadarChartComponent {
     if(this.radarData.length > 0) {
       this.radarData = []
     }
-
     this.createChart();
-
-
     this.emitRadarData.emit(this.radarData);
-
-    console.log(this.label1)
-    console.log(this.label2)
-    console.log(this.label3)
   }
 
   createChart() {
