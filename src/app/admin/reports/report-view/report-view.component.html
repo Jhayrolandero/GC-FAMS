@@ -50,6 +50,106 @@
       >
       </app-line-graph2>
     </div>
+    } @else if(view === 'educReport') {
+    <div *ngIf="educationalAttainmentTimeline$ | async as educTimeline">
+      <app-line-graph2
+        [label]="educTimeline[0]"
+        [label2]="educTimeline[1]"
+        [label3]="educTimeline[2]"
+        [labels]="yearsArray"
+        [showLegend]="true"
+        [legendLabel]="[
+          'Bachelor Degree',
+          'Masters Degree',
+          'Doctorate Degree'
+        ]"
+      >
+      </app-line-graph2>
+    </div>
+    } @else if(view === 'educAttainmentReport') {
+    <div *ngIf="educationalAttainmentTimeline$ | async as educTimeline">
+      <app-pie-chart
+        *ngIf="educTimeline.length > 0"
+        [data]="[educTimeline[0][14], educTimeline[1][14], educTimeline[2][14]]"
+        [labels]="['Bachelor Degree', 'Master Degree', 'Doctorate Degree']"
+      >
+      </app-pie-chart>
+    </div>
+    } @else if(view ==='employmentType') {
+    <div *ngIf="employmentTypes$ | async as type">
+      <app-pie-chart [data]="type" [labels]="['Part-Time', 'Full-Time']">
+      </app-pie-chart>
+    </div>
+    } @else if(view === 'seminarReport') {
+    <div *ngIf="topSeminar$ | async as seminar">
+      <app-bar-chart
+        *ngIf="seminar[1]"
+        [data]="[
+          seminar[0][1],
+          seminar[1][1],
+          seminar[2][1],
+          seminar[3][1],
+          seminar[4][1]
+        ]"
+        [labels]="[
+          seminar[0][0],
+          seminar[1][0],
+          seminar[2][0],
+          seminar[3][0],
+          seminar[4][0]
+        ]"
+        [axis]="'y'"
+        [bgColor]="'rgb(30, 114, 66)'"
+        [showLegend]="false"
+      ></app-bar-chart>
+    </div>
+    } @else if(view === 'teachingLevel') {
+    <div *ngIf="topLevel$ | async as level">
+      <app-bar-chart
+        [data]="level[1]"
+        [labels]="level[0]"
+        [axis]="'y'"
+        [bgColor]="'rgb(255, 122, 0)'"
+        [showLegend]="false"
+      ></app-bar-chart>
+    </div>
+    } @else if(view === 'expertiseReport') {
+    <div *ngIf="topExpertise$ | async as expertise">
+      <app-bar-chart
+        [data]="expertise[1]"
+        [labels]="expertise[0]"
+        [axis]="'y'"
+        [bgColor]="'rgb(7, 66, 135)'"
+        [showLegend]="false"
+      ></app-bar-chart>
+    </div>
+    } @else if(view === 'teachingEvalCorr') {
+    <div *ngIf="teachingLength$ | async as teaching">
+      <app-scatter-plot [data]="teaching[0]" [showLegend]="false">
+      </app-scatter-plot>
+    </div>
+    } @else if(view === 'teachingLengthCert') {
+    <div *ngIf="teachingLength$ | async as teaching">
+      <app-bar-chart
+        [data]="teaching[1][0]"
+        [data2]="teaching[1][1]"
+        [axis]="'x'"
+        [bgColor]="'rgb(7,66,135)'"
+        [bgColor2]="'rgb(30,114,66)'"
+        [labels]="yearsArray"
+        [showLegend]="false"
+      >
+        >
+      </app-bar-chart>
+    </div>
+    } @else if(view === 'certType') {
+    <div *ngIf="certTypes$ | async as certType">
+      <app-pie-chart
+        [data]="[certType['Completion'], certType['Achievement']]"
+        [labels]="['Completion', 'Achievement']"
+      >
+      </app-pie-chart>
+    </div>
     }
 
     <div class="overflow-x-auto">

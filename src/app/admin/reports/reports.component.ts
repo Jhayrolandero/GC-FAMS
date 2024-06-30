@@ -91,7 +91,8 @@ export class ReportsComponent {
     reports: [
       {
         id: 5,
-        reportTitle: `${this.college} - Education Attainment Timeline (${this.info.date.getFullYear() - 14} - ${this.info.date.getFullYear()})`,        reportFunction: () => this.excelService.generateEducReport()
+        reportTitle: `${this.college} - Education Attainment Timeline (${this.info.date.getFullYear() - 14} - ${this.info.date.getFullYear()})`,
+        reportFunction: () => this.excelService.generateEducReport()
       },
       {
         id: 6,

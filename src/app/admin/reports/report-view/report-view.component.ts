@@ -13,6 +13,8 @@ import { Store } from '@ngrx/store';
 import { LineGraphComponent } from '../../../components/charts/line-graph/line-graph.component';
 import { IndTimelineData } from '../../../services/Interfaces/indTimelineData';
 import { LineGraphComponent2 } from '../../../components/charts/line-graph2/line-graph2.component';
+import { PieChartComponent } from '../../../components/charts/pie-chart/pie-chart.component';
+import { ScatterPlotComponent } from '../../../components/charts/scatter-plot/scatter-plot.component';
 
 interface TableValue {
   header: string[];
@@ -29,6 +31,8 @@ interface TableValue {
     BarChartComponent,
     LineGraphComponent,
     LineGraphComponent2,
+    PieChartComponent,
+    ScatterPlotComponent
   ],
   templateUrl: './report-view.component.html',
   styleUrl: './report-view.component.css'
@@ -56,6 +60,13 @@ export class ReportViewComponent {
 
   evaluationDifference$: Observable<any> = this.store.select(DeanSelector.selectEvaluationDifference);
   overallAverageTimeline$ = this.store.select(DeanSelector.selectOverallAverageTimeline);
+  educationalAttainmentTimeline$ = this.store.select(DeanSelector.selectCollegeEducTimeline);
+  employmentTypes$ = this.store.select(DeanSelector.selectCollegeEmploymentType);
+  topSeminar$ = this.store.select(DeanSelector.selectCommonSeminars);
+  topLevel$ = this.store.select(DeanSelector.selectCollegeLevel);
+  topExpertise$ = this.store.select(DeanSelector.selectTopExpertise);
+  teachingLength$ = this.store.select(DeanSelector.selectTeachingLength);
+  certTypes$ = this.store.select(DeanSelector.selectCertTypes);
 
   yearsArray: string[] = Array.from({ length: 15 }, (_, i) => (new Date().getFullYear() - 14) + i).map(String);
 
@@ -83,6 +94,51 @@ export class ReportViewComponent {
         this.setContent(DeanSelector.selectOverallAveReport)
         this.view = "educAttainment"
         break;
+      case "5":
+        this.setContent(DeanSelector.selectCollegeEducTimelineReport)
+        this.view = "educReport"
+        break;
+      case "6":
+        this.setContent(DeanSelector.selectCurrentEducAttainment)
+        this.view = "educAttainmentReport"
+        break;
+      case "7":
+        this.setContent(DeanSelector.selectEmploymentTypeReport)
+        this.view = "employmentType"
+        break;
+      case "8":
+        this.setContent(DeanSelector.selectSeminarReport)
+        this.view = "seminarReport"
+        break;
+      case "9":
+        this.setContent(DeanSelector.selectTeachingLevelReport)
+        this.view = "teachingLevel"
+        break;
+      case "10":
+        this.setContent(DeanSelector.selectExpertiseReport)
+        this.view = "expertiseReport"
+        break;
+      case "11":
+        this.setContent(DeanSelector.selectTeachingCorrelationReport)
+        this.view = "teachingEvalCorr"
+        break;
+      case "12":
+        this.setContent(DeanSelector.selectTeachingCertReport)
+        this.view = "teachingLengthCert"
+        break;
+      case "13":
+        this.setContent(DeanSelector.selectCertTypeReport)
+        this.view = "certType"
+        break;
+      case "14":
+        this.setContent(DeanSelector.selectFacultyReport)
+        this.view = "faculty"
+        break;
+
+      default:
+        this.router.navigate([`admin/reports`])
+        break;
+
 
     }
   }
