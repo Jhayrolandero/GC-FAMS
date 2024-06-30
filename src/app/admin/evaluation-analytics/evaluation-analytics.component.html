@@ -67,11 +67,11 @@
       </div>
     </div>
     <app-line-graph
-      [data]="selectedArray[0] != undefined ? selectedArray[0][1][1] : []"
-      [data2]="selectedArray[1] != undefined ? selectedArray[1][1][1] : []"
-      [data3]="selectedArray[2] != undefined ? selectedArray[2][1][1] : []"
+      [label]="selectedArray[0]"
+      [label2]="selectedArray[1]"
+      [label3]="selectedArray[2]"
       [labels]="yearsArray"
-      [showLegend]="false"
+      [showLegend]="true"
     >
     </app-line-graph>
   </div>
@@ -90,12 +90,12 @@
             <i class="fa-solid fa-file-excel"></i>
           </button>
         </div>
-        <app-line-graph
-          [data]="timeline"
+        <app-line-graph2
+          [label]="timeline"
           [labels]="yearsArray"
           [showLegend]="false"
         >
-        </app-line-graph>
+        </app-line-graph2>
       </div>
 
       <div

@@ -13,6 +13,7 @@ import { Subscription, bufferCount, filter, take, takeLast } from 'rxjs';
 import { ExcelServiceService } from '../../service/excel-service.service';
 import { selectPRofileCollege } from '../../state/faculty-state/faculty-state.selector';
 import { AttainmentData } from '../../services/Interfaces/attainmentData';
+import { LineGraphComponent2 } from '../../components/charts/line-graph2/line-graph2.component';
 
 @Component({
   selector: 'app-analytics',
@@ -23,7 +24,8 @@ import { AttainmentData } from '../../services/Interfaces/attainmentData';
     LoadingScreenComponent,
     CommonModule,
     BarChartComponent,
-    LineGraphComponent
+    LineGraphComponent,
+    LineGraphComponent2
   ],
   providers: [EvaluationService],
   templateUrl: './analytics.component.html',

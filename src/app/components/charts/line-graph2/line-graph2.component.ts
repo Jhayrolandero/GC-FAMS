@@ -1,23 +1,22 @@
 import { Component, ElementRef, Input, SimpleChanges, ViewChild } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
-import { IndTimelineData } from '../../../services/Interfaces/indTimelineData';
 Chart.register(...registerables);
 
 @Component({
-  selector: 'app-line-graph',
+  selector: 'app-line-graph2',
   standalone: true,
   imports: [],
-  templateUrl: './line-graph.component.html',
-  styleUrl: './line-graph.component.css'
+  templateUrl: './line-graph2.component.html',
+  styleUrl: './line-graph2.component.css'
 })
-export class LineGraphComponent {
+export class LineGraphComponent2 {
   public chart!: Chart;
   public chartId: string = `doughnut-${Math.random().toString(36).substr(2, 9)}`;
   @ViewChild('lineGraphCanvas', {static: true}) private lineGraphCanvas!: ElementRef<HTMLCanvasElement>;
 
-  @Input() label: IndTimelineData | undefined;
-  @Input() label2: IndTimelineData | undefined;
-  @Input() label3: IndTimelineData | undefined;
+  @Input() label: number[] = [];
+  @Input() label2: number[] = [];
+  @Input() label3: number[] = [];
   @Input() labels: string[] = [];
   @Input() showLegend?: boolean;
   @Input() legendLabel: string[] = [];
@@ -40,10 +39,8 @@ export class LineGraphComponent {
       labels: this.labels,
       datasets: [
         {
-        label: this.label ? this.label.label : 'None',
-        data: this.label ? this.label?.value :  [],
-        // label: this.data ? this.legendLabel[0] : 'None',
-        // data: this.data?.value,
+        label: this.legendLabel[0],
+        data: this.label,
         fill: true,
         tension: 0.3,
         borderColor: 'rgb(7, 66, 135)',
@@ -51,10 +48,8 @@ export class LineGraphComponent {
         hoverOffset: 4
         },
         {
-          label: this.label2 ? this.label2.label : 'None',
-          data: this.label2 ? this.label2.value : [],
-          // label: this.legendLabel[1],
-          // data: this.data2,
+          label: this.legendLabel[1],
+          data: this.label2,
           fill: true,
           tension: 0.3,
           borderColor: 'rgb(30, 114, 66)',
@@ -62,10 +57,8 @@ export class LineGraphComponent {
           hoverOffset: 4
         },
         {
-          label: this.label3 ? this.label3.label : 'None',
-          data: this.label3 ? this.label3.value : [],
-          // label: this.legendLabel[2],
-          // data: this.data3,
+          label: this.legendLabel[2],
+          data: this.label3,
           fill: true,
           tension: 0.3,
           borderColor: 'rgb(255, 122, 0)',

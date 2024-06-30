@@ -48,6 +48,7 @@ import { EmploymentTypeReport } from '../../services/Interfaces/employmentTypeRe
 import { SeminarReport } from '../../services/Interfaces/seminarReport';
 import { TeachingLevelReport } from '../../services/Interfaces/teachingLevelReport';
 import { ExpertiseReport } from '../../services/Interfaces/expertiseReport';
+import { LineGraphComponent2 } from '../../components/charts/line-graph2/line-graph2.component';
 
 @Component({
     selector: 'app-manage-analytics',
@@ -59,6 +60,7 @@ import { ExpertiseReport } from '../../services/Interfaces/expertiseReport';
       FacultyMilestoneCalendarComponent,
       PieChartComponent,
       LineGraphComponent,
+      LineGraphComponent2,
       BarChartComponent,
       ScatterPlotComponent,
       CommonModule,

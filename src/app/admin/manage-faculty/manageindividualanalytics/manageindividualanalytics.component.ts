@@ -17,12 +17,19 @@ import { AttainmentData } from '../../../services/Interfaces/attainmentData';
 import { ExcelServiceService } from '../../../service/excel-service.service';
 import { selectPRofileCollege } from '../../../state/faculty-state/faculty-state.selector';
 import { MilestoneReport } from '../../../services/Interfaces/milestoneReport';
+import { LineGraphComponent2 } from '../../../components/charts/line-graph2/line-graph2.component';
 
 
 @Component({
   selector: 'app-manageindividualanalytics',
   standalone: true,
-  imports: [FacultyMilestoneCalendarComponent, CommonModule, BarChartComponent, LineGraphComponent],
+  imports: [
+    FacultyMilestoneCalendarComponent,
+    CommonModule,
+    BarChartComponent,
+    LineGraphComponent,
+    LineGraphComponent2
+  ],
   templateUrl: './manageindividualanalytics.component.html',
   styleUrl: './manageindividualanalytics.component.css'
 })

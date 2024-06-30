@@ -180,13 +180,13 @@
         </div>
       </div>
     </div>
-    <app-line-graph
-      [data]="certToggle ? attainment[0] : []"
-      [data2]="commexToggle ? attainment[1] : []"
-      [data3]="seminarToggle ? attainment[2] : []"
+    <app-line-graph2
+      [label]="certToggle ? attainment[0] : []"
+      [label2]="commexToggle ? attainment[1] : []"
+      [label3]="seminarToggle ? attainment[2] : []"
       [labels]="yearsArray"
       [showLegend]="false"
     >
-    </app-line-graph>
+    </app-line-graph2>
   </div>
 </div>

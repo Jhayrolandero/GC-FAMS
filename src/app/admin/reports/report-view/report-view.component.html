@@ -34,21 +34,21 @@
     </div>
     } @else if (view === 'indTImeline') {
     <app-line-graph
-      [data]="indTImelineData[0] != undefined ? indTImelineData[0].value : []"
-      [data2]="indTImelineData[1] != undefined ? indTImelineData[1].value : []"
-      [data3]="indTImelineData[2] != undefined ? indTImelineData[2].value : []"
+      [label]="indTImelineData[0]"
+      [label2]="indTImelineData[1]"
+      [label3]="indTImelineData[2]"
       [labels]="yearsArray"
       [showLegend]="true"
     >
     </app-line-graph>
     } @else if(view === 'educAttainment') {
     <div *ngIf="overallAverageTimeline$ | async as timeline">
-      <app-line-graph
-        [data]="timeline"
+      <app-line-graph2
+        [label]="timeline"
         [labels]="yearsArray"
         [showLegend]="false"
       >
-      </app-line-graph>
+      </app-line-graph2>
     </div>
     }
 

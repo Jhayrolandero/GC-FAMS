@@ -11,16 +11,14 @@ import { BarChartComponent } from '../../../components/charts/bar-chart/bar-char
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { LineGraphComponent } from '../../../components/charts/line-graph/line-graph.component';
+import { IndTimelineData } from '../../../services/Interfaces/indTimelineData';
+import { LineGraphComponent2 } from '../../../components/charts/line-graph2/line-graph2.component';
 
 interface TableValue {
   header: string[];
   value: string[][];
 }
 
-interface IndTimelineData {
-  id: number
-  value: number[]
-}
 @Component({
   selector: 'app-report-view',
   standalone: true,
@@ -30,6 +28,7 @@ interface IndTimelineData {
     RadarChartComponent,
     BarChartComponent,
     LineGraphComponent,
+    LineGraphComponent2,
   ],
   templateUrl: './report-view.component.html',
   styleUrl: './report-view.component.css'
@@ -117,6 +116,7 @@ export class ReportViewComponent {
   renderIndTimeline(item: string[]) {
     const data: IndTimelineData = {
       id: parseInt(item[0]),
+      label: item[1],
       value: item.slice(4, item.length).map(x => parseFloat(x))
     }
 

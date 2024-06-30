@@ -15,6 +15,8 @@ import { LoadingScreenComponent } from '../../components/loading-screen/loading-
 import { EvaluationTimeline } from '../../services/Interfaces/indAverageTimeline';
 import { selectPRofileCollege } from '../../state/faculty-state/faculty-state.selector';
 import { RadarChartData } from '../../services/Interfaces/radarChartData';
+import { IndTimelineData } from '../../services/Interfaces/indTimelineData';
+import { LineGraphComponent2 } from '../../components/charts/line-graph2/line-graph2.component';
 
 
 @Component({
@@ -26,6 +28,7 @@ import { RadarChartData } from '../../services/Interfaces/radarChartData';
     NgFor,
     FacultySelectorComponent,
     LineGraphComponent,
+    LineGraphComponent2,
     BarChartComponent,
     RadarChartComponent,
     EvaluationSelectorComponent,
@@ -43,7 +46,8 @@ export class EvaluationAnalyticsComponent {
   selected = false;
   labels = []
   //Selected facultymembers
-  selectedArray: any[] = [];
+  // selectedArray: any[] = [];
+  selectedArray: IndTimelineData[] = [];
   selectedFacultyArray: RadarChartData[] = [];
   // selectedFacultyArray: any[] = [];
   length = 0;
@@ -95,13 +99,21 @@ export class EvaluationAnalyticsComponent {
   //Triggers when a faculty is selected
   selectFaculty(data: any){
 
+    console.log(data)
     //data[1] means if you're selecting a faculty
     if(data[1]){
-      this.selectedArray.push(data[0]);
+      const item: IndTimelineData = {
+        id: data[0][0],
+        label: data[0][1][0],
+        value: data[0][1][1]
+      }
+      console.log(item)
+      this.selectedArray.push(item);
+      // this.selectedArray.push(data[0]);
     }
     //Deselecting faculty
     else{
-      this.selectedArray = this.selectedArray.filter(x => +x[0] !== +data[0][0]);
+      this.selectedArray = this.selectedArray.filter(x => x.id !== data[0][0]);
     }
 
     //Converting the current selectedList to array each select and deselection.
