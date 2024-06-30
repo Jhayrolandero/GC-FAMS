@@ -845,12 +845,7 @@ export const selectEvaluationDifference = createSelector(
     (state: DeanState) => {
 
         if(state.evals.length <= 0 ) return
-
-
-        console.log(getEvalDiff(state.evals))
         return getEvalDiff(state.evals)
-
-
     }
 );
 
@@ -1349,7 +1344,8 @@ export const selectAttainmentTimelineFaculty = (commex: CommunityExtension[], id
                 +evaluation.param3_score,
                 +evaluation.param4_score,
                 +evaluation.param5_score,
-                +evaluation.param6_score).toFixed(2)
+                +evaluation.param6_score).toFixed(2),
+                evaluation.faculty_ID
               ]
             )
         }

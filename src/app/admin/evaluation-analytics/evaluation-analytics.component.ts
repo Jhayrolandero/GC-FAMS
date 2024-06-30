@@ -14,6 +14,7 @@ import { SemDiff } from '../../services/Interfaces/semDiff';
 import { LoadingScreenComponent } from '../../components/loading-screen/loading-screen.component';
 import { EvaluationTimeline } from '../../services/Interfaces/indAverageTimeline';
 import { selectPRofileCollege } from '../../state/faculty-state/faculty-state.selector';
+import { RadarChartData } from '../../services/Interfaces/radarChartData';
 
 
 @Component({
@@ -43,7 +44,8 @@ export class EvaluationAnalyticsComponent {
   labels = []
   //Selected facultymembers
   selectedArray: any[] = [];
-  selectedFacultyArray: any[] = [];
+  selectedFacultyArray: RadarChartData[] = [];
+  // selectedFacultyArray: any[] = [];
   length = 0;
 
   collegeSubscription!: Subscription
@@ -109,17 +111,20 @@ export class EvaluationAnalyticsComponent {
   selectEvalFaculty(data: any){
     //data[1] means if you're selecting a faculty
     if(data[1]){
-      this.selectedFacultyArray.push(data[0]);
+      const item: RadarChartData =  {
+        id: data[0][1][data[0][1].length - 1],
+        name: data[0][0],
+        value: data[0][1].slice(0, 6)
+      }
+      this.selectedFacultyArray.push(item);
     }
+
     //Deselecting faculty
     else{
-      this.selectedFacultyArray = this.selectedFacultyArray.filter(x => x[0] !== data[0][0]);
+      this.selectedFacultyArray = this.selectedFacultyArray.filter(x => x.id !== data[0][1][data[0][1].length - 1]);
     }
     //Converting the current selectedList to array each select and deselection.
-
     this.labels = data
-
-    console.log(this.selectedFacultyArray)
     this.length = this.selectedArray.length;
   }
 
