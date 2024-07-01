@@ -15,7 +15,8 @@ import { ExpertiseReport } from '../services/Interfaces/expertiseReport';
 import { FacultyReport } from '../services/Interfaces/facultyReport';
 import { Store, select } from '@ngrx/store';
 import * as DeanSelector from '../state/dean-state/dean-state.selector';
-import { filter, take } from 'rxjs';
+import { filter, firstValueFrom, take } from 'rxjs';
+import { error } from 'console';
 
 interface SubHeading {
   start: number;
@@ -207,66 +208,55 @@ export class ExcelServiceService {
 
   }
 
+
+
+
+  async fetchData(selector: any): Promise<any> {
+    return await firstValueFrom(
+      this.store.pipe(
+        select(selector),
+        filter((data : any) => !!data && data.length > 0),
+        take(1)
+      )
+    );
+  }
+
   generateRadarReport() {
-    this.store.pipe(
-      select(DeanSelector.selectRadarReport),
-      filter(data => !!data && data.length > 0),
-      take(1)  // This ensures only non-null/non-undefined values are processed
-    ).subscribe({
-      next: (data) => {
-        console.log(data)
-        this.exportExcel<EvaluationRadar>(data!, "Evaluation-Radar", this.college, this.currSem )
-      },
-      error: err => console.error(err)
-    });
+    this.fetchData(DeanSelector.selectRadarReport).then(radarData => {
+      this.exportExcel<EvaluationRadar>(radarData!, "Evaluation-Radar", this.college, this.currSem )
+    }).catch(error => {
+      console.error("Error fetching data:", error);
+    })
   }
 
   generateSemDiffReport() {
-    this.store.pipe(
-      select(DeanSelector.selectSemDiffReport),
-      filter(data => !!data && data.length > 0),
-      take(1)  // This ensures only non-null/non-undefined values are processed
-      ).subscribe({
-      next: (item) => {
-        this.exportExcel<SemDiff>(item!, "Semestral Difference", this.college, this.currSem)
-      },
-      error: error => { console.log(error)},
+    this.fetchData(DeanSelector.selectSemDiffReport).then(res => {
+      this.exportExcel<SemDiff>(res!, "Semestral Difference", this.college, this.currSem)
+    }).catch(error => {
+      console.error("Error fetching data:", error);
     })
   }
 
   generateIndTimelineReport() {
-    this.store.pipe(
-      select(DeanSelector.selectAllAveReport),
-      filter(data => !!data && data.length > 0),
-      take(1)
-    ).subscribe({
-      next: res => {
-
-        console.log(res)
-
-        this.exportExcel<EvaluationTimeline>(
-          res!,
-          "Individual Timeline",
-          this.college,
-          this.currSem,
-          {start: 4, title: "Year"}
-        )
-    },
-      error: err => console.log(err)
+    this.fetchData(DeanSelector.selectAllAveReport).then(res => {
+      this.exportExcel<EvaluationTimeline>(
+        res!,
+        "Individual Timeline",
+        this.college,
+        this.currSem,
+        {start: 4, title: "Year"}
+      )
+    }).catch(error => {
+      console.error("Error fetching data:", error);
     })
-
 
   }
 
   generateEducAttainmentReport() {
-    this.store.pipe(
-      select(DeanSelector.selectOverallAveReport),
-      filter(data => !!data && data.length > 0),
-      take(1)
-    ).subscribe({
-      next: res => {
-        this.exportExcel<Object>(res!, `Educational Attainment Timeline (${ this.info.date.getFullYear() - 14} - ${this.info.date.getFullYear()})`, this.college, this.currSem)
-      }
+    this.fetchData(DeanSelector.selectOverallAveReport).then(res => {
+      this.exportExcel<Object>(res!, `Educational Attainment Timeline (${ this.info.date.getFullYear() - 14} - ${this.info.date.getFullYear()})`, this.college, this.currSem)
+    }).catch(error => {
+      console.error("Error fetching data:", error);
     })
   }
 
@@ -274,18 +264,10 @@ export class ExcelServiceService {
     Manage Analytics
   */
   generateEducReport() {
-    this.store.pipe(
-      select(DeanSelector.selectCollegeEducTimelineReport),
-      filter(data => !!data && (data.length > 0 )),
-      take(1)
-    ).subscribe({
-      next: res => {
-      // Masters 1
-      // Doctorate 2
-      // Bachelor 0
+    this.fetchData(DeanSelector.selectCollegeEducTimelineReport).then(res => {
       this.exportExcel<EducAttainmentData>(res!, `Education Attainment Timeline ${this.college} (${ this.info.date.getFullYear() - 14} - ${this.info.date.getFullYear()})`, this.college, this.currSem)
-    },
-      error: err => { console.log(err)}
+    }).catch(error => {
+      console.error("Error fetching data:", error);
     })
   }
 
@@ -305,122 +287,75 @@ export class ExcelServiceService {
   }
 
   generateEducAttainmentReport2() {
-    this.store.pipe(
-      select(DeanSelector.selectCurrentEducAttainment)
-    ).subscribe({
-      next: res => {
-        this.exportExcel<CurrEducAttainment>(res!, `Educational Attainment ${this.college}`, this.college, this.currSem)
-      },
-      error: err => {console.log(err)}
+    this.fetchData(DeanSelector.selectCurrentEducAttainment).then(res => {
+      this.exportExcel<CurrEducAttainment>(res!, `Educational Attainment ${this.college}`, this.college, this.currSem)
+    }).catch(error => {
+      console.error("Error fetching data:", error);
     })
   }
 
   generateEmploymentTypeReport() {
-    this.store.pipe(
-      select(DeanSelector.selectEmploymentTypeReport),
-      filter(data => !!data && data.length > 0),
-      take(1)
-    ).subscribe({
-      next: res => {
-        this.exportExcel<EmploymentTypeReport>(res!, `Employment Type ${this.college}`, this.college, this.currSem)
-      },
-      error: err => (console.log(err))
+    this.fetchData(DeanSelector.selectEmploymentTypeReport).then(res => {
+      this.exportExcel<EmploymentTypeReport>(res!, `Employment Type ${this.college}`, this.college, this.currSem)
+    }).catch(error => {
+      console.error("Error fetching data:", error);
     })
   }
 
   generateSeminarReport() {
-    this.store.pipe(
-      select(DeanSelector.selectSeminarReport),
-      filter(data => !!data && data.length > 0),
-      take(1)
-    ).subscribe({
-      next: res => {
-        this.exportExcel<SeminarReport>(res!, `Seminars Attended ${this.college}`, this.college, this.currSem)
-      },
-      error: err => {console.log(err)}
+    this.fetchData(DeanSelector.selectSeminarReport).then(res => {
+      this.exportExcel<SeminarReport>(res!, `Seminars Attended ${this.college}`, this.college, this.currSem)
+    }).catch(error => {
+      console.error("Error fetching data:", error);
     })
   }
 
   generateTeachingLevelReport() {
-    this.store.pipe(
-      select(DeanSelector.selectTeachingLevelReport),
-      filter(data => !!data && data.length > 0),
-      take(1)
-    ).subscribe({
-      next: res => {
-        this.exportExcel<TeachingLevelReport>(res!, `Teaching Level ${this.college}`, this.college, this.currSem)
-      },
-      error: err => {console.log(err)}
+    this.fetchData(DeanSelector.selectTeachingLevelReport).then(res => {
+      this.exportExcel<TeachingLevelReport>(res!, `Teaching Level ${this.college}`, this.college, this.currSem)
+    }).catch(error => {
+      console.error("Error fetching data:", error);
     })
   }
 
   generateExpertiseReport() {
-    this.store.pipe(
-      select(DeanSelector.selectExpertiseReport),
-      filter(data => !!data && data.length > 0),
-      take(1)
-    ).subscribe({
-      next: res => {
-        this.exportExcel<ExpertiseReport>(res!, `Instructor's Expertise ${this.college}`, this.college, this.currSem)
-      },
-      error: err => {console.log(err)}
+    this.fetchData(DeanSelector.selectExpertiseReport).then(res => {
+      this.exportExcel<ExpertiseReport>(res!, `Instructor's Expertise ${this.college}`, this.college, this.currSem)
+    }).catch(error => {
+      console.error("Error fetching data:", error);
     })
-
   }
 
   generateTeachCorrelationReport() {
-    this.store.pipe(
-      select(DeanSelector.selectTeachingCorrelationReport),
-      filter(data => !!data && data.length > 0),
-      take(1)
-    ).subscribe({
-      next: res => {
-        this.exportExcel<Object>(res!, `Teaching Evaluation Correlation ${this.college}`, this.college, this.currSem)
-      },
-      error: err => {console.log(err)}
+    this.fetchData(DeanSelector.selectTeachingCorrelationReport).then(res => {
+      this.exportExcel<Object>(res!, `Teaching Evaluation Correlation ${this.college}`, this.college, this.currSem)
+    }).catch(error => {
+      console.error("Error fetching data:", error);
     })
   }
 
   generateCertsTeachReport() {
-    this.store.pipe(
-      select(DeanSelector.selectTeachingCertReport),
-      filter(data => !!data && data.length > 0),
-      take(1)
-    ).subscribe({
-      next: res => {
-        this.exportExcel<Object>(res!, `Teaching Length and Certificates Count  ${this.college}`, this.college, this.currSem)
-      },
-      error: err => {console.log(err)}
+    this.fetchData(DeanSelector.selectTeachingCertReport).then(res => {
+      this.exportExcel<Object>(res!, `Teaching Length and Certificates Count  ${this.college}`, this.college, this.currSem)
+    }).catch(error => {
+      console.error("Error fetching data:", error);
     })
   }
 
   generateCertTypeReport() {
-    this.store.pipe(
-      select(DeanSelector.selectCertTypeReport),
-      filter(data => !!data && data.length > 0),
-      take(1)
-    ).subscribe({
-      next: res => {
-        this.exportExcel<Object>(res!, `Certification Count ${this.college}`, this.college, this.currSem)
-      }
+    this.fetchData(DeanSelector.selectCertTypeReport).then(res => {
+      this.exportExcel<Object>(res!, `Certification Count ${this.college}`, this.college, this.currSem)
+    }).catch(error => {
+      console.error("Error fetching data:", error);
     })
   }
 
   generateFacultyReport() {
-
-    this.store.pipe(
-      select(DeanSelector.selectFacultyReport),
-      filter(data => !!data && data.length > 0),
-      take(1)
-    ).subscribe({
-      next: res => {
-        this.exportExcel<FacultyReport>(res!,`Faculty Report ${this.college} ${this.currSem}`,this.college,this.currSem)
-        // res?.map(item => this.facultyReportData.push(item))
-      },
-      error: err => console.log(err)
+    this.fetchData(DeanSelector.selectFacultyReport).then(res => {
+      this.exportExcel<FacultyReport>(res!,`Faculty Report ${this.college} ${this.currSem}`,this.college,this.currSem)
+    }).catch(error => {
+      console.error("Error fetching data:", error);
     })
-    // if(facultyReportData.length < 0) return
-
   }
 
   exportExcel<T>(data: T[], title: string, college: string, EvalSem: string, subHeading? : SubHeadingsDictionary): void

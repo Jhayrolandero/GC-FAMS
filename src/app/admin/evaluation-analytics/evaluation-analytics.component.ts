@@ -9,11 +9,14 @@ import { RadarChartComponent } from '../../components/charts/radar-chart/radar-c
 import { EvaluationSelectorComponent } from './evaluation-selector/evaluation-selector.component';
 import { ExcelServiceService } from '../../service/excel-service.service';
 import { EvaluationRadar } from '../../services/Interfaces/radarEvaluation';
-import {  Subscription, filter, map, take, tap } from 'rxjs';
+import {  Observable, Subscription, filter, map, take, tap } from 'rxjs';
 import { SemDiff } from '../../services/Interfaces/semDiff';
 import { LoadingScreenComponent } from '../../components/loading-screen/loading-screen.component';
 import { EvaluationTimeline } from '../../services/Interfaces/indAverageTimeline';
 import { selectPRofileCollege } from '../../state/faculty-state/faculty-state.selector';
+import { RadarChartData } from '../../services/Interfaces/radarChartData';
+import { IndTimelineData } from '../../services/Interfaces/indTimelineData';
+import { LineGraphComponent2 } from '../../components/charts/line-graph2/line-graph2.component';
 
 
 @Component({
@@ -25,6 +28,7 @@ import { selectPRofileCollege } from '../../state/faculty-state/faculty-state.se
     NgFor,
     FacultySelectorComponent,
     LineGraphComponent,
+    LineGraphComponent2,
     BarChartComponent,
     RadarChartComponent,
     EvaluationSelectorComponent,
@@ -42,8 +46,10 @@ export class EvaluationAnalyticsComponent {
   selected = false;
   labels = []
   //Selected facultymembers
-  selectedArray: any[] = [];
-  selectedFacultyArray: any[] = [];
+  // selectedArray: any[] = [];
+  selectedArray: IndTimelineData[] = [];
+  selectedFacultyArray: RadarChartData[] = [];
+  // selectedFacultyArray: any[] = [];
   length = 0;
 
   collegeSubscription!: Subscription
@@ -74,7 +80,7 @@ export class EvaluationAnalyticsComponent {
   }
   individualAverageTimeline$ = this.store.select(DeanSelector.selectAllAverageTimeline);
   overallAverageTimeline$ = this.store.select(DeanSelector.selectOverallAverageTimeline);
-  evaluationDifference$: any = this.store.select(DeanSelector.selectEvaluationDifference);
+  evaluationDifference$: Observable<any> = this.store.select(DeanSelector.selectEvaluationDifference);
   evaluationRadar$ = this.store.select(DeanSelector.selectCurrentEvaluation);
 
   evalLoading$ = this.store.pipe(select(DeanSelector.selectEvalLoading))
@@ -93,13 +99,21 @@ export class EvaluationAnalyticsComponent {
   //Triggers when a faculty is selected
   selectFaculty(data: any){
 
+    console.log(data)
     //data[1] means if you're selecting a faculty
     if(data[1]){
-      this.selectedArray.push(data[0]);
+      const item: IndTimelineData = {
+        id: data[0][0],
+        label: data[0][1][0],
+        value: data[0][1][1]
+      }
+      console.log(item)
+      this.selectedArray.push(item);
+      // this.selectedArray.push(data[0]);
     }
     //Deselecting faculty
     else{
-      this.selectedArray = this.selectedArray.filter(x => +x[0] !== +data[0][0]);
+      this.selectedArray = this.selectedArray.filter(x => x.id !== data[0][0]);
     }
 
     //Converting the current selectedList to array each select and deselection.
@@ -109,17 +123,20 @@ export class EvaluationAnalyticsComponent {
   selectEvalFaculty(data: any){
     //data[1] means if you're selecting a faculty
     if(data[1]){
-      this.selectedFacultyArray.push(data[0]);
+      const item: RadarChartData =  {
+        id: data[0][1][data[0][1].length - 1],
+        name: data[0][0],
+        value: data[0][1].slice(0, 6)
+      }
+      this.selectedFacultyArray.push(item);
     }
+
     //Deselecting faculty
     else{
-      this.selectedFacultyArray = this.selectedFacultyArray.filter(x => x[0] !== data[0][0]);
+      this.selectedFacultyArray = this.selectedFacultyArray.filter(x => x.id !== data[0][1][data[0][1].length - 1]);
     }
     //Converting the current selectedList to array each select and deselection.
-
     this.labels = data
-
-    console.log(this.selectedFacultyArray)
     this.length = this.selectedArray.length;
   }
 

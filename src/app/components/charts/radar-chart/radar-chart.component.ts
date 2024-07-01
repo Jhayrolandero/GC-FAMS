@@ -3,6 +3,7 @@ import { Chart, ChartConfiguration, ChartData, ChartOptions, Plugin } from 'char
 import { CustomBGService } from '../../../services/custom-bg.service';
 import { EvaluationRadar } from '../../../services/Interfaces/radarEvaluation';
 import { ExcelServiceService } from '../../../service/excel-service.service';
+import { RadarChartData } from '../../../services/Interfaces/radarChartData';
 
 
 
@@ -18,15 +19,12 @@ export class RadarChartComponent {
   public chartId: string = `doughnut-${Math.random().toString(36).substr(2, 9)}`;
   @ViewChild('radarChartCanvas', {static: true}) private radarChartCanvas!: ElementRef<HTMLCanvasElement>;
 
-  @Input() data: number[] = [];
-  @Input() data2: number[] = [];
-  @Input() data3: number[] = [];
   @Input() labels: string[] = [];
   @Input() showLegend?: boolean;
 
-  @Input() label1: any[] = [];
-  @Input() label2: any[] = [];
-  @Input() label3: any[] = [];
+  @Input() label1: RadarChartData|undefined;
+  @Input() label2: RadarChartData|undefined;
+  @Input() label3: RadarChartData|undefined;
 
   radarData: EvaluationRadar[] = []
 
@@ -53,14 +51,8 @@ export class RadarChartComponent {
     if(this.radarData.length > 0) {
       this.radarData = []
     }
-
     this.createChart();
-
-
     this.emitRadarData.emit(this.radarData);
-
-    console.log(this.data)
-
   }
 
   createChart() {
@@ -68,8 +60,8 @@ export class RadarChartComponent {
       labels: this.labels,
       datasets: [
         {
-          label: this.label1 ? this.label1[0] : 'None',
-          data: this.data.slice(0, 6),
+          label: this.label1 ? this.label1.name : 'None',
+          data: this.label1 ? this.label1.value : [],
           fill: true,
           backgroundColor: 'rgba(7, 66, 135, 0.2)',
           borderColor: 'rgb(7, 66, 135)',
@@ -79,8 +71,8 @@ export class RadarChartComponent {
           pointHoverBorderColor: '#fff'
         },
         {
-          label: this.label2 ? this.label2[0] : 'None',
-          data: this.data2.slice(0, 6),
+          label: this.label2 ? this.label2.name : 'None',
+          data: this.label2 ? this.label2.value : [],
           fill: true,
           backgroundColor: 'rgba(255, 122, 0, 0.2)',
           borderColor: '#FF7A00',
@@ -90,8 +82,8 @@ export class RadarChartComponent {
           pointHoverBorderColor: '#FF7A00'
         },
         {
-          label: this.label3 ? this.label3[0] : 'None',
-          data: this.data3.slice(0, 6),
+          label: this.label3 ? this.label3.name : 'None',
+          data: this.label3 ? this.label3.value : [],
           fill: true,
           backgroundColor: 'rgba(30, 114, 66, 0.2)',
           borderColor: '#1E7242',
@@ -122,11 +114,6 @@ export class RadarChartComponent {
             legend: {
               display: this.showLegend,
               position: 'bottom'
-            }
-          },
-          animation: {
-            onComplete: () => {
-              this.emitRadar.emit(this.chart.toBase64Image('image/jpeg', 1));
             }
           },
           responsive: true

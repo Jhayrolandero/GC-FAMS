@@ -4,7 +4,7 @@
   <div
     class="flex justify-between p-2 transition-all hover:shadow-lg hover:scale-[1.025] laptop:hover:scale-[1.01]"
   >
-    <div class="cursor-pointer w-full">
+    <div class="cursor-pointer w-full" (click)="routeView(report.id)">
       <p>{{ report.reportTitle }}</p>
     </div>
     <button (click)="report.reportFunction()" title="Download">
