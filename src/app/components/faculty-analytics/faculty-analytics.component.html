@@ -1,0 +1,79 @@
+<div
+  class="w-full items-center bg-white bg-opacity-70 shadow-main rounded-[15px] p-5 mb-2"
+>
+  <h1
+    class="font-Poppins font-semibold mobileS:text-[1.25rem] mobileM:text-[1.5rem] tablet:[2rem] my-2 tablet:text-start text-center"
+  >
+    Milestone Calendar
+  </h1>
+  <div class="flex items-center flex-col laptop:flex-row">
+    <div
+      class="w-full tablet:w-[220px] bg-white rounded-[15px] shadow-main flex flex-col items-center py-5"
+    >
+      <p
+        class="text-blue text-[7rem] font-Poppins font-bold leading-[90%]"
+        [textContent]="facultyCount$ | async"
+      ></p>
+      <p class="text-blue font-Poppins font-bold text-[1.2rem]">
+        Faculty Members
+      </p>
+    </div>
+    <div
+      class="flex flex-row flex-1 justify-center items-center w-full overflow-x-auto"
+    >
+      <app-faculty-milestone-calendar
+        [type]="'admin'"
+      ></app-faculty-milestone-calendar>
+    </div>
+  </div>
+</div>
+
+<div class="w-full flex flex-col tablet:flex-row gap-3">
+  <div
+    class="bg-white shadow-main rounded-[15px] overflow-hidden flex flex-col flex-1 justify-center items-center py-3"
+  >
+    <p
+      class="text-center text-blue text-[0.9rem] font-Poppins font-semibold"
+      *ngIf="profile$ | async as profile"
+    >
+      {{ profile.college_abbrev }} Average Faculty Evaluation Score
+    </p>
+    <p
+      class="text-greenBar text-[4rem] font-Poppins font-bold leading-[90%]"
+      [textContent]="evaluationYearAverage$ | async | number : '1.1-1'"
+    ></p>
+  </div>
+  <div
+    class="bg-white shadow-main rounded-[15px] overflow-hidden flex flex-col flex-1 justify-center items-center py-3"
+  >
+    <p class="text-center text-blue text-[0.9rem] font-Poppins font-semibold">
+      Average Class Units per Faculty
+    </p>
+    <p
+      class="text-greenBar text-[4rem] font-Poppins font-bold leading-[90%]"
+      [textContent]="unitFacultyAverage$ | async | number : '1.1-1'"
+    ></p>
+  </div>
+  <div
+    class="bg-white shadow-main rounded-[15px] overflow-hidden flex flex-col flex-1 justify-center items-center py-3"
+  >
+    <p class="text-center text-blue text-[0.9rem] font-Poppins font-semibold">
+      Average Faculty Total Certificate Count
+    </p>
+    <p
+      class="text-greenBar text-[4rem] font-Poppins font-bold leading-[90%]"
+      [textContent]="certCountAverage$ | async | number : '1.1-1'"
+    ></p>
+  </div>
+  <div
+    class="bg-white shadow-main rounded-[15px] overflow-hidden flex flex-col flex-1 justify-center items-center py-3"
+  >
+    <p class="text-center text-blue text-[0.9rem] font-Poppins font-semibold">
+      Average Faculty Seminars Attended
+    </p>
+    <p
+      class="text-greenBar text-[4rem] font-Poppins font-bold leading-[90%]"
+      [textContent]="seminarYearAverageFaculty$ | async | number : '1.1-1'"
+    ></p>
+  </div>
+</div>

@@ -3,13 +3,7 @@ import { InfoService } from '../../services/info.service';
 import { CommonModule } from '@angular/common';
 import { ReportContainerComponent } from '../../components/report-container/report-container.component';
 import { ExcelServiceService } from '../../service/excel-service.service';
-
-type MyFunctionType = () => void;
-interface ReportVal {
-  id: number;
-  reportTitle: string;
-  reportFunction: MyFunctionType;
-}
+import { ReportVal } from '../../services/Interfaces/reportVal';
 
 interface Report {
   title: string;
@@ -42,45 +36,28 @@ export class ReportsComponent {
     this.setupReport()
   }
 
-
-  generateRadarReport() {
-    this.excelService.generateRadarReport()
-  }
-
-  generateSemDiffReport() {
-    this.excelService.generateSemDiffReport()
-  }
-
-  generateIndTimelineReport() {
-    this.excelService.generateIndTimelineReport()
-  }
-
-  generateEducAttainmentReport() {
-    this.excelService.generateEducAttainmentReport()
-  }
-
   setupReport() {
   this.evalReport = {
     title: "Evaluation Report",
     reports: [
       {
-        id: 1,
-        reportTitle:`${this.college} - Evaluation-Radar`,
+        id: "RXZhbHVhdGlvbiBSYWRhcg==",
+        reportTitle:`${this.college} - Evaluation Radar`,
         reportFunction:() => this.excelService.generateRadarReport()
       },
       {
-        id: 2,
-        reportTitle:`${this.college} - Semestral Difference`,
+        id: "RXZhbHVhdGlvbiBwZXIgU2VtZXN0ZXIgRGlmZmVyZW5jZQ==",
+        reportTitle:`${this.college} - Evaluation per Semester Difference`,
         reportFunction:() => this.excelService.generateSemDiffReport()
       },
       {
-        id: 3,
+        id: "SW5kaXZpZHVhbCBFdmFsdWF0aW9uIEF2ZXJhZ2UgVGltZWxpbmU=",
         reportTitle:`${this.college} - Individual Evaluation Average Timeline`,
         reportFunction:() => this.excelService.generateIndTimelineReport()
       },
       {
-        id: 4,
-        reportTitle:`${this.college} - Educational Attainment Timeline (${this.info.date.getFullYear() - 14} - ${this.info.date.getFullYear()})`,
+        id: "T3ZlcmFsbCBFdmFsdWF0aW9uIEF2ZXJhZ2UgVGltZWxpbmU=",
+        reportTitle:`${this.college} - Overall Evaluation Average Timeline (${this.info.date.getFullYear() - 14} - ${this.info.date.getFullYear()})`,
         reportFunction:() => this.excelService.generateEducAttainmentReport()
       }
     ]
@@ -90,50 +67,60 @@ export class ReportsComponent {
     title: "Program Report",
     reports: [
       {
-        id: 5,
-        reportTitle: `${this.college} - Education Attainment Timeline (${this.info.date.getFullYear() - 14} - ${this.info.date.getFullYear()})`,
+        id: "RWR1Y2F0aW9uYWwgQXR0YWlubWVudCBUaW1lbGluZQ==",
+        reportTitle: `${this.college} - Educational Attainment Timeline (${this.info.date.getFullYear() - 14} - ${this.info.date.getFullYear()})`,
         reportFunction: () => this.excelService.generateEducReport()
       },
       {
-        id: 6,
+        id: "RWR1Y2F0aW9uYWwgQXR0YWlubWVudA==",
         reportTitle: `${this.college} - Educational Attainment`,
         reportFunction: () => this.excelService.generateEducAttainmentReport2()
       },
       {
-        id: 7,
+        id: 'RW1wbG95bWVudCBUeXBl',
         reportTitle: `${this.college} - Employment Type`,
         reportFunction: () => this.excelService.generateEmploymentTypeReport()
       },
       {
-        id: 8,
+        id: "U2VtaW5hcnMgQXR0ZW5kZWQ=",
         reportTitle: `${this.college} - Seminars Attended`,
         reportFunction: () => this.excelService.generateSeminarReport()
       },
       {
-        id: 9,
+        id: "VGVhY2hpbmcgTGV2ZWw=",
         reportTitle: `${this.college} - Teaching Level`,
         reportFunction: () => this.excelService.generateTeachingLevelReport()
       },
       {
-        id: 10,
+        id: "SW5zdHJ1Y3RvcidzIEV4cGVydGlzZQ==",
         reportTitle: `${this.college} - Instructor's Expertise`,
         reportFunction: () => this.excelService.generateExpertiseReport()
       },
       {
-        id: 11,
+        id: "VGVhY2hpbmcgRXZhbHVhdGlvbiBDb3JyZWxhdGlvbg==",
         reportTitle: `${this.college} - Teaching Evaluation Correlation`,
         reportFunction: () => this.excelService.generateTeachCorrelationReport()
       },
       {
-        id: 12,
-        reportTitle: `${this.college} - Teaching Length and Certificates Count `,
+        id: "VGVhY2hpbmcgTGVuZ3RoIGFuZCBDZXJ0aWZpY2F0ZXMgQ291bnQ=",
+        reportTitle: `${this.college} - Teaching Length and Certificates Count`,
         reportFunction: () => this.excelService.generateCertsTeachReport()
       },
       {
-        id: 13,
+        id: "Q2VydGlmaWNhdGlvbiBDb3VudA==",
         reportTitle: `${this.college} - Certification Count`,
         reportFunction: () => this.excelService.generateCertTypeReport()
-      }
+      },
+      {
+        id: "TWlsZXN0b25lIEFjaGlldmVk",
+        reportTitle: `${this.college} - Milestone Achieved ${this.college} (${ this.info.date.getFullYear() - 14} - ${this.info.date.getFullYear()})`,
+        reportFunction: () => this.excelService.generateMilestoneReport()
+      },
+      {
+        id: "QXR0YWlubWVudCBUaW1lbGluZQ==",
+        reportTitle: `${this.college} - Attainment Timeline ${this.college} (${ this.info.date.getFullYear() - 14} - ${this.info.date.getFullYear()})`,
+        reportFunction: () => this.excelService.generateAttainmentReport()
+      },
     ]
   }
 
@@ -141,7 +128,7 @@ export class ReportsComponent {
     title: "Faculty Report",
     reports: [
       {
-        id: 14,
+        id: "RmFjdWx0eSBSZXBvcnQ=",
         reportTitle: `${this.college} - Faculty Report ${this.excelService.currSem}`,
         reportFunction: () =>  this.excelService.generateFacultyReport()
       }

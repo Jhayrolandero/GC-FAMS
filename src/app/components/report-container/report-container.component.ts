@@ -1,13 +1,6 @@
 import { Component, Input, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-
-// Define a type for a function signature
-type MyFunctionType = () => void;
-interface ReportVal {
-  id: number;
-  reportTitle: string;
-  reportFunction: MyFunctionType;
-}
+import { ReportVal } from '../../services/Interfaces/reportVal';
 
 interface report {
   title: string,
@@ -26,7 +19,7 @@ export class ReportContainerComponent {
   router = inject(Router);
   @Input('report') report!: report
 
-  routeView(route: number) {
+  routeView(route: string) {
     this.router.navigate([`admin/reports/${route}`])
   }
 }

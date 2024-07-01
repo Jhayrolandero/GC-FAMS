@@ -15,11 +15,15 @@ import { IndTimelineData } from '../../../services/Interfaces/indTimelineData';
 import { LineGraphComponent2 } from '../../../components/charts/line-graph2/line-graph2.component';
 import { PieChartComponent } from '../../../components/charts/pie-chart/pie-chart.component';
 import { ScatterPlotComponent } from '../../../components/charts/scatter-plot/scatter-plot.component';
+import { CryptoJSService } from '../../../services/crypto-js.service';
+import { InfoService } from '../../../services/info.service';
+import { FacultyAnalyticsComponent } from '../../../components/faculty-analytics/faculty-analytics.component';
 
 interface TableValue {
   header: string[];
   value: string[][];
 }
+type reportFunction = () => void
 
 @Component({
   selector: 'app-report-view',
@@ -32,7 +36,8 @@ interface TableValue {
     LineGraphComponent,
     LineGraphComponent2,
     PieChartComponent,
-    ScatterPlotComponent
+    ScatterPlotComponent,
+    FacultyAnalyticsComponent
   ],
   templateUrl: './report-view.component.html',
   styleUrl: './report-view.component.css'
@@ -42,20 +47,27 @@ export class ReportViewComponent {
   constructor(
     private route: ActivatedRoute,
     private excelService: ExcelServiceService,
-    private store: Store
+    private store: Store,
+    private cryptoJSService: CryptoJSService,
+    private info: InfoService
   ) {
     this.route.params.subscribe(params => {
-      this.title = params['id']
-      this.handleSwitch(params['id'])
-      // this.handleSwitch(this.base64Decode(params['id']))
+      this.handleSwitch(this.cryptoJSService.base64Decoder(params['id']))
     })
+
   }
 
   router = inject(Router);
   tableValue!: TableValue
-
+  title: string = ''
   indTImelineData : IndTimelineData[] = []
   selectedFacultyArray: RadarChartData[] = [];
+  college: string = ""
+
+  async getCollege() {
+    this.college = await this.info.getCollege()
+  }
+
 
 
   evaluationDifference$: Observable<any> = this.store.select(DeanSelector.selectEvaluationDifference);
@@ -67,79 +79,119 @@ export class ReportViewComponent {
   topExpertise$ = this.store.select(DeanSelector.selectTopExpertise);
   teachingLength$ = this.store.select(DeanSelector.selectTeachingLength);
   certTypes$ = this.store.select(DeanSelector.selectCertTypes);
+  milestoneCount$ = this.store.select(DeanSelector.selectCollegeMilestoneCount);
+  attainmentTimeline$ = this.store.select(DeanSelector.selectAttainmentTimeline);
 
   yearsArray: string[] = Array.from({ length: 15 }, (_, i) => (new Date().getFullYear() - 14) + i).map(String);
 
-
   view: string | unknown
+  fn!: reportFunction
 
   //Holder for that one specific graph so my sanity gets preserved
   diffArr = [[], []];
 
-  handleSwitch(view: string) {
+  async handleSwitch(view: string) {
+    await this.getCollege()
     switch(view) {
-      case "1":
+      case "Evaluation Radar":
         this.setContent(DeanSelector.selectRadarReport)
         this.view = "radar"
+        this.title = `${this.college} ${view}`
+        this.fn = () => this.excelService.generateRadarReport()
         break;
-      case "2":
+      case "Evaluation per Semester Difference":
         this.setContent(DeanSelector.selectSemDiffReport)
         this.view = "semDiff"
+        this.title = `${this.college} ${view}`
+        this.fn = () => this.excelService.generateSemDiffReport()
         break;
-      case "3":
+      case "Individual Evaluation Average Timeline":
         this.setContent(DeanSelector.selectAllAveReport)
         this.view = "indTImeline"
+        this.title = `${this.college} ${view}`
+        this.fn = () => this.excelService.generateIndTimelineReport()
         break;
-      case "4":
+      case "Overall Evaluation Average Timeline":
         this.setContent(DeanSelector.selectOverallAveReport)
         this.view = "educAttainment"
+        this.title = `${this.college} ${view}`
+        this.fn = () => this.excelService.generateEducAttainmentReport()
         break;
-      case "5":
+      case "Educational Attainment Timeline":
         this.setContent(DeanSelector.selectCollegeEducTimelineReport)
         this.view = "educReport"
+        this.title = `${this.college} ${view} (${ this.info.date.getFullYear() - 14} - ${this.info.date.getFullYear()})`
+        this.fn = () => this.excelService.generateEducReport()
         break;
-      case "6":
+      case "Educational Attainment":
         this.setContent(DeanSelector.selectCurrentEducAttainment)
         this.view = "educAttainmentReport"
+        this.title = `${this.college} ${view}`
+        this.fn = () => this.excelService.generateEducAttainmentReport2()
         break;
-      case "7":
+      case "Employment Type":
         this.setContent(DeanSelector.selectEmploymentTypeReport)
         this.view = "employmentType"
+        this.title = `${this.college} ${view}`
+        this.fn = () => this.excelService.generateEmploymentTypeReport()
         break;
-      case "8":
+      case "Seminars Attended":
         this.setContent(DeanSelector.selectSeminarReport)
         this.view = "seminarReport"
+        this.title = `${this.college} ${view}`
+        this.fn = () => this.excelService.generateSeminarReport()
         break;
-      case "9":
+      case "Teaching Level":
         this.setContent(DeanSelector.selectTeachingLevelReport)
         this.view = "teachingLevel"
+        this.title = `${this.college} ${view}`
+        this.fn = () => this.excelService.generateTeachingLevelReport()
         break;
-      case "10":
+      case "Instructor's Expertise":
         this.setContent(DeanSelector.selectExpertiseReport)
         this.view = "expertiseReport"
+        this.title = `${this.college} ${view}`
+        this.fn = () => this.excelService.generateExpertiseReport()
         break;
-      case "11":
+      case "Teaching Evaluation Correlation":
         this.setContent(DeanSelector.selectTeachingCorrelationReport)
         this.view = "teachingEvalCorr"
+        this.title = `${this.college} ${view}`
+        this.fn = () => this.excelService.generateTeachCorrelationReport()
         break;
-      case "12":
+      case "Teaching Length and Certificates Count":
         this.setContent(DeanSelector.selectTeachingCertReport)
         this.view = "teachingLengthCert"
+        this.title = `${this.college} ${view}`
+        this.fn = () => this.excelService.generateCertsTeachReport()
         break;
-      case "13":
+      case "Certification Count":
         this.setContent(DeanSelector.selectCertTypeReport)
         this.view = "certType"
+        this.title = `${this.college} ${view}`
+        this.fn = () => this.excelService.generateCertTypeReport()
         break;
-      case "14":
+      case "Faculty Report":
         this.setContent(DeanSelector.selectFacultyReport)
         this.view = "faculty"
+        this.title = `${this.college} ${view} ${this.excelService.currSem}`
+        this.fn = () => this.excelService.generateFacultyReport()
         break;
-
+      case "Milestone Achieved":
+        this.setContent(DeanSelector.selectMilestoneReport)
+        this.view = "milestone"
+        this.title = `${this.college} ${view} (${ this.info.date.getFullYear() - 14} - ${this.info.date.getFullYear()})`
+        this.fn = () => this.excelService.generateMilestoneReport()
+        break;
+      case "Attainment Timeline":
+        this.setContent(DeanSelector.selectAttainmentTimelineReport)
+        this.view = "attainment"
+        this.title = `${this.college} ${view} (${ this.info.date.getFullYear() - 14} - ${this.info.date.getFullYear()})`
+        this.fn = () => this.excelService.generateAttainmentReport()
+        break;
       default:
         this.router.navigate([`admin/reports`])
         break;
-
-
     }
   }
 
@@ -152,6 +204,10 @@ export class ReportViewComponent {
     }).catch(error => {
       console.error("Error fetching data:", error);
     });
+  }
+
+  downloadReport() {
+    this.fn()
   }
 
   renderRadarChart(item: string[]) {
@@ -188,6 +244,7 @@ export class ReportViewComponent {
   back() {
     this.router.navigate([`admin/reports`])
   }
+
   base64Decode(base64String: string) {
     const buffer = Buffer.from(base64String, 'base64');
     return buffer.toString('utf-8');
@@ -221,6 +278,4 @@ export class ReportViewComponent {
   toInt(x:string) {
     return parseInt(x)
   }
-
-  title: string = ""
 }

@@ -8,6 +8,7 @@ import {
   facultyCertsCountAverage,
   facultyCourseUnitAverage,
   selectAttainmentTimeline,
+  selectAttainmentTimelineReport,
   selectCertTypeReport,
   selectCertTypes,
   selectCertsLoading,
@@ -121,7 +122,7 @@ export class ManageAnalyticsComponent{
 
     // Bugged
     this.attainmentSubscription = this.store.pipe(
-      select(selectAttainmentTimeline),
+      select(selectAttainmentTimelineReport),
       filter(data => !!data && (data.length > 0 )),
       take(1)
     ).subscribe({
@@ -129,29 +130,18 @@ export class ManageAnalyticsComponent{
       // Seminars 2
       // Certifications 0
       // Commex 1
-      console.log(res)
-        this.formatAttainmentReport(res)
+      this.attainmentData = res!
+      console.log(this.attainmentData)
+      // console.log(res)
+      //   this.formatAttainmentReport(res!)
         // console.log(this.attainmentData)
       },
       error: error => {console.log(error)}
     })
-
-    // Bugged
-    this.mileStoneSubscription = this.store.pipe(
-      select(selectMilestoneReport),
-      filter(data => !!data && (data.length > 0 )),
-      take(1)
-    ).subscribe({
-      next: res => {
-        this.milestoneData = res!},
-      error: error => {console.log(error)}
-    })
-
   }
 
   ngOnDestroy() {
     this.attainmentSubscription.unsubscribe()
-    this.mileStoneSubscription.unsubscribe()
   }
 
   formatAttainmentReport(res : number[][]) {
@@ -197,21 +187,12 @@ export class ManageAnalyticsComponent{
     this.excelService.generateEducReport()
   }
 
-  // Bugged
   generateAttainmentReport() {
-    // this.excelService.generateEducAttainmentReport2(this.attainmentData)
-    // if(this.attainmentData.length <= 0) return
-
-    // this.excelService.exportExcel<AttainmentData>(this.attainmentData, `Attainment Timeline ${this.college} (${ this.date.getFullYear() - 14} - ${this.date.getFullYear()})`, this.college, this.currSem)
+    this.excelService.generateAttainmentReport()
   }
 
-  // Bugged
   generateMilestoneReport() {
-
-    // this.excelService.generateMilestoneReport(this.milestoneData)
-    // if(this.milestoneData.length <= 0) return
-
-    // this.excelService.exportExcel<MilestoneReport>(this.milestoneData, `Milestone Achieved ${this.college} (${ this.date.getFullYear() - 14} - ${this.date.getFullYear()})`, this.college, this.currSem)
+    this.excelService.generateMilestoneReport()
   }
 
   generateEducAttainmentReport() {
