@@ -51,4 +51,11 @@ export class CryptoJSService {
     return JSON.stringify(data);
   }
 
+  base64Decoder(word: string) {
+    const words = CryptoJS.enc.Base64.parse(word);
+    const textString = CryptoJS.enc.Utf8.stringify(words);
+
+    return textString
+  }
+
 }

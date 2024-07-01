@@ -68,6 +68,8 @@ export const selectCollegeMilestoneCount = createSelector(
 
         const sortedMilestone = [...milestoneMap.entries()].sort((a, b) => a[0] - b[0]);
         const ret = sortedMilestone.map(x => x[1]);
+
+        // console.log(ret)
         return ret.slice(ret.length - 15, ret.length);
     }
   );
@@ -75,12 +77,9 @@ export const selectCollegeMilestoneCount = createSelector(
   export const selectMilestoneReport = createSelector(
     selectDeanState,
     (state) => {
-
-      // if(state.certs.length <= 0 || state.educs.length <= 0 || state.commex.length <= 0) return
-      const yearsArray: string[] = Array.from({ length: 15 }, (_, i) => (new Date().getFullYear() - 14) + i).map(String);
-
-
-      const milestoneReport: MilestoneReport[] = []
+      console.log("INs")
+      if(state.certs.length <= 0 && state.educs.length <= 0 && state.commex.length <= 0) return
+        const milestoneReport: MilestoneReport[] = []
       let prevCommex = 0
       let prevEduc = 0
       let prevCert = 0
@@ -116,7 +115,7 @@ export const selectCollegeMilestoneCount = createSelector(
         milestoneReport.push(data)
       })
 
-      // console.log(milestoneReport)
+      console.log(milestoneReport)
       return milestoneReport
     }
 
@@ -145,52 +144,23 @@ export const selectCollegeMilestoneCount = createSelector(
       return currEducReport
     }
   )
+
 export const selectAttainmentTimeline = createSelector(
     selectDeanState,
     (state: DeanState) => {
-        const floorYear = currentYear - 14;
-        let attainmentTimeline = [
-            Array.from({ length: 15 }, () => 0),
-            Array.from({ length: 15 }, () => 0),
-            Array.from({ length: 15 }, () => 0)
-        ];
-
-        if(state.certs.length <= 0) return []
-
-        state.certs.forEach(cert => {
-            const currYear = +(cert.accomplished_date+'').slice(0,4);
-            if(currYear >= floorYear){
-                attainmentTimeline[0][currYear - floorYear] += 1
-            }
-          })
-
-      if(state.commex.length <= 0) return []
-      state.commex.forEach(commex => {
-        const currYear = +commex.commex_date.slice(0,4);
-        if(currYear >= floorYear){
-          attainmentTimeline[1][currYear - floorYear] += 1
-        }
-      })
-
-        state.certs.forEach(cert => {
-            const currYear = +(cert.accomplished_date+'').slice(0,4);
-            if(currYear >= floorYear && cert.cert_type == "Completion"){
-                attainmentTimeline[2][currYear - floorYear] += 1
-            }
-        })
-
-        attainmentTimeline.map((arr, idx) => {
-            arr.map((x, index) => {
-                if(index < 14){
-                    attainmentTimeline[idx][index + 1] = (attainmentTimeline[idx][index + 1] + x)
-                }
-            })
-        })
-
-        return attainmentTimeline;
+      if(state.certs.length <= 0 && state.commex.length <= 0) return
+      return getAttainmentTimeline(state.certs, state.commex)
     }
 );
 
+export const selectAttainmentTimelineReport = createSelector(
+  selectDeanState,
+  (state) => {
+    if(state.certs.length <= 0 && state.commex.length <= 0) return
+    const data = getAttainmentTimeline(state.certs, state.commex)
+    return formatAttainmentReport(data)
+  }
+)
 export const selectAllCollege = createSelector(
     selectDeanState,
     (state: DeanState) => state.colleges
@@ -753,8 +723,8 @@ function formatOverallAve(items: number[]) {
 
     let data = {
       "Year": yearsArray[i++],
-      'Educational Attainment': currEduc.toFixed(2),
-      'Educational Attainment Change from Previous Year (%)': changeEduc,
+      'College Overall Evaluation Average': currEduc.toFixed(2),
+      'College Overall Evaluation Average Change from Previous Year (%)': changeEduc,
     }
 
     prev = currEduc
@@ -1053,7 +1023,6 @@ export const milestoneReport = (commex: CommunityExtension[] ,faculty_ID : numbe
   selectDeanState,
   (state) => {
 
-    const yearsArray: string[] = Array.from({ length: 15 }, (_, i) => (new Date().getFullYear() - 14) + i).map(String);
 
     const milestoneReport: MilestoneReport[] = []
 
@@ -1441,7 +1410,6 @@ export const selectAttainmentTimelineFaculty = (commex: CommunityExtension[], id
 
   function formatAllAve(items: [number, [string, number[], string, string]][]) {
 
-    const yearsArray: string[] = Array.from({ length: 15 }, (_, i) => (new Date().getFullYear() - 14) + i).map(String);
 
     let indvSemAveTimelineData : EvaluationTimeline[] = []
 
@@ -1511,7 +1479,6 @@ export const selectAttainmentTimelineFaculty = (commex: CommunityExtension[], id
 
   function formatCollegeEducTimeine(res: number[][]) {
     let educData: EducAttainmentData[] = []
-    const yearsArray: string[] = Array.from({ length: 15 }, (_, i) => (new Date().getFullYear() - 14) + i).map(String);
 
     let previousYear = 0
     for(let i = 0; i < res[0].length ; i++) {
@@ -1569,3 +1536,86 @@ export const selectAttainmentTimelineFaculty = (commex: CommunityExtension[], id
     return educTimeline;
   }
 
+  function formatAttainmentReport(res: number[][]) {
+    let attainmentData: AttainmentData[] = []
+    let previousYear = 0
+    let previousCert = 0
+    let previousCommex = 0
+    let previousSeminar = 0
+
+    for(let i = 0; i < res[0].length; i++) {
+
+      let totalAchv = res[0][i] + res[1][i] + res[2][i]
+      let currCert = res[0][i]
+      let currCommex = res[1][i]
+      let currSeminar = res[2][i]
+
+      let changeCert = previousCert ? (((currCert - previousCert) / previousCert) * 100).toFixed(2) + '%' : '-'
+      let changeCommex = previousCommex ? (((currCommex - previousCommex) / previousCommex) * 100).toFixed(2) + '%' : '-'
+      let changeSeminar = previousSeminar ? (((currSeminar - previousSeminar) / previousSeminar) * 100).toFixed(2) + '%' : '-'
+      let changeAchievement = previousYear ? (((totalAchv - previousYear) / previousYear) * 100).toFixed(2) + '%' : '-'
+
+      let data = {
+        "Year": yearsArray[i],
+        "Certificates Received": currCert,
+        "Certificates Received Change from Previous Year (%)": changeCert,
+        "Community Extensions Attended": currCommex,
+        "Community Extensions Attended Change from Previous Year (%)": changeCommex,
+        "Seminars Completed": currSeminar,
+        "Seminars Completed Change from Previous Year (%)": changeSeminar,
+        "Total Achievements": totalAchv,
+        "Change from Previous Year (%)": changeAchievement,
+      };
+
+      previousCert = currCert
+      previousCommex = currCommex
+      previousSeminar = currSeminar
+      previousYear = totalAchv
+      attainmentData = [...attainmentData, data]
+    }
+
+    return attainmentData
+  }
+
+  function getAttainmentTimeline(certs: CertificationsFaculty[], commex: CommunityExtension[]) {
+    const floorYear = currentYear - 14;
+    let attainmentTimeline = [
+        Array.from({ length: 15 }, () => 0),
+        Array.from({ length: 15 }, () => 0),
+        Array.from({ length: 15 }, () => 0)
+    ];
+
+    // if(state.certs.length <= 0) return []
+
+    certs.forEach(cert => {
+        const currYear = +(cert.accomplished_date+'').slice(0,4);
+        if(currYear >= floorYear){
+            attainmentTimeline[0][currYear - floorYear] += 1
+        }
+      })
+
+  // if(state.commex.length <= 0) return []
+    commex.forEach(commex => {
+      const currYear = +commex.commex_date.slice(0,4);
+      if(currYear >= floorYear){
+        attainmentTimeline[1][currYear - floorYear] += 1
+      }
+    })
+
+    certs.forEach(cert => {
+        const currYear = +(cert.accomplished_date+'').slice(0,4);
+        if(currYear >= floorYear && cert.cert_type == "Completion"){
+            attainmentTimeline[2][currYear - floorYear] += 1
+        }
+    })
+
+    attainmentTimeline.map((arr, idx) => {
+        arr.map((x, index) => {
+            if(index < 14){
+                attainmentTimeline[idx][index + 1] = (attainmentTimeline[idx][index + 1] + x)
+            }
+        })
+    })
+
+    return attainmentTimeline;
+  }

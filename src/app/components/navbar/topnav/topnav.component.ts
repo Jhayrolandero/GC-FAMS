@@ -11,6 +11,7 @@ import { Store } from '@ngrx/store';
 import { AuthService } from '../../../services/auth.service';
 import { logOut } from '../../../state/logout.action';
 import { InfoService } from '../../../services/info.service';
+import { ExcelServiceService } from '../../../service/excel-service.service';
 
 
 @Component({
@@ -42,20 +43,23 @@ export class TopnavComponent {
     private store: Store,
     public dialog: MatDialog,
     private router: Router,
-    private info: InfoService) {
+    private info: InfoService,
+    private excelService: ExcelServiceService
+  ) {
       this.accountPath = this.route.snapshot.url[0].path;
       //This declares the daes for the topnav!
-      this.schoolYear = this.currDate.getFullYear();
-      const currMonth = this.currDate.getMonth();
-      if(currMonth >= 1 && currMonth <= 3){
-        this.semester = '1st Semester';
-      }
-      else if(currMonth >= 4 && currMonth <= 6){
-        this.semester = 'Midyear';
-      }
-      else{
-        this.semester = '2nd Semester'
-      }
+      // this.schoolYear = this.currDate.getFullYear();
+      // const currMonth = this.currDate.getMonth();
+      this.semester = this.excelService.currSem
+      // if(currMonth >= 1 && currMonth <= 3){
+      //   this.semester = '1st Semester';
+      // }
+      // else if(currMonth >= 4 && currMonth <= 6){
+      //   this.semester = 'Midyear';
+      // }
+      // else{
+      //   this.semester = '2nd Semester'
+      // }
       this.getCollege()
     }
 

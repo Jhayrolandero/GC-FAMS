@@ -15,7 +15,7 @@ import { ExpertiseReport } from '../services/Interfaces/expertiseReport';
 import { FacultyReport } from '../services/Interfaces/facultyReport';
 import { Store, select } from '@ngrx/store';
 import * as DeanSelector from '../state/dean-state/dean-state.selector';
-import { filter, firstValueFrom, take } from 'rxjs';
+import { filter, firstValueFrom, take, takeLast } from 'rxjs';
 import { error } from 'console';
 
 interface SubHeading {
@@ -47,24 +47,21 @@ export class ExcelServiceService {
 
   currSem = this.getSemester(new Date().getMonth()+'', new Date().getFullYear()).semester + " Semester, A.Y. "+ this.getSemester(new Date().getMonth()+'', new Date().getFullYear()).academicYear
 
-  getSemester(month : string, year : number) {
-    // Normalize the input
-    month = month.toLowerCase();
-
+  getSemester(month: string, year: number) {
     // Define month names and their corresponding semester periods
-    const months: any = {
-      0: { semester: 2, yearOffset: 0 },
-      1: { semester: 2, yearOffset: 0 },
-      2: { semester: 2, yearOffset: 0 },
-      3: { semester: 2, yearOffset: 0 },
-      4: { semester: 2, yearOffset: 0 },
-      5: { semester: 2, yearOffset: 0 },
-      6: { semester: 2, yearOffset: 0 },  // Default to midyear for semester 2
-      7: { semester: 1, yearOffset: 0 },
-      8: { semester: 1, yearOffset: 0 },
-      9: { semester: 1, yearOffset: 0 },
-      10: { semester: 1, yearOffset: 0 },
-      11: { semester: 1, yearOffset: 0 },
+    const months: { [key: string]: { semester: string, yearOffset: number } } = {
+      "0": { semester: "2nd", yearOffset: 0 },
+      "1": { semester: "2nd", yearOffset: 0 },
+      "2": { semester: "2nd", yearOffset: 0 },
+      "3": { semester: "2nd", yearOffset: 0 },
+      "4": { semester: "2nd", yearOffset: 0 },
+      "5": { semester: "2nd", yearOffset: 0 },
+      "6": { semester: "Midyear", yearOffset: 0 },
+      "7": { semester: "1st", yearOffset: 0 },
+      "8": { semester: "1st", yearOffset: 0 },
+      "9": { semester: "1st", yearOffset: 0 },
+      "10": { semester: "1st", yearOffset: 0 },
+      "11": { semester: "1st", yearOffset: 0 },
     };
 
     // Check if the provided month is valid
@@ -76,18 +73,21 @@ export class ExcelServiceService {
 
     // Determine academic year
     let academicYearStart, academicYearEnd;
-    if (semester === 1) {
+    if (semester === "1st") {
       academicYearStart = year;
       academicYearEnd = year + 1;
-    } else if (semester === 2) {
+    } else if (semester === "2nd") {
       academicYearStart = year - 1;
+      academicYearEnd = year;
+    } else if (semester === "Midyear") {
+      academicYearStart = year;
       academicYearEnd = year;
     } else {
       throw new Error("Month provided does not belong to any semester.");
     }
 
     return {
-      semester: semester == 1 ? '1st' : '2nd',
+      semester: semester,
       academicYear: `${academicYearStart}-${academicYearEnd}`
     };
   }
@@ -254,7 +254,7 @@ export class ExcelServiceService {
 
   generateEducAttainmentReport() {
     this.fetchData(DeanSelector.selectOverallAveReport).then(res => {
-      this.exportExcel<Object>(res!, `Educational Attainment Timeline (${ this.info.date.getFullYear() - 14} - ${this.info.date.getFullYear()})`, this.college, this.currSem)
+      this.exportExcel<Object>(res!, `${this.college} Overall Evaluation Average Timeline (${ this.info.date.getFullYear() - 14} - ${this.info.date.getFullYear()})`, this.college, this.currSem)
     }).catch(error => {
       console.error("Error fetching data:", error);
     })
@@ -265,30 +265,31 @@ export class ExcelServiceService {
   */
   generateEducReport() {
     this.fetchData(DeanSelector.selectCollegeEducTimelineReport).then(res => {
-      this.exportExcel<EducAttainmentData>(res!, `Education Attainment Timeline ${this.college} (${ this.info.date.getFullYear() - 14} - ${this.info.date.getFullYear()})`, this.college, this.currSem)
+      this.exportExcel<EducAttainmentData>(res!, `${this.college} Education Attainment Timeline (${ this.info.date.getFullYear() - 14} - ${this.info.date.getFullYear()})`, this.college, this.currSem)
     }).catch(error => {
       console.error("Error fetching data:", error);
     })
   }
 
-  // Bugged
-  generateAttainmentReport(attainmentData: AttainmentData[]) {
-    if(attainmentData.length <= 0) return
-
-    this.exportExcel<AttainmentData>(attainmentData, `Attainment Timeline ${this.college} (${ this.info.date.getFullYear() - 14} - ${this.info.date.getFullYear()})`, this.college, this.currSem)
-
+  generateAttainmentReport() {
+    this.fetchData(DeanSelector.selectAttainmentTimelineReport).then(res => {
+      this.exportExcel<AttainmentData>(res, `${this.college} Attainment Timeline (${ this.info.date.getFullYear() - 14} - ${this.info.date.getFullYear()})`, this.college, this.currSem)
+    }).catch(error => {
+      console.error("Error fetching data:", error);
+    })
   }
 
-  // Bugged
-  generateMilestoneReport(milestoneData: MilestoneReport[]) {
-    if(milestoneData.length <= 0) return
-
-    this.exportExcel<MilestoneReport>(milestoneData, `Milestone Achieved ${this.college} (${ this.info.date.getFullYear() - 14} - ${this.info.date.getFullYear()})`, this.college, this.currSem)
+  generateMilestoneReport() {
+    this.fetchData(DeanSelector.selectMilestoneReport).then(res => {
+      this.exportExcel<MilestoneReport>(res, `${this.college} Milestone Achieved (${ this.info.date.getFullYear() - 14} - ${this.info.date.getFullYear()})`, this.college, this.currSem)
+    }).catch(error => {
+      console.error("Error fetching data:", error);
+    })
   }
 
   generateEducAttainmentReport2() {
     this.fetchData(DeanSelector.selectCurrentEducAttainment).then(res => {
-      this.exportExcel<CurrEducAttainment>(res!, `Educational Attainment ${this.college}`, this.college, this.currSem)
+      this.exportExcel<CurrEducAttainment>(res!, `${this.college} Educational Attainment`, this.college, this.currSem)
     }).catch(error => {
       console.error("Error fetching data:", error);
     })
@@ -296,7 +297,7 @@ export class ExcelServiceService {
 
   generateEmploymentTypeReport() {
     this.fetchData(DeanSelector.selectEmploymentTypeReport).then(res => {
-      this.exportExcel<EmploymentTypeReport>(res!, `Employment Type ${this.college}`, this.college, this.currSem)
+      this.exportExcel<EmploymentTypeReport>(res!, `${this.college} Employment Type`, this.college, this.currSem)
     }).catch(error => {
       console.error("Error fetching data:", error);
     })
@@ -304,7 +305,7 @@ export class ExcelServiceService {
 
   generateSeminarReport() {
     this.fetchData(DeanSelector.selectSeminarReport).then(res => {
-      this.exportExcel<SeminarReport>(res!, `Seminars Attended ${this.college}`, this.college, this.currSem)
+      this.exportExcel<SeminarReport>(res!, `${this.college} Seminars Attended`, this.college, this.currSem)
     }).catch(error => {
       console.error("Error fetching data:", error);
     })
@@ -312,7 +313,7 @@ export class ExcelServiceService {
 
   generateTeachingLevelReport() {
     this.fetchData(DeanSelector.selectTeachingLevelReport).then(res => {
-      this.exportExcel<TeachingLevelReport>(res!, `Teaching Level ${this.college}`, this.college, this.currSem)
+      this.exportExcel<TeachingLevelReport>(res!, `${this.college} Teaching Level`, this.college, this.currSem)
     }).catch(error => {
       console.error("Error fetching data:", error);
     })
@@ -320,7 +321,7 @@ export class ExcelServiceService {
 
   generateExpertiseReport() {
     this.fetchData(DeanSelector.selectExpertiseReport).then(res => {
-      this.exportExcel<ExpertiseReport>(res!, `Instructor's Expertise ${this.college}`, this.college, this.currSem)
+      this.exportExcel<ExpertiseReport>(res!, `${this.college} Instructor's Expertise`, this.college, this.currSem)
     }).catch(error => {
       console.error("Error fetching data:", error);
     })
@@ -328,7 +329,7 @@ export class ExcelServiceService {
 
   generateTeachCorrelationReport() {
     this.fetchData(DeanSelector.selectTeachingCorrelationReport).then(res => {
-      this.exportExcel<Object>(res!, `Teaching Evaluation Correlation ${this.college}`, this.college, this.currSem)
+      this.exportExcel<Object>(res!, `${this.college} Teaching Evaluation Correlation`, this.college, this.currSem)
     }).catch(error => {
       console.error("Error fetching data:", error);
     })
@@ -336,7 +337,7 @@ export class ExcelServiceService {
 
   generateCertsTeachReport() {
     this.fetchData(DeanSelector.selectTeachingCertReport).then(res => {
-      this.exportExcel<Object>(res!, `Teaching Length and Certificates Count  ${this.college}`, this.college, this.currSem)
+      this.exportExcel<Object>(res!, `${this.college} Teaching Length and Certificates Count`, this.college, this.currSem)
     }).catch(error => {
       console.error("Error fetching data:", error);
     })
@@ -344,7 +345,7 @@ export class ExcelServiceService {
 
   generateCertTypeReport() {
     this.fetchData(DeanSelector.selectCertTypeReport).then(res => {
-      this.exportExcel<Object>(res!, `Certification Count ${this.college}`, this.college, this.currSem)
+      this.exportExcel<Object>(res!, `${this.college} Certification Count`, this.college, this.currSem)
     }).catch(error => {
       console.error("Error fetching data:", error);
     })
@@ -352,7 +353,7 @@ export class ExcelServiceService {
 
   generateFacultyReport() {
     this.fetchData(DeanSelector.selectFacultyReport).then(res => {
-      this.exportExcel<FacultyReport>(res!,`Faculty Report ${this.college} ${this.currSem}`,this.college,this.currSem)
+      this.exportExcel<FacultyReport>(res!,`${this.college} Faculty Report ${this.currSem}`,this.college,this.currSem)
     }).catch(error => {
       console.error("Error fetching data:", error);
     })

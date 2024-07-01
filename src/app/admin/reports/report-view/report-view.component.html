@@ -1,7 +1,27 @@
 @if(tableValue) {
-<div class="p-5 text-blue flex flex-col gap-2">
-  <button (click)="back()">Back</button>
+<div class="p-5 text-blue flex flex-col gap-4">
   <div class="bg-white shadow-main w-full rounded-[15px] py-2 px-5">
+    <div
+      class="flex flex-col tablet:flex-row gap-4 items-center border-b-2 border-blue pb-4 mb-4 justify-between"
+    >
+      <div class="flex items-center gap-2">
+        <button
+          class="bg-white w-[50px] rounded-full aspect-square shadow-main"
+          (click)="back()"
+        >
+          <i class="fa-solid fa-arrow-left"></i>
+        </button>
+        <h4 class="text-[1.25rem] tablet:text-[2rem] font-bold text-blue">
+          {{ title }}
+        </h4>
+      </div>
+      <button
+        (click)="downloadReport()"
+        class="bg-blue text-white px-2 py-1 rounded-md"
+      >
+        Download
+      </button>
+    </div>
     @if(view === 'radar') {
     <div class="w-full max-w-[480px] m-auto">
       <app-radar-chart
@@ -67,7 +87,10 @@
       </app-line-graph2>
     </div>
     } @else if(view === 'educAttainmentReport') {
-    <div *ngIf="educationalAttainmentTimeline$ | async as educTimeline">
+    <div
+      class="w-full max-w-[320px] m-auto"
+      *ngIf="educationalAttainmentTimeline$ | async as educTimeline"
+    >
       <app-pie-chart
         *ngIf="educTimeline.length > 0"
         [data]="[educTimeline[0][14], educTimeline[1][14], educTimeline[2][14]]"
@@ -76,7 +99,10 @@
       </app-pie-chart>
     </div>
     } @else if(view ==='employmentType') {
-    <div *ngIf="employmentTypes$ | async as type">
+    <div
+      class="w-full max-w-[320px] m-auto"
+      *ngIf="employmentTypes$ | async as type"
+    >
       <app-pie-chart [data]="type" [labels]="['Part-Time', 'Full-Time']">
       </app-pie-chart>
     </div>
@@ -127,6 +153,14 @@
     <div *ngIf="teachingLength$ | async as teaching">
       <app-scatter-plot [data]="teaching[0]" [showLegend]="false">
       </app-scatter-plot>
+      <div class="flex justify-center items-center gap-4">
+        <div class="flex gap-2">
+          <p>X: Evaluation</p>
+        </div>
+        <div class="flex gap-2">
+          <p>Y: Average Teaching Length (hrs)</p>
+        </div>
+      </div>
     </div>
     } @else if(view === 'teachingLengthCert') {
     <div *ngIf="teachingLength$ | async as teaching">
@@ -137,22 +171,52 @@
         [bgColor]="'rgb(7,66,135)'"
         [bgColor2]="'rgb(30,114,66)'"
         [labels]="yearsArray"
-        [showLegend]="false"
+        [legendLabel]="['Certifications', 'Teaching Length']"
+        [showLegend]="true"
       >
         >
       </app-bar-chart>
     </div>
     } @else if(view === 'certType') {
-    <div *ngIf="certTypes$ | async as certType">
+    <div
+      class="w-full max-w-[320px] m-auto"
+      *ngIf="certTypes$ | async as certType"
+    >
       <app-pie-chart
         [data]="[certType['Completion'], certType['Achievement']]"
         [labels]="['Completion', 'Achievement']"
       >
       </app-pie-chart>
     </div>
+    } @else if (view === 'milestone') {
+    <div *ngIf="milestoneCount$ | async as milestone">
+      <app-bar-chart
+        [data]="milestone"
+        [axis]="'x'"
+        [bgColor]="'rgb(7, 66, 135)'"
+        [labels]="yearsArray"
+        [showLegend]="false"
+      >
+        >
+      </app-bar-chart>
+    </div>
+    } @else if (view === 'attainment') {
+    <div *ngIf="attainmentTimeline$ | async as attainment">
+      <app-line-graph2
+        [label]="attainment[0]"
+        [label2]="attainment[1]"
+        [label3]="attainment[2]"
+        [labels]="yearsArray"
+        [legendLabel]="['Certifications', 'Community Extensions', 'Seminars']"
+        [showLegend]="true"
+      >
+      </app-line-graph2>
+    </div>
+    } @else if (view === 'faculty') {
+    <app-faculty-analytics></app-faculty-analytics>
     }
 
-    <div class="overflow-x-auto">
+    <div class="overflow-x-auto mt-2">
       <table class="w-full">
         <thead class="bg-blue text-white">
           <tr>
@@ -180,6 +244,14 @@
           </tr>
         </tbody>
       </table>
+    </div>
+    <div class="flex justify-end">
+      <button
+        (click)="downloadReport()"
+        class="bg-blue text-white px-2 py-1 rounded-md"
+      >
+        Download
+      </button>
     </div>
   </div>
 </div>
