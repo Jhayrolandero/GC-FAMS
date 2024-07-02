@@ -18,6 +18,7 @@ import { SupportingDocs } from "../../services/Interfaces/supportingDocs";
 import { ExpSupportingDocs } from "../../services/Interfaces/expSupportDocs";
 import { IndustrySupportingDocs } from "../../services/Interfaces/industrySupportDocs";
 import { CertSupportingDocs } from "../../services/Interfaces/certSupportDocs";
+import { Research, ResearchAuthor } from "../../services/Interfaces/research";
 
 export interface ProfileState {
   profile: Profile | undefined;
@@ -29,6 +30,7 @@ export interface ProfileState {
   evals: Evaluation[];
   courses: [CoursesFaculty[], Courses[]];
   commex: CommunityExtension[];
+  research: [Research[], ResearchAuthor[]];
   isLoading: boolean;
   passwordLoading: boolean;
   editLoading:boolean;
@@ -51,6 +53,7 @@ export const initialProfileState: ProfileState = {
   evals: [],
   courses: [[], []],
   commex: [],
+  research: [[], []],
   isLoading: false,
   passwordLoading: false,
   editLoading: false,
@@ -94,6 +97,17 @@ export const profileReducer = createReducer(
     certs: certs
   })),
   on(CertActions.loadCertsFailure, (state) => ({ ...state, })),
+
+
+  on(CertActions.loadResearch, (state) => ({ ...state })),
+  on(CertActions.loadResearchSuccess, (state, { research }) => ({
+    ...state,
+    research: research
+  })),
+  on(CertActions.loadResearchFailure, (state) => ({ ...state, })),
+
+
+
 
   on(CertActions.loadExp, (state) => ({ ...state })),
   on(CertActions.loadExpSuccess, (state, { exps }) => ({

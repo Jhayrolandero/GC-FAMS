@@ -11,7 +11,7 @@ import { MessageComponent } from '../components/message/message.component';
 import { SidebarComponent } from '../components/navbar/sidebar/sidebar.component';
 import { TopnavComponent } from '../components/navbar/topnav/topnav.component';
 import { getCommex } from '../state/commex/commex.action';
-import { loadCert, loadCourse, loadEduc, loadEval, loadExp, loadExpertise, loadProfile, loadProj, loadSupportingDocs } from '../state/faculty-state/faculty-state.actions';
+import { loadCert, loadCourse, loadEduc, loadEval, loadExp, loadExpertise, loadProfile, loadProj, loadResearch, loadSupportingDocs } from '../state/faculty-state/faculty-state.actions';
 import { AnalyticsComponent } from './analytics/analytics.component';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Subject, takeUntil } from 'rxjs';
@@ -76,6 +76,7 @@ export class FacultyComponent {
     store.dispatch(loadEval());
     store.dispatch(loadSupportingDocs());
     store.dispatch(getCommex({refresh: false}));
+    store.dispatch(loadResearch());
 
 
     breakpointObserver

@@ -273,6 +273,16 @@ export const selectAllProj = createSelector(
   (state: ProfileState) => state.proj
 );
 
+export const selectFacultyResearch = createSelector(
+  selectProfileState,
+  (state: ProfileState) => state.research[0]
+);
+
+export const selectFacultyResearchAuthor = createSelector(
+  selectProfileState,
+  (state: ProfileState) => state.research[1]
+);
+
 export const selectFacultyExpertise = createSelector(
   selectProfileState,
   (state: ProfileState) => state.expertises[0]

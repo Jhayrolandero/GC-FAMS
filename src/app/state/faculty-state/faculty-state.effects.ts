@@ -26,6 +26,7 @@ import { Store } from "@ngrx/store";
 import { ExpSupportingDocs } from "../../services/Interfaces/expSupportDocs";
 import { CertSupportingDocs } from "../../services/Interfaces/certSupportDocs";
 import { IndustrySupportingDocs } from "../../services/Interfaces/industrySupportDocs";
+import { Research, ResearchAuthor } from "../../services/Interfaces/research";
 @Injectable()
 export class CvEffects {
 
@@ -218,6 +219,16 @@ export class CvEffects {
       .pipe(
         map((data) => CvActions.loadCommexSuccess({ commex: this.decryptData<CommunityExtension[]>(data) })),
         catchError((error) => of(CvActions.loadCommexFailure({ error })))
+      )
+    )
+  ));
+
+  loadResearch$ = createEffect(() => this.actions$.pipe(
+    ofType(CvActions.loadResearch),
+    switchMap(() => this.facultyService.fetchData<Encryption>('research')
+      .pipe(
+        map((data) => CvActions.loadResearchSuccess({ research: this.decryptData<[Research[], ResearchAuthor[]]>(data) })),
+        catchError((error) => of(CvActions.loadResearchFailure({ error })))
       )
     )
   ));

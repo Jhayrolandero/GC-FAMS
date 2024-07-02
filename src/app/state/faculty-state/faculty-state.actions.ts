@@ -16,6 +16,7 @@ import { SupportingDocs } from "../../services/Interfaces/supportingDocs";
 import { IndustrySupportingDocs } from "../../services/Interfaces/industrySupportDocs";
 import { ExpSupportingDocs } from "../../services/Interfaces/expSupportDocs";
 import { CertSupportingDocs } from "../../services/Interfaces/certSupportDocs";
+import { Research, ResearchAuthor } from "../../services/Interfaces/research";
 
 
 export const loadProfile = createAction('[Profile Global] Load Profile');
@@ -69,6 +70,16 @@ export const loadProjSuccess = createAction(
 );
 export const loadProjFailure = createAction(
   '[Project Global] Project Load Failed',
+  props<{ error: string }>()
+);
+
+export const loadResearch = createAction('[Course Global] Load Research');
+export const loadResearchSuccess = createAction(
+  '[Course Global] Research Load Success',
+  props<{ research: [Research[], ResearchAuthor[]] }>()
+);
+export const loadResearchFailure = createAction(
+  '[Course Global] Research Load Failed',
   props<{ error: string }>()
 );
 
