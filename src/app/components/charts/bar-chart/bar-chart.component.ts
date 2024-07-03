@@ -23,6 +23,9 @@ export class BarChartComponent {
   @Input() axis: string = '';
   @Input() bgColor: string = '';
   @Input() bgColor2: string = ''
+  @Input() yAxisLabel: string = ''
+  @Input() xAxisLabel: string = ''
+
 
   @Output() emitSemDiff = new EventEmitter<string>();
 
@@ -101,9 +104,6 @@ export class BarChartComponent {
           },
 
           animation: {
-            onComplete: () => {
-              this.emitSemDiff.emit(this.chart.toBase64Image('image/jpeg', 1));
-            }
           },
       },
       plugins: [customCanvasBackgroundColor]

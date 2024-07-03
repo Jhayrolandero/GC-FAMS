@@ -123,6 +123,8 @@ async) && (coursesLoading$ | async) && (coursesLoading$ | async) &&
       [label3]="educTimeline[2]"
       [labels]="yearsArray"
       [showLegend]="true"
+      [xAxisLabel]="'Year'"
+      [yAxisLabel]="'Count'"
       [legendLabel]="['Bachelor Degree', 'Masters Degree', 'Doctorate Degree']"
     >
     </app-line-graph2>
@@ -147,7 +149,10 @@ async) && (coursesLoading$ | async) && (coursesLoading$ | async) &&
       [axis]="'x'"
       [bgColor]="'rgb(7, 66, 135)'"
       [labels]="yearsArray"
-      [showLegend]="false"
+      [xAxisLabel]="'Year'"
+      [yAxisLabel]="'Milestone Count'"
+      [legendLabel]="['Milestone per year']"
+      [showLegend]="true"
     >
       >
     </app-bar-chart>
@@ -174,35 +179,12 @@ async) && (coursesLoading$ | async) && (coursesLoading$ | async) &&
       [label2]="commexToggle ? attainment[1] : []"
       [label3]="seminarToggle ? attainment[2] : []"
       [labels]="yearsArray"
-      [showLegend]="false"
+      [legendLabel]="['Certifications', 'Community Extensions', 'Seminars']"
+      [showLegend]="true"
+      [xAxisLabel]="'Year'"
+      [yAxisLabel]="'Count'"
     >
     </app-line-graph2>
-    <div class="flex gap-4 justify-center items-center">
-      <div class="flex flex-row gap-1">
-        <div
-          class="w-[23px] h-[23px] rounded-[5px] shadow-main duration-300 hover:duration-300 hover:bg-opacity-50"
-          [ngClass]="certToggle ? ' bg-blue' : 'bg-slate-200'"
-          (click)="certToggle = !certToggle"
-        ></div>
-        <p class="font-Roboto font-medium text-blue">Certifications</p>
-      </div>
-      <div class="flex flex-row gap-1">
-        <div
-          class="w-[23px] h-[23px] rounded-[5px] shadow-main duration-300 hover:duration-300 hover:bg-opacity-50"
-          [ngClass]="commexToggle ? 'bg-greenBar' : 'bg-slate-200'"
-          (click)="commexToggle = !commexToggle"
-        ></div>
-        <p class="font-Roboto font-medium text-blue">Community Extensions</p>
-      </div>
-      <div class="flex flex-row gap-1">
-        <div
-          class="w-[23px] h-[23px] rounded-[5px] shadow-main duration-300 hover:duration-300 hover:bg-opacity-50"
-          [ngClass]="seminarToggle ? 'bg-orange-400' : 'bg-slate-200'"
-          (click)="seminarToggle = !seminarToggle"
-        ></div>
-        <p class="font-Roboto font-medium text-blue">Seminars</p>
-      </div>
-    </div>
   </div>
 
   <div class="w-full flex flex-col laptop:flex-row gap-3">
@@ -293,24 +275,16 @@ async) && (coursesLoading$ | async) && (coursesLoading$ | async) &&
           [bgColor]="'rgb(7,66,135)'"
           [bgColor2]="'rgb(30,114,66)'"
           [labels]="yearsArray"
-          [showLegend]="false"
+          [legendLabel]="[
+            'Certification Count',
+            'Average Teaching Length (hrs)'
+          ]"
+          [xAxisLabel]="'Year'"
+          [yAxisLabel]="'Cert Count & Teaching Length'"
+          [showLegend]="true"
         >
           >
         </app-bar-chart>
-        <div class="flex justify-center items-center gap-4">
-          <div class="flex gap-2">
-            <div
-              class="w-[23px] h-[23px] rounded-[5px] shadow-main duration-300 hover:duration-300 hover:bg-opacity-50 bg-blue"
-            ></div>
-            <p>Certificate Count</p>
-          </div>
-          <div class="flex gap-2">
-            <div
-              class="w-[23px] h-[23px] rounded-[5px] shadow-main duration-300 hover:duration-300 hover:bg-opacity-50 bg-greenBar"
-            ></div>
-            <p>Average Teaching Length (hrs)</p>
-          </div>
-        </div>
       </div>
     </div>
     <div class="w-full tablet:w-[50%]">
@@ -328,16 +302,13 @@ async) && (coursesLoading$ | async) && (coursesLoading$ | async) &&
             <i class="fa-solid fa-file-excel"></i>
           </button>
         </div>
-        <app-scatter-plot [data]="teaching[0]" [showLegend]="false">
+        <app-scatter-plot
+          [data]="teaching[0]"
+          [showLegend]="false"
+          [xAxisLabel]="'Evaluation'"
+          [yAxisLabel]="'Ave. Teaching Length'"
+        >
         </app-scatter-plot>
-        <div class="flex justify-center items-center gap-4">
-          <div class="flex gap-2">
-            <p>X: Evaluation</p>
-          </div>
-          <div class="flex gap-2">
-            <p>Y: Average Teaching Length (hrs)</p>
-          </div>
-        </div>
       </div>
     </div>
   </div>
@@ -376,6 +347,8 @@ async) && (coursesLoading$ | async) && (coursesLoading$ | async) &&
         [axis]="'y'"
         [bgColor]="'rgb(30, 114, 66)'"
         [showLegend]="false"
+        [xAxisLabel]="'Seminar Count'"
+        [yAxisLabel]="'Seminar Title'"
       ></app-bar-chart>
     </div>
     <div
@@ -398,6 +371,8 @@ async) && (coursesLoading$ | async) && (coursesLoading$ | async) &&
         [axis]="'y'"
         [bgColor]="'rgb(255, 122, 0)'"
         [showLegend]="false"
+        [xAxisLabel]="'Level Count'"
+        [yAxisLabel]="'Teaching Level'"
       ></app-bar-chart>
     </div>
 
@@ -421,6 +396,8 @@ async) && (coursesLoading$ | async) && (coursesLoading$ | async) &&
         [axis]="'y'"
         [bgColor]="'rgb(7, 66, 135)'"
         [showLegend]="false"
+        [xAxisLabel]="'Expertise Count'"
+        [yAxisLabel]="'Expertise Title'"
       ></app-bar-chart>
     </div>
   </div>

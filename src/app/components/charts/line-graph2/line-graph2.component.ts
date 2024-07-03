@@ -1,5 +1,6 @@
 import { Component, ElementRef, Input, SimpleChanges, ViewChild } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
+import { Datasets } from '../../../services/Interfaces/dataset';
 Chart.register(...registerables);
 
 @Component({
@@ -20,7 +21,8 @@ export class LineGraphComponent2 {
   @Input() labels: string[] = [];
   @Input() showLegend?: boolean;
   @Input() legendLabel: string[] = [];
-
+  @Input() xAxisLabel: string = ''
+  @Input() yAxisLabel: string = ''
 
   ngAfterViewInit(){
     this.chart.destroy();
@@ -35,10 +37,14 @@ export class LineGraphComponent2 {
   }
 
   createChart(){
-    let data = {
-      labels: this.labels,
-      datasets: [
-        {
+      let data = {
+        labels: this.labels,
+        datasets: [] as Datasets[]
+      };
+
+
+    if(this.label && this.label.length > 0) {
+      const dataSet = {
         label: this.legendLabel[0],
         data: this.label,
         fill: true,
@@ -46,27 +52,71 @@ export class LineGraphComponent2 {
         borderColor: 'rgb(7, 66, 135)',
         backgroundColor: 'rgba(7, 66, 135, 0.2)',
         hoverOffset: 4
-        },
-        {
-          label: this.legendLabel[1],
-          data: this.label2,
-          fill: true,
-          tension: 0.3,
-          borderColor: 'rgb(30, 114, 66)',
-          backgroundColor: 'rgba(30, 114, 66, 0.2)',
-          hoverOffset: 4
-        },
-        {
-          label: this.legendLabel[2],
-          data: this.label3,
-          fill: true,
-          tension: 0.3,
-          borderColor: 'rgb(255, 122, 0)',
-          backgroundColor: 'rgba(255, 122, 0, 0.2)',
-          hoverOffset: 4
-        }
-    ]
-    };
+      }
+      data.datasets = [...data.datasets, dataSet];
+    }
+
+
+    if(this.label2 && this.label2.length > 0) {
+      console.log(this.label2)
+      const dataSet = {
+        label: this.legendLabel[1] ? this.legendLabel[1] : undefined,
+        data: this.label2,
+        fill: true,
+        tension: 0.3,
+        borderColor: 'rgb(30, 114, 66)',
+        backgroundColor: 'rgba(30, 114, 66, 0.2)',
+        hoverOffset: 4
+      }
+
+      data.datasets = [...data.datasets, dataSet];
+    }
+
+    if(this.label3 && this.label3.length > 0) {
+      const dataSet = {
+        label: this.legendLabel[2] ? this.legendLabel[2] : undefined,
+        data: this.label3,
+        fill: true,
+        tension: 0.3,
+        borderColor: 'rgb(255, 122, 0)',
+        backgroundColor: 'rgba(255, 122, 0, 0.2)',
+        hoverOffset: 4
+      }
+
+      data.datasets = [...data.datasets, dataSet];
+    }
+    // let data = {
+    //   labels: this.labels,
+    //   datasets: [
+    //     {
+    //     label: this.legendLabel[0],
+    //     data: this.label,
+    //     fill: true,
+    //     tension: 0.3,
+    //     borderColor: 'rgb(7, 66, 135)',
+    //     backgroundColor: 'rgba(7, 66, 135, 0.2)',
+    //     hoverOffset: 4
+    //     },
+    //     {
+    //       label: this.legendLabel[1] ? this.legendLabel[1] : undefined,
+    //       data: this.label2,
+    //       fill: true,
+    //       tension: 0.3,
+    //       borderColor: 'rgb(30, 114, 66)',
+    //       backgroundColor: 'rgba(30, 114, 66, 0.2)',
+    //       hoverOffset: 4
+    //     },
+    //     {
+    //       label: this.legendLabel[2] ? this.legendLabel[2] : undefined,
+    //       data: this.label3,
+    //       fill: true,
+    //       tension: 0.3,
+    //       borderColor: 'rgb(255, 122, 0)',
+    //       backgroundColor: 'rgba(255, 122, 0, 0.2)',
+    //       hoverOffset: 4
+    //     }
+    // ]
+    // };
 
     const ctx = this.lineGraphCanvas.nativeElement.getContext('2d');
     if(ctx){

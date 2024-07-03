@@ -71,6 +71,8 @@
       [label2]="selectedArray[1]"
       [label3]="selectedArray[2]"
       [labels]="yearsArray"
+      [xAxisLabel]="'Year'"
+      [yAxisLabel]="'Evaluation Ave.'"
       [showLegend]="true"
     >
     </app-line-graph>
@@ -93,7 +95,10 @@
         <app-line-graph2
           [label]="timeline"
           [labels]="yearsArray"
-          [showLegend]="false"
+          [legendLabel]="['Evaluation Ave. per year']"
+          [xAxisLabel]="'Year'"
+          [yAxisLabel]="'Evaluation Ave.'"
+          [showLegend]="true"
         >
         </app-line-graph2>
       </div>
@@ -115,6 +120,8 @@
           [axis]="'x'"
           [bgColor]="'rgb(7, 66, 135)'"
           [labels]="diffArr[1]"
+          [xAxisLabel]="'Faculty Name'"
+          [yAxisLabel]="'Evaluation Diff.'"
           [showLegend]="false"
         >
           >

@@ -1,3 +1,17 @@
-<div class="w-[100%] h-[70%]">
+<!-- <div class="w-[100%] h-[70%]">
     <canvas #scatterGraphCanvas [id]="chartId">{{ chart }}</canvas>
+  </div> -->
+
+<div class="flex">
+  <p class="[writing-mode:vertical-lr] rotate-180 text-center">
+    <small class="m-auto">{{ yAxisLabel }}</small>
+  </p>
+  <div class="w-full">
+    <div class="h-[180px]">
+      <canvas #scatterGraphCanvas [id]="chartId">{{ chart }}</canvas>
+    </div>
+    <p class="text-center pt-1">
+      <small>{{ xAxisLabel }}</small>
+    </p>
+  </div>
 </div>
