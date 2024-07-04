@@ -272,12 +272,6 @@ export class ExcelServiceService {
     }).catch(error => {
       console.error("Error fetching data:", error);
     })
-
-    // this.fetchData(DeanSelector.selectSemDiffReport).then(res => {
-    //   this.exportExcel<SemDiff>(res!, "Semestral Difference", this.college, this.currSem)
-    // }).catch(error => {
-    //   console.error("Error fetching data:", error);
-    // })
   }
 
   generateIndTimelineReport() {
@@ -310,11 +304,6 @@ export class ExcelServiceService {
     }).catch(error => {
       console.error("Error fetching data:", error);
     })
-    // this.fetchData(DeanSelector.selectOverallAveReport).then(res => {
-    //   this.exportExcel<Object>(res!, `${this.college} Overall Evaluation Average Timeline (${ this.info.date.getFullYear() - 14} - ${this.info.date.getFullYear()})`, this.college, this.currSem)
-    // }).catch(error => {
-    //   console.error("Error fetching data:", error);
-    // })
   }
 
   /*
@@ -333,12 +322,6 @@ export class ExcelServiceService {
     }).catch(error => {
       console.error("Error fetching data:", error);
     })
-
-    // this.fetchData(DeanSelector.selectCollegeEducTimelineReport).then(res => {
-    //   this.exportExcel<EducAttainmentData>(res!, `${this.college} Education Attainment Timeline (${ this.info.date.getFullYear() - 14} - ${this.info.date.getFullYear()})`, this.college, this.currSem)
-    // }).catch(error => {
-    //   console.error("Error fetching data:", error);
-    // })
   }
 
   generateAttainmentReport() {
@@ -355,21 +338,7 @@ export class ExcelServiceService {
     }).catch(error => {
       console.error("Error fetching data:", error);
     })
-
-
-    // this.fetchData(DeanSelector.selectAttainmentTimelineReport).then(res => {
-    //   this.exportExcel<AttainmentData>(res, `${this.college} Attainment Timeline (${ this.info.date.getFullYear() - 14} - ${this.info.date.getFullYear()})`, this.college, this.currSem)
-    // }).catch(error => {
-    //   console.error("Error fetching data:", error);
-    // })
   }
-  // generateAttainmentReport() {
-  //   this.fetchData(DeanSelector.selectAttainmentTimelineReport).then(res => {
-  //     this.exportExcel<AttainmentData>(res, `${this.college} Attainment Timeline (${ this.info.date.getFullYear() - 14} - ${this.info.date.getFullYear()})`, this.college, this.currSem)
-  //   }).catch(error => {
-  //     console.error("Error fetching data:", error);
-  //   })
-  // }
 
   generateMilestoneReport() {
     this.fetchData(DeanSelector.selectMilestoneReport).then(res => {
@@ -385,13 +354,6 @@ export class ExcelServiceService {
     }).catch(error => {
       console.error("Error fetching data:", error);
     })
-
-
-    // this.fetchData(DeanSelector.selectMilestoneReport).then(res => {
-    //   this.exportExcel<MilestoneReport>(res, `${this.college} Milestone Achieved (${ this.info.date.getFullYear() - 14} - ${this.info.date.getFullYear()})`, this.college, this.currSem)
-    // }).catch(error => {
-    //   console.error("Error fetching data:", error);
-    // })
   }
 
   generateEducAttainmentReport2() {
@@ -408,12 +370,6 @@ export class ExcelServiceService {
     }).catch(error => {
       console.error("Error fetching data:", error);
     })
-
-    // this.fetchData(DeanSelector.selectCurrentEducAttainment).then(res => {
-    //   this.exportExcel<CurrEducAttainment>(res!, `${this.college} Educational Attainment`, this.college, this.currSem)
-    // }).catch(error => {
-    //   console.error("Error fetching data:", error);
-    // })
   }
 
   generateEmploymentTypeReport() {
@@ -431,12 +387,6 @@ export class ExcelServiceService {
       console.error("Error fetching data:", error);
     })
 
-
-    // this.fetchData(DeanSelector.selectEmploymentTypeReport).then(res => {
-    //   this.exportExcel<EmploymentTypeReport>(res!, `${this.college} Employment Type`, this.college, this.currSem)
-    // }).catch(error => {
-    //   console.error("Error fetching data:", error);
-    // })
   }
 
   generateSeminarReport() {
@@ -453,12 +403,6 @@ export class ExcelServiceService {
     }).catch(error => {
       console.error("Error fetching data:", error);
     })
-
-    // this.fetchData(DeanSelector.selectSeminarReport).then(res => {
-    //   this.exportExcel<SeminarReport>(res!, `${this.college} Seminars Attended`, this.college, this.currSem)
-    // }).catch(error => {
-    //   console.error("Error fetching data:", error);
-    // })
   }
 
   generateTeachingLevelReport() {
@@ -475,12 +419,6 @@ export class ExcelServiceService {
     }).catch(error => {
       console.error("Error fetching data:", error);
     })
-
-    // this.fetchData(DeanSelector.selectTeachingLevelReport).then(res => {
-    //   this.exportExcel<TeachingLevelReport>(res!, `${this.college} Teaching Level`, this.college, this.currSem)
-    // }).catch(error => {
-    //   console.error("Error fetching data:", error);
-    // })
   }
 
   generateExpertiseReport() {
@@ -497,12 +435,6 @@ export class ExcelServiceService {
     }).catch(error => {
       console.error("Error fetching data:", error);
     })
-
-    // this.fetchData(DeanSelector.selectExpertiseReport).then(res => {
-    //   this.exportExcel<ExpertiseReport>(res!, `${this.college} Instructor's Expertise`, this.college, this.currSem)
-    // }).catch(error => {
-    //   console.error("Error fetching data:", error);
-    // })
   }
 
   generateTeachCorrelationReport() {
@@ -520,11 +452,6 @@ export class ExcelServiceService {
       console.error("Error fetching data:", error);
     })
 
-    // this.fetchData(DeanSelector.selectTeachingCorrelationReport).then(res => {
-    //   this.exportExcel<Object>(res!, `${this.college} Teaching Evaluation Correlation`, this.college, this.currSem)
-    // }).catch(error => {
-    //   console.error("Error fetching data:", error);
-    // })
   }
 
   generateCertsTeachReport() {
@@ -541,12 +468,6 @@ export class ExcelServiceService {
     }).catch(error => {
       console.error("Error fetching data:", error);
     })
-
-    // this.fetchData(DeanSelector.selectTeachingCertReport).then(res => {
-    //   this.exportExcel<Object>(res!, `${this.college} Teaching Length and Certificates Count`, this.college, this.currSem)
-    // }).catch(error => {
-    //   console.error("Error fetching data:", error);
-    // })
   }
 
   generateCertTypeReport() {
@@ -563,13 +484,6 @@ export class ExcelServiceService {
     }).catch(error => {
       console.error("Error fetching data:", error);
     })
-
-
-    // this.fetchData(DeanSelector.selectCertTypeReport).then(res => {
-    //   this.exportExcel<Object>(res!, `${this.college} Certification Count`, this.college, this.currSem)
-    // }).catch(error => {
-    //   console.error("Error fetching data:", error);
-    // })
   }
 
 

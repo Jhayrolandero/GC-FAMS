@@ -9,8 +9,8 @@
   </div>
 
   <div class="flex gap-2">
-    <button (click)="navigateFaculty()">Faculty</button> |
-    <button (click)="navigateAdmin()">Admin</button>
+    <button (click)="navigateFaculty()">Faculty</button>
+    <!-- <button (click)="navigateAdmin()">Admin</button> -->
   </div>
 </header>
 <section class="h-[100vh] font-Poppins flex flex-col justify-between">
@@ -23,8 +23,12 @@
         alt=""
       />
       <div>
-        <h4 class="text-[2rem] laptop:text-[6rem] font-Poppins font-bold">GC-FaMS</h4>
-        <span class=" font-Poppins font-semibold text-[1.5rem]">Faculty Profiling and Development Monitoring System</span>
+        <h4 class="text-[2rem] laptop:text-[6rem] font-Poppins font-bold">
+          GC-FaMS
+        </h4>
+        <span class="font-Poppins font-semibold text-[1.5rem]"
+          >Faculty Profiling and Development Monitoring System</span
+        >
       </div>
     </div>
   </div>
@@ -36,14 +40,14 @@
       (click)="navigateFaculty()"
       class="text-white bg-blue px-3 py-2 text-[1.5rem] font-semibold rounded-[15px] shadow-main hover:scale-[105%] hover:duration-300 duration-300"
     >
-      GC-FaMS for Faculty
+      GC-FaMS Faculty
     </button>
-    <button
+    <!-- <button
       (click)="navigateAdmin()"
       class="text-white bg-blue px-3 py-2 text-[1.5rem] font-semibold shadow-main rounded-[15px] hover:scale-[105%] hover:duration-300 duration-300"
     >
       GC-FaMS for Admin
-    </button>
+    </button> -->
   </div>
 
   <footer
