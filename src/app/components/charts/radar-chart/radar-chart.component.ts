@@ -103,6 +103,12 @@ export class RadarChartComponent {
         type: 'radar',
         data: data,
         options: {
+          scales: {
+            r: {
+              min: 0,
+              max: 5,
+            },
+          },
           plugins: {
             title: {
               display: true,

@@ -17,6 +17,7 @@ import { Store, select } from '@ngrx/store';
 import * as DeanSelector from '../state/dean-state/dean-state.selector';
 import { filter, firstValueFrom, take, takeLast } from 'rxjs';
 import { error } from 'console';
+import { AdminFetcherService } from '../services/admin/admin-fetcher.service';
 
 interface SubHeading {
   start: number;
@@ -34,7 +35,8 @@ export class ExcelServiceService {
 
   constructor(
     private store: Store,
-    private info: InfoService
+    private info: InfoService,
+    private adminService: AdminFetcherService
   ) {
     this.getCollege()
   }
@@ -208,9 +210,6 @@ export class ExcelServiceService {
 
   }
 
-
-
-
   async fetchData(selector: any): Promise<any> {
     return await firstValueFrom(
       this.store.pipe(
@@ -221,11 +220,41 @@ export class ExcelServiceService {
     );
   }
 
-  generateRadarReport() {
+  downloadExcel(file: any, name: string){
+    const url = window.URL.createObjectURL(file);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = name + '.xlsx';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+  }
+
+  generateFacultyReport() {
+    this.fetchData(DeanSelector.selectFacultyReport).then(res => {
+      console.log(res);
+      this.adminService.excelGenerator([res, 'Faculty Details Report']).subscribe({
+        next: (next: any) => {
+          this.downloadExcel(next, 'Faculty Details Report');
+        },
+        error: (err) => {
+          console.log(err)
+        },
+      })
+    })
+  }
+
+  generateFacultyStudentReport() {
     this.fetchData(DeanSelector.selectRadarReport).then(radarData => {
-      this.exportExcel<EvaluationRadar>(radarData!, "Evaluation-Radar", this.college, this.currSem )
-    }).catch(error => {
-      console.error("Error fetching data:", error);
+      this.adminService.excelGenerator([radarData, 'Faculty Student Evaluation']).subscribe({
+        next: (next: any) => {
+          this.downloadExcel(next, 'Faculty Student Evaulation');
+        },
+        error: (err) => {
+          console.log(err)
+        },
+      })
     })
   }
 
@@ -239,13 +268,15 @@ export class ExcelServiceService {
 
   generateIndTimelineReport() {
     this.fetchData(DeanSelector.selectAllAveReport).then(res => {
-      this.exportExcel<EvaluationTimeline>(
-        res!,
-        "Individual Timeline",
-        this.college,
-        this.currSem,
-        {start: 4, title: "Year"}
-      )
+      console.log(res);
+      this.adminService.excelGenerator([res, 'Individual Evaluation Average Timeline']).subscribe({
+        next: (next: any) => {
+          this.downloadExcel(next, 'Individual Evaluation Average Timeline');
+        },
+        error: (err) => {
+          console.log(err)
+        },
+      })
     }).catch(error => {
       console.error("Error fetching data:", error);
     })
@@ -351,13 +382,7 @@ export class ExcelServiceService {
     })
   }
 
-  generateFacultyReport() {
-    this.fetchData(DeanSelector.selectFacultyReport).then(res => {
-      this.exportExcel<FacultyReport>(res!,`${this.college} Faculty Report ${this.currSem}`,this.college,this.currSem)
-    }).catch(error => {
-      console.error("Error fetching data:", error);
-    })
-  }
+
 
   exportExcel<T>(data: T[], title: string, college: string, EvalSem: string, subHeading? : SubHeadingsDictionary): void
   // exportExcelHeader<T>(data: T[], title: string, header?: string[][] | string[]): void

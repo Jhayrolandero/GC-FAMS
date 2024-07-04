@@ -13,4 +13,8 @@ export class AdminFetcherService {
   fetchCollege(){
     return this.http.get<College[]>(mainPort + '/GC-FaMS-API/API/fetchCollege');
   }
+
+  excelGenerator(data: any){
+    return this.http.post(mainPort + '/GC-FaMS-API/API/generateExcel', data, { responseType: 'blob' });
+  }
 }

@@ -1085,16 +1085,17 @@ export const selectFacultyReport = createSelector(selectDeanState, (state)=> {
     let data = {
       "Name": (prof.teaching_position.toLocaleUpperCase() !== 'INSTRUCTOR' ? prof.teaching_position.toLocaleUpperCase() + " " : "")  + prof.last_name + (prof.ext_name ? " " + prof.ext_name : "") + ', ' + prof.first_name + ' ' + prof.middle_name,
       "Email": prof.email,
-      "Phonenumber": prof.phone_number,
+      "Phone Number": prof.phone_number,
       "Employment Status (FT/PT)": prof.employment_status == 0 ? "Part-time" : "Full-time",
       "Related Certificates": getCerts(state.certs, prof.faculty_ID),
       "Related Professional Experience": getExperience(state.exps, prof.faculty_ID),
-      "Teaching year/s experience": calculateTeachingYear(state.educs, state.exps, prof.faculty_ID) + " year/s",
+      "Teaching Year/s Experience": calculateTeachingYear(state.educs, state.exps, prof.faculty_ID) + " year/s",
       "Units Load": calculateUnits(state.courses[0], prof.faculty_ID) + ' unit/s',
       "Courses Taught": getCourseTaught(state.courses[0], prof.faculty_ID),
-      [`Student Evaluation Result\n nth Sem., A.Y ${new Date().getFullYear()} - ${new Date().getFullYear() + 1}`]: getEval(state.evals, new Date().getFullYear(), prof.faculty_ID),
+      // [`Student Evaluation Result\n nth Sem., A.Y ${new Date().getFullYear()} - ${new Date().getFullYear() + 1}`]: getEval(state.evals, new Date().getFullYear(), prof.faculty_ID),
+      "Student Evaluation Result": getEval(state.evals, new Date().getFullYear(), prof.faculty_ID),
       "Expertise": getExpertise(state.expertises[0], prof.faculty_ID),
-      "Baccaleurate": degree["Baccaleurate"],
+      "Baccalaureate": degree["Baccalaureate"],
       "Masterals": degree["Masterals"],
       "Doctorate": degree["Doctorate"],
       "Associate": degree["Associate"],
@@ -1244,7 +1245,7 @@ export const selectAttainmentTimelineFaculty = (commex: CommunityExtension[], id
   function getDegree(educs: EducationalAttainment[], faculty_ID: number) {
 
     return {
-      "Baccaleurate": educs.filter((item) => faculty_ID == item.faculty_ID).
+      "Baccalaureate": educs.filter((item) => faculty_ID == item.faculty_ID).
                       filter(item => item.educ_level.toLocaleLowerCase() === "bachelor\'s degree").
                       map(item => item.educ_title).join(", "),
       "Masterals": educs.filter((item) => faculty_ID == item.faculty_ID).
