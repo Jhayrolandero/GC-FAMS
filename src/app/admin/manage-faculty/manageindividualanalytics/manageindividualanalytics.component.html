@@ -136,10 +136,14 @@
       [axis]="'x'"
       [bgColor]="'rgb(7, 66, 135)'"
       [labels]="yearsArray"
-      [showLegend]="false"
+      [legendLabel]="['Milestone Count']"
+      [showLegend]="true"
+      [xAxisLabel]="'Year'"
+      [yAxisLabel]="'Milestone Count'"
     >
       >
     </app-bar-chart>
+    <app-report-view [data]="milestoneAchievedReport"></app-report-view>
   </div>
 
   <div
@@ -153,40 +157,18 @@
           <i class="fa-solid fa-file-excel"></i>
         </button>
       </div>
-      <div class="flex flex-col tablet:flex-row gap-2 mb-2">
-        <div class="flex flex-row gap-1">
-          <div
-            class="w-[23px] h-[23px] rounded-[5px] shadow-main duration-300 hover:duration-300 hover:bg-opacity-50"
-            [ngClass]="certToggle ? ' bg-blue' : 'bg-slate-200'"
-            (click)="certToggle = !certToggle"
-          ></div>
-          <p class="font-Roboto font-medium text-blue">Certifications</p>
-        </div>
-        <div class="flex flex-row gap-1">
-          <div
-            class="w-[23px] h-[23px] rounded-[5px] shadow-main duration-300 hover:duration-300 hover:bg-opacity-50"
-            [ngClass]="commexToggle ? 'bg-greenBar' : 'bg-slate-200'"
-            (click)="commexToggle = !commexToggle"
-          ></div>
-          <p class="font-Roboto font-medium text-blue">Community Extensions</p>
-        </div>
-        <div class="flex flex-row gap-1">
-          <div
-            class="w-[23px] h-[23px] rounded-[5px] shadow-main duration-300 hover:duration-300 hover:bg-opacity-50"
-            [ngClass]="seminarToggle ? 'bg-orange-400' : 'bg-slate-200'"
-            (click)="seminarToggle = !seminarToggle"
-          ></div>
-          <p class="font-Roboto font-medium text-blue">Seminars</p>
-        </div>
-      </div>
     </div>
     <app-line-graph2
-      [label]="certToggle ? attainment[0] : []"
-      [label2]="commexToggle ? attainment[1] : []"
-      [label3]="seminarToggle ? attainment[2] : []"
+      [label]="attainment[0]"
+      [label2]="attainment[1]"
+      [label3]="attainment[2]"
       [labels]="yearsArray"
-      [showLegend]="false"
+      [legendLabel]="['Certifications', 'Community Extensions', 'Seminars']"
+      [showLegend]="true"
+      [xAxisLabel]="'Year'"
+      [yAxisLabel]="'Attainment Count'"
     >
     </app-line-graph2>
+    <app-report-view [data]="attainmentData"></app-report-view>
   </div>
 </div>

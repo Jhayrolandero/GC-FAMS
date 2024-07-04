@@ -123,6 +123,8 @@ async) && (coursesLoading$ | async) && (coursesLoading$ | async) &&
       [label3]="educTimeline[2]"
       [labels]="yearsArray"
       [showLegend]="true"
+      [xAxisLabel]="'Year'"
+      [yAxisLabel]="'Count'"
       [legendLabel]="['Bachelor Degree', 'Masters Degree', 'Doctorate Degree']"
     >
     </app-line-graph2>
@@ -142,19 +144,18 @@ async) && (coursesLoading$ | async) && (coursesLoading$ | async) &&
         <i class="fa-solid fa-file-excel"></i>
       </button>
     </div>
-    <div class="flex flex-row items-center">
-      <p class="h-[20px] w-[40px] rotate-[270deg] m-0 p-0">Milestone</p>
-      <app-bar-chart
-        class="flex-1"
-        [data]="milestone"
-        [axis]="'x'"
-        [bgColor]="'rgb(7, 66, 135)'"
-        [labels]="yearsArray"
-        [showLegend]="false"
+    <app-bar-chart
+      [data]="milestone"
+      [axis]="'x'"
+      [bgColor]="'rgb(7, 66, 135)'"
+      [labels]="yearsArray"
+      [xAxisLabel]="'Year'"
+      [yAxisLabel]="'Milestone Count'"
+      [legendLabel]="['Milestone per year']"
+      [showLegend]="true"
+    >
       >
-        
-      </app-bar-chart>
-    </div>
+    </app-bar-chart>
   </div>
 
   <div
@@ -173,45 +174,17 @@ async) && (coursesLoading$ | async) && (coursesLoading$ | async) &&
         </button>
       </div>
     </div>
-
-    <div class="flex flex-row items-center">
-      <p class="h-[20px] w-[40px] rotate-[270deg] m-0 p-0">Attainment</p>
-      <app-line-graph2
-        class="flex-1"
-        [label]="certToggle ? attainment[0] : []"
-        [label2]="commexToggle ? attainment[1] : []"
-        [label3]="seminarToggle ? attainment[2] : []"
-        [labels]="yearsArray"
-        [showLegend]="false"
-      >
-      </app-line-graph2>
-    </div>
-    <div class="flex gap-4 justify-center items-center">
-      <div class="flex flex-row gap-1">
-        <div
-          class="w-[23px] h-[23px] rounded-[5px] shadow-main duration-300 hover:duration-300 hover:bg-opacity-50"
-          [ngClass]="certToggle ? ' bg-blue' : 'bg-slate-200'"
-          (click)="certToggle = !certToggle"
-        ></div>
-        <p class="font-Roboto font-medium text-blue">Certifications</p>
-      </div>
-      <div class="flex flex-row gap-1">
-        <div
-          class="w-[23px] h-[23px] rounded-[5px] shadow-main duration-300 hover:duration-300 hover:bg-opacity-50"
-          [ngClass]="commexToggle ? 'bg-greenBar' : 'bg-slate-200'"
-          (click)="commexToggle = !commexToggle"
-        ></div>
-        <p class="font-Roboto font-medium text-blue">Community Extensions</p>
-      </div>
-      <div class="flex flex-row gap-1">
-        <div
-          class="w-[23px] h-[23px] rounded-[5px] shadow-main duration-300 hover:duration-300 hover:bg-opacity-50"
-          [ngClass]="seminarToggle ? 'bg-orange-400' : 'bg-slate-200'"
-          (click)="seminarToggle = !seminarToggle"
-        ></div>
-        <p class="font-Roboto font-medium text-blue">Seminars</p>
-      </div>
-    </div>
+    <app-line-graph2
+      [label]="certToggle ? attainment[0] : []"
+      [label2]="commexToggle ? attainment[1] : []"
+      [label3]="seminarToggle ? attainment[2] : []"
+      [labels]="yearsArray"
+      [legendLabel]="['Certifications', 'Community Extensions', 'Seminars']"
+      [showLegend]="true"
+      [xAxisLabel]="'Year'"
+      [yAxisLabel]="'Count'"
+    >
+    </app-line-graph2>
   </div>
 
   <div class="w-full flex flex-col laptop:flex-row gap-3">
@@ -302,24 +275,16 @@ async) && (coursesLoading$ | async) && (coursesLoading$ | async) &&
           [bgColor]="'rgb(7,66,135)'"
           [bgColor2]="'rgb(30,114,66)'"
           [labels]="yearsArray"
-          [showLegend]="false"
+          [legendLabel]="[
+            'Certification Count',
+            'Average Teaching Length (hrs)'
+          ]"
+          [xAxisLabel]="'Year'"
+          [yAxisLabel]="'Cert Count & Teaching Length'"
+          [showLegend]="true"
         >
           >
         </app-bar-chart>
-        <div class="flex justify-center items-center gap-4">
-          <div class="flex gap-2">
-            <div
-              class="w-[23px] h-[23px] rounded-[5px] shadow-main duration-300 hover:duration-300 hover:bg-opacity-50 bg-blue"
-            ></div>
-            <p>Certificate Count</p>
-          </div>
-          <div class="flex gap-2">
-            <div
-              class="w-[23px] h-[23px] rounded-[5px] shadow-main duration-300 hover:duration-300 hover:bg-opacity-50 bg-greenBar"
-            ></div>
-            <p>Teaching Length (years)</p>
-          </div>
-        </div>
       </div>
     </div>
     <div class="w-full tablet:w-[50%]">
@@ -337,16 +302,13 @@ async) && (coursesLoading$ | async) && (coursesLoading$ | async) &&
             <i class="fa-solid fa-file-excel"></i>
           </button>
         </div>
-        <div class="flex flex-row items-center h-[75%]">
-          <p class="h-[20px] w-[40px] rotate-[270deg] m-0 p-0">Attainment</p>
-          <app-scatter-plot class="flex-1" [data]="teaching[0]" [showLegend]="false">
-          </app-scatter-plot>
-        </div>
-
-        <div class="w-full flex flex-row justify-center">
-          <p>Teaching Length (years)</p>
-        </div>
-
+        <app-scatter-plot
+          [data]="teaching[0]"
+          [showLegend]="false"
+          [xAxisLabel]="'Evaluation'"
+          [yAxisLabel]="'Ave. Teaching Length'"
+        >
+        </app-scatter-plot>
       </div>
     </div>
   </div>
@@ -385,6 +347,8 @@ async) && (coursesLoading$ | async) && (coursesLoading$ | async) &&
         [axis]="'y'"
         [bgColor]="'rgb(30, 114, 66)'"
         [showLegend]="false"
+        [xAxisLabel]="'Seminar Count'"
+        [yAxisLabel]="'Seminar Title'"
       ></app-bar-chart>
     </div>
     <div
@@ -407,6 +371,8 @@ async) && (coursesLoading$ | async) && (coursesLoading$ | async) &&
         [axis]="'y'"
         [bgColor]="'rgb(255, 122, 0)'"
         [showLegend]="false"
+        [xAxisLabel]="'Level Count'"
+        [yAxisLabel]="'Teaching Level'"
       ></app-bar-chart>
     </div>
 
@@ -430,6 +396,8 @@ async) && (coursesLoading$ | async) && (coursesLoading$ | async) &&
         [axis]="'y'"
         [bgColor]="'rgb(7, 66, 135)'"
         [showLegend]="false"
+        [xAxisLabel]="'Expertise Count'"
+        [yAxisLabel]="'Expertise Title'"
       ></app-bar-chart>
     </div>
   </div>

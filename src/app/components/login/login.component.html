@@ -18,7 +18,7 @@
       id="GCFAMSLogo"
       src="../../../assets/img/Logo_mockup 1.png"
       alt="GCFAMS Logo"
-      class="aspect-square w-7/12 max-w-screen-sm min-w-72"
+      class="aspect-square w-7/12 max-w-screen-sm min-w-72 cursor-pointer"
       (click)="goHome()"
     />
   </div>
@@ -28,16 +28,14 @@
     <div
       class="bg-blue p-5 rounded-[15px] tablet:w-10/12 laptop:w-8/12 max-w-screen-md"
     >
-
       @if(role === 'admin') {
-        <p
+      <p
         class="p-3 pt-0 text-center mobileS:text-[1rem] tablet:text-3xl font-Poppins font-bold"
       >
         Welcome Admins!
       </p>
-        }
-      @else {
-        <p
+      } @else {
+      <p
         class="p-3 pt-0 text-center mobileS:text-[1rem] tablet:text-3xl font-Poppins font-bold"
       >
         Welcome Faculty Members!

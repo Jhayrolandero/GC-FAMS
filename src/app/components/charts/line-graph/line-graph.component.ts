@@ -21,6 +21,8 @@ export class LineGraphComponent {
   @Input() labels: string[] = [];
   @Input() showLegend?: boolean;
   @Input() legendLabel: string[] = [];
+  @Input() yAxisLabel: string = ''
+  @Input() xAxisLabel: string = ''
 
 
   ngAfterViewInit(){

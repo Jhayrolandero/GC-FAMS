@@ -21,7 +21,11 @@ export class SupportingDocsDialogueComponent {
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<SupportingDocsDialogueComponent>,
   ){
-    console.log(data)
+
+    if(data) {
+      this.loading = false
+    }
+    // console.log(data)
   }
 
 

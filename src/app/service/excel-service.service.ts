@@ -260,7 +260,15 @@ export class ExcelServiceService {
 
   generateSemDiffReport() {
     this.fetchData(DeanSelector.selectSemDiffReport).then(res => {
-      this.exportExcel<SemDiff>(res!, "Semestral Difference", this.college, this.currSem)
+      console.log(res);
+      this.adminService.excelGenerator([res, 'Evaluation per Semester Difference']).subscribe({
+        next: (next: any) => {
+          this.downloadExcel(next, 'Evaluation per Semester Difference');
+        },
+        error: (err) => {
+          console.log(err)
+        },
+      })
     }).catch(error => {
       console.error("Error fetching data:", error);
     })
@@ -285,7 +293,14 @@ export class ExcelServiceService {
 
   generateEducAttainmentReport() {
     this.fetchData(DeanSelector.selectOverallAveReport).then(res => {
-      this.exportExcel<Object>(res!, `${this.college} Overall Evaluation Average Timeline (${ this.info.date.getFullYear() - 14} - ${this.info.date.getFullYear()})`, this.college, this.currSem)
+      this.adminService.excelGenerator([res, 'Overall Evaluation Average Timeline']).subscribe({
+        next: (next: any) => {
+          this.downloadExcel(next, 'Overall Evaluation Average Timeline');
+        },
+        error: (err) => {
+          console.log(err)
+        },
+      })
     }).catch(error => {
       console.error("Error fetching data:", error);
     })
@@ -296,7 +311,14 @@ export class ExcelServiceService {
   */
   generateEducReport() {
     this.fetchData(DeanSelector.selectCollegeEducTimelineReport).then(res => {
-      this.exportExcel<EducAttainmentData>(res!, `${this.college} Education Attainment Timeline (${ this.info.date.getFullYear() - 14} - ${this.info.date.getFullYear()})`, this.college, this.currSem)
+      this.adminService.excelGenerator([res, 'Education Attainment Timeline']).subscribe({
+        next: (next: any) => {
+          this.downloadExcel(next, 'Education Attainment Timeline');
+        },
+        error: (err) => {
+          console.log(err)
+        },
+      })
     }).catch(error => {
       console.error("Error fetching data:", error);
     })
@@ -336,7 +358,15 @@ export class ExcelServiceService {
 
   generateEducAttainmentReport2() {
     this.fetchData(DeanSelector.selectCurrentEducAttainment).then(res => {
-      this.exportExcel<CurrEducAttainment>(res!, `${this.college} Educational Attainment`, this.college, this.currSem)
+      console.log(res);
+      this.adminService.excelGenerator([res, 'Educational Attainment']).subscribe({
+        next: (next: any) => {
+          this.downloadExcel(next, 'Educational Attainment');
+        },
+        error: (err) => {
+          console.log(err)
+        },
+      })
     }).catch(error => {
       console.error("Error fetching data:", error);
     })
@@ -344,15 +374,32 @@ export class ExcelServiceService {
 
   generateEmploymentTypeReport() {
     this.fetchData(DeanSelector.selectEmploymentTypeReport).then(res => {
-      this.exportExcel<EmploymentTypeReport>(res!, `${this.college} Employment Type`, this.college, this.currSem)
+      console.log(res);
+      this.adminService.excelGenerator([res, 'Employment Type']).subscribe({
+        next: (next: any) => {
+          this.downloadExcel(next, 'Employment Type');
+        },
+        error: (err) => {
+          console.log(err)
+        },
+      })
     }).catch(error => {
       console.error("Error fetching data:", error);
     })
+
   }
 
   generateSeminarReport() {
     this.fetchData(DeanSelector.selectSeminarReport).then(res => {
-      this.exportExcel<SeminarReport>(res!, `${this.college} Seminars Attended`, this.college, this.currSem)
+      console.log(res);
+      this.adminService.excelGenerator([res, 'Seminars Attended']).subscribe({
+        next: (next: any) => {
+          this.downloadExcel(next, 'Seminars Attended');
+        },
+        error: (err) => {
+          console.log(err)
+        },
+      })
     }).catch(error => {
       console.error("Error fetching data:", error);
     })
@@ -360,7 +407,15 @@ export class ExcelServiceService {
 
   generateTeachingLevelReport() {
     this.fetchData(DeanSelector.selectTeachingLevelReport).then(res => {
-      this.exportExcel<TeachingLevelReport>(res!, `${this.college} Teaching Level`, this.college, this.currSem)
+      console.log(res);
+      this.adminService.excelGenerator([res, 'Teaching Level']).subscribe({
+        next: (next: any) => {
+          this.downloadExcel(next, 'Teaching Level');
+        },
+        error: (err) => {
+          console.log(err)
+        },
+      })
     }).catch(error => {
       console.error("Error fetching data:", error);
     })
@@ -368,7 +423,15 @@ export class ExcelServiceService {
 
   generateExpertiseReport() {
     this.fetchData(DeanSelector.selectExpertiseReport).then(res => {
-      this.exportExcel<ExpertiseReport>(res!, `${this.college} Instructor's Expertise`, this.college, this.currSem)
+      console.log(res);
+      this.adminService.excelGenerator([res, "Instructor's Expertise"]).subscribe({
+        next: (next: any) => {
+          this.downloadExcel(next, "Instructor's Expertise");
+        },
+        error: (err) => {
+          console.log(err)
+        },
+      })
     }).catch(error => {
       console.error("Error fetching data:", error);
     })
@@ -376,15 +439,32 @@ export class ExcelServiceService {
 
   generateTeachCorrelationReport() {
     this.fetchData(DeanSelector.selectTeachingCorrelationReport).then(res => {
-      this.exportExcel<Object>(res!, `${this.college} Teaching Evaluation Correlation`, this.college, this.currSem)
+      console.log(res);
+      this.adminService.excelGenerator([res, "Teaching Evaluation Correlation"]).subscribe({
+        next: (next: any) => {
+          this.downloadExcel(next, "Teaching Evaluation Correlation");
+        },
+        error: (err) => {
+          console.log(err)
+        },
+      })
     }).catch(error => {
       console.error("Error fetching data:", error);
     })
+
   }
 
   generateCertsTeachReport() {
     this.fetchData(DeanSelector.selectTeachingCertReport).then(res => {
-      this.exportExcel<Object>(res!, `${this.college} Teaching Length and Certificates Count`, this.college, this.currSem)
+      console.log(res);
+      this.adminService.excelGenerator([res, "Teaching Length and Certificates Count"]).subscribe({
+        next: (next: any) => {
+          this.downloadExcel(next, "Teaching Length and Certificates Count");
+        },
+        error: (err) => {
+          console.log(err)
+        },
+      })
     }).catch(error => {
       console.error("Error fetching data:", error);
     })
@@ -392,13 +472,53 @@ export class ExcelServiceService {
 
   generateCertTypeReport() {
     this.fetchData(DeanSelector.selectCertTypeReport).then(res => {
-      this.exportExcel<Object>(res!, `${this.college} Certification Count`, this.college, this.currSem)
+      console.log(res);
+      this.adminService.excelGenerator([res, "Certification Count"]).subscribe({
+        next: (next: any) => {
+          this.downloadExcel(next, "Certification Count");
+        },
+        error: (err) => {
+          console.log(err)
+        },
+      })
     }).catch(error => {
       console.error("Error fetching data:", error);
     })
   }
 
 
+  indAttainmentReport(data: AttainmentData[]) {
+    this.adminService.excelGenerator([data, "Attainment Timeline"]).subscribe({
+      next: (next: any) => {
+        this.downloadExcel(next, "Attainment Timeline");
+      },
+      error: (err) => {
+        console.log(err)
+      },
+    })
+  }
+
+  indMilestoneReport(data: object[]) {
+    this.adminService.excelGenerator([data, "Milestone Achieved"]).subscribe({
+      next: (next: any) => {
+        this.downloadExcel(next, "Milestone Achieved");
+      },
+      error: (err) => {
+        console.log(err)
+      },
+    })
+  }
+
+  facultyEval(data: object[]) {
+    this.adminService.excelGenerator([data, "Faculty Evaluation"]).subscribe({
+      next: (next: any) => {
+        this.downloadExcel(next, "Faculty Evaluation");
+      },
+      error: (err) => {
+        console.log(err)
+      },
+    })
+  }
 
   exportExcel<T>(data: T[], title: string, college: string, EvalSem: string, subHeading? : SubHeadingsDictionary): void
   // exportExcelHeader<T>(data: T[], title: string, header?: string[][] | string[]): void

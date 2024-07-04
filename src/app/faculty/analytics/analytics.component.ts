@@ -14,6 +14,7 @@ import { ExcelServiceService } from '../../service/excel-service.service';
 import { selectPRofileCollege } from '../../state/faculty-state/faculty-state.selector';
 import { AttainmentData } from '../../services/Interfaces/attainmentData';
 import { LineGraphComponent2 } from '../../components/charts/line-graph2/line-graph2.component';
+import { ReportViewComponent } from '../../components/report-view/report-view.component';
 
 @Component({
   selector: 'app-analytics',
@@ -25,7 +26,8 @@ import { LineGraphComponent2 } from '../../components/charts/line-graph2/line-gr
     CommonModule,
     BarChartComponent,
     LineGraphComponent,
-    LineGraphComponent2
+    LineGraphComponent2,
+    ReportViewComponent
   ],
   providers: [EvaluationService],
   templateUrl: './analytics.component.html',
@@ -152,11 +154,13 @@ export class AnalyticsComponent {
   generateMilestoneReport() {
     if(this.milestoneAchievedReport.length <= 0) return
 
-    this.excelService.exportExcel<object>(this.milestoneAchievedReport, `Milestone Report ${this.college}`, this.college, this.currSem)
+    this.excelService.indMilestoneReport(this.milestoneAchievedReport)
+    // this.excelService.exportExcel<object>(this.milestoneAchievedReport, `Milestone Report ${this.college}`, this.college, this.currSem)
   }
 
   generateAttainmentReport() {
     if(this.attainmentData.length <= 0 ) return
-    this.excelService.exportExcel<AttainmentData>(this.attainmentData, `Attainment ${this.college} (${ new Date().getFullYear() - 14} - ${new Date().getFullYear()})`, this.college, this.currSem)
+  this.excelService.indAttainmentReport(this.attainmentData)
+    // this.excelService.exportExcel<AttainmentData>(this.attainmentData, `Attainment ${this.college} (${ new Date().getFullYear() - 14} - ${new Date().getFullYear()})`, this.college, this.currSem)
   }
 }

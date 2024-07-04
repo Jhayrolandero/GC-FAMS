@@ -184,15 +184,15 @@ router = inject(Router);
     const inputElement = event.target as HTMLInputElement;
     const file = inputElement.files?.[0]; // Using optional chaining to handle null or undefined
 
-    if (file && allowedFileType.includes(file.type)) {
-      // Create a new FormControl for the file and push it to the FormArray
+    // if (file && allowedFileType.includes(file.type)) {
+    //   // Create a new FormControl for the file and push it to the FormArray
       const fileControl = new FormControl(file);
       this.documents.push(fileControl);
 
-    } else {
-      // Handle invalid file type
-      console.error('Invalid file type');
-    }
+    // } else {
+    //   // Handle invalid file type
+    //   console.error('Invalid file type');
+    // }
   }
 
   deleteDoc(index: number) {
@@ -227,7 +227,17 @@ router = inject(Router);
   }
   download(fileUrl: string, title: string): void {
 
-      this.fileDownloadService.saveFile(mainPort+fileUrl, title);
+    console.log(fileUrl)
+
+    // Find the starting position of "Image_Assets"
+    const startIndex = fileUrl.indexOf("Image_Assets");
+
+    // Extract the substring starting from "Image_Assets"
+    const result = fileUrl.substring(startIndex);
+
+    // console.log(result)
+      this.fileDownloadService.downloadFile(result, title);
+      // this.fileDownloadService.saveFile(mainPort+fileUrl, title);
   }
 
 

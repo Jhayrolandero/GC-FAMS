@@ -20,6 +20,8 @@ export class ScatterPlotComponent {
   @Input() legendLabel: string[] = [];
   @Input() axis: string = '';
   @Input() bgColor: string = '';
+  @Input() xAxisLabel: string = '';
+  @Input() yAxisLabel: string = '';
 
   ngAfterViewInit(){
     this.chart.destroy();

@@ -1,0 +1,16 @@
+<div class="overflow-x-auto mt-2">
+  <table class="w-full">
+    <thead class="bg-blue text-white">
+      <tr>
+        <th *ngFor="let header of tableValue.header" class="px-2 py-1">
+          {{ header }}
+        </th>
+      </tr>
+    </thead>
+    <tbody class="[&>*:nth-child(even)]:bg-gray-100">
+      <tr *ngFor="let row of tableValue.value">
+        <td class="text-center" *ngFor="let cell of row">{{ cell }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

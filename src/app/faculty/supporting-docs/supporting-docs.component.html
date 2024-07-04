@@ -37,11 +37,7 @@
               />
             </svg>
             <p class="mb-2 text-sm text-gray-500 dark:text-gray-400">
-              <span class="font-semibold">Click to upload</span> or drag and
-              drop
-            </p>
-            <p class="text-xs text-gray-500 dark:text-gray-400">
-              docx, xlxs, rar or zip
+              <span class="font-semibold">Click to upload</span>
             </p>
           </div>
           <input id="dropzone-file" type="file" class="hidden" />
@@ -98,7 +94,10 @@
         class="min-h-[56px] px-2 py-1 shadow-main rounded-[15px] w-full flex justify-between items-center gap-4 text-blue"
       >
         <div class="flex flex-row flex-1">
-          <h4 class="text-ellipsis max-w-[60%] flex flex-row duration-300 hover:scale-[101%] hover:duration-300 select-none">
+          <h4
+            (click)="openFile(doc.doc_path, doc.doc_name)"
+            class="text-ellipsis max-w-[60%] flex flex-row duration-300 hover:scale-[101%] hover:duration-300 select-none"
+          >
             @if(doc.doc_type ===
             "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
             ) {
@@ -112,7 +111,7 @@
             } @else {
             <span><i class="fa-solid fa-file"></i></span>
             }
-            <span (click)="openFile(doc.doc_path, doc.doc_name)" class="ml-3 cursor-pointer">
+            <span class="ml-3 cursor-pointer">
               {{ doc.doc_name }}
             </span>
           </h4>
