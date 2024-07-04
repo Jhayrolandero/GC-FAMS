@@ -2,6 +2,8 @@ import { createSelector, createFeatureSelector } from "@ngrx/store";
 import { ProfileState } from "./faculty-state.reducer";
 import { Evaluation } from "../../services/Interfaces/evaluation";
 import { MilestoneReport } from "../../services/Interfaces/milestoneReport";
+import { Certifications } from "../../services/Interfaces/certifications";
+import { CertificationsFaculty } from "../../services/Interfaces/certifications-faculty";
 
 const date = new Date();
 const currentYear: number  = date.getFullYear();
@@ -192,6 +194,55 @@ export const selectAnEduc = (educ_ID: number) => createSelector(
 export const selectFacultyCerts = createSelector(
   selectProfileState,
   (state: ProfileState) => state.certs[0]
+);
+
+export const selectFilteredFacultyCerts = createSelector(
+  selectProfileState,
+  (state: ProfileState) => {
+    let speakership: CertificationsFaculty[] = [];
+    let completion: CertificationsFaculty[] = [];
+    let achievement: CertificationsFaculty[] = [];
+    let appreciation: CertificationsFaculty[] = [];
+    let recognition: CertificationsFaculty[] = [];
+    let participation: CertificationsFaculty[] = [];
+
+
+    state.certs[0].forEach(cert => {
+      // console.log(cert);
+      switch (cert.cert_type) {
+        case 'Speakership':
+          speakership.push(cert);
+          break;
+
+        case 'Completion':
+          completion.push(cert);
+          break;
+      
+
+        case 'Achievement':
+          achievement.push(cert);
+          break;
+
+        case 'Appreciation':
+          appreciation.push(cert);
+          break;
+
+        case 'Recognition':
+          recognition.push(cert);
+          break;
+
+        case 'Participation':
+          participation.push(cert);
+          break;
+
+
+        default:
+          break;
+      }
+    })
+    let ret: CertificationsFaculty[][] = [speakership, completion, achievement, appreciation, recognition, participation];
+    return ret;
+  }
 );
 
 export const selectCertCount = createSelector(
