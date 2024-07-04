@@ -14,6 +14,7 @@ import { ExcelServiceService } from '../../service/excel-service.service';
 import { selectPRofileCollege } from '../../state/faculty-state/faculty-state.selector';
 import { AttainmentData } from '../../services/Interfaces/attainmentData';
 import { LineGraphComponent2 } from '../../components/charts/line-graph2/line-graph2.component';
+import { ReportViewComponent } from '../../components/report-view/report-view.component';
 
 @Component({
   selector: 'app-analytics',
@@ -25,7 +26,8 @@ import { LineGraphComponent2 } from '../../components/charts/line-graph2/line-gr
     CommonModule,
     BarChartComponent,
     LineGraphComponent,
-    LineGraphComponent2
+    LineGraphComponent2,
+    ReportViewComponent
   ],
   providers: [EvaluationService],
   templateUrl: './analytics.component.html',

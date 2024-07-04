@@ -128,6 +128,7 @@
     >
       >
     </app-bar-chart>
+    <app-report-view [data]="milestoneAchievedReport"></app-report-view>
   </div>
 
   <div
@@ -157,64 +158,6 @@
       [yAxisLabel]="'Attainment Count'"
     >
     </app-line-graph2>
-    <!-- <app-line-graph2
-      [label]="certToggle ? attainment[0] : []"
-      [label2]="commexToggle ? attainment[1] : []"
-      [label3]="seminarToggle ? attainment[2] : []"
-      [labels]="yearsArray"
-      [showLegend]="false"
-      [xAxisLabel]="'Year'"
-      [yAxisLabel]="'Attainment Count'"
-    >
-    </app-line-graph2> -->
+    <app-report-view [data]="attainmentData"></app-report-view>
   </div>
-
-  <!-- <div *ngIf="(milestoneCount$ | async) as milestone" class="w-full bg-white rounded-[15px] shadow-main p-5 pt-1">
-        <p class="text-blue font-bold text-[2rem] my-2">Milestones Achieved Each Year</p>
-        <app-bar-chart
-        [data]="milestone"
-        [axis]="'x'"
-        [bgColor]="'rgb(7, 66, 135)'"
-        [labels]="yearsArray"
-        [showLegend]="false">
-        >
-        </app-bar-chart>
-    </div>
-
-    <div *ngIf="(attainmentTimeline$ | async) as attainment" class="w-full bg-white rounded-[15px] shadow-main p-5 pt-1">
-        <div class="flex flex-row items-center gap-3">
-            <p class="text-blue font-bold text-[2rem] my-2">Attainment Timeline</p>
-            <div class="flex flex-row gap-1">
-                <div
-                class="w-[23px] h-[23px] rounded-[5px] shadow-main duration-300 hover:duration-300 hover:bg-opacity-50"
-                [ngClass]="certToggle ? 'bg-greenBar' : 'bg-slate-200'"
-                (click)="certToggle = !certToggle"></div>
-                <p class="font-Roboto font-medium text-blue">Certifications</p>
-            </div>
-
-            <div class="flex flex-row gap-1">
-                <div
-                class="w-[23px] h-[23px] rounded-[5px] shadow-main duration-300 hover:duration-300 hover:bg-opacity-50"
-                [ngClass]="commexToggle ? 'bg-greenBar' : 'bg-slate-200'"
-                (click)="commexToggle = !commexToggle"></div>
-                <p class="font-Roboto font-medium text-blue">Community Extensions</p>
-            </div>
-
-            <div class="flex flex-row gap-1">
-                <div
-                class="w-[23px] h-[23px] rounded-[5px] shadow-main duration-300 hover:duration-300 hover:bg-opacity-50"
-                [ngClass]="seminarToggle ? 'bg-greenBar' : 'bg-slate-200'"
-                (click)="seminarToggle = !seminarToggle"></div>
-                <p class="font-Roboto font-medium text-blue">Seminars</p>
-            </div>
-
-        </div>
-        <app-line-graph
-        [data]="certToggle ? attainment[0] : []"
-        [data2]="commexToggle ? attainment[1] : []"
-        [data3]="seminarToggle ? attainment[2] : []"
-        [labels]="yearsArray"
-        [showLegend]="false">
-        </app-line-graph>
-    </div> -->
 </div>

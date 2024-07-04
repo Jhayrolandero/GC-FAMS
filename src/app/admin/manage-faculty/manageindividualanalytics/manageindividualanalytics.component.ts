@@ -18,20 +18,22 @@ import { ExcelServiceService } from '../../../service/excel-service.service';
 import { selectPRofileCollege } from '../../../state/faculty-state/faculty-state.selector';
 import { MilestoneReport } from '../../../services/Interfaces/milestoneReport';
 import { LineGraphComponent2 } from '../../../components/charts/line-graph2/line-graph2.component';
+import { ReportViewComponent } from "../../../components/report-view/report-view.component";
 
 
 @Component({
-  selector: 'app-manageindividualanalytics',
-  standalone: true,
-  imports: [
-    FacultyMilestoneCalendarComponent,
-    CommonModule,
-    BarChartComponent,
-    LineGraphComponent,
-    LineGraphComponent2
-  ],
-  templateUrl: './manageindividualanalytics.component.html',
-  styleUrl: './manageindividualanalytics.component.css'
+    selector: 'app-manageindividualanalytics',
+    standalone: true,
+    templateUrl: './manageindividualanalytics.component.html',
+    styleUrl: './manageindividualanalytics.component.css',
+    imports: [
+        FacultyMilestoneCalendarComponent,
+        CommonModule,
+        BarChartComponent,
+        LineGraphComponent,
+        LineGraphComponent2,
+        ReportViewComponent
+    ]
 })
 export class ManageindividualanalyticsComponent {
   @Input() selectedFaculty!: Faculty;

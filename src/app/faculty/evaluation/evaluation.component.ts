@@ -24,6 +24,7 @@ import { loadEval } from '../../state/faculty-state/faculty-state.actions';
 import { EmptyTitleComponent } from '../../components/empty-title/empty-title.component';
 import { Subscription, filter, take } from 'rxjs';
 import { ExcelServiceService } from '../../service/excel-service.service';
+import { ReportViewComponent } from '../../components/report-view/report-view.component';
 
 type Series = {
   'name': string,
@@ -58,7 +59,8 @@ export interface evalScoreHistory {
     MatDialogClose,
     CommonModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    ReportViewComponent
   ],
 })
 
@@ -101,11 +103,11 @@ export class EvaluationForm {
 }
 
 @Component({
-  selector: 'app-evaluation',
-  standalone: true,
-  imports: [NgxChartsModule, CommonModule, NgFor, LoadingScreenComponent, EmptyTitleComponent],
-  templateUrl: './evaluation.component.html',
-  styleUrl: './evaluation.component.css'
+    selector: 'app-evaluation',
+    standalone: true,
+    templateUrl: './evaluation.component.html',
+    styleUrl: './evaluation.component.css',
+    imports: [NgxChartsModule, CommonModule, NgFor, LoadingScreenComponent, EmptyTitleComponent, ReportViewComponent]
 })
 export class EvaluationComponent{
 
@@ -134,21 +136,12 @@ export class EvaluationComponent{
           this.selectedEvalSem = value[value.length - 1]
           this.selectEvalSem(undefined)
           this.isLoading = false
+          console.log(value)
         },
 
 
 
       })
-      // this.evaluation$.subscribe({
-      //   next: value => {
-      //     const sortedEvals = this.sortByEvaluationYear(value)
-      //     this.evalHistory = this.evaluationService.setEvalHistory(sortedEvals)
-      //     this.selectedEvalSem = sortedEvals[sortedEvals.length - 1]
-      //     this.selectEvalSem(undefined)
-      //     this.isLoading = false
-
-      //   },
-      // })
     }
 
     ngOnInit() {
@@ -158,13 +151,14 @@ export class EvaluationComponent{
         take(1)
       ).subscribe({
         next: res => {
+          console.log(res)
           let prevAve = 0
           this.sortByEvaluationYear(res!).map(item => {
-
             let currAve = item.evalAverage
             let changeAve = prevAve ? ((currAve - prevAve)/ prevAve * 100).toFixed(2) + '%' : '-'
             let data= {
               "Year": item.evaluation_year,
+              "Semester": item.semester,
               "Knowledge of Content": item.param1_score,
               "Instructional Skills": item.param2_score,
               "Communication Skills": item.param3_score,
@@ -178,8 +172,6 @@ export class EvaluationComponent{
             prevAve = currAve
             this.evalReport.push(data)
           })
-
-          console.log(this.evalReport)
         }
       })
 
