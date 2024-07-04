@@ -304,7 +304,15 @@ export class ExcelServiceService {
 
   generateAttainmentReport() {
     this.fetchData(DeanSelector.selectAttainmentTimelineReport).then(res => {
-      this.exportExcel<AttainmentData>(res, `${this.college} Attainment Timeline (${ this.info.date.getFullYear() - 14} - ${this.info.date.getFullYear()})`, this.college, this.currSem)
+      console.log(res);
+      this.adminService.excelGenerator([res, 'Attainment Timeline']).subscribe({
+        next: (next: any) => {
+          this.downloadExcel(next, 'Attainment Timeline');
+        },
+        error: (err) => {
+          console.log(err)
+        },
+      })
     }).catch(error => {
       console.error("Error fetching data:", error);
     })
@@ -312,7 +320,15 @@ export class ExcelServiceService {
 
   generateMilestoneReport() {
     this.fetchData(DeanSelector.selectMilestoneReport).then(res => {
-      this.exportExcel<MilestoneReport>(res, `${this.college} Milestone Achieved (${ this.info.date.getFullYear() - 14} - ${this.info.date.getFullYear()})`, this.college, this.currSem)
+      console.log(res);
+      this.adminService.excelGenerator([res, 'Milestone Achieved']).subscribe({
+        next: (next: any) => {
+          this.downloadExcel(next, 'Milestone Achieved');
+        },
+        error: (err) => {
+          console.log(err)
+        },
+      })
     }).catch(error => {
       console.error("Error fetching data:", error);
     })

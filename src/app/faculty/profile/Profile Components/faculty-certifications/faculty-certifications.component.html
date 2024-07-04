@@ -165,4 +165,36 @@
       </div>
     </div>
   }
+  @if(cert.cert_type === 'Speakership'){
+    <p class="text-blue font-Poppins font-semibold text-[1.3rem]">Speakership</p>
+    <hr class="border-[1.5px] border-slate-400" />
+    <div
+      class="mobileS:columns-1 tablet:columns-2 laptop:columns-3 gap-3 w-full p-3 px-5"
+    >
+      <div
+        class="h-[220px] mb-5 relative rounded-[10px] bg-white overflow-hidden flex flex-col justify-end hover:shadow-main hover:scale-[101%] hover:duration-300 duration-300"
+        (click)="navigateUrl(cert.cert_ID)"
+        >
+        <div
+          class="opacity-100 absolute h-[60px] w-[100%] p-5 flex flex-col justify-center text-white bg-blue text-opacity-100 bg-opacity-80"
+        >
+          <div class="flex flex-col flex-1">
+            <p
+              class="cursor-pointer font-semibold text-[0.9rem]"
+            >
+              {{ cert.cert_name }}
+            </p>
+            <p class="font-medium text-[0.8rem]">{{ cert.cert_corporation }}</p>
+            <!-- <p class="font-medium mt-4 text-[0.8rem]">
+              Date Acquired: {{ cert.accomplished_date | date : "longDate" }}
+            </p> -->
+          </div>
+        </div>
+        <img
+          [src]="port + cert.cert_image"
+          class="h-[100%] w-[100%] object-cover"
+        />
+      </div>
+    </div>
+  }
 </div>

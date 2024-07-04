@@ -142,15 +142,19 @@ async) && (coursesLoading$ | async) && (coursesLoading$ | async) &&
         <i class="fa-solid fa-file-excel"></i>
       </button>
     </div>
-    <app-bar-chart
-      [data]="milestone"
-      [axis]="'x'"
-      [bgColor]="'rgb(7, 66, 135)'"
-      [labels]="yearsArray"
-      [showLegend]="false"
-    >
+    <div class="flex flex-row items-center">
+      <p class="h-[20px] w-[40px] rotate-[270deg] m-0 p-0">Milestone</p>
+      <app-bar-chart
+        class="flex-1"
+        [data]="milestone"
+        [axis]="'x'"
+        [bgColor]="'rgb(7, 66, 135)'"
+        [labels]="yearsArray"
+        [showLegend]="false"
       >
-    </app-bar-chart>
+        
+      </app-bar-chart>
+    </div>
   </div>
 
   <div
@@ -169,14 +173,19 @@ async) && (coursesLoading$ | async) && (coursesLoading$ | async) &&
         </button>
       </div>
     </div>
-    <app-line-graph2
-      [label]="certToggle ? attainment[0] : []"
-      [label2]="commexToggle ? attainment[1] : []"
-      [label3]="seminarToggle ? attainment[2] : []"
-      [labels]="yearsArray"
-      [showLegend]="false"
-    >
-    </app-line-graph2>
+
+    <div class="flex flex-row items-center">
+      <p class="h-[20px] w-[40px] rotate-[270deg] m-0 p-0">Attainment</p>
+      <app-line-graph2
+        class="flex-1"
+        [label]="certToggle ? attainment[0] : []"
+        [label2]="commexToggle ? attainment[1] : []"
+        [label3]="seminarToggle ? attainment[2] : []"
+        [labels]="yearsArray"
+        [showLegend]="false"
+      >
+      </app-line-graph2>
+    </div>
     <div class="flex gap-4 justify-center items-center">
       <div class="flex flex-row gap-1">
         <div
@@ -308,7 +317,7 @@ async) && (coursesLoading$ | async) && (coursesLoading$ | async) &&
             <div
               class="w-[23px] h-[23px] rounded-[5px] shadow-main duration-300 hover:duration-300 hover:bg-opacity-50 bg-greenBar"
             ></div>
-            <p>Average Teaching Length (hrs)</p>
+            <p>Teaching Length (years)</p>
           </div>
         </div>
       </div>
@@ -328,16 +337,16 @@ async) && (coursesLoading$ | async) && (coursesLoading$ | async) &&
             <i class="fa-solid fa-file-excel"></i>
           </button>
         </div>
-        <app-scatter-plot [data]="teaching[0]" [showLegend]="false">
-        </app-scatter-plot>
-        <div class="flex justify-center items-center gap-4">
-          <div class="flex gap-2">
-            <p>X: Evaluation</p>
-          </div>
-          <div class="flex gap-2">
-            <p>Y: Average Teaching Length (hrs)</p>
-          </div>
+        <div class="flex flex-row items-center h-[75%]">
+          <p class="h-[20px] w-[40px] rotate-[270deg] m-0 p-0">Attainment</p>
+          <app-scatter-plot class="flex-1" [data]="teaching[0]" [showLegend]="false">
+          </app-scatter-plot>
         </div>
+
+        <div class="w-full flex flex-row justify-center">
+          <p>Teaching Length (years)</p>
+        </div>
+
       </div>
     </div>
   </div>
