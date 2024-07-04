@@ -287,7 +287,8 @@ export class EvaluationComponent{
   generateEvalReport() {
     if(this.evalReport.length <= 0) return
 
-    this.excelService.exportExcel<object>(this.evalReport, `Evalution Report ${this.college}`, this.college, this.currSem)
+    this.excelService.facultyEval(this.evalReport)
+    // this.excelService.exportExcel<object>(this.evalReport, `Evalution Report ${this.college}`, this.college, this.currSem)
 
   }
 }

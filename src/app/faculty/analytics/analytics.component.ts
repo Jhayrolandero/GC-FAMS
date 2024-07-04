@@ -152,11 +152,13 @@ export class AnalyticsComponent {
   generateMilestoneReport() {
     if(this.milestoneAchievedReport.length <= 0) return
 
-    this.excelService.exportExcel<object>(this.milestoneAchievedReport, `Milestone Report ${this.college}`, this.college, this.currSem)
+    this.excelService.indMilestoneReport(this.milestoneAchievedReport)
+    // this.excelService.exportExcel<object>(this.milestoneAchievedReport, `Milestone Report ${this.college}`, this.college, this.currSem)
   }
 
   generateAttainmentReport() {
     if(this.attainmentData.length <= 0 ) return
-    this.excelService.exportExcel<AttainmentData>(this.attainmentData, `Attainment ${this.college} (${ new Date().getFullYear() - 14} - ${new Date().getFullYear()})`, this.college, this.currSem)
+  this.excelService.indAttainmentReport(this.attainmentData)
+    // this.excelService.exportExcel<AttainmentData>(this.attainmentData, `Attainment ${this.college} (${ new Date().getFullYear() - 14} - ${new Date().getFullYear()})`, this.college, this.currSem)
   }
 }

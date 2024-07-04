@@ -208,16 +208,19 @@ export class ManageindividualanalyticsComponent {
 
 
   generateAttainmentReport() {
+
+    // this.excelService.generateAttainmentReport()
     if(this.attainmentData.length <= 0) return
 
-    this.excelService.exportExcel<AttainmentData>(this.attainmentData, `${this.facultyName} Attainment ${this.college} (${ new Date().getFullYear() - 14} - ${new Date().getFullYear()})`, this.college, this.currSem)
-
-  }
+    // this.excelService.exportExcel<AttainmentData>(this.attainmentData, `${this.facultyName} Attainment ${this.college} (${ new Date().getFullYear() - 14} - ${new Date().getFullYear()})`, this.college, this.currSem)
+      this.excelService.indAttainmentReport(this.attainmentData);
+    }
 
   generateMilestoneReport() {
     if(this.milestoneAchievedReport.length <= 0) return
+    this.excelService.indMilestoneReport(this.milestoneAchievedReport);
 
-    this.excelService.exportExcel<object>(this.milestoneAchievedReport, `${this.facultyName} Milestone ${this.college} (${ new Date().getFullYear() - 14} - ${new Date().getFullYear()})`, this.college, this.currSem)
+    // this.excelService.exportExcel<object>(this.milestoneAchievedReport, `${this.facultyName} Milestone ${this.college} (${ new Date().getFullYear() - 14} - ${new Date().getFullYear()})`, this.college, this.currSem)
 
   }
 
