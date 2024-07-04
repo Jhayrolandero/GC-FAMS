@@ -93,11 +93,11 @@ export class ReportViewComponent {
   async handleSwitch(view: string) {
     await this.getCollege()
     switch(view) {
-      case "Evaluation Radar":
+      case "Faculty Student Evaluation":
         this.setContent(DeanSelector.selectRadarReport)
         this.view = "radar"
         this.title = `${this.college} ${view}`
-        this.fn = () => this.excelService.generateRadarReport()
+        this.fn = () => this.excelService.generateFacultyStudentReport()
         break;
       case "Evaluation per Semester Difference":
         this.setContent(DeanSelector.selectSemDiffReport)

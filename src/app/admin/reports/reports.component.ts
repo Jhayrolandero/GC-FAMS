@@ -41,9 +41,9 @@ export class ReportsComponent {
     title: "Evaluation Report",
     reports: [
       {
-        id: "RXZhbHVhdGlvbiBSYWRhcg==",
-        reportTitle:`${this.college} - Evaluation Radar`,
-        reportFunction:() => this.excelService.generateRadarReport()
+        id: "RmFjdWx0eSBTdHVkZW50IEV2YWx1YXRpb24=",
+        reportTitle:`${this.college} - Faculty Student Evaluation`,
+        reportFunction:() => this.excelService.generateFacultyStudentReport()
       },
       {
         id: "RXZhbHVhdGlvbiBwZXIgU2VtZXN0ZXIgRGlmZmVyZW5jZQ==",
