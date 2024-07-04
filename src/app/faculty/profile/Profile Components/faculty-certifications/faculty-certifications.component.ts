@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Output, inject } from '@angular/core';
 import { mainPort } from '../../../../app.component';
 import { Store } from '@ngrx/store';
-import { selectAllCerts, selectFacultyCerts } from '../../../../state/faculty-state/faculty-state.selector';
+import { selectAllCerts, selectFacultyCerts, selectFilteredFacultyCerts } from '../../../../state/faculty-state/faculty-state.selector';
 import { FacultyRequestService } from '../../../../services/faculty/faculty-request.service';
 import { MessageService } from '../../../../services/message.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -17,7 +17,7 @@ import { Router } from '@angular/router';
 })
 export class FacultyCertificationsComponent {
   public certifications$ = this.store.select(selectAllCerts);
-  public existCertifications$ = this.store.select(selectFacultyCerts);
+  public existCertifications$ = this.store.select(selectFilteredFacultyCerts);
   public port = mainPort;
   @Output() deleteEvent = new EventEmitter<any>();
 
@@ -27,8 +27,15 @@ export class FacultyCertificationsComponent {
     public dialog: MatDialog,
     private messageService: MessageService,
     private store: Store
-  ){}
+  ){
+    this.existCertifications$.subscribe({
+      next(value) {
+        console.log(value)
+      },
+    })
+  }
 
+  
 
   selectCv(cert: any){
     this.facultyRequest.patchData([2, cert], 'selectCv').subscribe({

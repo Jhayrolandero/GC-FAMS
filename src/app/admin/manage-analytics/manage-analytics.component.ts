@@ -116,7 +116,13 @@ export class ManageAnalyticsComponent{
   constructor(
     public store: Store,
     private excelService: ExcelServiceService
-  ){}
+  ){
+    this.teachingLength$.subscribe({
+      next(value) {
+        console.log(value);
+      },
+    })
+  }
 
   generateEducReport() {
     this.excelService.generateEducReport()
