@@ -227,6 +227,7 @@ export class EvaluationComponent{
 
   generateEvalReport() {
     if(this.evalReport.length <= 0) return
+
     this.excelService.facultyEval(this.evalReport)
   }
 }

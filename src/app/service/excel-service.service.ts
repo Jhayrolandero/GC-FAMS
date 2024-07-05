@@ -487,10 +487,11 @@ export class ExcelServiceService {
   }
 
 
-  indAttainmentReport(data: AttainmentData[]) {
+  indAttainmentReport(data: AttainmentData[], name?: string) {
     this.adminService.excelGenerator([data, "Attainment Timeline"]).subscribe({
       next: (next: any) => {
-        this.downloadExcel(next, "Attainment Timeline");
+        name ? this.downloadExcel(next, `${name} Attainment Timeline`) : this.downloadExcel(next, "Attainment Timeline")
+        // this.downloadExcel(next, `${name ? name+ " - " : ''} Attainment Timeline`);
       },
       error: (err) => {
         console.log(err)
@@ -498,10 +499,11 @@ export class ExcelServiceService {
     })
   }
 
-  indMilestoneReport(data: object[]) {
+  indMilestoneReport(data: object[], name?: string) {
     this.adminService.excelGenerator([data, "Milestone Achieved"]).subscribe({
       next: (next: any) => {
-        this.downloadExcel(next, "Milestone Achieved");
+        name ? this.downloadExcel(next, `${name} Milestone Achieved`) : this.downloadExcel(next, "Milestone Achieved")
+        // this.downloadExcel(next, `${name ? name+ " - " : ''} Milestone Achieved`);
       },
       error: (err) => {
         console.log(err)
@@ -509,10 +511,12 @@ export class ExcelServiceService {
     })
   }
 
-  facultyEval(data: object[]) {
+  facultyEval(data: object[], name?: string) {
     this.adminService.excelGenerator([data, "Faculty Evaluation"]).subscribe({
       next: (next: any) => {
-        this.downloadExcel(next, "Faculty Evaluation");
+        name ? this.downloadExcel(next, `${name} Faculty Evaluation`) : this.downloadExcel(next, "Faculty Evaluation")
+
+        // this.downloadExcel(next, `${name ? name+ " - " : ''} Faculty Evaluation`);
       },
       error: (err) => {
         console.log(err)
