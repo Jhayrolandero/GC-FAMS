@@ -18,13 +18,15 @@ import { MatButtonModule } from '@angular/material/button';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { selectAllEvaluation, selectPRofileCollege, selectSortedEvals } from '../../state/faculty-state/faculty-state.selector';
+import { selectAllEvaluation, selectEvalData, selectEvaluationReport, selectPRofileCollege, selectSortedEvals } from '../../state/faculty-state/faculty-state.selector';
 import { Store, select } from '@ngrx/store';
 import { loadEval } from '../../state/faculty-state/faculty-state.actions';
 import { EmptyTitleComponent } from '../../components/empty-title/empty-title.component';
 import { Subscription, filter, take } from 'rxjs';
 import { ExcelServiceService } from '../../service/excel-service.service';
 import { ReportViewComponent } from '../../components/report-view/report-view.component';
+import { LineGraphComponent2 } from "../../components/charts/line-graph2/line-graph2.component";
+import { InfoService } from '../../services/info.service';
 
 type Series = {
   'name': string,
@@ -69,14 +71,16 @@ export class EvaluationForm {
   constructor(
     public facultyRequest: FacultyRequestService,
     public dialogRef: MatDialogRef<EvaluationForm>,
+    private info: InfoService,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
 
   }
 
   evalForm = new FormGroup({
-    semester: new FormControl(''),
-    evaluation_year: new FormControl(''),
+    semester: new FormControl(this.info.currAY.semester),
+    evaluation_year: new FormControl(this.info.currAY.academicYearStart),
+    evaluation_year_end: new FormControl(this.info.currAY.academicYearEnd),
     param1_score: new FormControl('', [Validators.max(5), Validators.min(0)]),
     param2_score: new FormControl('', [Validators.max(5), Validators.min(0)]),
     param3_score: new FormControl('', [Validators.max(5), Validators.min(0)]),
@@ -84,6 +88,17 @@ export class EvaluationForm {
     param5_score: new FormControl('', [Validators.max(5), Validators.min(0)]),
     param6_score: new FormControl('', [Validators.max(5), Validators.min(0)]),
   })
+  // evalForm = new FormGroup({
+  //   semester: new FormControl(''),
+  //   evaluation_year: new FormControl(''),
+  //   evaluation_year_end: new FormControl(''),
+  //   param1_score: new FormControl('', [Validators.max(5), Validators.min(0)]),
+  //   param2_score: new FormControl('', [Validators.max(5), Validators.min(0)]),
+  //   param3_score: new FormControl('', [Validators.max(5), Validators.min(0)]),
+  //   param4_score: new FormControl('', [Validators.max(5), Validators.min(0)]),
+  //   param5_score: new FormControl('', [Validators.max(5), Validators.min(0)]),
+  //   param6_score: new FormControl('', [Validators.max(5), Validators.min(0)]),
+  // })
 
   onNoClick(): void {
     this.dialogRef.close();
@@ -107,13 +122,16 @@ export class EvaluationForm {
     standalone: true,
     templateUrl: './evaluation.component.html',
     styleUrl: './evaluation.component.css',
-    imports: [NgxChartsModule, CommonModule, NgFor, LoadingScreenComponent, EmptyTitleComponent, ReportViewComponent]
+    imports: [NgxChartsModule, CommonModule, NgFor, LoadingScreenComponent, EmptyTitleComponent, ReportViewComponent, LineGraphComponent2]
 })
 export class EvaluationComponent{
 
   isLoading: boolean = true;
   evaluation$ = this.store.select(selectAllEvaluation);
   sortedEvaluation$ = this.store.select(selectSortedEvals);
+  evaluationData$ = this.store.select(selectEvalData);
+  evalReportData$ = this.store.select(selectEvaluationReport)
+
   evalScoreCategory!: ScoreCategory[]
   selectedEvalSem!: Evaluation
   evalHistory: evalScoreHistory[] = []
@@ -129,6 +147,7 @@ export class EvaluationComponent{
     private evaluationService: EvaluationService,
     public dialog: MatDialog,
     private excelService: ExcelServiceService,
+    private info: InfoService,
     private store: Store) {
       this.sortedEvaluation$.subscribe({
         next: value => {
@@ -136,62 +155,26 @@ export class EvaluationComponent{
           this.selectedEvalSem = value[value.length - 1]
           this.selectEvalSem(undefined)
           this.isLoading = false
-          console.log(value)
+          // console.log(value)
         },
-
-
-
       })
     }
 
+    currAY = this.info.currAY
     ngOnInit() {
       this.evalReportSubscription = this.store.pipe(
-        select(selectAllEvaluation),
+        select(selectEvaluationReport),
         filter(data => !!data),
         take(1)
       ).subscribe({
         next: res => {
-          console.log(res)
-          let prevAve = 0
-          this.sortByEvaluationYear(res!).map(item => {
-            let currAve = item.evalAverage
-            let changeAve = prevAve ? ((currAve - prevAve)/ prevAve * 100).toFixed(2) + '%' : '-'
-            let data= {
-              "Year": item.evaluation_year,
-              "Semester": item.semester,
-              "Knowledge of Content": item.param1_score,
-              "Instructional Skills": item.param2_score,
-              "Communication Skills": item.param3_score,
-              "Teaching for Independent Learning": item.param4_score,
-              "Management of Learning": item.param5_score,
-              "Flexible Learning Modality": item.param5_score,
-              "Evaluation Average": currAve,
-              "Change from Previous Year (%)": changeAve
-            }
-
-            prevAve = currAve
-            this.evalReport.push(data)
-          })
+          this.evalReport = res!
         }
       })
-
-      this.collegeSubscription = this.store.pipe(
-        select(selectPRofileCollege),
-        filter(data => !!data),
-        take(1)
-      ).subscribe({
-        next: res => this.college = res!
-      })
-
     }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log("This is running!");
-  }
 
   ngOnDestory() {
     this.evalReportSubscription.unsubscribe()
-    this.collegeSubscription.unsubscribe()
   }
   formToggle: boolean = false;
   // this.store.select(selectAllEvaluation);
@@ -232,7 +215,6 @@ export class EvaluationComponent{
     } else {
       this.evalScoreCategory = this.evaluationService.setEvalScoreCategory(this.selectedEvalSem)
     }
-
   }
 
   sortByEvaluationYear(evals : Evaluation[]) {
@@ -242,45 +224,9 @@ export class EvaluationComponent{
         return a.evaluation_year - b.evaluation_year;
     });
 }
-  view: [] = [];
-
-  // options
-  legend: boolean = false;
-  showLabels: boolean = true;
-  animations: boolean = true;
-  xAxis: boolean = true;
-  yAxis: boolean = true;
-  showYAxisLabel: boolean = true;
-  showXAxisLabel: boolean = true;
-  xAxisLabel: string = 'Semester';
-  yAxisLabel: string = 'Evaluation Average';
-  timeline: boolean = true;
-
-  colorScheme = {
-    name: 'myScheme',
-    selectable: true,
-    group: ScaleType.Ordinal,
-    domain: ['#5AA454', '#E44D25', '#CFC0BB', '#7aa3e5', '#a8385d', '#aae3f5']
-  };
-
-
-  onSelect(data: any): void {
-    console.log('Item clicked', JSON.parse(JSON.stringify(data)));
-  }
-
-  onActivate(data: any): void {
-    console.log('Activate', JSON.parse(JSON.stringify(data)));
-  }
-
-  onDeactivate(data: any): void {
-    console.log('Deactivate', JSON.parse(JSON.stringify(data)));
-  }
 
   generateEvalReport() {
     if(this.evalReport.length <= 0) return
-
     this.excelService.facultyEval(this.evalReport)
-    // this.excelService.exportExcel<object>(this.evalReport, `Evalution Report ${this.college}`, this.college, this.currSem)
-
   }
 }
