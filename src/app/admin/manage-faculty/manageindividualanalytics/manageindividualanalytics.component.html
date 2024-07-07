@@ -171,4 +171,25 @@
     </app-line-graph2>
     <app-report-view [data]="attainmentData"></app-report-view>
   </div>
+  <div class="w-full bg-white rounded-[15px] shadow-main p-5 pt-1">
+    <div class="flex flex-col justify-center">
+      <div class="flex gap-2">
+        <p class="text-blue font-bold text-[2rem] my-2">Evaluation Timeline</p>
+        <button (click)="generateEvalReport()" class="text-blue">
+          <i class="fa-solid fa-file-excel"></i>
+        </button>
+      </div>
+    </div>
+    <app-line-graph2
+      class="w-full"
+      [label]="evals[1]"
+      [labels]="evals[0]"
+      [legendLabel]="['Evaluation Ave. per year']"
+      [xAxisLabel]="'Year'"
+      [yAxisLabel]="'Evaluation Ave.'"
+      [showLegend]="true"
+    >
+    </app-line-graph2>
+    <app-report-view [data]="evalReport"></app-report-view>
+  </div>
 </div>

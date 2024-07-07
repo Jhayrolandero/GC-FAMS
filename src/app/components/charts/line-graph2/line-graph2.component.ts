@@ -42,7 +42,6 @@ export class LineGraphComponent2 {
         datasets: [] as Datasets[]
       };
 
-
     if(this.label && this.label.length > 0) {
       const dataSet = {
         label: this.legendLabel[0],

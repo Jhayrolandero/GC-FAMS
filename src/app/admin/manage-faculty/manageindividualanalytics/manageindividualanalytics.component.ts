@@ -15,11 +15,10 @@ import { CommunityExtension } from '../../../services/Interfaces/community-exten
 import { LineGraphComponent } from '../../../components/charts/line-graph/line-graph.component';
 import { AttainmentData } from '../../../services/Interfaces/attainmentData';
 import { ExcelServiceService } from '../../../service/excel-service.service';
-import { selectPRofileCollege } from '../../../state/faculty-state/faculty-state.selector';
+import { selectEvalData, selectEvaluationReport, selectPRofileCollege } from '../../../state/faculty-state/faculty-state.selector';
 import { MilestoneReport } from '../../../services/Interfaces/milestoneReport';
 import { LineGraphComponent2 } from '../../../components/charts/line-graph2/line-graph2.component';
 import { ReportViewComponent } from "../../../components/report-view/report-view.component";
-
 
 @Component({
     selector: 'app-manageindividualanalytics',
@@ -45,10 +44,15 @@ export class ManageindividualanalyticsComponent {
   commexToggle = true;
   seminarToggle = true;
 
-  // milestonesAchieved$ = this.store.select(DeanSelector.selectMilestoneCount);
+  evalReportSubscription!: Subscription
 
+  evalDataSubscription!: Subscription
+  evalDataReportSubscription!: Subscription // Different thing
 
-  // attainmentTimeline$ = this.store.select(DeanSelector.selectAttainmentTimeline);
+  evals: any[] = []
+  // evaluationData$ = (id:number) => this.store.select(DeanSelector.selectEvalData(id));
+  evalReportData$ = this.store.select(selectEvaluationReport)
+  evalReport: object[] = []
 
   evalAverage$!: Observable<number>;
   units$!: Observable<number>;
@@ -93,6 +97,17 @@ export class ManageindividualanalyticsComponent {
       next: res => this.college = res!
     })
 
+
+    this.evalReportSubscription = this.store.pipe(
+      select(selectEvaluationReport),
+      filter(data => !!data),
+      take(1)
+    ).subscribe({
+      next: res => {
+        this.evalReport = res!
+      }
+    })
+
   }
   ngOnDestroy(){
     this.collegeSubscription.unsubscribe()
@@ -102,6 +117,9 @@ export class ManageindividualanalyticsComponent {
     this.attainmentData = []
     this.milestoneAchievedReport = []
     this.facultyName = ''
+    this.evalReportSubscription.unsubscribe()
+    this.evalDataSubscription.unsubscribe()
+    this.evalDataReportSubscription.unsubscribe()
   }
 
   ngOnChanges(): void {
@@ -137,31 +155,11 @@ export class ManageindividualanalyticsComponent {
             this.milestoneAchievedReport = res!
           }
         })
-
-
     })
 
-    // this.milestonesAchieved$.subscribe(next => {
-    //   console.log(next);
-    // })
 
-    // this.milestoneAchievedReportSubscription = this.store.pipe(
-    //   select(FacultySelector.milestoneReport)
-    //   ).subscribe({
-    //   next: res => {
-
-    //     this.milestoneAchievedReport = res!
-    //   }
-    // })
-
-    // this.collegeSubscription = this.store.pipe(
-    //   select(selectPRofileCollege),
-    //   filter(data => !!data),
-    //   take(1)
-    // ).subscribe({
-    //   next: res => this.college = res!
-    // })
-
+    this.evalDataSubscription = this.store.pipe(select(DeanSelector.selectEvalData(this.selectedFaculty.faculty_ID))).subscribe(res => this.evals = res)
+    this.evalDataReportSubscription = this.store.pipe(select(DeanSelector.selectEvalDataReport(this.selectedFaculty.faculty_ID))).subscribe(res => this.evalReport = res)
 
   }
 
@@ -210,21 +208,24 @@ export class ManageindividualanalyticsComponent {
 
 
   generateAttainmentReport() {
-
-    // this.excelService.generateAttainmentReport()
     if(this.attainmentData.length <= 0) return
-
-    // this.excelService.exportExcel<AttainmentData>(this.attainmentData, `${this.facultyName} Attainment ${this.college} (${ new Date().getFullYear() - 14} - ${new Date().getFullYear()})`, this.college, this.currSem)
-      this.excelService.indAttainmentReport(this.attainmentData);
+    const name = `${this.selectedFaculty.first_name} ${this.selectedFaculty.middle_name ? this.selectedFaculty.middle_name : ''} ${this.selectedFaculty.last_name} ${this.selectedFaculty.ext_name ? this.selectedFaculty.ext_name : ''}`
+      this.excelService.indAttainmentReport(this.attainmentData, name);
     }
 
   generateMilestoneReport() {
     if(this.milestoneAchievedReport.length <= 0) return
-    this.excelService.indMilestoneReport(this.milestoneAchievedReport);
-
-    // this.excelService.exportExcel<object>(this.milestoneAchievedReport, `${this.facultyName} Milestone ${this.college} (${ new Date().getFullYear() - 14} - ${new Date().getFullYear()})`, this.college, this.currSem)
-
+    const name = `${this.selectedFaculty.first_name} ${this.selectedFaculty.middle_name ? this.selectedFaculty.middle_name : ''} ${this.selectedFaculty.last_name} ${this.selectedFaculty.ext_name ? this.selectedFaculty.ext_name : ''}`
+    this.excelService.indMilestoneReport(this.milestoneAchievedReport, name);
   }
+
+  generateEvalReport() {
+    if(this.evalReport.length <= 0) return
+
+    const name = `${this.selectedFaculty.first_name} ${this.selectedFaculty.middle_name ? this.selectedFaculty.middle_name : ''} ${this.selectedFaculty.last_name} ${this.selectedFaculty.ext_name ? this.selectedFaculty.ext_name : ''}`
+    this.excelService.facultyEval(this.evalReport, name)
+  }
+
 
   goBack(){
     this.showAnalyticsEvent.emit();
