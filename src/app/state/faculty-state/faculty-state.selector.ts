@@ -217,7 +217,7 @@ export const selectFilteredFacultyCerts = createSelector(
         case 'Completion':
           completion.push(cert);
           break;
-      
+
 
         case 'Achievement':
           achievement.push(cert);
@@ -355,19 +355,84 @@ export const selectAllExpertise = createSelector(
 
 export const selectAllEvaluation = createSelector(
   selectProfileState,
-
   (state: ProfileState) => {
-
     if(state.evals.length <= 0 ) return
     return state.evals
-
   }
 );
+
+export const selectEvaluationReport = createSelector(
+  selectProfileState,
+  (state) => {
+    if(state.evals.length <= 0 ) return
+
+    let evalReport: object[] = []
+    let prevAve = 0
+
+    sortByEvaluationYear(state.evals).map(item => {
+      let currAve = item.evalAverage
+      let changeAve = prevAve ? ((currAve - prevAve)/ prevAve * 100).toFixed(2) + '%' : '-'
+      let data= {
+        "Year": item.evaluation_year,
+        "Year End": item.evaluation_year_end,
+        "Semester": item.semester == 3 ? 'Midyear' : item.semester,
+        "Knowledge of Content": item.param1_score,
+        "Instructional Skills": item.param2_score,
+        "Communication Skills": item.param3_score,
+        "Teaching for Independent Learning": item.param4_score,
+        "Management of Learning": item.param5_score,
+        "Flexible Learning Modality": item.param5_score,
+        "Evaluation Average": currAve,
+        "Change from Previous Year (%)": changeAve
+      }
+
+      prevAve = currAve
+      evalReport = [...evalReport, data]
+      // this.evalReport.push(data)
+    })
+
+    // console.log(evalReport)
+    return evalReport
+  }
+)
 
 export const selectSortedEvals = createSelector(
   selectProfileState,
   (state: ProfileState) => sortByEvaluationYear(state.evals)
 )
+
+export const selectEvalData = createSelector(
+  selectProfileState,
+  (state) => {
+    if(state.evals.length <= 0) return
+
+    const sortedEvals = sortByEvaluationYear(state.evals);
+    const sem = sortedEvals.map(x => {
+
+      // Fix the year
+      const year = parseInt(x.evaluation_year+'')
+      const yearEnd = parseInt(x.evaluation_year_end+'')
+      return x.semester == 1 ? `1st Sem. A.Y ${year}-${yearEnd}` : x.semester == 2 ? `2nd Sem. A.Y ${year}-${yearEnd}` : `Midyear A.Y ${year}-${yearEnd}`
+
+    })
+
+    const data: [string[], number[]] = [sem, sortedEvals.map(x => parseFloat(evalAverage(
+      x.param1_score,
+      x.param2_score,
+      x.param3_score,
+      x.param4_score,
+      x.param5_score,
+      x.param6_score,
+    ).toFixed(2)))]
+
+    return data
+  }
+)
+
+function evalAverage(p1: number,p2: number,p3: number,p4: number,p5: number,p6: number) {
+
+  return (+p1 + +p2 + +p3 + +p4 + +p5 + +p6)/6;
+}
 
 export const selectFacultyEvalAverage = createSelector(
   selectProfileState,
@@ -461,3 +526,4 @@ export const selectClearArray = createSelector(
     return state.clearArray
   }
 )
+

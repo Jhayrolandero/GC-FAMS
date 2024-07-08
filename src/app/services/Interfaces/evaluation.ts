@@ -5,6 +5,7 @@ export interface Evaluation {
     last_name: string,
     semester: number,
     evaluation_year: number,
+    evaluation_year_end: number,
     param1_score: number,
     param2_score: number,
     param3_score: number,

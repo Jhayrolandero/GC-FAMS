@@ -280,6 +280,76 @@ export const selectCollegeEducTimeline = createSelector(
     }
 );
 
+export const selectEvalData = (id: number) => createSelector(
+  selectDeanState,
+  (state) => {
+    const sortedEvals = sortByEvaluationYear(id, state.evals);
+
+    console.log(sortedEvals)
+    const sem = sortedEvals.map(x => {
+
+      // Fix the year
+      const year = parseInt(x.evaluation_year+'')
+      const yearEnd = parseInt(x.evaluation_year_end+'')
+      return x.semester == 1 ? `1st Sem. A.Y ${year}-${yearEnd}` : x.semester == 2 ? `2nd Sem. A.Y ${year}-${yearEnd}` : `Midyear A.Y ${year}-${yearEnd}`
+
+    })
+
+    const data: [string[], number[]] = [sem, sortedEvals.map(x => parseFloat(evalAverage(
+      parseInt(x.param1_score+''),
+      parseInt(x.param2_score+''),
+      parseInt(x.param3_score+''),
+      parseInt(x.param4_score+''),
+      parseInt(x.param5_score+''),
+      parseInt(x.param6_score+''),
+    ).toFixed(2)))]
+
+    return data
+  }
+)
+
+export const selectEvalDataReport = (id : number) => createSelector(
+  selectDeanState,
+  (state) => {
+
+    let evalReport: object[] = []
+    let prevAve = 0
+
+    sortByEvaluationYear(id, state.evals).map(item => {
+      let currAve = item.evalAverage
+      let changeAve = prevAve ? ((currAve - prevAve)/ prevAve * 100).toFixed(2) + '%' : '-'
+      let data= {
+        "Year": item.evaluation_year,
+        "Year End": item.evaluation_year_end,
+        "Semester": item.semester == 3 ? 'Midyear' : item.semester,
+        "Knowledge of Content": item.param1_score,
+        "Instructional Skills": item.param2_score,
+        "Communication Skills": item.param3_score,
+        "Teaching for Independent Learning": item.param4_score,
+        "Management of Learning": item.param5_score,
+        "Flexible Learning Modality": item.param5_score,
+        "Evaluation Average": currAve,
+        "Change from Previous Year (%)": changeAve
+      }
+
+      prevAve = currAve
+      evalReport = [...evalReport, data]
+      // this.evalReport.push(data)
+    })
+
+    // console.log(evalReport)
+    return evalReport
+
+  }
+)
+function sortByEvaluationYear(id: number, evals : Evaluation[]) {
+
+  const evalsCopy = [...evals]
+  return evalsCopy.filter(x => x.faculty_ID == id).sort((a, b) => {
+      return a.evaluation_year - b.evaluation_year;
+  });
+}
+
 
 export const selectCollegeEducTimelineReport = createSelector(
   selectDeanState,

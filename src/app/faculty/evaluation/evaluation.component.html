@@ -15,9 +15,6 @@
       >
         Evaluation
       </h1>
-      <!-- <button (click)="generateEvalReport()" class="text-blue">
-        <i class="fa-solid fa-file-excel"></i>
-      </button> -->
     </div>
     <div class="flex flex-row space-x-4">
       <select
@@ -31,9 +28,10 @@
           *ngFor="let evalItem of sortedEvals.slice().reverse()"
           [value]="evalItem.evaluation_ID"
         >
-          {{ evalItem.semester }}@if( evalItem.semester == 1){st}@else if
-          (evalItem.semester == 2) {nd}, A.Y. {{ evalItem.evaluation_year }} -
-          {{ +evalItem.evaluation_year + 1 }}
+          {{ evalItem.semester == 3 ? "Midyear" : evalItem.semester }}@if(
+          evalItem.semester == 1){st}@else if (evalItem.semester == 2) {nd},
+          A.Y. {{ evalItem.evaluation_year }} -
+          {{ +evalItem.evaluation_year_end }}
         </option>
       </select>
 
@@ -50,18 +48,6 @@
     *ngIf="(evaluation$ | async)?.length"
     class="w-full flex flex-col justify-between items-center gap-3"
   >
-    <!-- <div class="flex flex-row w-full justify-between gap-2 px-5">
-      <p
-        *ngFor="let evalItem of evaluation$ | async"
-        class="hover:font-bold transition-all cursor-pointer font-Poppins justify-between text-[1rem]"
-        (click)="selectEvalSem(evalItem.evaluation_ID)"
-      >
-        {{ evalItem.semester }}@if( evalItem.semester == 1){st}@else if
-        (evalItem.semester == 2) {nd}, A.Y. {{ evalItem.evaluation_year }} -
-        {{ +evalItem.evaluation_year + 1 }}
-      </p>
-    </div> -->
-
     <div class="w-full flex flex-col laptop:flex-row gap-3">
       <div
         class="bg-white w-full laptop:w-[450px] rounded-[15px] shadow-main py-4 flex flex-col"
@@ -77,14 +63,19 @@
         <p
           class="text-greenBar font-Poppins font-bold text-[1.3rem] text-center"
         >
-          As of {{ selectedEvalSem.semester }}@if(selectedEvalSem.semester ==
-          1){st}@else if (selectedEvalSem.semester == 2) {nd} Semester
+          As of
+          {{
+            selectedEvalSem.semester == 3
+              ? "Midyear"
+              : selectedEvalSem.semester
+          }}@if(selectedEvalSem.semester == 1){st}@else if
+          (selectedEvalSem.semester == 2) {nd} Semester
         </p>
         <p
           class="text-greenBar font-Poppins font-light text-[1rem] text-center"
         >
           A.Y. {{ selectedEvalSem.evaluation_year }}-{{
-            +selectedEvalSem.evaluation_year + 1
+            +selectedEvalSem.evaluation_year_end
           }}
         </p>
       </div>
@@ -127,23 +118,20 @@
             <i class="fa-solid fa-file-excel"></i>
           </button>
         </div>
-        <div class="w-[90%] px-4 py-2 flex flex-col items-center h-[250px]">
-          <ngx-charts-line-chart
-            [scheme]="colorScheme"
-            [legend]="legend"
-            [showXAxisLabel]="showXAxisLabel"
-            [showYAxisLabel]="showYAxisLabel"
-            [xAxis]="xAxis"
-            [yAxis]="yAxis"
-            [xAxisLabel]="xAxisLabel"
-            [yAxisLabel]="yAxisLabel"
-            [timeline]="timeline"
-            [results]="evalHistory"
-            (select)="onSelect($event)"
-            (activate)="onActivate($event)"
-            (deactivate)="onDeactivate($event)"
+        <div
+          *ngIf="evaluationData$ | async as evals"
+          class="w-full px-4 py-2 flex flex-col items-center h-[250px]"
+        >
+          <app-line-graph2
+            class="w-full"
+            [label]="evals[1]"
+            [labels]="evals[0]"
+            [legendLabel]="['Evaluation Ave. per year']"
+            [xAxisLabel]="'Year'"
+            [yAxisLabel]="'Evaluation Ave.'"
+            [showLegend]="true"
           >
-          </ngx-charts-line-chart>
+          </app-line-graph2>
         </div>
         <app-report-view [data]="evalReport"></app-report-view>
       </div>
