@@ -366,24 +366,25 @@ export const selectAllExistCerts = createSelector(
 );
 
 export const selectCertTypes = createSelector(
-    selectDeanState,
-    (state: DeanState) => {
-        let certTypes: {[key: string]: number} = {};
+  selectDeanState,
+  (state: DeanState) => {
+    let certTypes: {[key: string]: number} = {};
 
-        state.certs.forEach(cert => {
-            const educYear = (cert.accomplished_date + '').slice(0,4);
-
-            if(+educYear == currentYear){
-                if(certTypes[cert.cert_type]){
-                    certTypes[cert.cert_type] += 1;
-                }
-                else{
-                    certTypes[cert.cert_type] = 1;
-                }
-            }
-        })
-        return certTypes;
-    }
+    state.certs.forEach(cert => {
+      const educYear = (cert.accomplished_date + '').slice(0,4);
+      
+      if(+educYear == currentYear){
+        console.log(cert.accomplished_date);
+        if(certTypes[cert.cert_type]){
+          certTypes[cert.cert_type] += 1;
+        }
+        else{
+          certTypes[cert.cert_type] = 1;
+        }
+      }
+    })
+    return certTypes;
+  }
 );
 
 export const selectCertTypeReport = createSelector (

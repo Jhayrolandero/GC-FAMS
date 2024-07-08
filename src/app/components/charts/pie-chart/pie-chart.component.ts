@@ -35,7 +35,7 @@ export class PieChartComponent {
       labels: this.labels,
       datasets: [{
         data: this.data,
-        backgroundColor: ['#074287', '#1E7242', '#FF7A00'],
+        backgroundColor: ['#074287', '#1E7242', '#FF7A00', '#D32D2D', '#FBE62C', '#4696F3'],
         hoverOffset: 4
       }]
     };
@@ -49,7 +49,8 @@ export class PieChartComponent {
           responsive: true, // This makes the chart responsive
           plugins: {
             legend: {
-              position: 'bottom'
+              position: 'bottom',
+              maxWidth: 1000
             }
           }
         }
