@@ -6,9 +6,14 @@ import { CryptoJSService } from '../../../services/crypto-js.service';
 import { FacultyRequestService } from '../../../services/faculty/faculty-request.service';
 import { MessageService } from '../../../services/message.service';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { loadProj, loadResearch } from '../../../state/faculty-state/faculty-state.actions';
+import { loadResearch } from '../../../state/faculty-state/faculty-state.actions';
 import { CommonModule } from '@angular/common';
 import { MatStepperModule } from '@angular/material/stepper';
+import { map, Observable } from 'rxjs';
+import { Faculty } from '../../../services/Interfaces/faculty';
+import { Encryption } from '../../../services/Interfaces/encryption';
+import * as ProfileSelectors from '../../../state/faculty-state/faculty-state.selector';
+import { ProfileState } from '../../../services/Interfaces/profileState';
 
 @Component({
   selector: 'app-research-form',
@@ -21,27 +26,51 @@ export class ResearchFormComponent {
   authorName: string = '';
   authorList: string[] = [];
 
+  fetchAttendee$: Observable<Faculty[]> = this.facultyService.fetchData<Encryption>("faculty").pipe(
+    map(data => this.decryptData<Faculty[]>(data))
+  );
+  // fetchAttendee$: Observable<Faculty[]> = this.facultyService.fetchData<Encryption>("faculty").pipe(of(this.decryptData<Faculty[]>(data)))
+  profile$ = this.profileStore.pipe(select(ProfileSelectors.selectAllProfile))
+
   constructor(
     public dialogRef: MatDialogRef<ProfileFormComponent>,
     private facultyRequest: FacultyRequestService,
     private store: Store,
     private cryptoJS: CryptoJSService,
-    private messageService: MessageService
-  ){}
+    private messageService: MessageService,
+    private facultyService: FacultyRequestService,
+    private profileStore: Store<{ profile: ProfileState }>,
+  ){
+
+    this.fetchAttendee$.subscribe(res => console.log(res))
+  }
+
+  decryptData<T>(ciphertext: Encryption): T {
+    return this.cryptoJS.CryptoJSAesDecrypt<T>("ucj7XoyBfAMt/ZMF20SQ7sEzad+bKf4bha7bFBdl2HY=", ciphertext)
+  }
 
   researchForm = new FormGroup({
     research_name: new FormControl('', [Validators.required]),
     publish_date: new FormControl('', [Validators.required]),
     research_link: new FormControl('', [Validators.required]),
-    research_authors: new FormControl<string[]>([], [Validators.required]),
+    research_authors: new FormControl<string[]>([]),
   })
 
-  addAuthor(name: string){
-    this.authorList.push(name);
-    console.log(this.authorList);
+  addAuthor(e: Event){
+    const selectElement = e.target as HTMLSelectElement;
+    if(this.authorList.includes(selectElement.value)) return
+    this.authorList.push(selectElement.value);
+  }
+
+  removeAuthor(idx: number) {
+    const copyList = this.authorList.slice();
+    copyList.splice(idx, 1);
+    this.authorList = copyList;
   }
 
   submitForm(){
+    if(!this.researchForm.valid || this.authorList.length <= 0) return
+
     this.researchForm.patchValue({
       research_authors: this.authorList
     })

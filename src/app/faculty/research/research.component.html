@@ -1,31 +1,52 @@
-<div class="p-5 grid gap-3">
+<div class="p-5 flex flex-col gap-3">
+  <div
+    class="bg-white shadow-main bg-opacity-70 w-full rounded-[15px] flex flex-col tablet:flex-row tablet:justify-between items-center px-5"
+  >
+    <h1
+      class="text-blue font-Poppins font-semibold mobileS:text-[1rem] mobileM:text-[1.5rem] tablet:text-[2.5rem] py-2"
+    >
+      Research
+    </h1>
     <div
-        class="bg-white shadow-main bg-opacity-70 w-full rounded-[15px] flex flex-col tablet:flex-row tablet:justify-between items-center px-5">
-        <h1
-            class="text-blue font-Poppins font-semibold mobileS:text-[1rem] mobileM:text-[1.5rem] tablet:text-[2.5rem] py-2">
-            Research
-        </h1>
-        <div class="flex flex-row space-x-4 flex-1 w-full items-center justify-center tablet:justify-end">
-            <button
-
-            class="m-0 bg-gradient-to-r from-blue to-greenBar text-white font-Poppins font-semibold w-[125px] h-[40px] rounded-full shadow-xl hover:scale-[102%] hover:duration-300 duration-300"
-            (click)="openForm()"
-            >
-            +Add
-            </button>
-        </div>
+      class="flex flex-row space-x-4 flex-1 w-full items-center justify-center tablet:justify-end"
+    >
+      <button
+        class="m-0 bg-gradient-to-r from-blue to-greenBar text-white font-Poppins font-semibold w-[125px] h-[40px] rounded-full shadow-xl hover:scale-[102%] hover:duration-300 duration-300"
+        (click)="openForm()"
+      >
+        +Add
+      </button>
     </div>
+  </div>
 
-    <div class="bg-white shadow-main w-full rounded-[15px] flex flex-col p-5"  *ngFor="let res of research$ | async; let i = index">
-        <p class="text-blue font-Poppins font-semibold text-[1.3rem]">{{ res.research_name }}</p>
-        <hr class="border-[1.5px] border-slate-400" />
-        <div class="flex flex-row">
-            <p class="italic underline font-Poppins font-medium text-[1rem] mr-2" *ngFor="let author of authors$ | async; let x = index">
-                @if (author.research_ID == res.research_ID) {
-                    {{author.research_author_name}}
-                }
-            </p>
-        </div>
-        <p class="font-Poppins font-semibold text-[1rem]">Published in: {{ res.publish_date }} | <a class="underline cursor-pointer" (click)="openLink(res.research_link)">{{ res.research_link }}</a></p>
+  <div
+    class="bg-white shadow-main w-full rounded-[15px] flex flex-col p-5"
+    *ngFor="let res of research$ | async; let i = index"
+  >
+    <p class="text-blue font-Poppins font-semibold text-[1.3rem]">
+      {{ res.research_name }}
+    </p>
+    <hr class="border-[1.5px] border-slate-400" />
+    <div class="flex flex-row">
+      <div class="mr-2">
+        <span class="font-Poppins font-medium text-[1rem]">Author/s:</span>
+      </div>
+      <div *ngFor="let author of authors$ | async; let x = index">
+        <p
+          class="italic font-Poppins font-medium text-[1rem] mr-2"
+          *ngIf="author.research_ID == res.research_ID"
+        >
+          {{ author.research_author_name }}
+        </p>
+      </div>
     </div>
+    <p class="font-Poppins font-semibold text-[1rem]">
+      Published in: {{ res.publish_date }} |
+      <a
+        class="underline cursor-pointer text-blue_link"
+        (click)="openLink(res.research_link)"
+        >{{ res.research_link }}</a
+      >
+    </p>
+  </div>
 </div>
