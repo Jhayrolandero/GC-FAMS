@@ -24,12 +24,12 @@ export class ProjectDialogComponent {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public dialogRef: MatDialogRef<ProjectDialogComponent>, 
+    public dialogRef: MatDialogRef<ProjectDialogComponent>,
     private messageService: MessageService,
     private cryptoJS: CryptoJSService,
     private facultyRequest: FacultyRequestService
   ) {
-    
+
   }
 
   ngOnInit(){
@@ -41,7 +41,7 @@ export class ProjectDialogComponent {
   }
 
   goToLink(url: string){
-    console.log(url);
+    // console.log(url);
     window.open("https://" + url, "_blank");
   }
 

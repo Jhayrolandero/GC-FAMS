@@ -321,7 +321,9 @@ export const selectAnExp = (exp_ID: number) => createSelector(
 
 export const selectAllProj = createSelector(
   selectProfileState,
-  (state: ProfileState) => state.proj
+  (state: ProfileState) => {
+  return  state.proj
+  }
 );
 
 export const selectFacultyResearch = createSelector(
@@ -331,7 +333,11 @@ export const selectFacultyResearch = createSelector(
 
 export const selectFacultyResearchAuthor = createSelector(
   selectProfileState,
-  (state: ProfileState) => state.research[1]
+  (state: ProfileState) => {
+
+    console.log(state.research[1])
+    return state.research[1]
+  }
 );
 
 export const selectFacultyExpertise = createSelector(

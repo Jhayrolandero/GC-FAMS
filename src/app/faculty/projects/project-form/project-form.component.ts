@@ -4,14 +4,16 @@ import { ProfileFormComponent } from '../../../components/manage-profile/profile
 import { FacultyRequestService } from '../../../services/faculty/faculty-request.service';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 import { MessageService } from '../../../services/message.service';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { CommonModule } from '@angular/common';
 import { MatStepperModule } from '@angular/material/stepper';
-import { Observable, map } from 'rxjs';
+import { Observable, Subscription, map } from 'rxjs';
 import { Encryption } from '../../../services/Interfaces/encryption';
 import { Faculty } from '../../../services/Interfaces/faculty';
 import { CryptoJSService } from '../../../services/crypto-js.service';
 import { loadProj } from '../../../state/faculty-state/faculty-state.actions';
+import * as ProfileSelectors from '../../../state/faculty-state/faculty-state.selector';
+import { ProfileState } from '../../../state/faculty-state/faculty-state.reducer';
 
 @Component({
   selector: 'app-project-form',
@@ -23,16 +25,20 @@ import { loadProj } from '../../../state/faculty-state/faculty-state.actions';
 export class ProjectFormComponent {
   imageURLs: string[] = [];
   coAuthorId: number[] = [];
+  profile$ = this.profileStore.pipe(select(ProfileSelectors.selectAllProfile))
+  profileSub!: Subscription
+
 
   facultyList$: Observable<Faculty[]> = this.facultyRequest.fetchData<Encryption>("faculty").pipe(
     map(data => this.decryptData<Faculty[]>(data))
   );
 
-  constructor(      
+  constructor(
     public dialogRef: MatDialogRef<ProfileFormComponent>,
     private facultyRequest: FacultyRequestService,
     private store: Store,
     private cryptoJS: CryptoJSService,
+    private profileStore: Store<{ profile: ProfileState }>,
     private messageService: MessageService){
       this.projectForm.get('is_finished')?.valueChanges.subscribe(v => {
         console.log(v)
@@ -43,12 +49,29 @@ export class ProjectFormComponent {
           this.projectForm.get('project_end_date')?.enable()
         }
       })
+
+      this.profileSub = this.profile$.subscribe({
+        next: res => {
+          this.projectForm.patchValue({
+            project_author: res?.faculty_ID
+          })
+        },
+        error: err => {
+          console.error(err)
+          this.messageService.sendMessage("Something went wrong!", -1)
+          this.onNoClick()
+        }
+      })
   }
 
   ngOnInit(): void {
     this.facultyList$.subscribe(next => {
       console.log(next);
     })
+  }
+
+  ngOnDestroy() {
+    this.profileSub.unsubscribe()
   }
 
   decryptData<T>(ciphertext: Encryption): T {
@@ -155,7 +178,7 @@ export class ProjectFormComponent {
 
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
-        
+
         if (allowedFileTypes.includes(file.type)) {
           // File Preview
           const reader = new FileReader();
