@@ -57,7 +57,6 @@ export class LineGraphComponent2 {
 
 
     if(this.label2 && this.label2.length > 0) {
-      console.log(this.label2)
       const dataSet = {
         label: this.legendLabel[1] ? this.legendLabel[1] : undefined,
         data: this.label2,

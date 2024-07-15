@@ -19,8 +19,9 @@ export class FacultyCertificationsComponent {
   public certifications$ = this.store.select(selectAllCerts);
   public existCertifications$ = this.store.select(selectFilteredFacultyCerts);
   public port = mainPort;
-  @Output() deleteEvent = new EventEmitter<any>();
+  public isEmpty = false;
 
+  @Output() deleteEvent = new EventEmitter<any>();
   router = inject(Router);
   constructor(
     private facultyRequest: FacultyRequestService,
@@ -28,12 +29,9 @@ export class FacultyCertificationsComponent {
     private messageService: MessageService,
     private store: Store
   ){
-    this.existCertifications$.subscribe({
-      next(value) {
-        console.log(value)
-      },
-    })
+
   }
+
 
   
 

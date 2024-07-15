@@ -45,9 +45,8 @@ export class FacultyComponent {
 
   sideBarToggle = true;
   opened: boolean = true;
-
-  destroyed = new Subject<void>();
   screenSize: string = ''
+  destroyed = new Subject<void>();
 
   // Create a map to display breakpoint names for demonstration purposes.
   displayNameMap = new Map([

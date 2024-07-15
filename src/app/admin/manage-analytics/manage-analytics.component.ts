@@ -117,7 +117,7 @@ export class ManageAnalyticsComponent{
     public store: Store,
     private excelService: ExcelServiceService
   ){
-    this.teachingLength$.subscribe({
+    this.certTypes$.subscribe({
       next(value) {
         console.log(value);
       },
