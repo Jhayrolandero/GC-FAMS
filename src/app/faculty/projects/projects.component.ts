@@ -64,4 +64,9 @@ export class ProjectsComponent {
     this.dialog.open(ProjectFormComponent)
   }
 
+  goToLink(url: string){
+    // console.log(url);
+    window.open("https://" + url, "_blank");
+  }
+
 }

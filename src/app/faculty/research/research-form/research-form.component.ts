@@ -9,7 +9,7 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { loadResearch } from '../../../state/faculty-state/faculty-state.actions';
 import { CommonModule } from '@angular/common';
 import { MatStepperModule } from '@angular/material/stepper';
-import { map, Observable } from 'rxjs';
+import { map, Observable, Subscription } from 'rxjs';
 import { Faculty } from '../../../services/Interfaces/faculty';
 import { Encryption } from '../../../services/Interfaces/encryption';
 import * as ProfileSelectors from '../../../state/faculty-state/faculty-state.selector';
@@ -26,6 +26,7 @@ export class ResearchFormComponent {
   authorName: string = '';
   authorList: string[] = [];
 
+  profileSub!: Subscription
   fetchAttendee$: Observable<Faculty[]> = this.facultyService.fetchData<Encryption>("faculty").pipe(
     map(data => this.decryptData<Faculty[]>(data))
   );
@@ -40,11 +41,11 @@ export class ResearchFormComponent {
     private messageService: MessageService,
     private facultyService: FacultyRequestService,
     private profileStore: Store<{ profile: ProfileState }>,
-  ){
+  ){  }
 
-    this.fetchAttendee$.subscribe(res => console.log(res))
+  ngOnDestroy() {
+    this.profileSub.unsubscribe()
   }
-
   decryptData<T>(ciphertext: Encryption): T {
     return this.cryptoJS.CryptoJSAesDecrypt<T>("ucj7XoyBfAMt/ZMF20SQ7sEzad+bKf4bha7bFBdl2HY=", ciphertext)
   }
@@ -69,27 +70,44 @@ export class ResearchFormComponent {
   }
 
   submitForm(){
-    if(!this.researchForm.valid || this.authorList.length <= 0) return
+    if(!this.researchForm.valid) return
 
-    this.researchForm.patchValue({
-      research_authors: this.authorList
+    this.profileSub = this.profile$.subscribe({
+      next: res => {
+        this.authorList.push(`${res!.first_name+' ' +
+                    res!.middle_name +
+                    ' ' +
+                    res!.last_name +
+                    ' ' +
+                    (res!.ext_name ? res!.ext_name : '')}`)
+
+                    this.researchForm.patchValue({
+                      research_authors: this.authorList
+                    })
+
+                    this.messageService.sendMessage("Adding Project...", 0)
+                    console.log(this.researchForm);
+
+                    this.facultyRequest.postData(this.researchForm, 'addResearch').subscribe({
+                      next(value) {console.log(value);},
+                      error: (error) => {
+                        console.log(error);
+                        this.messageService.sendMessage("Failed to add Research.", -1)
+                      },
+                      complete: () => {
+                        this.messageService.sendMessage("Research Successfully Added!", 1)
+                        this.store.dispatch(loadResearch());
+                        this.onNoClick();
+                      }
+                    });
+      },
+      error: err => {
+        console.error(err)
+        this.messageService.sendMessage("Something went wrong!", -1)
+        this.onNoClick()
+      }
     })
 
-    this.messageService.sendMessage("Adding Project...", 0)
-    console.log(this.researchForm);
-
-    this.facultyRequest.postData(this.researchForm, 'addResearch').subscribe({
-      next(value) {console.log(value);},
-      error: (error) => {
-        console.log(error);
-        this.messageService.sendMessage("Failed to add Research.", -1)
-      },
-      complete: () => {
-        this.messageService.sendMessage("Research Successfully Added!", 1)
-        this.store.dispatch(loadResearch());
-        this.onNoClick();
-      }
-    });
   }
 
 

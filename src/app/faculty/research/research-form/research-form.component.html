@@ -64,7 +64,7 @@
             class="w-full border-2 px-2 font-Roboto font-regular text-[1.1rem] rounded-[5px] text-black py-1"
           />
 
-          <p class="font-Roboto font-medium text-[1.1rem] mt-4">Author(s)</p>
+          <p class="font-Roboto font-medium text-[1.1rem] mt-4">Co-Author(s)</p>
           <div class="flex gap-1 flex-wrap">
             @for(name of authorList; track $index) {
             <p class="bg-gray-300 p-1 rounded-lg">
@@ -121,8 +121,7 @@
       <div class="flex justify-end mt-2">
         <button
           [ngClass]="{
-            'bg-red-600':
-              !this.researchForm.valid || this.authorList.length <= 0
+            'bg-red-600': !this.researchForm.valid
           }"
           class="h-[40px] bg-blue rounded-full px-4 transition-all text-white font-Poppins font-semibold shadow-main hover:scale-[101%] hover:duration-300 duration-300"
           mat-button

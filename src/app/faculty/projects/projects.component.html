@@ -1,56 +1,82 @@
 <div class="p-5 grid gap-3">
+  <div
+    class="bg-white shadow-main bg-opacity-70 w-full rounded-[15px] flex flex-col tablet:flex-row tablet:justify-between items-center px-5"
+  >
+    <h1
+      class="text-blue font-Poppins font-semibold mobileS:text-[1rem] mobileM:text-[1.5rem] tablet:text-[2.5rem] py-2"
+    >
+      Projects
+    </h1>
     <div
-        class="bg-white shadow-main bg-opacity-70 w-full rounded-[15px] flex flex-col tablet:flex-row tablet:justify-between items-center px-5">
-        <h1
-            class="text-blue font-Poppins font-semibold mobileS:text-[1rem] mobileM:text-[1.5rem] tablet:text-[2.5rem] py-2">
-            Projects
-        </h1>
-        <div class="flex flex-row space-x-4 flex-1 w-full items-center justify-center tablet:justify-end">
-            <button
-          (click)="openForm()"
-          class="m-0 bg-gradient-to-r from-blue to-greenBar text-white font-Poppins font-semibold w-[125px] h-[40px] rounded-full shadow-xl hover:scale-[102%] hover:duration-300 duration-300"
+      class="flex flex-row space-x-4 flex-1 w-full items-center justify-center tablet:justify-end"
+    >
+      <button
+        (click)="openForm()"
+        class="m-0 bg-gradient-to-r from-blue to-greenBar text-white font-Poppins font-semibold w-[125px] h-[40px] rounded-full shadow-xl hover:scale-[102%] hover:duration-300 duration-300"
+      >
+        +Add
+      </button>
+    </div>
+  </div>
+
+  <div
+    class="mobileS:columns-1 tablet:columns-2 laptop:columns-3 desktop:columns-4 gap-3 w-full"
+  >
+    <div
+      *ngFor="let proje of proj$ | async; let i = index"
+      class="flex flex-col h-[500px] mb-5 relative shadow-main rounded-[15px] bg-white overflow-hidden"
+    >
+      <div class="h-[90%]">
+        <div class="flex flex-row justify-between items-center p-3">
+          <div class="flex flex-row">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M19 19H5V8H19M16 1V3H8V1H6V3H5C3.89 3 3 3.89 3 5V19C3 19.5304 3.21071 20.0391 3.58579 20.4142C3.96086 20.7893 4.46957 21 5 21H19C19.5304 21 20.0391 20.7893 20.4142 20.4142C20.7893 20.0391 21 19.5304 21 19V5C21 4.46957 20.7893 3.96086 20.4142 3.58579C20.0391 3.21071 19.5304 3 19 3H18V1M17 12H12V17H17V12Z"
+                fill="black"
+              />
+            </svg>
+            @if(proje.is_finished){
+            <p class="font-Poppins font-semibold opacity-70 ml-2">
+              {{ proje.project_end_date }}
+            </p>
+            } @else {
+            <p class="font-Poppins font-semibold opacity-70 ml-2">Ongoing</p>
+            }
+          </div>
+        </div>
+
+        <hr />
+
+        <div
+          class="p-3 flex flex-col min-h-[180px] max-h-[500px] overflow-y-auto"
         >
-          +Add
-        </button>
+          <img
+            class="w-[70px] h-[70px]"
+            [src]="port + proje.project_main_image"
+          />
+          <p
+            class="text-[1.6rem] text-blue font-Poppins font-bold"
+            [ngClass]="{ 'cursor-pointer': proje.project_link }"
+            (click)="proje.project_link ? goToLink(proje.project_link) : null"
+          >
+            {{ proje.project_name }}
+          </p>
+          <p>{{ proje.project_detail }}</p>
         </div>
+      </div>
+      <hr />
+      <div
+        (click)="openProject(proje)"
+        class="rounded-full bg-blue m-2 text-white font-Roboto font-semibold text-[1.2rem] text-center p-1 cursor-pointer duration-300 hover:duration-300 hover:scale-[101%]"
+      >
+        View Project
+      </div>
     </div>
-
-    <div class="mobileS:columns-1 tablet:columns-2 laptop:columns-3 desktop:columns-4 gap-3 w-full">
-        <div>
-            <div 
-                *ngFor="let proje of proj$ | async; let i = index"
-                class="flex flex-col h-[500px] mb-5 relative shadow-main rounded-[15px] bg-white overflow-hidden">
-                <div class="flex flex-row justify-between items-center p-3">
-                    
-                    <div class="flex flex-row">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M19 19H5V8H19M16 1V3H8V1H6V3H5C3.89 3 3 3.89 3 5V19C3 19.5304 3.21071 20.0391 3.58579 20.4142C3.96086 20.7893 4.46957 21 5 21H19C19.5304 21 20.0391 20.7893 20.4142 20.4142C20.7893 20.0391 21 19.5304 21 19V5C21 4.46957 20.7893 3.96086 20.4142 3.58579C20.0391 3.21071 19.5304 3 19 3H18V1M17 12H12V17H17V12Z" fill="black"/>
-                        </svg>
-                        @if(proje.is_finished){
-                            <p class="font-Poppins font-semibold opacity-70 ml-2">{{proje.project_end_date}}</p>
-                        }
-                        @else {
-                            <p class="font-Poppins font-semibold opacity-70 ml-2">Ongoing</p>
-                        }
-                    </div>
-                </div>
-
-                <hr>
-
-                <div class="p-3 flex flex-col min-h-[180px] max-h-[500px] overflow-y-auto">
-                    <img class="w-[70px] h-[70px]" [src]="port + proje.project_main_image">
-                    <p class="text-[1.6rem] text-blue font-Poppins font-bold">{{ proje.project_name}}</p>
-                    <p>{{proje.project_detail}}</p>
-                </div>
-
-                <hr>
-
-                <div (click)="openProject(proje)" class="rounded-full bg-blue m-2 text-white font-Roboto font-semibold text-[1.2rem] text-center p-1 cursor-pointer duration-300 hover:duration-300 hover:scale-[101%]">
-                    View Project
-                </div>
-            </div>
-        </div>
-
-        
-    </div>
+  </div>
 </div>
