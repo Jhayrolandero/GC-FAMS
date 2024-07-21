@@ -4,6 +4,7 @@ import { Evaluation } from "../../services/Interfaces/evaluation";
 import { MilestoneReport } from "../../services/Interfaces/milestoneReport";
 import { Certifications } from "../../services/Interfaces/certifications";
 import { CertificationsFaculty } from "../../services/Interfaces/certifications-faculty";
+import { EducationalAttainment } from "../../services/Interfaces/educational-attainment";
 
 const date = new Date();
 const currentYear: number  = date.getFullYear();
@@ -518,7 +519,7 @@ export const selectExpDocs = (exp_ID : number) => createSelector(
   }
 )
 export const selectIndustryDocs = (experience_ID : number) => createSelector(
-  selectProfileState,
+selectProfileState,
   (state) => {
 
     return state.industrySupportDocs.filter(item => item.experience_ID == experience_ID)
@@ -532,4 +533,69 @@ export const selectClearArray = createSelector(
     return state.clearArray
   }
 )
+
+// For filter educ
+export const filterEducSelector = (startDate: string, endDate: string) => createSelector(selectProfileState,
+  (state) => filterEducDateRange(startDate, endDate, state.educs)
+)
+
+// Filtering Certs
+// export const filterCertSelector = (startDate: string, endDate: string) => createSelector(selectProfileState,
+//   (state) => filterEducDateRange(startDate, endDate, state.certs)
+// )
+
+/*
+======================
+        Educ
+=======================
+*/
+function filterEducDateRange(startDateStr: string, endDateStr: string, educ: EducationalAttainment[]) {
+  const startDate = new Date(startDateStr);
+  const endDate = new Date(endDateStr);
+
+  console.log(startDate)
+  console.log(endDate)
+  if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+    throw new Error('Invalid start or end date');
+    return educ;
+  }
+
+  const filteredEduc = filterEducByDate(educ, startDate, endDate);
+  return filteredEduc;
+}
+
+const filterEducByDate = (educ: EducationalAttainment[], startDate: Date, endDate: Date) => {
+  return educ.filter(x => {
+    const date = new Date(x.year_start);
+    return !isNaN(date.getTime()) && date >= startDate && date <= endDate;
+  });
+};
+
+/*
+======================
+        Certs
+=======================
+*/
+function filterCertDateRange(startDateStr: string, endDateStr: string, certs: CertificationsFaculty[]) {
+  const startDate = new Date(startDateStr);
+  const endDate = new Date(endDateStr);
+
+  console.log(startDate)
+  console.log(endDate)
+  if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+    throw new Error('Invalid start or end date');
+    return certs;
+  }
+
+  const filteredCerts = filterCertByDate(certs, startDate, endDate);
+  return filteredCerts;
+}
+
+
+const filterCertByDate = (certs: CertificationsFaculty[], startDate: Date, endDate: Date) => {
+  return certs.filter(x => {
+    const date = new Date(x.accomplished_date);
+    return !isNaN(date.getTime()) && date >= startDate && date <= endDate;
+  });
+};
 

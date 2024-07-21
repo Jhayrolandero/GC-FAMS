@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Output, inject } from '@angular/core';
+import { Component, EventEmitter, Input, Output, SimpleChanges, inject } from '@angular/core';
 import { mainPort } from '../../../../app.component';
 import { Store } from '@ngrx/store';
 import { selectAllCerts, selectFacultyCerts, selectFilteredFacultyCerts } from '../../../../state/faculty-state/faculty-state.selector';
@@ -22,6 +22,10 @@ export class FacultyCertificationsComponent {
   public isEmpty = false;
 
   @Output() deleteEvent = new EventEmitter<any>();
+
+  @Input('startDate') startDate: string = ''
+  @Input('endDate') endDate: string = ''
+
   router = inject(Router);
   constructor(
     private facultyRequest: FacultyRequestService,
@@ -32,8 +36,11 @@ export class FacultyCertificationsComponent {
 
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
 
-  
+    if(!this.startDate || !this.endDate) return
+    // this.store.select(filterEducSelector(this.startDate, this.endDate)).subscribe(res => this.educsArr = res)
+  }
 
   selectCv(cert: any){
     this.facultyRequest.patchData([2, cert], 'selectCv').subscribe({

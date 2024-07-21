@@ -1,142 +1,109 @@
 @if( isLoading$ | async) {
 <app-loading-screen></app-loading-screen>
 } @else {
-  <!-- @for(commex of commexs$ | async; track commex) {
+<!-- @for(commex of commexs$ | async; track commex) {
     <div>{{commex.commex_details}}</div>
   } -->
 
-    <div class="p-5 flex flex-col gap-3 text-blue">
-      <div
-      class="bg-white shadow-main bg-opacity-70 w-full rounded-[15px] flex flex-col tablet:flex-row tablet:justify-between items-center px-5"
-    >
-      <h1 class="font-Poppins font-semibold text-[2.5rem] py-2">
-        Community Extensions
-      </h1>
-      <div class="flex flex-row space-x-4">
-                <!-- HERE LIES PEAK -->
-        <label
-          for="switch"
-          class="relative w-[100px] w-8/12 max-w-52 py-4 bg-white rounded-[25px] after:py-1 after:absolute after:w-1/2 after:h-full after:rounded-full after:bg-blue after:top-0 after:left-0 after:transition-all after:duration-150 after:content-['Dean'] after:text-center after:font-bold peer-checked:after:left-1/2 peer-checked:after:content-['Faculty']"
-        >
-          <span
-            class="select-none absolute top-0 inset-x-1/2 right-0 text-blue text-center font-bold py-1"
-            >Faculty</span
-          >
-
-          <span
-            class="select-none absolute top-0 inset-x-1/2 left-0 text-blue text-center font-bold py-1"
-            >Dean</span
-          >
-        </label>
-
-        <button
-          (click)="openDialog()" class="bg-gradient-to-r from-blue to-greenBar text-white font-Poppins font-semibold w-[125px] h-[40px] rounded-full shadow-xl hover:scale-[102%] hover:duration-300 duration-300"
-        >
-          +Add
-        </button>
-      </div>
-
-    </div>
-
-    <h1 class="font-Poppins font-semibold text-[1.5rem] py-2">
-      Latest Community Extensions
+<div class="p-5 flex flex-col gap-3 text-blue">
+  <div
+    class="bg-white shadow-main bg-opacity-70 w-full rounded-[15px] flex flex-col tablet:flex-row tablet:justify-between items-center px-5"
+  >
+    <h1 class="font-Poppins font-semibold text-[2.5rem] py-2">
+      Community Extensions
     </h1>
-    <hr class="border-[1.5px] border-slate-400">
-
-
-        <div
-        *ngIf="(latestCommex$ | async) as latestCommex"
-        class="bg-white shadow-main w-full rounded-[15px] flex flex-row overflow-hidden hover:scale-[101%] hover:duration-300 duration-300"
-        >
-        <div *ngIf="latestCommex.commex_header_img != 'http://localhost:8080'" class="bg-red-400 w-[25%] h-[280px]">
-          <img [src]="latestCommex.commex_header_img" class="h-full w-full object-cover" />
-        </div>
-        <div class="p-4 w-[75%] flex flex-col gap-2">
-          <h1 class="font-Poppins font-semibold text-[1.5rem]">
-            {{ latestCommex.commex_title }}
-          </h1>
-          <div class="flex flex-row opacity-70">
-            <img
-              src="../../../assets/faculty-dashboard/BlueVector.png"
-              class="w-[20px] h-full mr-[5px]"
-            />
-            <h2 class="font-Poppins font-semibold text-[1rem]">
-              {{ latestCommex.commex_date }}
-            </h2>
-          </div>
-          <p class="">
-            {{ latestCommex.commex_details }}
-          </p>
-          <!-- <div class="flex flex-col flex-wrap justify-end flex-1 gap-2">
-            <hr class=" text-black text-[0.5rem] bg-black">
-            <div class="flex gap-2">
-                <div
-                (mouseenter)="toggleVisible(commexs[0].commex_ID)"
-                (mouseleave)="toggleHide()"
-                ><i class="fa-solid fa-users"></i><span>{{commexs[0].attendee}}</span></div>
-              <div class="relative">
-                <app-tooltip
-                [attendees]="attendee"
-                [isVisible]="isVisible"
-                [id]="commexs[0].commex_ID"
-                [activeID]="activeID"
-                ></app-tooltip>
-              </div>
-            </div>
-          </div> -->
-        </div>
-      </div>
-
-    <!-- Other -->
-    <h1 class="font-Poppins font-semibold text-[1.5rem] py-2">
-      Other Community Extensions
-    </h1>
-    <hr class="border-[1.5px] border-slate-400">
-
-    <app-other-commex>
-      <div
-        *ngFor="let commex of commexs$ | async; let i = index"
+    <div class="flex flex-row space-x-4">
+      <!-- HERE LIES PEAK -->
+      <label
+        for="switch"
+        class="relative w-[100px] w-8/12 max-w-52 py-4 bg-white rounded-[25px] after:py-1 after:absolute after:w-1/2 after:h-full after:rounded-full after:bg-blue after:top-0 after:left-0 after:transition-all after:duration-150 after:content-['Dean'] after:text-center after:font-bold peer-checked:after:left-1/2 peer-checked:after:content-['Faculty']"
       >
-        <div *ngIf="i != 0" class="bg-white rounded-xl shadow-main flex flex-col gap-2 duration-300 hover:scale-[102%] hover:shadow-xl hover:duration-300 break-inside-avoid mb-2 overflow-hidden">
-          <div class="bg-red-300">
-            <img [src]="commex.commex_header_img" alt="" />
-          </div>
-          <div class="p-3">
-            <h4 class="text-xl font-bold">{{ commex.commex_title }}</h4>
-            <img
-              src="../../../assets/faculty-dashboard/BlueVector.png"
-              class="w-[20px] h-[20px] mr-[5px] inline-block"
-            />
-            <span>{{ commex.commex_date }}</span>
-            <p>
-              {{ commex.commex_details }}
-            </p>
-            <!-- <div class="flex flex-col flex-wrap justify-end flex-1 gap-2">
-              <hr class=" text-black text-[0.5rem] bg-black">
-              <div class="flex gap-2"
-                  (mouseenter)="toggleVisible(commex.commex_ID)"
-                  (mouseleave)="toggleHide()" >
-                <div class="flex flex-row">
-                  <span><i class="fa-solid fa-users"></i></span><p>{{commex.attendee}}</p>
-                </div>
-                <div class="relative">
-                  <app-tooltip
-                  [attendees]="attendee"
-                  [isVisible]="isVisible"
-                  [id]="commex.commex_ID"
-                  [activeID]="activeID"
-                  ></app-tooltip>
-                </div>
-              </div>
-            </div> -->
-          </div>
-          <!-- <button class="bg-blue text-white font-bold p-2 rounded-main">
-            Read More
-          </button> -->
-        </div>
-      </div>
-    </app-other-commex>
+        <span
+          class="select-none absolute top-0 inset-x-1/2 right-0 text-blue text-center font-bold py-1"
+          >Faculty</span
+        >
+
+        <span
+          class="select-none absolute top-0 inset-x-1/2 left-0 text-blue text-center font-bold py-1"
+          >Dean</span
+        >
+      </label>
+
+      <button
+        (click)="openDialog()"
+        class="bg-gradient-to-r from-blue to-greenBar text-white font-Poppins font-semibold w-[125px] h-[40px] rounded-full shadow-xl hover:scale-[102%] hover:duration-300 duration-300"
+      >
+        +Add
+      </button>
+    </div>
   </div>
 
+  <h1 class="font-Poppins font-semibold text-[1.5rem] py-2">
+    Latest Community Extensions
+  </h1>
+  <hr class="border-[1.5px] border-slate-400" />
+
+  <div
+    *ngIf="latestCommex$ | async as latestCommex"
+    class="bg-white shadow-main w-full rounded-[15px] flex flex-row overflow-hidden hover:scale-[101%] hover:duration-300 duration-300"
+  >
+    <div
+      *ngIf="latestCommex.commex_header_img != 'http://localhost:8080'"
+      class="bg-red-400 w-[25%] h-[280px]"
+    >
+      <img
+        [src]="latestCommex.commex_header_img"
+        class="h-full w-full object-cover"
+      />
+    </div>
+    <div class="p-4 w-[75%] flex flex-col gap-2">
+      <h1 class="font-Poppins font-semibold text-[1.5rem]">
+        {{ latestCommex.commex_title }}
+      </h1>
+      <div class="flex flex-row opacity-70">
+        <img
+          src="../../../assets/faculty-dashboard/BlueVector.png"
+          class="w-[20px] h-full mr-[5px]"
+        />
+        <h2 class="font-Poppins font-semibold text-[1rem]">
+          {{ latestCommex.commex_date }}
+        </h2>
+      </div>
+      <p class="">
+        {{ latestCommex.commex_details }}
+      </p>
+    </div>
+  </div>
+
+  <!-- Other -->
+  <h1 class="font-Poppins font-semibold text-[1.5rem] py-2">
+    Other Community Extensions
+  </h1>
+  <hr class="border-[1.5px] border-slate-400" />
+
+  <app-other-commex>
+    <div *ngFor="let commex of commexs$ | async; let i = index">
+      <div
+        *ngIf="i != 0"
+        class="bg-white rounded-xl shadow-main flex flex-col gap-2 duration-300 hover:scale-[102%] hover:shadow-xl hover:duration-300 break-inside-avoid mb-2 overflow-hidden"
+      >
+        <div class="bg-red-300">
+          <img [src]="commex.commex_header_img" alt="" />
+        </div>
+        <div class="p-3">
+          <h4 class="text-xl font-bold">{{ commex.commex_title }}</h4>
+          <img
+            src="../../../assets/faculty-dashboard/BlueVector.png"
+            class="w-[20px] h-[20px] mr-[5px] inline-block"
+          />
+          <span>{{ commex.commex_date }}</span>
+          <p>
+            {{ commex.commex_details }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </app-other-commex>
+</div>
 
 }

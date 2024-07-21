@@ -2,6 +2,7 @@ import { createSelector } from "@ngrx/store";
 import { CommexState } from "../../services/Interfaces/commexState";
 import { CommunityExtension } from "../../services/Interfaces/community-extension";
 import { mainPort } from "../../app.component";
+import { EducationalAttainment } from "../../services/Interfaces/educational-attainment";
 
 
 interface AppState {
@@ -58,6 +59,11 @@ export const filterCollegeCommexSelector = (startDate: string, endDate: string) 
   (state) => parsedCommex(filterDateRange(startDate, endDate, state.commexs), mainPort)
 )
 
+// For filter educ
+export const filterEducSelector = (startDate: string, endDate: string) => createSelector(selectCollegeCommexFeature,
+  (state) => parsedCommex(filterDateRange(startDate, endDate, state.commexs), mainPort)
+)
+
 export const latestCollegeCommexSelector = createSelector(selectCollegeCommexFeature,
   (state) => latestCommex(state.commexs, mainPort)
 )
@@ -111,6 +117,8 @@ function filterDateRange(startDateStr: string, endDateStr: string, commexs: Comm
   const startDate = new Date(startDateStr);
   const endDate = new Date(endDateStr);
 
+  console.log(startDate)
+  console.log(endDate)
   if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
     // throw new Error('Invalid start or end date');
     return commexs;
@@ -120,6 +128,27 @@ function filterDateRange(startDateStr: string, endDateStr: string, commexs: Comm
   const filteredCommexs = filterCommexByDate(commexs, startDate, endDate);
   return filteredCommexs;
 }
+
+function filterEducDateRange(startDateStr: string, endDateStr: string, educ: EducationalAttainment[]) {
+  const startDate = new Date(startDateStr);
+  const endDate = new Date(endDateStr);
+
+  if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+    // throw new Error('Invalid start or end date');
+    return educ;
+  }
+
+  const filteredEduc = filterEducByDate(educ, startDate, endDate);
+  return filteredEduc;
+}
+
+const filterEducByDate = (educ: EducationalAttainment[], startDate: Date, endDate: Date) => {
+  return educ.filter(x => {
+    const date = new Date(x.year_start);
+    return !isNaN(date.getTime()) && date >= startDate && date <= endDate;
+  });
+};
+
 
 function getCommexDetail (commex_ID: number, commex: CommunityExtension[]) {
   console.log("Hello there")

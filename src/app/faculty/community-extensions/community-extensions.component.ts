@@ -110,16 +110,6 @@ export class CommexFormComponent {
     this.postLoading$ = this.commexFacultyStore.pipe(select(CommexsSelector.postLoadingSelector))
   }
 
-  // fetchCommexDetails() : Subscription {
-  //   return this.commexFacultyStore.select(commexSelectorOne(this.data.commex_ID)).subscribe( res => {
-  //     this.commexForm.patchValue({
-  //       commex_title: res.commex_title,
-  //       commex_details: res.commex_details,
-  //       commex_date: res.commex_date
-  //     })
-  //   }
-  //   )
-  // }
 
 
   editCommexForm = new FormGroup({
@@ -462,6 +452,8 @@ export class CommunityExtensionsComponent {
         this.commexs$ = this.commexCollegeStore.pipe(select(CommexsSelector.filterCollegeCommexSelector(this.startDate, this.endDate)))
         break;
       case "faculty":
+        console.log(this.startDate)
+        console.log(this.endDate)
         this.commexs$ = this.commexFacultyStore.pipe(select(CommexsSelector.filterCommexSelector(this.startDate, this.endDate)))
         break;
     }
