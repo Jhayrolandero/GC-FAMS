@@ -3,5 +3,6 @@ export interface ExpertiseFaculty {
     faculty_ID: number,
     expertise_ID: number,
     expertise_name: string,
-    isSelected: boolean
+    isSelected: boolean,
+    dateAchieved: Date
 }

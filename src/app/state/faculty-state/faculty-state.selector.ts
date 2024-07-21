@@ -4,6 +4,9 @@ import { Evaluation } from "../../services/Interfaces/evaluation";
 import { MilestoneReport } from "../../services/Interfaces/milestoneReport";
 import { Certifications } from "../../services/Interfaces/certifications";
 import { CertificationsFaculty } from "../../services/Interfaces/certifications-faculty";
+import { EducationalAttainment } from "../../services/Interfaces/educational-attainment";
+import { IndustryExperience } from "../../services/Interfaces/industry-experience";
+import { ExpertiseFaculty } from "../../services/Interfaces/expertise-faculty";
 
 const date = new Date();
 const currentYear: number  = date.getFullYear();
@@ -342,7 +345,9 @@ export const selectFacultyResearchAuthor = createSelector(
 
 export const selectFacultyExpertise = createSelector(
   selectProfileState,
-  (state: ProfileState) => state.expertises[0]
+  (state: ProfileState) => {
+    console.log(state.expertises)
+    return state.expertises[0]}
 );
 
 export const selectAnExpertise = (expert_ID: number) => createSelector(
@@ -518,7 +523,7 @@ export const selectExpDocs = (exp_ID : number) => createSelector(
   }
 )
 export const selectIndustryDocs = (experience_ID : number) => createSelector(
-  selectProfileState,
+selectProfileState,
   (state) => {
 
     return state.industrySupportDocs.filter(item => item.experience_ID == experience_ID)
@@ -533,3 +538,133 @@ export const selectClearArray = createSelector(
   }
 )
 
+// For filter educ
+export const filterEducSelector = (startDate: string, endDate: string) => createSelector(selectProfileState,
+  (state) => filterEducDateRange(startDate, endDate, state.educs)
+)
+
+// Filtering Certs
+// export const filterCertSelector = (startDate: string, endDate: string) => createSelector(selectProfileState,
+//   (state) => filterEducDateRange(startDate, endDate, state.certs)
+// )
+
+// Filter Industry
+export const filterIndustrySelector = (startDate: string, endDate: string) => createSelector(selectProfileState,
+  (state) => filterIndustryDateRange(startDate, endDate, state.exps)
+)
+
+// Filter Expertise
+export const filterExpertiseSelector = (startDate: string, endDate: string) => createSelector(selectProfileState,
+  (state) => filterExpertiseDateRange(startDate, endDate, state.expertises[0])
+)
+
+
+/*
+======================
+        Educ
+=======================
+*/
+function filterEducDateRange(startDateStr: string, endDateStr: string, educ: EducationalAttainment[]) {
+  const startDate = new Date(startDateStr);
+  const endDate = new Date(endDateStr);
+
+  console.log(startDate)
+  console.log(endDate)
+  if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+    throw new Error('Invalid start or end date');
+    return educ;
+  }
+
+  const filteredEduc = filterEducByDate(educ, startDate, endDate);
+  return filteredEduc;
+}
+
+const filterEducByDate = (educ: EducationalAttainment[], startDate: Date, endDate: Date) => {
+  return educ.filter(x => {
+    const date = new Date(x.year_start);
+    return !isNaN(date.getTime()) && date >= startDate && date <= endDate;
+  });
+};
+
+/*
+======================
+        Certs
+=======================
+*/
+function filterCertDateRange(startDateStr: string, endDateStr: string, certs: CertificationsFaculty[]) {
+  const startDate = new Date(startDateStr);
+  const endDate = new Date(endDateStr);
+
+  console.log(startDate)
+  console.log(endDate)
+  if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+    throw new Error('Invalid start or end date');
+    return certs;
+  }
+
+  const filteredCerts = filterCertByDate(certs, startDate, endDate);
+  return filteredCerts;
+}
+
+
+const filterCertByDate = (certs: CertificationsFaculty[], startDate: Date, endDate: Date) => {
+  return certs.filter(x => {
+    const date = new Date(x.accomplished_date);
+    return !isNaN(date.getTime()) && date >= startDate && date <= endDate;
+  });
+};
+
+/*
+======================
+        Industry
+=======================
+*/
+function filterIndustryDateRange(startDateStr: string, endDateStr: string, industry: IndustryExperience[]) {
+  const startDate = new Date(startDateStr);
+  const endDate = new Date(endDateStr);
+
+  console.log(startDate)
+  console.log(endDate)
+  if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+    throw new Error('Invalid start or end date');
+    return industry;
+  }
+
+  const filteredIndustry = filterIndustryByDate(industry, startDate, endDate);
+  return filteredIndustry;
+}
+
+const filterIndustryByDate = (industry: IndustryExperience[], startDate: Date, endDate: Date) => {
+  return industry.filter(x => {
+    const date = new Date(x.experience_from);
+    return !isNaN(date.getTime()) && date >= startDate && date <= endDate;
+  });
+};
+
+/*
+======================
+        Industry
+=======================
+*/
+
+function filterExpertiseDateRange(startDateStr: string, endDateStr: string, expertise: ExpertiseFaculty[]) {
+  const startDate = new Date(startDateStr);
+  const endDate = new Date(endDateStr);
+
+  console.log(startDate)
+  console.log(endDate)
+  if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+    throw new Error('Invalid start or end date');
+    return expertise;
+  }
+
+  const filteredExpertise = filterExpertiseByDate(expertise, startDate, endDate);
+  return filteredExpertise;
+}
+
+const filterExpertiseByDate = (expertise: ExpertiseFaculty[], startDate: Date, endDate: Date) => {
+  return expertise.filter(x => {
+    const date = new Date(x.dateAchieved);
+    return !isNaN(date.getTime()) && date >= startDate && date <= endDate;
+  });
+};

@@ -1,13 +1,14 @@
-import { Component, EventEmitter, Output, inject } from '@angular/core';
+import { Component, EventEmitter, Input, Output, SimpleChanges, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Expertise } from '../../../../services/Interfaces/expertise';
 import { FacultyRequestService } from '../../../../services/faculty/faculty-request.service';
 import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
-import { selectFacultyExpertise } from '../../../../state/faculty-state/faculty-state.selector';
+import { filterExpertiseSelector, selectFacultyExpertise } from '../../../../state/faculty-state/faculty-state.selector';
 import { loadExpertise } from '../../../../state/faculty-state/faculty-state.actions';
 import { MessageService } from '../../../../services/message.service';
 import { Router } from '@angular/router';
+import { ExpertiseFaculty } from '../../../../services/Interfaces/expertise-faculty';
 
 @Component({
   selector: 'app-faculty-expertise',
@@ -21,14 +22,24 @@ export class FacultyExpertiseComponent {
   @Output() deleteEvent = new EventEmitter<any>();
 
   public expertise$ = this.store.select(selectFacultyExpertise);
+  expertiseArr: ExpertiseFaculty[] = []
   router = inject(Router);
 
+  @Input('startDate') startDate: string = ''
+  @Input('endDate') endDate: string = ''
 
   constructor(
     private facultyRequest: FacultyRequestService,
     public dialog: MatDialog,
     private messageService: MessageService,
     private store: Store){}
+
+  ngOnChanges(changes: SimpleChanges): void {
+
+    if(!this.startDate || !this.endDate) return
+    this.store.select(filterExpertiseSelector(this.startDate, this.endDate)).subscribe(res => this.expertiseArr = res)
+  }
+
 
   selectCv(educ: any){
     this.facultyRequest.patchData([5, educ], 'selectCv').subscribe({

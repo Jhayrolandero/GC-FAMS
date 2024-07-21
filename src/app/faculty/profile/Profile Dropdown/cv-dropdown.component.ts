@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FacultyCertificationsComponent } from '../Profile Components/faculty-certifications/faculty-certifications.component';
 import { FacultyEducationComponent } from '../Profile Components/faculty-education/faculty-education.component';
@@ -14,21 +14,38 @@ import { loadCert, loadEduc, loadExp, loadExpertise, loadProj } from '../../../s
 import { IndustryExperienceFormComponent } from '../Profile Forms/industry-experience-form/industry-experience-form.component';
 import { ProjectsFormComponent } from '../Profile Forms/projects-form/projects-form.component';
 import { ExpertiseFormComponent } from '../Profile Forms/expertise-form/expertise-form.component';
+import { DateFilterComponent } from '../Profile Components/date-filter/date-filter.component';
+import { Dialog, DIALOG_DATA } from '@angular/cdk/dialog';
 
+export interface DialogData {
+  startDate: string;
+  endDate: string;
+}
 
 @Component({
     selector: 'app-cv-dropdown',
     standalone: true,
     templateUrl: './cv-dropdown.component.html',
     styleUrl: './cv-dropdown.component.css',
-    imports: [CommonModule, FacultyCertificationsComponent, FacultyEducationComponent, FacultyExperienceComponent, FacultyProjectsComponent, FacultyExpertiseComponent]
+    imports: [
+      CommonModule,
+      FacultyCertificationsComponent,
+      FacultyEducationComponent,
+      FacultyExperienceComponent,
+      FacultyProjectsComponent,
+      FacultyExpertiseComponent,
+      DateFilterComponent
+    ]
 })
 export class CvDropdownComponent {
   //Name of dropdown
   @Input() name?: string;
   //Rotated state of icon
   rotated = true;
+  startDate: string = '';
+  endDate: string = '';
 
+  type!: string
   constructor(
     public dialog: MatDialog,
     public store: Store){}
@@ -62,7 +79,7 @@ export class CvDropdownComponent {
         case 4:
           this.store.dispatch(loadExpertise());
           break;
-      
+
         default:
           break;
       }
@@ -103,5 +120,27 @@ export class CvDropdownComponent {
       default:
         break;
     }
+  }
+
+  openFilter(type: string): void {
+    console.log(type)
+    const dialogRef = this.dialog.open(DateFilterComponent);
+
+    this.type = type
+    dialogRef.afterClosed().subscribe((result) => {
+      if(result === undefined) {
+        this.startDate = ''
+        this.endDate = ''
+        return
+      }
+
+      if (result.startDate && result.endDate) {
+        this.startDate = result.startDate
+        this.endDate = result.endDate
+      } else {
+        this.startDate = ''
+        this.endDate = ''
+      }
+    });
   }
 }

@@ -24,14 +24,16 @@ export class ExpertiseFormComponent {
 
   specForm = new FormGroup({
     expertise_ID: new FormControl(''),
+    dateAchieved: new FormControl(new Date())
   })
 
   specNewForm = new FormGroup({
     expertise_name: new FormControl(''),
+    dateAchieved: new FormControl(new Date())
   })
 
   constructor(
-    public dialogRef: MatDialogRef<ExpertiseFormComponent>, 
+    public dialogRef: MatDialogRef<ExpertiseFormComponent>,
     private facultyRequest: FacultyRequestService,
     private store: Store,
     @Inject(MAT_DIALOG_DATA) public data: any){}
@@ -56,6 +58,7 @@ export class ExpertiseFormComponent {
   submitForm(type: string){
     console.log(this.specNewForm);
     if(type == "addNew"){
+      if(!this.specNewForm.valid) return
       this.facultyRequest.postData(this.specNewForm, 'addNewSpec').subscribe({
         next: (next: any) => {console.log(next);},
         error: (error) => {console.log(error)},
@@ -67,6 +70,7 @@ export class ExpertiseFormComponent {
     }
     else if ( type == 'addExist'){
       console.log(this.specForm);
+      if(!this.specForm.valid) return
       this.facultyRequest.postData(this.specForm, 'addSpec').subscribe({
         next: (next: any) => {console.log(next);},
         error: (error) => {console.log(error)},
