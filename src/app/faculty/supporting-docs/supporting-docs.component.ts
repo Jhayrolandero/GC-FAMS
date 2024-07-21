@@ -246,9 +246,10 @@ router = inject(Router);
   }
 
   openFile(path: any, name: any) {
+    const tempPath = path.replace("/home/u961714584/domains/gcfams.com/public_html", "");
     this.dialog.open(SupportingDocsDialogueComponent, {
       data: {
-        path: path,
+        path: tempPath,
         name: name
       }
     })

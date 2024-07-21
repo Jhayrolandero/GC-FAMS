@@ -41,7 +41,20 @@ export class ResearchFormComponent {
     private messageService: MessageService,
     private facultyService: FacultyRequestService,
     private profileStore: Store<{ profile: ProfileState }>,
-  ){  }
+  ){ 
+    this.researchForm.get('ongoing')?.valueChanges.subscribe(v => {
+      console.log(v)
+      if (v) {
+        this.researchForm.get('publish_date')?.reset()
+        this.researchForm.get('publish_date')?.disable()
+        this.researchForm.get('research_link')?.reset()
+        this.researchForm.get('research_link')?.disable()
+      } else {
+        this.researchForm.get('publish_date')?.enable()
+        this.researchForm.get('research_link')?.enable()
+      }
+    })
+   }
 
   ngOnDestroy() {
     this.profileSub.unsubscribe()
@@ -52,8 +65,9 @@ export class ResearchFormComponent {
 
   researchForm = new FormGroup({
     research_name: new FormControl('', [Validators.required]),
-    publish_date: new FormControl('', [Validators.required]),
-    research_link: new FormControl('', [Validators.required]),
+    publish_date: new FormControl(),
+    ongoing: new FormControl(),
+    research_link: new FormControl(),
     research_authors: new FormControl<string[]>([]),
   })
 
@@ -70,6 +84,7 @@ export class ResearchFormComponent {
   }
 
   submitForm(){
+    console.log(this.researchForm);
     if(!this.researchForm.valid) return
 
     this.profileSub = this.profile$.subscribe({
@@ -81,11 +96,27 @@ export class ResearchFormComponent {
                     ' ' +
                     (res!.ext_name ? res!.ext_name : '')}`)
 
+                    console.log("Is Finished: ", !this.researchForm.get('ongoing')?.value);
+
+                    if(this.researchForm.get('ongoing')?.value){
+                      console.log("THIS SHIT IS ONGOING SO IM REMOVING DATE AND LINK")
+                      this.researchForm.patchValue({
+                        publish_date: '',
+                        research_link: ''
+                      })
+                    }
+
+                    if(this.researchForm.get('ongoing')?.value === null){
+                      this.researchForm.patchValue({
+                        ongoing: false,
+                      })
+                    }
+
                     this.researchForm.patchValue({
                       research_authors: this.authorList
                     })
 
-                    this.messageService.sendMessage("Adding Project...", 0)
+                    this.messageService.sendMessage("Adding Research...", 0)
                     console.log(this.researchForm);
 
                     this.facultyRequest.postData(this.researchForm, 'addResearch').subscribe({

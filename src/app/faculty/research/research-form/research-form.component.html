@@ -42,16 +42,31 @@
             class="w-full border-2 px-2 font-Roboto font-regular text-[1.1rem] rounded-[5px] text-black py-1"
           />
 
-          <p class="font-Roboto font-medium text-[1.1rem] mt-4">
-            Published Date
-          </p>
-          <input
-            type="date"
-            placeholder=""
-            id="publish_date"
-            formControlName="publish_date"
-            class="w-full border-2 px-2 font-Roboto font-regular text-[1.1rem] rounded-[5px] text-black py-1"
-          />
+          <div class="flex flex-row items-center">
+            <div class="w-[100px] flex flex-col">
+              <p class="font-Roboto font-medium text-[1.1rem]">Ongoing</p>
+              <input
+                type="checkbox"
+                placeholder=""
+                id="ongoing"
+                formControlName="ongoing"
+                class="w-[20px] h-[20px]"
+              />
+            </div>
+
+            <div class="flex-1">
+              <p class="font-Roboto font-medium text-[1.1rem] mt-4">
+                Published Date
+              </p>
+              <input
+                type="date"
+                placeholder=""
+                id="publish_date"
+                formControlName="publish_date"
+                class="w-full border-2 px-2 font-Roboto font-regular text-[1.1rem] rounded-[5px] text-black py-1"
+              />
+            </div>
+          </div>
 
           <p class="font-Roboto font-medium text-[1.1rem] mt-4">
             Research Link

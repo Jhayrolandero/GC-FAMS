@@ -1,6 +1,7 @@
 export interface Research {
     research_ID: number,
     research_name: string,
+    ongoing: boolean,
     publish_date: Date,
     research_link: string,
 }
