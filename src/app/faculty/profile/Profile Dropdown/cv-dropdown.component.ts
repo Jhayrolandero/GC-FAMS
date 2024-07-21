@@ -128,7 +128,12 @@ export class CvDropdownComponent {
 
     this.type = type
     dialogRef.afterClosed().subscribe((result) => {
-      if(result === undefined) return
+      if(result === undefined) {
+        this.startDate = ''
+        this.endDate = ''
+        return
+      }
+
       if (result.startDate && result.endDate) {
         this.startDate = result.startDate
         this.endDate = result.endDate

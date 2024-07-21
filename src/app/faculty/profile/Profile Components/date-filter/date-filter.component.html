@@ -30,7 +30,7 @@
     </svg>
   </div>
 
-  <div class="flex flex-col">
+  <div class="flex flex-col px-4 pt-4">
     <mat-form-field>
       <mat-label>Enter a date range</mat-label>
       <mat-date-range-input [rangePicker]="picker">
@@ -53,7 +53,8 @@
       ></mat-datepicker-toggle>
       <mat-date-range-picker #picker></mat-date-range-picker>
     </mat-form-field>
-    <mat-dialog-actions>
+    <mat-dialog-actions class="flex justify-end">
+      <button mat-button (click)="onNoClick()">Reset</button>
       <button mat-button (click)="apply()">Apply</button>
     </mat-dialog-actions>
   </div>

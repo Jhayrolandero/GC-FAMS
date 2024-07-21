@@ -25,6 +25,10 @@
         class="text-white mobileS:text-[1rem] tablet:text-[1.5rem] font-Poppins font-semibold ml-2 select-none"
       >
         {{ name }}
+        <span class="text-[1rem]">
+          {{ startDate ? "(" + (startDate | date : "YYYY") + " - " : "" }}
+          {{ endDate ? (endDate | date : "YYYY") + ")" : "" }}
+        </span>
         <i class="fa-regular fa-filter-list" (click)="openFilter(name!)"></i>
       </p>
     </div>
@@ -88,6 +92,8 @@
         } -->
   @case("Expertise"){
   <app-faculty-expertise
+    [startDate]="type === 'Expertise' ? startDate : ''"
+    [endDate]="type === 'Expertise' ? endDate : ''"
     (deleteEvent)="deleteDialog($event)"
     (editEvent)="openDialog('Expertise', $event)"
     *ngIf="rotated"
