@@ -5,6 +5,7 @@ import { MilestoneReport } from "../../services/Interfaces/milestoneReport";
 import { Certifications } from "../../services/Interfaces/certifications";
 import { CertificationsFaculty } from "../../services/Interfaces/certifications-faculty";
 import { EducationalAttainment } from "../../services/Interfaces/educational-attainment";
+import { IndustryExperience } from "../../services/Interfaces/industry-experience";
 
 const date = new Date();
 const currentYear: number  = date.getFullYear();
@@ -544,6 +545,11 @@ export const filterEducSelector = (startDate: string, endDate: string) => create
 //   (state) => filterEducDateRange(startDate, endDate, state.certs)
 // )
 
+// Filter Industry
+export const filterIndustrySelector = (startDate: string, endDate: string) => createSelector(selectProfileState,
+  (state) => filterIndustryDateRange(startDate, endDate, state.exps)
+)
+
 /*
 ======================
         Educ
@@ -599,3 +605,29 @@ const filterCertByDate = (certs: CertificationsFaculty[], startDate: Date, endDa
   });
 };
 
+/*
+======================
+        Industry
+=======================
+*/
+function filterIndustryDateRange(startDateStr: string, endDateStr: string, industry: IndustryExperience[]) {
+  const startDate = new Date(startDateStr);
+  const endDate = new Date(endDateStr);
+
+  console.log(startDate)
+  console.log(endDate)
+  if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+    throw new Error('Invalid start or end date');
+    return industry;
+  }
+
+  const filteredIndustry = filterIndustryByDate(industry, startDate, endDate);
+  return filteredIndustry;
+}
+
+const filterIndustryByDate = (industry: IndustryExperience[], startDate: Date, endDate: Date) => {
+  return industry.filter(x => {
+    const date = new Date(x.experience_from);
+    return !isNaN(date.getTime()) && date >= startDate && date <= endDate;
+  });
+};
