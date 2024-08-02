@@ -544,9 +544,9 @@ export const filterEducSelector = (startDate: string, endDate: string) => create
 )
 
 // Filtering Certs
-// export const filterCertSelector = (startDate: string, endDate: string) => createSelector(selectProfileState,
-//   (state) => filterEducDateRange(startDate, endDate, state.certs)
-// )
+export const filterCertSelector = (startDate: string, endDate: string) => createSelector(selectProfileState,
+  (state) => filterCertDateRange(startDate, endDate, state.certs[0])
+)
 
 // Filter Industry
 export const filterIndustrySelector = (startDate: string, endDate: string) => createSelector(selectProfileState,
