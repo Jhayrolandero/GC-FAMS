@@ -8,10 +8,11 @@ import { MessageService } from '../../../../services/message.service';
 import { MatDialog } from '@angular/material/dialog';
 import { loadCert } from '../../../../state/faculty-state/faculty-state.actions';
 import { Router } from '@angular/router';
+import { ViewCertsComponent } from '../../../../components/view-certs/view-certs.component';
 @Component({
   selector: 'app-faculty-certifications',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ViewCertsComponent],
   templateUrl: './faculty-certifications.component.html',
   styleUrl: './faculty-certifications.component.css'
 })
@@ -36,6 +37,25 @@ export class FacultyCertificationsComponent {
 
   }
 
+
+  click(imgURL : string) {
+
+    this.dialog.open(ViewCertsComponent, {
+      data: {imgURL}
+    })
+    
+      // const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
+      //   data: {name: this.name(), animal: this.animal()},
+      // });
+  
+      // dialogRef.afterClosed().subscribe(result => {
+      //   console.log('The dialog was closed');
+      //   if (result !== undefined) {
+      //     this.animal.set(result);
+      //   }
+      // });
+    
+    }
   ngOnChanges(changes: SimpleChanges): void {
 
     if(!this.startDate || !this.endDate) return
