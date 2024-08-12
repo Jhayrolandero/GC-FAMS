@@ -137,6 +137,7 @@ export class CvDropdownComponent {
       if (result.startDate && result.endDate) {
         this.startDate = result.startDate
         this.endDate = result.endDate
+        console.log(this.startDate, this.endDate);
       } else {
         this.startDate = ''
         this.endDate = ''

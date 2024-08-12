@@ -2,12 +2,13 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output, SimpleChanges, inject } from '@angular/core';
 import { mainPort } from '../../../../app.component';
 import { Store } from '@ngrx/store';
-import { selectAllCerts, selectFacultyCerts, selectFilteredFacultyCerts } from '../../../../state/faculty-state/faculty-state.selector';
+import { selectAllCerts, selectFacultyCerts, selectFilteredFacultyCerts, filterCertSelector } from '../../../../state/faculty-state/faculty-state.selector';
 import { FacultyRequestService } from '../../../../services/faculty/faculty-request.service';
 import { MessageService } from '../../../../services/message.service';
 import { MatDialog } from '@angular/material/dialog';
 import { loadCert } from '../../../../state/faculty-state/faculty-state.actions';
 import { Router } from '@angular/router';
+import { CertificationsFaculty } from '../../../../services/Interfaces/certifications-faculty';
 import { ViewCertsComponent } from '../../../../components/view-certs/view-certs.component';
 @Component({
   selector: 'app-faculty-certifications',
@@ -26,7 +27,8 @@ export class FacultyCertificationsComponent {
 
   @Input('startDate') startDate: string = ''
   @Input('endDate') endDate: string = ''
-
+  certsArr: CertificationsFaculty[] = []
+  parsedCerts: CertificationsFaculty[][] = []
   router = inject(Router);
   constructor(
     private facultyRequest: FacultyRequestService,
@@ -58,8 +60,57 @@ export class FacultyCertificationsComponent {
     }
   ngOnChanges(changes: SimpleChanges): void {
 
-    if(!this.startDate || !this.endDate) return
-    // this.store.select(filterEducSelector(this.startDate, this.endDate)).subscribe(res => this.educsArr = res)
+    // if(this.startDate === '' || this.endDate === '') return
+    this.store.select(filterCertSelector(this.startDate, this.endDate)).subscribe(res => this.certsArr = res as CertificationsFaculty[])
+    this.parsedCerts = this.categFilter(this.certsArr);
+  }
+
+  categFilter(certsArr: CertificationsFaculty[]): CertificationsFaculty[][] {
+
+    let speakership: CertificationsFaculty[] = [];
+    let completion: CertificationsFaculty[] = [];
+    let achievement: CertificationsFaculty[] = [];
+    let appreciation: CertificationsFaculty[] = [];
+    let recognition: CertificationsFaculty[] = [];
+    let participation: CertificationsFaculty[] = [];
+
+
+    certsArr.forEach(cert => {
+      // console.log(cert);
+      switch (cert.cert_type) {
+        case 'Speakership':
+          speakership.push(cert);
+          break;
+
+        case 'Completion':
+          completion.push(cert);
+          break;
+
+
+        case 'Achievement':
+          achievement.push(cert);
+          break;
+
+        case 'Appreciation':
+          appreciation.push(cert);
+          break;
+
+        case 'Recognition':
+          recognition.push(cert);
+          break;
+
+        case 'Participation':
+          participation.push(cert);
+          break;
+
+
+        default:
+          break;
+      }
+    })
+    let ret: CertificationsFaculty[][] = [speakership, completion, achievement, appreciation, recognition, participation];
+    return ret;
+
   }
 
   selectCv(cert: any){
@@ -84,4 +135,8 @@ export class FacultyCertificationsComponent {
 }
 
 
+
+function filterCertDateRange(startDate: string, endDate: string): (state: object) => unknown {
+  throw new Error('Function not implemented.');
+}
 

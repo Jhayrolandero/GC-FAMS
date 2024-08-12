@@ -1,8 +1,8 @@
 @if(startDate && endDate) {
-<div *ngIf="existCertifications$ | async as certCheck">
-  @if (certCheck[0].length === 0 && certCheck[1].length === 0 &&
-  certCheck[2].length === 0 && certCheck[3].length === 0 && certCheck[4].length
-  === 0 && certCheck[5].length === 0) {
+<div>
+  @if (parsedCerts[0].length === 0 && parsedCerts[1].length === 0 &&
+  parsedCerts[2].length === 0 && parsedCerts[3].length === 0 && parsedCerts[4].length
+  === 0 && parsedCerts[5].length === 0) {
   <p class="font-Poppins font-semibold text-[2rem] text-blue text-center m-10">
     No existing records!
   </p>
@@ -10,7 +10,7 @@
 </div>
 
 <div
-  *ngFor="let certGroups of existCertifications$ | async; let i = index"
+  *ngFor="let certGroups of parsedCerts; let i = index"
   class="px-5"
 >
   @switch (i) { @case (0) { @if(certGroups.length > 0){

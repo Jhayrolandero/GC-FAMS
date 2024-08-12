@@ -75,7 +75,10 @@
   ></app-faculty-education>
   } @case("Certifications"){
   <app-faculty-certifications
+    [startDate]="type === 'Certifications' ? startDate : ''"
+    [endDate]="type === 'Certifications' ? endDate : ''"
     (deleteEvent)="deleteDialog($event)"
+    (editEvent)="openDialog('Certifications', $event)"
     *ngIf="rotated"
   ></app-faculty-certifications>
   } @case("Industry Experience"){
