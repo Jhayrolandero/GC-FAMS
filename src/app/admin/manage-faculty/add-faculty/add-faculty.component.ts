@@ -45,6 +45,7 @@ export class AddFacultyComponent {
   colleges$ = this.store.select(selectAllCollege);
   editMode: boolean = false;
   passwordLoading$: Observable<boolean>
+  coordinatorType = ''
 
   constructor(
     private profileStore: Store<{ profile: ProfileState }>,
@@ -268,6 +269,10 @@ export class AddFacultyComponent {
     }
   }
 
+  handleCoordinator(coor:string) {
+    this.coordinatorType = ''
+    this.coordinatorType = coor
+  }
 
   onSubmit() {
     if (this.editMode) {
@@ -292,6 +297,20 @@ export class AddFacultyComponent {
         }
       })
     } else {
+
+      if(this.selectedEmployeePosition.toLowerCase() === 'coordinator' && this.coordinatorType === '') {
+
+        this.messageService.sendMessage("Specify the coordinator program", -1)
+        return
+      } else {
+        console.log('Hello ', this.coordinatorType)
+
+        this.facultyInfo.patchValue({
+          teaching_position: this.coordinatorType + ' ' + this.selectedEmployeePosition
+        })
+        this.coordinatorType = ''
+        // this.selectedEmployeePosition = this.coordinatorType + ' ' + this.selectedEmployeePosition
+      }
       this.messageService.sendMessage("Adding Faculty...", 0)
 
       //Assign first name as password

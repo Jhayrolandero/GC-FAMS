@@ -76,4 +76,18 @@ export class InfoService {
   }
 
 
+  calculateAge(birthDate: any) {
+    const today = new Date();
+    const birth = new Date(birthDate);
+    let age = today.getFullYear() - birth.getFullYear();
+    const monthDifference = today.getMonth() - birth.getMonth();
+    const dayDifference = today.getDate() - birth.getDate();
+
+    // If the birthdate hasn't occurred yet this year, subtract one from the age
+    if (monthDifference < 0 || (monthDifference === 0 && dayDifference < 0)) {
+        age--;
+    }
+    return age;
+  }
+
 }

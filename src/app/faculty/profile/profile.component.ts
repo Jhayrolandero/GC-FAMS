@@ -22,6 +22,7 @@ import { FacultyRequestService } from '../../services/faculty/faculty-request.se
 import { MatTabsModule } from '@angular/material/tabs';
 import { NgxDocViewerModule } from 'ngx-doc-viewer';
 import { MessageService } from '../../services/message.service';
+import { InfoService } from '../../services/info.service';
 @Component({
   selector: 'app-profile',
   standalone: true,
@@ -65,6 +66,7 @@ export class ProfileComponent {
 
 
   constructor(
+    private info: InfoService,
     private store: Store,
     public dialog: MatDialog,
     private router: Router,
@@ -111,6 +113,10 @@ export class ProfileComponent {
 
   rotate() {
     this.rotated = !this.rotated;
+  }
+
+  getAge(age: any) {
+    return this.info.calculateAge(age)
   }
 }
 

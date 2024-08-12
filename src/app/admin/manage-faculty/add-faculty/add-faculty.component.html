@@ -91,15 +91,33 @@
               Position
               <hr class="border-[1.5px] border-slate-400" />
             </h4>
-            <div class="flex flex-col tablet:flex-row gap-2 pt-4 w-full">
-              <app-employee-position
+            <div>
+              <div class="flex flex-col tablet:flex-row gap-2 pt-4 w-full">
+                <app-employee-position
                 *ngFor="let position of positions"
                 [position]="position"
                 [selectedEmployeePosition]="selectedEmployeePosition"
                 (setRole)="setPosition($event)"
                 [radioGroup]="'employment_position'"
                 class="select-none"
-              ></app-employee-position>
+                ></app-employee-position>
+              </div>
+              @if(selectedEmployeePosition.toLowerCase() === "coordinator"){
+                <div class="flex gap-2 py-2">
+                  <div 
+                  class="flex justify-center cursor-pointer items-center h-[32px] px-3 w-[100%] shadow-main rounded-[15px] hover:scale-[101%] hover:duration-300 duration:300"
+                  [ngClass]="{'bg-blue text-white': coordinatorType === 'BSEMC'}"
+                  (click)="handleCoordinator('BSEMC')">BSEMC</div>
+                  <div 
+                  class="flex justify-center cursor-pointer items-center h-[32px] px-3 w-[100%] shadow-main rounded-[15px] hover:scale-[101%] hover:duration-300 duration:300"
+                  [ngClass]="{'bg-blue text-white': coordinatorType === 'BSCS'}"
+                  (click)="handleCoordinator('BSCS')">BSCS</div>
+                  <div 
+                  class="flex justify-center cursor-pointer items-center h-[32px] px-3 w-[100%] shadow-main rounded-[15px] hover:scale-[101%] hover:duration-300 duration:300"
+                  [ngClass]="{'bg-blue text-white': coordinatorType === 'BSIT'}"
+                  (click)="handleCoordinator('BSIT')">BSIT</div>
+                </div>
+              }
             </div>
           </div>
 
