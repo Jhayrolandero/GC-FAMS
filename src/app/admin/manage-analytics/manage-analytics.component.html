@@ -313,8 +313,8 @@ async) && (coursesLoading$ | async) && (coursesLoading$ | async) &&
     </div>
   </div>
 
-  <div class="grid grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-3 gap-2">
-    <div
+  <div class="grid grid-cols-1 tablet:grid-cols-2  gap-2">
+    <!-- <div
       *ngIf="topSeminar$ | async as seminar"
       class="bg-white shadow-main rounded-[15px] p-5 pt-1 laptop:flex-1"
     >
@@ -350,7 +350,7 @@ async) && (coursesLoading$ | async) && (coursesLoading$ | async) &&
         [xAxisLabel]="'Seminar Count'"
         [yAxisLabel]="'Seminar Title'"
       ></app-bar-chart>
-    </div>
+    </div> -->
     <div
       *ngIf="topLevel$ | async as level"
       class="bg-white shadow-main rounded-[15px] p-5 pt-1 laptop:flex-1"

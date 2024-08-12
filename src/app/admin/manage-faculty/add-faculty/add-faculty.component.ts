@@ -22,6 +22,7 @@ import { updatePassword } from '../../../state/faculty-state/faculty-state.actio
 import { Observable } from 'rxjs';
 import { selectPasswordLoading } from '../../../state/faculty-state/faculty-state.selector';
 import { AddressesService } from '../../../services/addresses.service';
+import { InfoService } from '../../../services/info.service';
 
 @Component({
     selector: 'app-add-faculty',
@@ -48,6 +49,7 @@ export class AddFacultyComponent {
   coordinatorType = ''
 
   constructor(
+    private info: InfoService,
     private profileStore: Store<{ profile: ProfileState }>,
     private messageService: MessageService,
     public facultyService: FacultyRequestService,
@@ -215,6 +217,14 @@ export class AddFacultyComponent {
   });
 
 
+  setAge() {
+
+    this.facultyInfo.patchValue({
+      age: this.info.calculateAge(this.facultyInfo.get('birthdate')?.value)
+    })
+    // this.info.calculateAge()
+    // console.log(this.facultyInfo.get('birthdate')?.value)
+  }
   formControl(name: string) {
     return this.facultyInfo.get(name)
   }

@@ -81,11 +81,11 @@ export class ReportsComponent {
         reportTitle: `${this.college} - Employment Type`,
         reportFunction: () => this.excelService.generateEmploymentTypeReport()
       },
-      {
-        id: "U2VtaW5hcnMgQXR0ZW5kZWQ=",
-        reportTitle: `${this.college} - Seminars Attended`,
-        reportFunction: () => this.excelService.generateSeminarReport()
-      },
+      // {
+      //   id: "U2VtaW5hcnMgQXR0ZW5kZWQ=",
+      //   reportTitle: `${this.college} - Seminars Attended`,
+      //   reportFunction: () => this.excelService.generateSeminarReport()
+      // },
       {
         id: "VGVhY2hpbmcgTGV2ZWw=",
         reportTitle: `${this.college} - Teaching Level`,
